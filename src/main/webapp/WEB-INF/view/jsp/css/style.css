@@ -1,0 +1,269 @@
+
+/* ---------------------------------------------------------------------- */
+/*	Basic Elements & Classes
+/* ---------------------------------------------------------------------- */
+
+body {
+	background:#ffffff; margin:0px;
+}
+
+
+
+@font-face {
+    font-family: 'OpenSanslight';
+    src: url('../fonts/opensans-light.eot');
+    src: url('../fonts/opensans-light.eot') format('embedded-opentype'),
+         url('../fonts/opensans-light.woff') format('woff'),
+         url('../fonts/opensans-light.ttf') format('truetype'),
+         url('../fonts/opensans-light.svg#OpenSanslight') format('svg');
+}
+
+@font-face {
+    font-family: 'OpenSansRegular';
+    src: url('../fonts/opensans-regular.eot');
+    src: url('../fonts/opensans-regular.eot') format('embedded-opentype'),
+         url('../fonts/opensans-regular.woff') format('woff'),
+         url('../fonts/opensans-regular.ttf') format('truetype'),
+         url('../fonts/opensans-regular.svg#OpenSansRegular') format('svg');
+}
+
+
+@font-face {
+    font-family: 'OpenSansBold';
+    src: url('../fonts/opensans-bold.eot');
+    src: url('../fonts/opensans-bold.eot') format('embedded-opentype'),
+         url('../fonts/opensans-bold.woff') format('woff'),
+         url('../fonts/opensans-bold.ttf') format('truetype'),
+         url('../fonts/opensans-bold.svg#OpenSansBold') format('svg');
+}
+
+
+@font-face {
+    font-family: 'OpensansSemibold';
+    src: url('../fonts/opensans-semibold.eot');
+    src: url('../fonts/opensans-semibold.eot') format('embedded-opentype'),
+         url('../fonts/opensans-semibold.woff') format('woff'),
+         url('../fonts/opensans-semibold.ttf') format('truetype'),
+         url('../fonts/opensans-semibold.svg#OpensansSemibold') format('svg');
+}
+
+.opnsbld{font-family: 'OpenSansBold';} .opnslight{font-family: 'OpenSanslight';}
+
+.Link1 a{ text-decoration:none; color:#2a2929; margin:0 5px; } .Link1 a:hover{ text-decoration: underline; color:#000;} 
+.Link1 a:last-child{ margin-right:0;} 
+
+.Link2 a{ text-decoration:none; color:#f8b910; } .Link2 a:hover{ text-decoration: none; color:#fff;} 
+
+.Light11 { font-family: Arial, Helvetica, sans-serif; font-size:11px;}
+.Light12 { font-family: Arial, Helvetica, sans-serif; font-size:12px;}
+.Light13 { font-family: Arial, Helvetica, sans-serif; font-size:13px;} 
+.Light14 { font-family: Arial, Helvetica, sans-serif; font-size:14px;}
+
+.font21{ font-size:21px;} .font14{ font-size:14px;}
+
+.Bold{ font-weight:bold;} .White{ color:#fff;} .Black{ color:#000;} 
+.grey1{ color:#2a2929;} .grey2{ color:#c2c1c1;} .grey3{ color:#bfbbbb;}
+
+
+.Upparcase{ text-transform:uppercase;}
+.Lineheight1{ line-height:18px;} .Lineheight2{ line-height:24px;}
+.Align_cent{ text-align:center;}
+.Align_right{ text-align:right;}
+.Justify{ text-align:justify;}
+.Italic{ font-style:italic;}
+
+.Fl{ float:left;} .Fr{ float:right;}
+
+.posn{ position: relative;}
+
+.Txtbx_1{ 
+      background:none; width:100%; 
+	  border:none; padding-left:10px;
+	  font-family:Arial, Helvetica, sans-serif;
+	  font-size:13px;
+	  color:#161616;
+	  height:44px; }
+	  
+
+
+/*----Nav-------*/
+
+#Main_menu{ width:auto;  
+       float:right;   }
+
+.Menubx {
+    width:100%; 
+     float:right; position:relative;}
+
+.toggleMenu {
+    display:  none; 
+     font-size:17px; font-family:OswalReg; font-size:18px; 
+    padding: 10px 0 10px ; text-align:center; text-decoration:none;  
+    color: #fff;  text-transform:uppercase; 
+}
+.nav {
+    list-style: none;
+     *zoom: 1; margin:0;
+      padding:0px;
+}
+.nav:before,
+.nav:after {
+    content: " "; 
+    display: table; 
+}
+.nav:after {
+    clear: both;
+}
+.nav ul {
+    list-style: none;
+    width: 9em;
+}
+
+.nav li { position: relative; padding-bottom:4px; background:url(../images/nav_right.png) repeat-y right top; }
+.nav li:last-child{ background:none;}
+
+
+.nav li a {  
+   text-decoration:none; 
+   font-size:14px; line-height:44px; 
+   font-family:OswalReg; text-transform:uppercase;
+   color:#fff;  text-align:center; 
+   padding:0px 25px;  }
+
+
+.nav li a:hover, .nav li .current { color:#fff; background:url(../images/arrow_up.png) no-repeat center bottom;
+
+  text-decoration:none; }
+
+.nav > li {
+    float: left;
+    
+}
+
+.nav > li > a {
+    display: block; float:left; 
+}
+.nav li  ul {
+    position: absolute;
+    left: -9999px; top:93px; padding:0px 0px 10px;
+	width:196px; background:#fff; 
+
+	border-radius:0 0 5px 5px;
+	z-index:1;
+	
+	 
+}
+.nav > li.hover > ul { 
+    left:0px; 
+}
+.nav li li.hover ul {
+    left:70%;
+    top: 0;
+}
+
+.nav li li {
+	padding-right:0px;
+	background:none;
+    
+}
+
+.nav li li a {
+    display: block; color:#8dbcdf;
+     padding:6px 10px; font-family:'OpenSansSemibold'; 
+    position: relative; font-weight:normal;
+    z-index:100; line-height:18px;
+	
+	font-size:14px;
+	text-align:left;
+    
+}
+.nav li li li a {
+    background:#48a6e3; 
+    z-index:200;
+    border-top: 1px solid #fff;
+}
+
+
+/*---end---*/
+
+
+
+
+@media only screen and (min-width: 768px) and (max-width: 979px) {
+
+/*---Nav---*/
+	
+.toggleMenu {
+    display:  none !important;
+   
+}
+.nav{ display:block !important; margin:0px;}
+
+
+.nav li a{ padding:0px 10px ; font-size:13px;}
+.Menubx{ margin:0 auto; display:table; float:none;}
+
+/*---end--*/
+}
+
+/* All Mobile Sizes */
+@media only screen and (max-width: 767px) {
+
+/*---Nav---*/
+#Main_menu{ width:100%; margin-bottom:0; padding:0px; border-radius:0px;}
+
+.Menubx{ z-index:1; width:100%; }
+.toggleMenu { display:block !important;}
+.active {
+        display: block;
+    }
+	
+.nav {
+    list-style: none;
+     *zoom: 1;
+     background: #1a9fd6;  margin:0px;
+}
+
+.nav a {
+     text-decoration:none;
+    
+}
+.nav > li {
+        float: none;
+    }
+.nav > li > .parent {
+        background-position: 95% 50%;
+    }
+.nav li li .parent {
+        background-image: url("./images/downArrow.png");
+        background-repeat: no-repeat;
+        background-position: 95% 50%;
+    }
+.nav ul {
+        display: block;
+        width: 100%; padding:0px;
+    }
+   .nav > li.hover > ul , .nav li li.hover ul {
+        position: static; 
+    }
+  
+.nav li a {
+    background:none; color:#fff; float:none;  padding: 12px 0px 12px 0px;  }  
+  
+
+
+
+
+.nav li { background:none; padding-right:0px; border-bottom:#fff 1px solid;  margin-right:0; padding-bottom:0px;}
+
+.nav li ul{ width:auto; border-radius:0px;}
+
+.nav li li a{ text-align:center;}
+
+.nav li a:hover, .nav li .current{ border-radius:0;}
+
+/*--end---*/
+
+
+}
+

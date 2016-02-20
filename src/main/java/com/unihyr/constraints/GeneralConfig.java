@@ -1,0 +1,6 @@
+package com.unihyr.constraints;
+
+public class GeneralConfig 
+{
+	public static int rpp = 5;
+}

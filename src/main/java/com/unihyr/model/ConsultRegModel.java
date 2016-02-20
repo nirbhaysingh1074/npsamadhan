@@ -1,0 +1,232 @@
+package com.unihyr.model;
+
+import javax.persistence.Column;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
+import com.unihyr.domain.Industry;
+
+public class ConsultRegModel
+{
+	@NotBlank(message="{NotBlank.regForm.userid}")
+	private String userid;
+	
+	@NotBlank(message="{NotBlank.regForm.consultName}")
+	private String consultName;
+	
+	@NotBlank(message="{NotBlank.regForm.founderName}")
+	private String founderName;
+	
+	@NotBlank(message="{NotBlank.regForm.founderContact}")
+	private String founderContact;
+	
+//	@NotEmpty(message="{NotEmpty.regForm.password}")
+	@Pattern(regexp="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?=\\S+$).{8,20}$",message="{Pattern.regForm.password}")
+	private String password;
+	
+	@NotNull(message="{NotNull.regForm.repassword}")
+	private String repassword;
+	
+	@NotBlank(message="{NotBlank.regForm.officeLocations}")
+	private String officeLocations;
+	
+	private String hoAddress;
+	
+	@Min(value=1  ,message="{Min.regForm.noofpeoples}")
+	private int noofpeoples;
+	
+	@Min(value=0 ,message="{Min.regForm.revenue}")
+	private int revenue;
+	
+	@Min(value=0 ,message="{Min.regForm.revenue}")
+	private int yearsInIndusrty;
+	
+	@Length(max=11,min=10,message="{Length.regForm.contact}")
+	@NumberFormat(style=Style.NUMBER)
+	private String contact;
+	
+	
+	private Industry industry ;
+	
+	
+	private int usersRequired;
+
+
+	public String getUserid()
+	{
+		return userid;
+	}
+
+
+	public void setUserid(String userid)
+	{
+		this.userid = userid;
+	}
+
+
+	public String getConsultName()
+	{
+		return consultName;
+	}
+
+
+	public void setConsultName(String consultName)
+	{
+		this.consultName = consultName;
+	}
+
+
+	public String getFounderName()
+	{
+		return founderName;
+	}
+
+
+	public void setFounderName(String founderName)
+	{
+		this.founderName = founderName;
+	}
+
+
+	public String getFounderContact()
+	{
+		return founderContact;
+	}
+
+
+	public void setFounderContact(String founderContact)
+	{
+		this.founderContact = founderContact;
+	}
+
+
+	public String getPassword()
+	{
+		return password;
+	}
+
+
+	public void setPassword(String password)
+	{
+		this.password = password;
+	}
+
+
+	public String getRepassword()
+	{
+		return repassword;
+	}
+
+
+	public void setRepassword(String repassword)
+	{
+		this.repassword = repassword;
+	}
+
+
+	public String getOfficeLocations()
+	{
+		return officeLocations;
+	}
+
+
+	public void setOfficeLocations(String officeLocations)
+	{
+		this.officeLocations = officeLocations;
+	}
+
+
+	public String getHoAddress()
+	{
+		return hoAddress;
+	}
+
+
+	public void setHoAddress(String hoAddress)
+	{
+		this.hoAddress = hoAddress;
+	}
+
+
+	public int getNoofpeoples()
+	{
+		return noofpeoples;
+	}
+
+
+	public void setNoofpeoples(int noofpeoples)
+	{
+		this.noofpeoples = noofpeoples;
+	}
+
+
+	public int getRevenue()
+	{
+		return revenue;
+	}
+
+
+	public void setRevenue(int revenue)
+	{
+		this.revenue = revenue;
+	}
+
+
+	public int getYearsInIndusrty()
+	{
+		return yearsInIndusrty;
+	}
+
+
+	public void setYearsInIndusrty(int yearsInIndusrty)
+	{
+		this.yearsInIndusrty = yearsInIndusrty;
+	}
+
+
+	public String getContact()
+	{
+		return contact;
+	}
+
+
+	public void setContact(String contact)
+	{
+		this.contact = contact;
+	}
+
+
+	public Industry getIndustry()
+	{
+		return industry;
+	}
+
+
+	public void setIndustry(Industry industry)
+	{
+		this.industry = industry;
+	}
+
+
+	public int getUsersRequired()
+	{
+		return usersRequired;
+	}
+
+
+	public void setUsersRequired(int usersRequired)
+	{
+		this.usersRequired = usersRequired;
+	}
+	
+	
+	
+	
+	
+}

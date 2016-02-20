@@ -1,0 +1,198 @@
+package com.unihyr.dao;
+
+import java.math.BigInteger;
+import java.util.List;
+
+import org.hibernate.FetchMode;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.unihyr.domain.CandidateProfile;
+import com.unihyr.domain.Industry;
+import com.unihyr.domain.Post;
+import com.unihyr.domain.Registration;
+
+@Repository
+@SuppressWarnings("unchecked")
+public class ProfileDaoImpl implements ProfileDao
+{
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	@Override
+	public long uploadProfile(CandidateProfile profile)
+	{
+		// TODO Auto-generated method stub
+		try
+		{
+			sessionFactory.getCurrentSession().save(profile);
+			this.sessionFactory.getCurrentSession().flush();
+			return profile.getProfileId();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public boolean updateProfile(CandidateProfile profile)
+	{
+		// TODO Auto-generated method stub
+		try
+		{
+			sessionFactory.getCurrentSession().update(profile);
+			this.sessionFactory.getCurrentSession().flush();
+			return true;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+
+	@Override
+	public CandidateProfile getProfile(long id)
+	{
+		// TODO Auto-generated method stub
+		List<CandidateProfile> list = (List<CandidateProfile>) this.sessionFactory.getCurrentSession()
+				.createCriteria(CandidateProfile.class).add(Restrictions.eq("profileId", id))
+				.setFetchMode("postionList", FetchMode.JOIN).list();
+		if (!list.isEmpty())
+		{
+			return list.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public List<CandidateProfile> getProfileList()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CandidateProfile> getProfileList(int first, int max)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getDistinctPostitionListByConsultantId(String consultantId)
+	{
+		this.sessionFactory.getCurrentSession().createCriteria(CandidateProfile.class)
+				.add(Restrictions.eq("consultantId", consultantId)).list();
+		return null;
+	}
+	
+	
+	@Override
+	public List<CandidateProfile> getProfilesByPost(String clientId)
+	{
+		String hql = "select pr.* from candidateProfile pr LEFT JOIN profile_posts pp ON pr.profileId = pp.profileId AND pp.postId in(SELECT po.postId FROM post po LEFT JOIN registration reg ON reg.userid = po.clientId AND reg.userid LIKE :clientId)";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
+		query.setParameter("clientId",clientId);
+		query.addEntity(CandidateProfile.class);
+		List<CandidateProfile> list = (List<CandidateProfile>)query.list();
+		return list;
+	}
+	
+	@Override
+	public List<CandidateProfile> getProfilesByPost(String clientId, int first, int max)
+	{
+		String hql = "select pr.* from candidateProfile pr LEFT JOIN profile_posts pp ON pr.profileId = pp.profileId AND pp.postId in(SELECT po.postId FROM post po LEFT JOIN registration reg ON reg.userid = po.clientId AND reg.userid LIKE :clientId)";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
+		query.setParameter("clientId",clientId);
+		query.addEntity(CandidateProfile.class).setFirstResult(first).setMaxResults(max);
+		List<CandidateProfile> list = (List<CandidateProfile>)query.list();
+		return list;
+	}
+	
+	@Override
+	public long countProfilesByPost(String clientId)
+	{
+		String sql = "select count(*) from candidateProfile pr LEFT JOIN profile_posts pp ON pr.profileId = pp.profileId AND pp.postId in(SELECT po.postId FROM post po LEFT JOIN registration reg ON reg.userid = po.clientId AND reg.userid LIKE :clientId)";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(sql);          
+		query.setParameter("clientId",clientId);
+		BigInteger count = (BigInteger)query.uniqueResult();
+		return count.longValue();
+	}
+	
+	@Override
+	public List<CandidateProfile> getProfilesByPost(long postId, int first, int max)
+	{
+		String hql = "select pr.* from candidateProfile pr INNER JOIN profile_posts pp ON pr.profileId = pp.profileId AND pp.postId = :postId";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
+		query.setParameter("postId",postId);
+		query.addEntity(CandidateProfile.class).setFirstResult(first).setMaxResults(max);
+		List<CandidateProfile> list = (List<CandidateProfile>)query.list();
+		return list;
+	}
+	
+	@Override
+	public long countProfilesByPost(long postId)
+	{
+		String sql = "select count(*) from candidateProfile pr INNER JOIN profile_posts pp ON pr.profileId = pp.profileId AND pp.postId = :postId";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(sql);          
+		query.setParameter("postId",postId);
+		BigInteger count = (BigInteger)query.uniqueResult();
+		return count.longValue();
+	}
+
+	@Override
+	public List<CandidateProfile> getProfilesByPostAndConsultant(String clientId, String consultid, long postId, int first, int max)
+	{
+		String hql = "select pr.* from candidateProfile pr INNER JOIN profile_posts pp ON pr.profileId = pp.profileId AND pr.consultantId=:consultid AND pp.postId = :postId AND pp.postId in(SELECT po.postId FROM post po LEFT JOIN registration reg ON reg.userid = po.clientId AND reg.userid LIKE :clientId)";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
+		query.setParameter("postId",postId);
+		query.setParameter("consultid",consultid);
+		query.setParameter("clientId",clientId);
+		query.addEntity(CandidateProfile.class).setFirstResult(first).setMaxResults(max);
+		List<CandidateProfile> list = (List<CandidateProfile>)query.list();
+		return list;
+	}
+	
+	@Override
+	public long countProfilesByPostAndConsultant(String clientId, String consultid, long postId)
+	{
+		String sql = "select count(*) from candidateProfile pr INNER JOIN profile_posts pp ON pr.profileId = pp.profileId AND pr.consultantId=:consultid AND pp.postId = :postId AND pp.postId in(SELECT po.postId FROM post po LEFT JOIN registration reg ON reg.userid = po.clientId AND reg.userid LIKE :clientId)";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(sql);          
+		query.setParameter("postId",postId);
+		query.setParameter("consultid",consultid);
+		query.setParameter("clientId",clientId);
+		BigInteger count = (BigInteger)query.uniqueResult();
+		return count.longValue();
+	}
+
+	@Override
+	public List<CandidateProfile> getProfilesByConsultant(String clientId, String consultid, int first, int max)
+	{
+		String hql = "select pr.* from candidateProfile pr INNER JOIN profile_posts pp ON pr.profileId = pp.profileId AND pr.consultantId=:consultid AND pp.postId in(SELECT po.postId FROM post po LEFT JOIN registration reg ON reg.userid = po.clientId AND reg.userid LIKE :clientId)";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
+		query.setParameter("consultid",consultid);
+		query.setParameter("clientId",clientId);
+		query.addEntity(CandidateProfile.class).setFirstResult(first).setMaxResults(max);
+		List<CandidateProfile> list = (List<CandidateProfile>)query.list();
+		return list;
+	}
+	
+	@Override
+	public long countProfilesByConsultant(String clientId, String consultid)
+	{
+		String sql = "select count(*) from candidateProfile pr INNER JOIN profile_posts pp ON pr.profileId = pp.profileId AND pr.consultantId=:consultid AND pp.postId in(SELECT po.postId FROM post po LEFT JOIN registration reg ON reg.userid = po.clientId AND reg.userid LIKE :clientId)";
+		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(sql);          
+		query.setParameter("consultid",consultid);
+		query.setParameter("clientId",clientId);
+		BigInteger count = (BigInteger)query.uniqueResult();
+		return count.longValue();
+	}
+
+}

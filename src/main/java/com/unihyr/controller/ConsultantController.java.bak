@@ -1,0 +1,82 @@
+package com.unihyr.controller;
+
+import java.security.Principal;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.unihyr.domain.CandidateProfile;
+import com.unihyr.model.CandidateProfileModel;
+import com.unihyr.model.PostModel;
+import com.unihyr.service.ProfileService;
+import com.unihyr.service.RegistrationService;
+
+@Controller
+public class ConsultantController
+{
+	@Autowired
+	ProfileService profileService;
+	@Autowired
+	RegistrationService registrationService;
+
+	@RequestMapping(value = "/uploadprofile", method = RequestMethod.GET)
+	public String uploadprofile(ModelMap map)
+	{
+		System.out.println("Hello to all from uploadprofile");
+		map.addAttribute("uploadProfileForm", new CandidateProfileModel());
+		return "uploadprofile";
+	}
+
+	@RequestMapping(value = "/uploadprofile", method = RequestMethod.POST)
+	public String consultant_uploadProfile(
+			@ModelAttribute(value = "uploadProfileForm") @Valid CandidateProfileModel model, BindingResult result,
+			ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		if (result.hasErrors())
+		{
+			map.addAttribute("uploadProfileForm", new CandidateProfileModel());
+			return "uploadprofile";
+		} else
+		{
+			System.out.println("form submitted successfully");
+			CandidateProfile profile = new CandidateProfile();
+			profile.setName(model.getName());
+			profile.setEmail(model.getEmail());
+			profile.setContact(model.getContact());
+			profile.setCurrentCTC(model.getCurrentCTC());
+			profile.setExpectedCTC(model.getExpectedCTC());
+			profile.setCurrentOrganization(model.getCurrentOrganization());
+			profile.setNoticePeriod(model.getNoticePeriod());
+			profile.setJdID(model.getJdID());
+			profile.setCurrentRole(model.getCurrentRole());
+			profile.setWillingToRelocate(model.getWillingToRelocate());
+			profile.setResumePath(model.getResumePath());
+			profile.setRegistration(registrationService.getRegistationByUserId("nirbhay@silvereye.in"));
+			Date date = new Date();
+			java.sql.Date dt = new java.sql.Date(date.getTime());
+			profile.setDate(dt);
+			profileService.uploadProfile(profile);
+		}
+		return "redirect:home";
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
