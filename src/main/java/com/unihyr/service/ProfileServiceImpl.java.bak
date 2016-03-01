@@ -61,6 +61,61 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 	
 	@Override
+	public List<Registration> getDistinctClientListByConsultantId(String consultantId)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.getDistinctClientListByConsultantId(consultantId);
+	}
+
+	@Override
+	public List<CandidateProfile> getProfileListByConsultantIdInRange(String consultantId, int first, int max)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.getProfileListByConsultantIdInRange(consultantId, first, max);
+	}
+
+	/*@Override
+	public List<Registration> getDistinctClientListByConsultantIdAndClient(String consultantId, String profileId)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.getDistinctClientListByConsultantIdAndClient(consultantId, profileId);
+	}
+*/
+	@Override
+	public List<CandidateProfile> getProfileListByConsultantIdAndClientInRange(String consultantId, String profileId,
+			int first, int max)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.getProfileListByConsultantIdAndClientInRange(consultantId, profileId, first, max);
+	}
+
+	@Override
+	public List<Post> getPostListByConsultantIdAndClientInRange(String consultantId, String profileId, int first,
+			int max)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.getPostListByConsultantIdAndClientInRange(consultantId, profileId, first, max);
+	}
+
+	@Override
+	public List<CandidateProfile> getProfileListByConsultantIdAndPostIdInRange(String consultantId, String postId, int i,
+			int j)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.getProfileListByConsultantIdAndPostIdInRange(consultantId,  postId,  i,
+				 j);
+	}
+
+	@Override
+	public List<CandidateProfile> getProfileListByConsultantIdAndClientAndPostIdInRange(String consultantId,String clientId,
+			String postId, int i, int j)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.getProfileListByConsultantIdAndClientAndPostIdInRange(consultantId,clientId, postId,
+				  i,  j);
+	}
+
+	@Override
 	public long countProfilesByPost(String clientId)
 	{
 		return this.profileDao.countProfilesByPost(clientId);
@@ -102,5 +157,28 @@ public class ProfileServiceImpl implements ProfileService {
 		return this.profileDao.countProfilesByConsultant(clientId, consultid);
 	}
 
+	@Override
+	public List<CandidateProfile> getAllActiveProfilesByPost(String clientId, int first, int max)
+	{
+		return this.profileDao.getAllActiveProfilesByPost(clientId, first, max);
+	}
+	
+	@Override
+	public long countAllActiveProfilesByPost(String clientId)
+	{
+		return this.profileDao.countAllActiveProfilesByPost(clientId);
+	}
+	
+	@Override
+	public List<CandidateProfile> getAllInactiveProfilesByPost(String clientId, int first, int max)
+	{
+		return this.profileDao.getAllInactiveProfilesByPost(clientId, first, max);
+	}
+	
+	@Override
+	public long countAllInactiveProfilesByPost(String clientId)
+	{
+		return this.profileDao.countAllInactiveProfilesByPost(clientId);
+	}
 	
 }

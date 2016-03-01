@@ -61,4 +61,92 @@ public class PostServiceImpl implements PostService
 	{
 		return this.postDao.countPostByClient(userid);
 	}
+	
+	@Override
+	public List<Post> getAllPostsByClient(String userid, int first, int max)
+	{
+		return this.postDao.getAllPostsByClient(userid, first, max);
+	}
+	
+	@Override
+	public long countAllPostByClient(String userid)
+	{
+		return this.postDao.countAllPostByClient(userid);
+	}
+	
+	@Override
+	public List<Post> getAllInactivePostsByClient(String userid, int first, int max)
+	{
+		return this.postDao.getAllInactivePostsByClient(userid, first, max);
+	}
+	
+	@Override
+	public long countAllInactivePostByClient(String userid)
+	{
+		return this.postDao.countAllInactivePostByClient(userid);
+	}
+
+	
+	@Override
+	public List<Post> getDeletedPostsByClient(String userid, int first, int max)
+	{
+		return this.postDao.getDeletedPostsByClient(userid, first, max);
+	}
+	
+	@Override
+	public long countDeletedPostByClient(String userid)
+	{
+		return this.postDao.countDeletedPostByClient(userid);
+	}
+	@Override
+	public List<Post> getPostsByIndustryUsingConsultantId(String consultantId, int first, int max)
+	{
+		
+		return this.postDao.getPostsByIndustryUsingConsultantId(consultantId, first, max);
+	}
+
+	@Override
+	public long countPostsByIndustryUsingConsultantId(String name)
+	{
+		
+		return this.postDao.countPostsByIndustryUsingConsultantId(name);
+	}
+	
+	@Override
+	public List<Post> getPostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max)
+	{
+		return this.postDao.getPostsBySubmittedProfilesByConsultantId(consultantId, first, max);
+	}
+
+	@Override
+	public long countPostsBySubmittedProfilesByConsultantId(String consultantId)
+	{
+		return this.postDao.countPostsBySubmittedProfilesByConsultantId(consultantId);
+	}
+
+	@Override
+	public List<Post> getAllPostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max)
+	{
+		return this.postDao.getAllPostsBySubmittedProfilesByConsultantId(consultantId, first, max);
+	}
+
+	@Override
+	public long countAllPostsBySubmittedProfilesByConsultantId(String consultantId)
+	{
+		return this.postDao.countAllPostsBySubmittedProfilesByConsultantId(consultantId);
+	}
+
+	@Override
+	public List<Post> getInactivePostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max)
+	{
+		return this.postDao.getInactivePostsBySubmittedProfilesByConsultantId(consultantId, first, max);
+	}
+
+	@Override
+	public long countInactivePostsBySubmittedProfilesByConsultantId(String consultantId)
+	{
+		return this.postDao.countInactivePostsBySubmittedProfilesByConsultantId(consultantId);
+	}
+
+	
 }

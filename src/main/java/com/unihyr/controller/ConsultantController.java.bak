@@ -1,11 +1,20 @@
 package com.unihyr.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,8 +22,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.unihyr.domain.CandidateProfile;
+import com.unihyr.domain.Registration;
 import com.unihyr.model.CandidateProfileModel;
 import com.unihyr.model.PostModel;
 import com.unihyr.service.ProfileService;
@@ -37,9 +51,7 @@ public class ConsultantController
 	}
 
 	@RequestMapping(value = "/uploadprofile", method = RequestMethod.POST)
-	public String consultant_uploadProfile(
-			@ModelAttribute(value = "uploadProfileForm") @Valid CandidateProfileModel model, BindingResult result,
-			ModelMap map, HttpServletRequest request, Principal principal)
+	public String consultant_uploadProfile(@ModelAttribute(value = "uploadProfileForm") @Valid CandidateProfileModel model, BindingResult result, ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		if (result.hasErrors())
 		{
@@ -60,23 +72,189 @@ public class ConsultantController
 			profile.setCurrentRole(model.getCurrentRole());
 			profile.setWillingToRelocate(model.getWillingToRelocate());
 			profile.setResumePath(model.getResumePath());
-			profile.setRegistration(registrationService.getRegistationByUserId("nirbhay@silvereye.in"));
+			profile.setRegistration(registrationService.getRegistationByUserId("amar@silvereye.co"));
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
 			profile.setDate(dt);
+			
+			MultipartFile jdfile = model.getJdFile();
+	        String jdfilename=jdfile.getOriginalFilename();
+	        String jdnewfilename=null;
+	        
+	        MultipartFile resumefile = model.getResumeFile();
+	        String resumefilename=resumefile.getOriginalFilename();
+	        String resumeNewfilename=null;
+	        
+	        try
+	        {
+	        	if (!(jdfilename.equals("")) || !(resumefilename.equals("")))
+	        	{
+	        		if(!(jdfilename.equals("")))
+	        		{
+	        			jdnewfilename=jdfilename.replace(" ", "-");
+	        			jdnewfilename = UUID.randomUUID().toString()+jdnewfilename;
+	        			profile.setJdID(jdnewfilename);
+	        			File img = new File (System.getProperty("catalina.base")+"/unihyr_uploads/profile/"+principal.getName()+"/"+jdnewfilename);
+	        			if(!img.exists())
+	        			{
+	        				img.mkdirs();
+	        			}
+	        			jdfile.transferTo(img);			
+	        			
+	        		}
+	        		if(!(resumefilename.equals("")))
+	        		{
+	        			resumeNewfilename=resumefilename.replace(" ", "-");
+	        			resumeNewfilename = UUID.randomUUID().toString()+resumeNewfilename;
+	        			profile.setResumePath(resumeNewfilename);
+	        			File img = new File (System.getProperty("catalina.base")+"/unihyr_uploads/profile/"+principal.getName()+"/"+resumeNewfilename);
+	        			if(!img.exists())
+	        			{
+	        				img.mkdirs();
+	        			}
+	        			resumefile.transferTo(img);			
+	        		}
+	        		
+	        	}
+	        }
+		    catch (IOException ie)
+			        {
+				ie.printStackTrace();
+			}
+			
+			
+			
 			profileService.uploadProfile(profile);
 		}
 		return "redirect:home";
 	}
 
+	@RequestMapping(value = "/cons_your_positions", method = RequestMethod.GET)
+	public String cons_your_positions(ModelMap map)
+	{
+		System.out.println("Hello to all from uploadprofile");
+		map.addAttribute("clientList", profileService.getDistinctClientListByConsultantId("amar@silvereye.co"));
+		return "cons_your_positions";
+	}
+
+	@RequestMapping(value = "/profilelistbyconsidclientid", method = RequestMethod.GET)
+	public String profilelistbyconsidclientid(ModelMap map, @RequestParam String clientId, @RequestParam String postId,
+			@RequestParam String pageNo)
+	{
+		System.out.println("Hello to all from uploadprofile");
+		if (clientId != null && clientId.equals("1") && postId != null && postId.equals("0"))
+		{
+			map.addAttribute("profileList",
+					profileService.getProfileListByConsultantIdInRange("amar@silvereye.co", 0, 0));
+		} else if (clientId != null && clientId.equals("1") && postId != null && (!postId.equals("0")))
+		{
+			map.addAttribute("profileList", profileService
+					.getProfileListByConsultantIdAndPostIdInRange("amar@silvereye.co", postId, 0, 0));
+		} else if (clientId != null && (!clientId.equals("1")) && postId != null && postId.equals("0"))
+		{
+			map.addAttribute("profileList", profileService
+					.getProfileListByConsultantIdAndClientInRange("amar@silvereye.co", clientId, 0, 0));
+		} else
+		{
+			map.addAttribute("profileList", profileService
+					.getProfileListByConsultantIdAndClientAndPostIdInRange("amar@silvereye.co", clientId,postId, 0, 0));
+		}
+		return "profilelistbyconsidclientid";
+	}
+
+	@RequestMapping(value = "/cons_leftside_postlist", method = RequestMethod.GET)
+	public String cons_leftside_postlist(ModelMap map, @RequestParam String clientId, @RequestParam String postId,
+			@RequestParam Integer pageNo)
+	{
+		System.out.println("Hello to all from uploadprofile");
+		if (clientId.equals("1"))
+		{
+			map.addAttribute("postList", profileService.getPostListByConsultantIdInRange("amar@silvereye.co", 0, 0));
+		} else
+		{
+			map.addAttribute("postList",
+					profileService.getPostListByConsultantIdAndClientInRange("amar@silvereye.co", clientId, 0, 0));
+		}
+		return "cons_leftside_postlist";
+	}
+
+	@RequestMapping(value = "/consnewposts", method = RequestMethod.GET)
+	public String consnewposts(ModelMap map, HttpServletRequest request)
+	{
+		return "consnewposts";
+	}
+
+	@RequestMapping(value = "/consdashboard", method = RequestMethod.GET)
+	public String consdashboard(ModelMap map)
+	{
+		return "consdashboard";
+	}
 	
 	
+	@RequestMapping(value = "/consultantaccount", method = RequestMethod.GET)
+	public String consultantaccount(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		map.addAttribute("status", request.getParameter("status"));
+		return "consultantAccount";
+	}
 	
-	
-	
-	
-	
-	
-	
+	private Set<String> allowedImageExtensions;
+	@RequestMapping(value = "/consultant.uploadLogo", method = RequestMethod.POST)
+    public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req, Principal principal)throws ServletException
+    {   
+		
+		this.allowedImageExtensions = new HashSet<String>();
+		this.allowedImageExtensions.add("png");
+		this.allowedImageExtensions.add("jpg");
+		this.allowedImageExtensions.add("jpeg");
+		this.allowedImageExtensions.add("gif");
+		this.allowedImageExtensions.add("PNG");
+		this.allowedImageExtensions.add("JPG");
+		this.allowedImageExtensions.add("JPEG");
+		this.allowedImageExtensions.add("GIF");
+		
+		MultipartFile mpf = null;
+		int flag=0;
+		Iterator<String> itr=request.getFileNames();
+		while(itr.hasNext()){
+		mpf=request.getFile(itr.next());
+		flag++;
+        boolean isMultipart=ServletFileUpload.isMultipartContent(request);
+        System.out.println("is file " + isMultipart + " file name " + mpf.getOriginalFilename());
+		}
+		if(flag > 0 && mpf != null && mpf.getOriginalFilename() != null && mpf.getOriginalFilename() != "")
+		{
+			String filename=null;
+			
+			filename=mpf.getOriginalFilename().replace(" ", "-");
+			String imageextension=FilenameUtils.getExtension(filename);
+			try
+			{
+				if(!this.allowedImageExtensions.contains(imageextension)){
+        			return "failed";
+        		}
+				
+				File dl = new File(System.getProperty("catalina.base")+"/unihyr_uploads/"+principal.getName()+"/logo/"+filename);
+				String datafile=System.getProperty("catalina.base")+"/unihyr_uploads/"+principal.getName()+"/logo/"+filename;
+				System.out.println("PATH="+datafile);
+				if(!dl.exists()){
+					System.out.println("in not file"+dl.getAbsolutePath());
+					dl.mkdirs();
+				}
+				filename= "/unihyr_uploads/"+principal.getName()+"/logo/"+filename;
+				mpf.transferTo(dl);
+				Registration registration = registrationService.getRegistationByUserId(principal.getName());
+				registration.setLogo(filename);
+				request.getSession().setAttribute("registration", registration);
+				registrationService.update(registration);
+			}
+			catch(IOException e)
+			{
+				
+			}
+			return filename;
+		}
+		return "failed";
+    }
 	
 }

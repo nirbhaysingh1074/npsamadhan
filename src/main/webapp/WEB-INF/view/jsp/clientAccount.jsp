@@ -112,8 +112,7 @@
 							</dt>
 							<dd>
 								<div>
-									<span class="select-wrapper" style="float: left; position: absolute; padding: 5px;cursor: pointer;">
-<!-- 										<img alt="" src="images/edit.png" width="20px"> -->
+									<span class="select-wrapper" style="float: left; position: absolute;cursor: pointer;">
 										<input type="file" id="image_src">
 									 </span>
 									<div style="width: 200px;margin: 10px 0; height: 100px;text-align: center;background-color: #e8e8e8;">
@@ -229,6 +228,85 @@
 						
 						
 						
+			        </div>
+			        <div class="form_col">
+			        	<div class="filter bottom-margin" style="border-radius:0">
+					        <div class="col-md-7"><span>Change Password  ${status }</span></div>
+					    </div>
+					    <%
+					    	String status = (String)request.getAttribute("status");
+					    	if(status != null && status.equals("success"))
+					    	{
+					    		%>
+					    			<dl>
+										<dd>
+											<h3 class="success">Password changed successfully !</h3>	
+										</dd>
+									</dl>
+					    		<%
+					    	}
+					    	else if(status != null && status.equals("wrongoldpassword"))
+					    	{
+					    		%>
+					    			<dl>
+										<dd>
+											<h3 class="error">Old Password not matched !</h3>	
+										</dd>
+									</dl>
+					    		<%
+					    	}
+					    	else if(status != null && status.equals("notmatched"))
+					    	{
+					    		%>
+					    			<dl>
+										<dd>
+											<h3  class="error">Re-Password not matched as new password</h3>	
+										</dd>
+									</dl>
+					    		<%
+					    	}
+					    %>
+					    <div style="clear: both;"></div>
+			        	<form action="changeUserPassword" method="POST" autocomplete="off">
+				        	<dl>
+								<dt>
+									<label>Old Password</label>
+								</dt>
+								<dd>
+									<input type="password" name="oldPassword" autocomplete="off">
+									
+								</dd>
+							</dl>
+							<div style="clear: both;"></div>
+							<dl>
+								<dt>
+									<label>New Password</label>
+								</dt>
+								<dd>
+									<input type="password"  name="newPassword" >
+									
+								</dd>
+							</dl>
+							<div style="clear: both;"></div>
+							<dl>
+								<dt>
+									<label>Re-Password</label>
+								</dt>
+								<dd>
+									<input type="password"  name="rePassword">
+								</dd>
+							</dl>
+							<div style="clear: both;"></div>
+				        	<dl>
+								<dt>
+									<label>&nbsp;</label>
+								</dt>
+								<dd>
+									<input class="btn yelo_btn" type="submit" value="Change Password" name="btn_response">
+	<!-- 									<input class="btn yelo_btn" type="submit" value="Save" name="btn_response"> -->
+								</dd>
+							</dl>
+						</form>
 			        </div>
 		        </div>
 		        

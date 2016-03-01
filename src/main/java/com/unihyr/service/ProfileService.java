@@ -37,8 +37,6 @@ public interface ProfileService
 	
 	public long countProfilesByConsultant(String clientId, String consultid);
 
-	public List<CandidateProfile> getProfileListByConsultantIdInRange(String consultantId, int first, int max);
-
 	public List<Post> getPostListByConsultantIdInRange(String consultantId, int first, int max);
 
 	/*public List<Registration> getDistinctClientListByConsultantIdAndClient(String consultantId, String profileId);
@@ -49,8 +47,28 @@ public interface ProfileService
 	public List<Post> getPostListByConsultantIdAndClientInRange(String consultantId, String profileId, int first,
 			int max);
 
+	public List<CandidateProfile> getProfileListByConsultantIdInRange(String consultantId, int first, int max);
+
 	public  List<CandidateProfile>  getProfileListByConsultantIdAndPostIdInRange(String consultantId, String postId, int i, int j);
 
 	public  List<CandidateProfile>  getProfileListByConsultantIdAndClientAndPostIdInRange(String consultantId, String clientId, String postId,
 			int i, int j);
+	public long countProfileListByConsultantIdInRange(String consultantId);
+
+	public long countAllProfileListByConsultantIdInRange(String consultantId);
+
+	public  long  countProfileListByConsultantIdAndClientInRange(String consultantId, String postId);
+
+	public  long  countProfileListByConsultantIdAndClientAndPostIdInRange(String consultantId, String clientId, String postId);
+
+	public long countProfileListByConsultantIdAndPostIdInRange(String consultantId, String postId);
+	
+	public List<CandidateProfile> getAllActiveProfilesByPost(String clientId, int first, int max);
+	
+	public long countAllActiveProfilesByPost(String clientId);
+	
+	public List<CandidateProfile> getAllInactiveProfilesByPost(String clientId, int first, int max);
+	
+	public long countAllInactiveProfilesByPost(String clientId);
+	
 }

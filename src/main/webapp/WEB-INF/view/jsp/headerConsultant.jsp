@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<%@page import="com.unihyr.domain.Registration"%>
 <html dir="ltr" lang="en-US">
 <head>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras"
@@ -9,47 +10,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uni Hyr</title>
 <link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
+<link href="css/media.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
+<link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.IE.js"></script>
 <script type="text/javascript" src="js/consult_js.js"></script>
+<script type="text/javascript" src="js/common_js.js"></script>
 
+<script>
+		function getLogOut(){
+			if (XMLHttpRequest)
+			{
+				x=new XMLHttpRequest();
+			}
+			else
+			{
+				x=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		     x.onreadystatechange=function()
+			{
+		    	 if(x.readyState==4 && x.status==200)
+					{
+		    		 var res = x.responseText;
+// 		    		 alert(res);
+		    		 window.location.href="${pageContext.request.contextPath}/j_spring_security_logout";
+		    		}
+			}
+			x.open("GET", "${pageContext.request.contextPath}/insertLogOut",true);
+			x.send();
+			return true;
+		}
+</script>
 </head>
 <body class="loading">
 	<tilesx:useAttribute name="currentpage" />
+<%
+	Registration reg = (Registration)request.getSession().getAttribute("registration");
+	
+%>
 	<header>
 		<div class="header">
-			<div class="container">
-				<div class="logo">
-					<a href="consdashboard"><img src="images/logo.png" alt="Logo"></a>
-
-					<div class="last_login">
-						<p>Last Login: May 20, 2015 at 09:39 AM</p>
-					</div>
-				</div>
-
-				<div class="header_right">
-					<div class="brnad_logo">
-						<span>Welcome</span> <img src="images/logo_2.png" alt="Logo">
-					</div>
-					<div class="address_info">
-						<p>
-							<span>Account Details:</span> (Update Account Info)<br>DLF
-							Phase V, <br>Gurgaon
-						</p>
-					</div>
-					<div class="contact_our">
-						<p>Key Contact Persons:</p>
-						<p>
-							<span>1. Mr. ABC -</span>+91 9xxxxxxxxx (abc@xxxxx)
-						</p>
-						<p>
-							<span>2. Mr. DEF -</span> +91 8xxxxxxxxx (def@xxxxxx)
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="container">
+      <div class="logo"> <a href="consdashboard"><img src="images/logo.png" alt="Logo"></a> 
+      	<div class="last_login"><p>Last Login: May 20, 2015 at 09:39 AM</p></div>
+      </div>
+      
+      <div class="header_right">
+        <div class="brnad_logo">
+        	<span>Welcome</span> 
+        	<%
+        		if(reg.getLogo() != null && reg.getLogo().length() > 0)
+        		{
+        			%>
+			        	<img src="<%= reg.getLogo() %>" alt="">
+        			<%
+        		}
+        	%>
+       	</div>
+        <div class="address_info">
+	        <p><span><a href="consultantaccount"><%= reg.getConsultName() %> </a></span ></p>
+	        <p><span>+91-<%= reg.getContact() %> </span></p>
+	        <p><span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></p>
+        </div>
+      </div>
+    </div>
+  </div>
 		<nav>
 			<div class="container">
 				<a href="javascript:void(0);"

@@ -32,7 +32,57 @@ jQuery(document).ready(function() {
 		
 	});
 	
+	$(document.body).on('click', '.pre_check > .post_interest' ,function(){
+//		alert("Hello to all" + $(this).attr("id"));
+		var row = $(this);
+		
+		var pid = $(this).attr("id");
+		
+		var r = confirm("Are you interested for this post ?");
+		if(r)
+		{
+			$.ajax({
+				type : "GET",
+				url : "consPostInterest",
+				data : {'pid':pid},
+				contentType : "application/json",
+				success : function(data) {
+					if(data == "success")
+					{
+//					alert(data);
+						row.removeClass("post_interest");
+						row.html("<img src='images/view-icon.png' alt='interested'>");
+					}
+					
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.responseText);
+				}
+			}) ;
+			
+		}
+		
+		
+	});
 	
+	$(document.body).on('click', '#postsList > li' ,function(){
+//		alert("hello to all"+ $(this).attr("id"));
+		$("#postsList > .active").removeClass("active");
+		$(this).addClass("active");
+		
+		var clientId = $('#selectionOfClient').val();
+		if(clientId == "")
+		{
+			alert("Select Client first !");
+			return false;
+		}
+		
+		fillProfiles("1") ;
+	});
+	
+	$(document.body).on('change', '#cons_db_post_status' ,function(){
+		loadconsdashboardposts("1");
+	});
 	
 });
 

@@ -52,6 +52,29 @@ public interface ProfileDao
 	
 	public long countProfilesByConsultant(String clientId, String consultid);
 
+	public List<CandidateProfile> getAllActiveProfilesByPost(String clientId, int first, int max);
+	
+	public long countAllActiveProfilesByPost(String clientId);
+	
+	public List<CandidateProfile> getAllInactiveProfilesByPost(String clientId, int first, int max);
+	
+	public long countAllInactiveProfilesByPost(String clientId);
+	
+	
+
+	public long countProfileListByConsultantIdInRange(String consultantId);
+	
+	public long countAllProfileListByConsultantIdInRange(String consultantId);
+
+	
+
+	public long countProfileListByConsultantIdAndClientAndPostIdInRange(String consultantId, String clientId,
+			String postId);
+
+	public long countProfileListByConsultantIdAndClientInRange(String consultantId, String clientId);
+
+	public long countProfileListByConsultantIdAndPostIdInRange(String consultantId, String postId);
+
 	
 	
 	

@@ -6,10 +6,12 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <link rel="icon" href="favicon.ico" type="image/gif" sizes="16x16"> 
 <title><tiles:getAsString name="title" />  </title>
 
 </head>
 <body>
+	
 	<tiles:insertAttribute name="header" />
 	<tiles:insertAttribute name="body" />
 	<tiles:insertAttribute name="footer" />

@@ -16,24 +16,25 @@ import com.unihyr.service.RegistrationService;
 
 import static org.junit.Assert.*;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/dispatcher-servlet.xml"})
-public class ConsultantRegistrationTest {
+@ContextConfiguration(locations =
+{ "/dispatcher-servlet.xml" })
+public class ConsultantRegistrationTest
+{
 
-	//@Autowired private JobLauncherTestUtils jobLauncherTestUtils;
-	@Autowired private RegistrationService registrationService;
-	
+	@Autowired
+	private RegistrationService registrationService;
+
 	@Test
-	public void addConsultant(){
-		
-		Registration consultant=new Registration();
+	public void addConsultant()
+	{
+
+		Registration consultant = new Registration();
 		Date date = new Date();
 		java.sql.Date dt = new java.sql.Date(date.getTime());
 		consultant.setConsultName("con1");
-		
-		//assertEquals(true, (industryService.addIndustry(industry)>0));
+
+		// assertEquals(true, (industryService.addIndustry(industry)>0));
 	}
-	
-	
+
 }

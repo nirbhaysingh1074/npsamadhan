@@ -21,6 +21,9 @@
    	    <mapping class="com.unihyr.domain.RatingCalculation"/>
    	    <mapping class="com.unihyr.domain.RatingParameter"/>
    	    <mapping class="com.unihyr.domain.LoginHistory"/>
+   	    <mapping class="com.unihyr.domain.PostProfile"/>
+   	    <mapping class="com.unihyr.domain.PostConsultant"/>
+   	    
    	    
     </session-factory>
     

@@ -31,4 +31,17 @@ public class LoginInfoServiceImpl implements LoginInfoService
 	{
 		loginInfoDao.updateLoginInfo(loginInfo);
 	}
+	
+	@Override
+	public boolean checkUser(String userid, String password)
+	{
+		return this.loginInfoDao.checkUser(userid, password);
+	}
+	
+	
+	@Override
+	public boolean updatePassword(String userid, String password)
+	{
+		return this.loginInfoDao.updatePassword(userid, password);
+	}
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="com.unihyr.domain.CandidateProfile"%>
 <%@page import="java.util.Set"%>
@@ -34,7 +35,7 @@
 		          </ul>
 		        </div>
 		      </div>
-		      <div class="positions_tab" style="border: 1px solid gray;background: #fff5db none repeat scroll 0 0;">
+		      <div class="positions_tab  bottom-margin" style="border: 1px solid gray;background: #fff5db none repeat scroll 0 0;">
 		        <div class="form_cont">
 			        <div class="form_col">
 						<dl>
@@ -148,16 +149,16 @@
 						<div class="clearfix" style="padding: 15px">
 							<h3><b>Applied Candidates</b></h3><br>
 							<%
-			                  	Set<CandidateProfile> prof = post.getProfileList();
-			                  	Iterator<CandidateProfile> it = prof.iterator();
+			                  	Set<PostProfile> prof = post.getPostProfile();
+			                  	Iterator<PostProfile> it = prof.iterator();
 			                  	int i =1;
 			                  	while(it.hasNext())
 		                  		{
-		                  			CandidateProfile cp = it.next();
+			                  		PostProfile cp = it.next();
 		                  			%>
 		                  				<p><%= i++ %>. 
-		                  					<%= cp.getName() %>-
-		                  					<%= cp.getRegistration().getConsultName() %>
+		                  					<%= cp.getProfile().getName() %>
+<%-- 		                  					<%= cp.getRegistration().getConsultName() %> --%>
 		                  				</p>
 		                  			<%
 		                  		}

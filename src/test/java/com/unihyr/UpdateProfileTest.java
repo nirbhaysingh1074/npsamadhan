@@ -32,25 +32,26 @@ public class UpdateProfileTest
 	{
 		CandidateProfile profile = profileService.getProfile(1);
 
-		Post post = postService.getPost(2);
-		Set<Post> positionList = profile.getPostionList();
-		if (positionList != null)
-		{
-			try
-			{
-				positionList.add(post);
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-				positionList = new HashSet<Post>();
-				positionList.add(post);
-			}
-
-		} else
-		{
-			positionList = new HashSet<Post>();
-			positionList.add(post);
-		}
+		Post post = postService.getPost(1);
+//		post.setIndustry(post.getIndustry());
+//		Set<Post> positionList = profile.getPostionList();
+//		if (positionList != null)
+//		{
+//			try
+//			{
+//				positionList.add(post);
+//			} catch (Exception e)
+//			{
+//				e.printStackTrace();
+//				positionList = new HashSet<Post>();
+//				positionList.add(post);
+//			}
+//
+//		} else
+//		{
+//			positionList = new HashSet<Post>();
+//			positionList.add(post);
+//		}
 		// profile.setPostionList(positionList);
 		// profile.set);
 		assertEquals(true, profileService.updateProfile(profile));

@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -65,8 +67,9 @@ public class Post
 	private Date published;
 	
 	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "postionList")
-	private Set<CandidateProfile> profileList = new HashSet<CandidateProfile>();
+//	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "postionList")
+//	private Set<CandidateProfile> profileList = new HashSet<CandidateProfile>();
+	
 	
 	public long getPostId() {
 		return postId;
@@ -173,20 +176,18 @@ public class Post
 		this.published = published;
 	}
 
-	public Set<CandidateProfile> getProfileList()
-	{
-		return profileList;
-	}
+//	public Set<CandidateProfile> getProfileList()
+//	{
+//		return profileList;
+//	}
+//
+//	public void setProfileList(Set<CandidateProfile> profileList)
+//	{
+//		this.profileList = profileList;
+//	}
 
-	public void setProfileList(Set<CandidateProfile> profileList)
-	{
-		this.profileList = profileList;
-	}
 
 
-//	@Column
-//	private String userid;
-	
 	@ManyToOne(cascade = { CascadeType.ALL })
 	@JoinColumn(name = "clientId", referencedColumnName = "userid" , nullable=false)
 	private Registration client;
@@ -257,8 +258,34 @@ public class Post
 	}
 	
 	
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)  
+	private Set<PostProfile> postProfile;
+
+	public Set<PostProfile> getPostProfile()
+	{
+		return postProfile;
+	}
+
+	public void setPostProfile(Set<PostProfile> postProfile)
+	{
+		this.postProfile = postProfile;
+	}
+
 	
-	
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)  
+	private Set<PostConsultant> postConsultants;
+
+
+	public Set<PostConsultant> getPostConsultants()
+	{
+		return postConsultants;
+	}
+
+	public void setPostConsultants(Set<PostConsultant> postConsultants)
+	{
+		this.postConsultants = postConsultants;
+	}
+
 	
 	
 }

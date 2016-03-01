@@ -1,20 +1,5 @@
 jQuery(document).ready(function() {
 	
-	$(".number_only").keydown(function (e) {
-        // Allow: backspace, delete, tab, escape, enter and .
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-             // Allow: Ctrl+A, Command+A
-            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
-             // Allow: home, end, left, right, down, up
-            (e.keyCode >= 35 && e.keyCode <= 40)) {
-                 // let it happen, don't do anything
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-    });
 	
 	$(".length_check").keydown(function (e) {
 		alert($(this).val().length +"data-length : " + $(this).attr('data-length'));
@@ -75,9 +60,16 @@ jQuery(document).ready(function() {
 		
 	});
 	
+	$(document.body).on('change', '#db_post_status ' ,function(){
+		loadclientdashboardposts("1");
+	});
+	
+	
+	
+	
 	$(document.body).on('click', '.pre_check > .view_post' ,function(){
+//		alert("pid ");
 		var pid = $(this).attr("id");
-//		alert("pid " + pid);
 		$.ajax({
 			type : "GET",
 			url : "viewPostDetail",
@@ -107,6 +99,67 @@ jQuery(document).ready(function() {
 		$(this).parent().siblings("input").val($(this).val());
 		
 	});
+	
+	
+	$(document.body).on('click', '.profile_status > .accept_profile' ,function(){
+//		alert("Hello to all accept"+$(this).parent().attr("id"));
+		var selected = $(this).parent();
+		var ppid = $(this).parent().attr("id");
+		var r = confirm("Are you sure to accept ?");
+		if(r)
+		{
+			$.ajax({
+				type : "GET",
+				url : "clientacceptreject",
+				data : {'ppid':ppid,'ppstatus':'accept'},
+				contentType : "application/json",
+				success : function(data) {
+					var obj = jQuery.parseJSON(data);
+					if(obj.status == "accepted")
+					{
+						selected.html("<h3>Accepted</h3>")
+					}
+					else
+					{
+						alert("Oops something wrong !");
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.status);
+				}
+			}) ;
+		}
+	});
+	
+	$(document.body).on('click', '.profile_status > .reject_profile' ,function(){
+		var selected = $(this).parent();
+		var ppid = $(this).parent().attr("id");
+		var r = confirm("Are you sure to reject ?");
+		if(r)
+		{
+			$.ajax({
+				type : "GET",
+				url : "clientacceptreject",
+				data : {'ppid':ppid,'ppstatus':'reject'},
+				contentType : "application/json",
+				success : function(data) {
+					var obj = jQuery.parseJSON(data);
+					if(obj.status == "rejected")
+					{
+						selected.html("<h3>Rejected</h3>")
+					}
+					else
+					{
+						alert("Oops something wrong !");
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.status);
+				}
+			}) ;
+		}
+	});
+	
 	
 	
 	

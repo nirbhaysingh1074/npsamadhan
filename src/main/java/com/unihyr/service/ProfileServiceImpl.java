@@ -157,5 +157,65 @@ public class ProfileServiceImpl implements ProfileService {
 		return this.profileDao.countProfilesByConsultant(clientId, consultid);
 	}
 
+	@Override
+	public long countProfileListByConsultantIdInRange(String consultantId)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.countProfileListByConsultantIdInRange(consultantId);
+	}
+
+	@Override
+	public long countAllProfileListByConsultantIdInRange(String consultantId)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.countAllProfileListByConsultantIdInRange(consultantId);
+	}
+
+	
+
+	@Override
+	public long countProfileListByConsultantIdAndClientAndPostIdInRange(String consultantId, String clientId,
+			String postId)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.countProfileListByConsultantIdAndClientAndPostIdInRange(consultantId,  clientId,
+				 postId);
+	}
+
+	@Override
+	public long countProfileListByConsultantIdAndClientInRange(String consultantId, String clientId)
+	{
+		return profileDao.countProfileListByConsultantIdAndClientInRange(consultantId,  clientId);
+	}
+
+	@Override
+	public long countProfileListByConsultantIdAndPostIdInRange(String consultantId, String postId)
+	{
+		// TODO Auto-generated method stub
+		return profileDao.countProfileListByConsultantIdAndPostIdInRange(consultantId,postId);
+	}
+	@Override
+	public List<CandidateProfile> getAllActiveProfilesByPost(String clientId, int first, int max)
+	{
+		return this.profileDao.getAllActiveProfilesByPost(clientId, first, max);
+	}
+	
+	@Override
+	public long countAllActiveProfilesByPost(String clientId)
+	{
+		return this.profileDao.countAllActiveProfilesByPost(clientId);
+	}
+	
+	@Override
+	public List<CandidateProfile> getAllInactiveProfilesByPost(String clientId, int first, int max)
+	{
+		return this.profileDao.getAllInactiveProfilesByPost(clientId, first, max);
+	}
+	
+	@Override
+	public long countAllInactiveProfilesByPost(String clientId)
+	{
+		return this.profileDao.countAllInactiveProfilesByPost(clientId);
+	}
 	
 }

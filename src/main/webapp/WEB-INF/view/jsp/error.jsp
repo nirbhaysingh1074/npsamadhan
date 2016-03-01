@@ -21,9 +21,10 @@
 <body style="background-image: url('images/bg-image.png')">
 	<section>
 		<div class="container">
-			<div style="width: 500px;margin: 25% auto; text-align: center;">
+			<div style="width: 500px;margin: 20% auto; text-align: center;">
 				<h1 style="font-size: 85px;">404 Error</h1>
 				<h1>Page Not Found </h1>
+				<a href="#"  onClick="history.go(-1);"><img alt="" src="images/back-icon.png" width="100px"></a>
 			</div>
 		</div>
 	

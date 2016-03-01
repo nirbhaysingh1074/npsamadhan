@@ -15,6 +15,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.unihyr.domain.Post;
@@ -24,47 +25,39 @@ public class CandidateProfileModel {
 
 	private long profileId;
 
+	@NotBlank(message="{NotBlank.consForm.name}")
 	private String name;
 
+	@NotBlank(message="{NotBlank.consForm.email}")
 	private String email;
 
+	@NotBlank(message="{NotBlank.consForm.currentRole}")
 	private String currentRole;
 
 	private String willingToRelocate;
 
+	@NotBlank(message="{NotBlank.consForm.noticePeriod}")
 	private String noticePeriod;
 
+	@NotBlank(message="{NotBlank.consForm.contact}")
 	private String contact;
 
+	@NotBlank(message="{NotBlank.consForm.currentOrganization}")
 	private String currentOrganization;
 
 	private String currentCTC;
 	private String expectedCTC;
-
-	private Date date;
 
 	private String jdID;
 
 	private String resumePath;
 
 	private String consultantId;
-	private Set<Post> postionList = new HashSet<Post>();
-
+	
 	private MultipartFile jdFile;
 	
 	private MultipartFile resumeFile;
 	
-	
-	public Set<Post> getPostionList()
-	{
-		return postionList;
-	}
-
-	public void setPostionList(Set<Post> postionList)
-	{
-		this.postionList = postionList;
-	}
-
 	public String getConsultantId() {
 		return consultantId;
 	}
@@ -153,14 +146,7 @@ public class CandidateProfileModel {
 		this.currentCTC = currentCTC;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
+	
 	public String getJdID() {
 		return jdID;
 	}
@@ -196,5 +182,19 @@ public class CandidateProfileModel {
 	{
 		this.resumeFile = resumeFile;
 	}
+	
+	private Post post;
+
+
+	public Post getPost()
+	{
+		return post;
+	}
+
+	public void setPost(Post post)
+	{
+		this.post = post;
+	}
+	
 	
 }

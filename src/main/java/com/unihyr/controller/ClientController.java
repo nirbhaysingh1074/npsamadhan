@@ -35,14 +35,17 @@ import com.google.gson.JsonSerializationContext;
 import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.constraints.Roles;
 import com.unihyr.domain.CandidateProfile;
+import com.unihyr.domain.Industry;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Post;
+import com.unihyr.domain.PostProfile;
 import com.unihyr.domain.Registration;
 import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientRegistrationModel;
 import com.unihyr.model.PostModel;
 import com.unihyr.service.IndustryService;
 import com.unihyr.service.LoginInfoService;
+import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.ProfileService;
 import com.unihyr.service.RegistrationService;
@@ -65,15 +68,57 @@ public class ClientController
 	private UserRoleService userRoleService;
 	@Autowired
 	private ProfileService profileService;
+	@Autowired
+	private PostProfileService postProfileService;
 
 	
 	
 	@RequestMapping(value = "/clientdashboard", method = RequestMethod.GET)
-	public String clientDashboard(ModelMap map)
+	public String clientDashboard(ModelMap map, Principal principal)
 	{
-		System.out.println("Hello to all");
+		
+		
+		
+		map.addAttribute("totalposts", postService.countAllPostByClient(principal.getName()));
+		map.addAttribute("totalprofiles", postProfileService.countPostProfileByClient(principal.getName()));
+		map.addAttribute("totalActive", postService.countPostByClient(principal.getName()));
 		return "clientDashboard";
 	}
+	
+	@RequestMapping(value = "/clientDashboardList", method = RequestMethod.GET)
+	public String clientDashboardList(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		int rpp = GeneralConfig.rpp;
+		int pn = Integer.parseInt(request.getParameter("pn"));
+		String db_post_status = request.getParameter("db_post_status");
+		if(db_post_status.equals("all"))
+		{
+			map.addAttribute("postList", postService.getAllPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countAllPostByClient(principal.getName()));
+		}
+		else if(db_post_status.equals("active"))
+		{
+			map.addAttribute("postList", postService.getPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countPostByClient(principal.getName()));
+		}
+		else if(db_post_status.equals("inactive"))
+		{
+			map.addAttribute("postList", postService.getAllInactivePostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countAllInactivePostByClient(principal.getName()));
+		}
+		else if(db_post_status.equals("deleted"))
+		{
+			map.addAttribute("postList", postService.getDeletedPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countDeletedPostByClient(principal.getName()));
+		}
+		
+		map.addAttribute("rpp", rpp);
+		map.addAttribute("pn", pn);
+
+		return "clientDashboardList";
+	}
+
+	
 
 	@RequestMapping(value = "/clientaddpost", method = RequestMethod.GET)
 	public String addPost(ModelMap map)
@@ -271,8 +316,8 @@ public class ClientController
 	{
 		int rpp = GeneralConfig.rpp;
 		int pn = Integer.parseInt(request.getParameter("pn"));
-		map.addAttribute("postList", postService.getPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
-		map.addAttribute("totalCount", postService.countPostByClient(principal.getName()));
+		map.addAttribute("postList", postService.getAllPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+		map.addAttribute("totalCount", postService.countAllPostByClient(principal.getName()));
 		map.addAttribute("rpp", rpp);
 		map.addAttribute("pn", pn);
 
@@ -284,6 +329,10 @@ public class ClientController
 	{
 		List<Registration> cons = registrationService.getConsultantsByClient(principal.getName());
 		map.addAttribute("consList",cons);
+		
+		
+		
+		
 		map.addAttribute("postsList", postService.getPostsByClient(principal.getName()));
 		return "clientPostApplicants";
 	}
@@ -297,29 +346,81 @@ public class ClientController
 		String conid = request.getParameter("conid");
 		if(pid == 0 && (conid == null || conid.trim().length() == 0))
 		{
-			map.addAttribute("profileList", profileService.getProfilesByPost(principal.getName(),(pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", profileService.countProfilesByPost(principal.getName()));
+			map.addAttribute("ppList", postProfileService.getPostProfileByClient(principal.getName(),(pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postProfileService.countPostProfileByClient(principal.getName()));
 		}
 		else if(pid > 0 && (conid != null && conid.trim().length() > 0))
 		{
-			map.addAttribute("profileList", profileService.getProfilesByPostAndConsultant(principal.getName(), conid, pid ,(pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", profileService.countProfilesByPostAndConsultant(principal.getName(), conid, pid));
+			map.addAttribute("ppList", postProfileService.getPostProfileByClientPostAndConsultant(principal.getName(), conid, pid ,(pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(principal.getName(), conid, pid));
 		}
 		else if(pid == 0 && (conid != null && conid.trim().length() > 0))
 		{
-			map.addAttribute("profileList", profileService.getProfilesByConsultant(principal.getName(), conid, (pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", profileService.countProfilesByConsultant(principal.getName(), conid));
+			map.addAttribute("ppList", postProfileService.getPostProfileByClientAndConsultant(principal.getName(), conid, (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postProfileService.countPostProfileByClientAndConsultant(principal.getName(), conid));
 		}
 		else
 		{
-			map.addAttribute("profileList", profileService.getProfilesByPost(pid,(pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", profileService.countProfilesByPost(pid));
+			map.addAttribute("ppList", postProfileService.getPostProfileByPost(pid,(pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postProfileService.countPostProfileByPost(pid));
 		}
 		map.addAttribute("rpp", rpp);
 		map.addAttribute("pn", pn);
 		return "postApplicantList";
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/clientacceptreject", method = RequestMethod.GET)
+	public @ResponseBody String clientacceptreject(ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		JSONObject obj = new JSONObject();
+		try
+		{
+			long ppid = Long.parseLong(request.getParameter("ppid"));
+			String ppstatus  = request.getParameter("ppstatus"); 
+			PostProfile pp = postProfileService.getPostProfile(ppid);
+			
+			
+			if(pp != null)
+			{
+				Date date = new Date();
+				java.sql.Date dt = new java.sql.Date(date.getTime());
+				
+				if(ppstatus.equals("accept"))
+				{
+					pp.setAccepted(dt);
+					obj.put("status", "accepted");
+				}
+				else if(ppstatus.equals("reject"))
+				{
+					pp.setRejected(dt);
+					obj.put("status", "rejected");
+				}
+				else
+				{
+					obj.put("status", "failed");
+				}
+				postProfileService.updatePostProfile(pp);
+				return obj.toJSONString();
+				
+			}
+			
+			
+		} catch (Exception e)
+		{
+			// TODO: handle exception
+		}
+		obj.put("status", "failed");
+		
+		return obj.toJSONString();
+	}
+	
 	@RequestMapping(value = "/postConsultantList", method = RequestMethod.GET)
 	public @ResponseBody String postConsultantList(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -372,9 +473,10 @@ public class ClientController
 	@RequestMapping(value = "/clientaccount", method = RequestMethod.GET)
 	public String clientAccount(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
-		
+		map.addAttribute("status", request.getParameter("status"));
 		return "clientAccount";
 	}
+	
 	private Set<String> allowedImageExtensions;
 	@RequestMapping(value = "/client.uploadLogo", method = RequestMethod.POST)
     public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req, Principal principal)throws ServletException

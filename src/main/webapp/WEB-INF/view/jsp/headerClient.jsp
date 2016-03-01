@@ -11,12 +11,14 @@
 <link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/media.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
-<link href="css/font-awesome.css" type="text/css" media="all"
-	rel="stylesheet" />
+<link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
+
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.IE.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/client_js.js"></script>
+<script type="text/javascript" src="js/common_js.js"></script>
+
 <script>
 		function getLogOut(){
 			if (XMLHttpRequest)
@@ -41,20 +43,19 @@
 			return true;
 		}
 </script>
+
+
 </head>
 <body class="loading">
 <tilesx:useAttribute name="currentpage"/>
+
+
+
+
 <header>
 <%
 	Registration reg = (Registration)request.getSession().getAttribute("registration");
-	if(reg == null)
-	{
-		%>
-			<script type="text/javascript">
-				window.location.href = "login"; 
-			</script>
-		<%
-	}
+	
 %>
   <div class="header">
     <div class="container">
@@ -75,14 +76,10 @@
         	%>
        	</div>
         <div class="address_info">
-<!--         	<p><span>Account Details:</span>  (Update Account Info)<br>DLF Phase V, <br>Gurgaon</p> -->
 	        <p><span><a href="clientaccount"><%= reg.getOrganizationName() %> </a></span ></p>
 	        <p><span>+91-<%= reg.getContact() %> </span></p>
 	        <p><span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></p>
         </div>
-<!--         <div class="contact_our"> -->
-<!-- 	        <p>Key Contact Persons: </p> -->
-<!--         </div> -->
       </div>
     </div>
   </div>
@@ -91,9 +88,9 @@
       <ul class="toggle_menu">
         <li class="${currentpage == 'clientdashboard' ? 'active' : ''}"><a href="clientdashboard">Home</a></li>
         <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientyourpost">New Post</a></li>
-        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Your Posts </a></li>
-        <li><a href="">BIlling Details</a></li>
-        <li><a href="">Profiles Center</a></li>
+        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Your Positions </a></li>
+        <li><a href="clientbillingdetail">Billing Details</a></li>
+        <li><a href="clientprofilecenter">Profiles Center</a></li>
       </ul>
     </div>
   </nav>

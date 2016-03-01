@@ -24,11 +24,35 @@
 						<div class="form_col">
 							<dl>
 								<dt>
+									<label>Client</label>
+								</dt>
+								<dd>
+									<form:select path="post.client.lid" disabled="disabled">
+										<form:option value="${post.client.lid}">${post.client.organizationName}</form:option>
+									</form:select>
+									<span class='error'><form:errors path="post.client.lid" /></span>
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<label>Post</label>
+								</dt>
+								<dd>
+									<form:select path="post.postId" disabled="disabled">
+										<form:option value="${post.postId}">${post.title}</form:option>
+									</form:select>
+									<span class='error'><form:errors path="post.postId" /></span>
+								</dd>
+							</dl>
+							
+							
+							<dl>
+								<dt>
 									<label>Name</label>
 								</dt>
 								<dd>
-									<form:input path="name" />
-									<span class='error'><form:errors path="name" /></span>
+									<form:input path="name" required="required"/>
+									<span class='error'><form:errors path="name"  /></span>
 								</dd>
 							</dl>
 
@@ -37,7 +61,7 @@
 									<label>Email</label>
 								</dt>
 								<dd>
-									<form:input path="email" />
+									<form:input path="email" type="email" required="required"/>
 									<span class='error'><form:errors path="email" /></span>
 								</dd>
 							</dl>
@@ -46,7 +70,7 @@
 									<label>Current Role</label>
 								</dt>
 								<dd>
-									<form:input path="currentRole" />
+									<form:input path="currentRole" required="required"/>
 									<span class='error'><form:errors path="currentRole" /></span>
 								</dd>
 							</dl>
@@ -56,11 +80,10 @@
 								</dt>
 								<dd>
 									<form:select path="willingToRelocate">
-										<form:option value="1">Yes</form:option>
-										<form:option value="0">No</form:option>
+										<form:option value="Yes">Yes</form:option>
+										<form:option value="No">No</form:option>
 									</form:select>
-									<span class='error'><form:errors
-											path="willingToRelocate" /></span>
+									<span class='error'><form:errors path="willingToRelocate" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -68,18 +91,16 @@
 									<label>Notice Period</label>
 								</dt>
 								<dd>
-									<form:input path="noticePeriod" />
+									<form:input path="noticePeriod" required="required"/>
 									<span class='error'><form:errors path="noticePeriod" /></span>
 								</dd>
 							</dl>
-						</div>
-						<div class="form_col">
 							<dl>
 								<dt>
 									<label>Phone</label>
 								</dt>
 								<dd>
-									<form:input path="contact" />
+									<form:input path="contact" required="required" cssClass="number_only"/>
 									<span class="error"><form:errors path="contact" /></span>
 								</dd>
 							</dl>
@@ -88,9 +109,8 @@
 									<label>Current Organization</label>
 								</dt>
 								<dd>
-									<form:input path="currentOrganization" />
-									<span class="error"><form:errors
-											path="currentOrganization" /></span>
+									<form:input path="currentOrganization" required="required"/>
+									<span class="error"><form:errors path="currentOrganization" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -144,8 +164,7 @@
 					<textarea></textarea>
 				</div>
 				<div class="block form_submt alin_cnt">
-					<input type="submit" value="Publish" class="btn yelo_btn">
-					<input type="submit" value="Save" class="btn yelo_btn">
+					<input type="submit" value="Upload" class="btn yelo_btn">
 				</div>
 				</form:form>
 			</div>

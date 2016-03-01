@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="com.unihyr.domain.CandidateProfile"%>
 <%@page import="java.util.Set"%>
@@ -25,7 +26,11 @@
 		int rpp = (Integer) request.getAttribute("rpp");
 		int tp = 0;
 		String cc = "";
-		if(totalCount % rpp == 0)
+		if(totalCount == 0)
+		{
+			cc = "0 - 0";
+		}
+		else if(totalCount % rpp == 0)
 		{
 			tp = (int)totalCount/rpp;
 			cc = ((pn-1)*rpp)+1 + " - " + ((pn)*rpp);
@@ -79,22 +84,21 @@
 					                  <p><span>Comp Range:</span> <span><%= post.getCtc_min()%> to <%= post.getCtc_max()  %> lac CTC</span></p>
 					                  <p><span>Exp. Range: </span> <span><%= post.getExp_min() %> to <%= post.getExp_max() %> years</span></p>
 					                  <%
-					                  	Set<CandidateProfile> prof = post.getProfileList();
-					                  	Iterator<CandidateProfile> it = prof.iterator();
+					                  	Set<PostProfile> prof = post.getPostProfile();
+					                  	Iterator<PostProfile> it = prof.iterator();
 					                  	int i = 0;
 					                  	while(it.hasNext() && i++ < 1)
 				                  		{
-				                  			CandidateProfile cp = it.next();
+					                  		PostProfile cp = it.next();
 				                  			%>
 				                  				<p>
-				                  					<%= cp.getName() %>-
-				                  					<%= cp.getRegistration().getConsultName() %>
+				                  					<%= cp.getProfile().getName() %>-
+				                  					<%= cp.getProfile().getRegistration().getConsultName() %>
 				                  				</p>
 				                  			<%
 				                  		}
-					                  	if(prof.size() > 1)
+					                  	if(i++ > 1)
 					                  	{
-// 					                  		out.println(prof.size()-1 + " more");
 					                  		%>
 					                  		<p><a>+ <%= prof.size()-1 %> more</a></p>
 					                  		<%
@@ -123,9 +127,9 @@
 					                  			<%
 					                  		}
 					                  	%>
-						                <div class="pre_check">
-						                	<a href="#"><img src="images/ic_4.png" alt="img"></a>
-					                	</div>
+<!-- 						                <div class="pre_check"> -->
+<!-- 						                	<a href="#"><img src="images/ic_4.png" alt="img"></a> -->
+<!-- 					                	</div> -->
 					                  	<div class="pre_check">
 						                  	<a href="clienteditpost?pid=<%= post.getPostId()%>"><img src="images/ic_6.png" alt="img" width="35px"></a>
 						                </div>

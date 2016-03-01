@@ -46,5 +46,34 @@ public class LoginInfoDaoImpl implements LoginInfoDao
 		this.sessionFactory.getCurrentSession().flush();
 	}
 	
+	@Override
+	public boolean checkUser(String userid, String password)
+	{
+		List<LoginInfo> logList = this.sessionFactory.getCurrentSession().createCriteria(LoginInfo.class).add(Restrictions.eq("userid", userid)).list();
+		if(!logList.isEmpty())
+		{
+			return BCrypt.checkpw(password, logList.get(0).getPassword());
+		}
+		return false;
+	}
+	
+	public boolean updatePassword(String userid, String password)
+	{
+		List<LoginInfo> logList = this.sessionFactory.getCurrentSession().createCriteria(LoginInfo.class).add(Restrictions.eq("userid", userid)).list();
+		if(!logList.isEmpty())
+		{
+			LoginInfo info = logList.get(0);
+			boolean status = BCrypt.checkpw(password, info.getPassword());
+			if(status)
+			{
+				String encryptedpwd=BCrypt.hashpw(password, BCrypt.gensalt());
+				info.setPassword(encryptedpwd);
+				this.sessionFactory.getCurrentSession().update(info);
+				return true;
+			}
+			
+		}
+		return false;
+	}
 	
 }

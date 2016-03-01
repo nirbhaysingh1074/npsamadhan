@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -193,7 +194,11 @@ public class Registration implements Serializable
 		this.contact = contact;
 	}
 
-	@ManyToMany(mappedBy="registration", fetch = FetchType.LAZY)
+	
+	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(name="user_industry", 
+                joinColumns={@JoinColumn(name="lid")}, 
+                inverseJoinColumns={@JoinColumn(name="id")})
 	public Set<Industry> getIndustries() {
 		return industries;
 	}
@@ -269,7 +274,20 @@ public class Registration implements Serializable
 
 	
 	
-	
+//	@OneToMany(mappedBy="consultant", cascade=CascadeType.ALL)  
+//	private Set<PostConsultant> postConsultants;
+//
+//
+//	public Set<PostConsultant> getPostConsultants()
+//	{
+//		return postConsultants;
+//	}
+//
+//	public void setPostConsultants(Set<PostConsultant> postConsultants)
+//	{
+//		this.postConsultants = postConsultants;
+//	}
+
 	
 	
 	

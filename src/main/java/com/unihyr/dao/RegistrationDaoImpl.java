@@ -60,7 +60,7 @@ public class RegistrationDaoImpl implements RegistrationDao
 	@Override
 	public List<Registration> getConsultantsByClient(String clientId)
 	{
-		String hql = "select DISTINCT reg.* from registration reg INNER JOIN candidateprofile cp ON reg.userid = cp.consultantId AND cp.profileId in(SELECT pp.profileId FROM profile_posts pp LEFT JOIN post po ON pp.postId = po.postId AND po.clientId LIKE :clientId)";
+		String hql = "select DISTINCT reg.* from registration reg INNER JOIN candidateprofile cp ON reg.userid = cp.consultantId AND cp.profileId in(SELECT pp.profileId FROM postprofile pp LEFT JOIN post po ON pp.postId = po.postId AND po.clientId LIKE :clientId)";
 		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
 		query.setParameter("clientId",clientId);
 		query.addEntity(Registration.class);
@@ -71,7 +71,7 @@ public class RegistrationDaoImpl implements RegistrationDao
 	@Override
 	public List<Registration> getConsultantsByPost(long postId)
 	{
-		String hql = "select DISTINCT reg.* from registration reg INNER JOIN candidateprofile cp ON reg.userid = cp.consultantId AND cp.profileId in(SELECT pp.profileId FROM profile_posts pp where pp.postId = :postId)";
+		String hql = "select DISTINCT reg.* from registration reg INNER JOIN candidateprofile cp ON reg.userid = cp.consultantId AND cp.profileId in(SELECT pp.profileId FROM postprofile pp where pp.postId = :postId)";
 		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
 		query.setParameter("postId",postId);
 		query.addEntity(Registration.class);

@@ -1,5 +1,6 @@
 package com.unihyr.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +19,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="industry")
-public class Industry 
+public class Industry implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7719006736512055468L;
+
+
 	@Id
 	@Column(nullable=false)
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -103,11 +110,8 @@ public class Industry
 	}
 	
 	
-	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinTable(name="user_industry", 
-                joinColumns={@JoinColumn(name="id")}, 
-                inverseJoinColumns={@JoinColumn(name="userid")})
-	private Set<Registration> registration = new HashSet<>();
+	@ManyToMany(mappedBy="industries", fetch = FetchType.LAZY)
+	private Set<Registration> registration = new HashSet<Registration>();
 	
 	
 	

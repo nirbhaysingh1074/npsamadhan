@@ -108,6 +108,26 @@ public class LoginController
 	}
 	
 	
+	
+	
+	@RequestMapping(value = "/resetpassword", method = RequestMethod.GET)
+	public String resetPassword(ModelMap map, HttpServletRequest request)
+	{
+		String userid = request.getParameter("userid");
+		String resetToken = request.getParameter("resetToken");
+		if(userid != null && resetToken != null)
+		{
+			LoginInfo  logininfo = loginInfoService.findUserById(userid);
+			if(logininfo != null && resetToken.equals(logininfo.getForgotpwdid()))
+			{
+				map.addAttribute("resetToken", resetToken);
+				
+			}
+		}
+		
+		return "resetPassword";
+	}
+	
 	@RequestMapping(value = "/clientregistration", method = RequestMethod.GET)
 	public String registration(ModelMap map)
 	{
@@ -117,6 +137,8 @@ public class LoginController
 		return "registration";
 	}
 
+	
+	
 	@RequestMapping(value = "/clientregistration", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value = "regForm") @Valid ClientRegistrationModel register,
 			BindingResult result, @ModelAttribute(value = "reg") Registration reg, BindingResult regResult,
@@ -150,6 +172,7 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
+			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_EMP_MANAGER.toString());
@@ -205,6 +228,7 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
+			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_CON_MANAGER.toString());
@@ -218,5 +242,43 @@ public class LoginController
 		}
 	}
 
+	@RequestMapping(value = "/changeUserPassword", method = RequestMethod.POST)
+	public String changeUserPassword(Principal principal ,ModelMap map , HttpServletRequest request, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String password, @RequestParam("rePassword") String rePassword)
+	{
+		if(password.equals(rePassword))
+		{
+			if(loginInfoService.checkUser(principal.getName(), oldPassword))
+			{
+				boolean status = loginInfoService.updatePassword(principal.getName(), oldPassword);
+				if(status)
+				{
+					map.addAttribute("status", "success");
+					return "redirect:userAcccount";
+				}
+			}
+			map.addAttribute("status", "wrongoldpassword");
+			return "redirect:userAcccount";
+		}
+		map.addAttribute("status", "notmatched");
+		return "redirect:userAcccount";
+	}
 	
+	@RequestMapping(value = "/userAcccount", method = RequestMethod.GET)
+	public String userAcccount(Principal principal ,ModelMap map, HttpServletRequest request )
+	{
+		map.addAttribute("status", request.getParameter("status"));
+		if(request.isUserInRole("ROLE_ADMIN"))
+		{
+			return "redirect:userAcccount";
+		}
+		else if(request.isUserInRole("ROLE_EMP_MANAGER") || request.isUserInRole("ROLE_EMP_USER"))
+		{
+			return "redirect:clientaccount";
+		}
+		else if(request.isUserInRole("ROLE_CON_MANAGER") || request.isUserInRole("ROLE_CON_USER"))
+		{
+			return "redirect:consultantaccount";
+		}
+		return "redirect:error";
+	}
 }

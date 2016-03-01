@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.DateFormats"%>
+<%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="com.unihyr.domain.Registration"%>
 <%@page import="java.util.HashSet"%>
@@ -15,13 +17,13 @@
 <body class="loading">
 
 			<%
-			List<CandidateProfile> profileList = (List)request.getAttribute("profileList");
+			List<PostProfile> ppList = (List)request.getAttribute("ppList");
 			Set<Registration> consultants = new HashSet<Registration>();
-			if(profileList != null && !profileList.isEmpty())
+			if(ppList != null && !ppList.isEmpty())
 			{
-				for(CandidateProfile pr : profileList)
+				for(PostProfile pp : ppList)
 				{
-					consultants.add(pr.getRegistration());
+					consultants.add(pp.getProfile().getRegistration());
 				}
 			}
 			long totalCount = (Long)request.getAttribute("totalCount");
@@ -54,8 +56,47 @@
 		
             <div class="filter">
               <div class="col-md-7"><span>Showing <%= cc %> of <%= totalCount %></span> </div>
+              <div class="col-md-5">
+                <ul class="page_nav unselectable">
+                	<%
+		          		if(pn > 1)
+		          		{
+		          			%>
+					            <li><a onclick="loadclientposts('1')">First</a></li>
+					            <li><a onclick="loadclientposts('<%= pn-1 %>')" ><i class="fa fa-fw fa-angle-double-left"></i></a></li>
+		          			<%
+		          		}
+		          		else
+		          		{
+		          			%>
+					            <li class="disabled"><a>First</a></li>
+					            <li class="disabled"><a><i class="fa fa-fw fa-angle-double-left"></i></a></li>
+			      			<%
+		          		}
+		          		%>
+				            <li class="active current_page"><a><%= pn %></a></li>
+		          		<%
+			          	if(pn < tp)
+			      		{
+			      			%>
+			      				<li ><a onclick="loadclientposts('<%= pn+1 %>')"><i class="fa fa-fw fa-angle-double-right"></i></a></li>
+					            <li><a onclick="loadclientposts('<%=tp %>')">Last</a></li>
+			      			<%
+			      		}
+			      		else
+			      		{
+			      			%>
+			      				<li class="disabled"><a><i class="fa fa-fw fa-angle-double-right"></i></a></li>
+					            <li class="disabled"><a>Last</a></li>
+			      			<%
+			      		}
+			      	
+		          	%>
+                
+                </ul>
+              </div>
             </div>
-            <table width="100%" border="0" class="new_tabl">
+            <table class="new_tabl">
               <tr>
                 <th>Basic Information</th>
                 <th>&nbsp;</th>
@@ -64,41 +105,75 @@
               </tr>
               <%
               	
-              	if(profileList != null && !profileList.isEmpty())
+              	if(ppList != null && !ppList.isEmpty())
               	{
-              		for(CandidateProfile pr : profileList)
+              		for(PostProfile pp : ppList)
               		{
 	              		%>
 							<tr>
 								<td>
-									<h3><%=pr.getName()%></h3>
+									<h3><%=pp.getProfile().getName()%></h3>
 									<p>
-										+91 <%=pr.getContact()%><br>
-										<%= pr.getCurrentRole() %>, <%= pr.getCurrentOrganization() %><br>
-										Salary: <%= pr.getCurrentCTC() %>
+										+91 <%=pp.getProfile().getContact()%><br>
+										<%= pp.getProfile().getCurrentRole() %>, <%= pp.getProfile().getCurrentOrganization() %><br>
+										Salary: <%= pp.getProfile().getCurrentCTC() %>
 									</p>
 								</td>
 								<td>
-									<h3><%=pr.getEmail()%></h3>
-									<p>Relocation: <%= pr.getWillingToRelocate() %></p>
-									<p>Expectation: <%=pr.getExpectedCTC() %></p>
-									<p>NP: <%= pr.getNoticePeriod() %></p>
-									<h3><%= pr.getRegistration().getConsultName() %></h3>
+									<h3><%=pp.getProfile().getEmail()%></h3>
+									<p>Relocation: <%= pp.getProfile().getWillingToRelocate() %></p>
+									<p>Expectation: <%=pp.getProfile().getExpectedCTC() %></p>
+									<p>NP: <%= pp.getProfile().getNoticePeriod() %></p>
+									<h3><%= pp.getProfile().getRegistration().getConsultName() %></h3>
 								</td>
-								<td>Shortlist</td>
+								<td>
+									<h3> <%=pp.getPost().getTitle() %></h3>
+									<p><%= pp.getPost().getLocation() %></p>
+									<p><%= pp.getPost().getExp_min() %> - <%= pp.getPost().getExp_max() %> Years </p>
+									<p><%= pp.getPost().getCtc_min() %> - <%= pp.getPost().getCtc_max() %> Lacs</p>
+									<p><%= DateFormats.ddMMMMyyyyathhmm.format(pp.getSubmitted()) %></p>
+								</td>
 								<td>
 									<p>
 										<a href="" class="btn search_btn">View Applicant</a>
 									</p><br>
-									<p>
-										<a href=""><img src="images/ic_14.png" alt="img"></a> 
-										<a href=""><img src="images/ic_13.png" alt="img"></a>
+									<p id="<%= pp.getPpid()%>" class="profile_status">
+										<%
+											if(pp.getAccepted() != null)
+											{
+												%>
+													<h3>Accepted</h3>
+												<%
+											}
+											else if(pp.getRejected() != null)
+											{
+												%>
+													<h3>Rejected</h3>
+												<%
+											}
+											else
+											{
+												%>
+													<a  class="accept_profile"><img src="images/accept-icon.png" alt="img"></a> 
+													<a  class="reject_profile"><img src="images/cancel.png" alt="img"></a>
+												<%
+											}
+										%>
 									</p>
 								</td>
 							</tr>
 						<%
 					}
 				}
+              	else
+              	{
+              		%><tr>
+              			<td>
+              				<h3>No Record is available</h3>
+              			</td>
+           				</tr>
+              		<%
+              	}
 			%>
               
               

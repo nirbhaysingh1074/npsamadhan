@@ -31,7 +31,7 @@
 	              <label>Title</label>
 	            </dt>
 	            <dd>
-	              <form:input path="title" />
+	              <form:input path="title" required="required"/>
 	              <span class='error'><form:errors path="title" /></span>
 	            </dd>
 	          </dl>
@@ -40,7 +40,7 @@
 	              <label>Location </label>
 	            </dt>
 	            <dd>
-	              <form:input path="location" />
+	              <form:input path="location" required="required"/>
 	              <span class='error'><form:errors path="location"/></span>
 	            </dd>
 	          </dl>
@@ -49,7 +49,7 @@
 	              <label>Function</label>
 	            </dt>
 	            <dd>
-	              <form:input path="function" />
+	              <form:input path="function" required="required"/>
 	              <span class='error'><form:errors path="function"/></span>
 	            </dd>
 	          </dl>

@@ -31,6 +31,11 @@
         <put-attribute name="title" value="Error page" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/error.jsp" />
     </definition>
+    <definition name="resetPassword" extends="homeTemplate">
+        <put-attribute name="title" value="Reset Password" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/resetPassword.jsp" />
+    </definition>
+    
     
     <definition name="indexTemplate" template="/WEB-INF/tilestemplate/jsp/indexTemplate.jsp">
         <put-attribute name="header" value="/WEB-INF/view/jsp/headerIndex.jsp" />
@@ -94,6 +99,10 @@
         <put-attribute name="title" value="View Post Detail" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/viewPostDetail.jsp" />
     </definition>
+    <definition name="clientDashboardList" extends="homeTemplate">
+        <put-attribute name="title" value="Client Dashboard List" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/clientDashboardList.jsp" />
+    </definition>
     
     <definition name="postApplicantList" extends="homeTemplate">
         <put-attribute name="title" value="Post allication list" />
@@ -116,8 +125,13 @@
     
     <definition name="consnewposts" extends="consultTemplate">
         <put-attribute name="title" value="Your Posts" />
-        <put-attribute name="body" value="/WEB-INF/view/jsp/yourPosts.jsp" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/consnewposts.jsp" />
         <put-attribute name="currentpage" value="consnewposts" cascade="true"/>
+    </definition>
+    
+   	<definition name="consnewpostslist" extends="homeTemplate">
+        <put-attribute name="title" value="Consultant New Posts" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/consnewpostslist.jsp" />
     </definition>
     <definition name="cons_your_positions" extends="consultTemplate">
         <put-attribute name="title" value="Upload profile" />
@@ -129,6 +143,13 @@
         <put-attribute name="body" value="/WEB-INF/view/jsp/uploadprofile.jsp" />
         <put-attribute name="currentpage" value="uploadprofile" cascade="true"/>
     </definition>
+    <definition name="consultantAccount" extends="consultTemplate">
+        <put-attribute name="title" value="Consultant account profile" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/consultantAccount.jsp" />
+        <put-attribute name="currentpage" value="uploadprofile" cascade="true"/>
+    </definition>
+    
+    
     
     <definition name="consultRegistration" extends="homeTemplate">
         <put-attribute name="title" value="Consultant registration" />
@@ -136,10 +157,16 @@
     </definition>
     
      
+    <definition name="consDashboardList" extends="homeTemplate">
+        <put-attribute name="title" value="UniHyr" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/consDashboardList.jsp" />
+    </definition>
     <definition name="cons_leftside_postlist" extends="homeTemplate">
         <put-attribute name="title" value="UniHyr" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/cons_left_side_postlist.jsp" />
     </definition>
+    
+    
     <definition name="profilelistbyconsidclientid" extends="homeTemplate">
         <put-attribute name="title" value="UniHyr" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/cons_your_positionsinnerpage.jsp" />

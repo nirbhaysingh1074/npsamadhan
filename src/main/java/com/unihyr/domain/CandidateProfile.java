@@ -56,6 +56,13 @@ public class CandidateProfile
 
 	@Column
 	private Date date;
+	
+	@Column
+	private Date deleteDate;
+	
+	@Column
+	private Date published;
+	
 
 	@Column
 	private String jdID;
@@ -64,21 +71,21 @@ public class CandidateProfile
 	private String resumePath;
 
 
-	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinTable(name="profile_posts", 
-                joinColumns={@JoinColumn(name="profileId")}, 
-                inverseJoinColumns={@JoinColumn(name="postId")})
-	private Set<Post> postionList = new HashSet<Post>();
+//	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+//    @JoinTable(name="profile_posts", 
+//                joinColumns={@JoinColumn(name="profileId")}, 
+//                inverseJoinColumns={@JoinColumn(name="postId")})
+//	private Set<Post> postionList = new HashSet<Post>();
 
-	public Set<Post> getPostionList()
-	{
-		return postionList;
-	}
-
-	public void setPostionList(Set<Post> postionList)
-	{
-		this.postionList = postionList;
-	}
+//	public Set<Post> getPostionList()
+//	{
+//		return postionList;
+//	}
+//
+//	public void setPostionList(Set<Post> postionList)
+//	{
+//		this.postionList = postionList;
+//	}
 
 	@ManyToOne(cascade =
 	{ CascadeType.ALL })
@@ -195,6 +202,26 @@ public class CandidateProfile
 		this.date = date;
 	}
 
+	public Date getDeleteDate()
+	{
+		return deleteDate;
+	}
+
+	public void setDeleteDate(Date deleteDate)
+	{
+		this.deleteDate = deleteDate;
+	}
+
+	public Date getPublished()
+	{
+		return published;
+	}
+
+	public void setPublished(Date published)
+	{
+		this.published = published;
+	}
+
 	public String getJdID()
 	{
 		return jdID;
@@ -225,4 +252,20 @@ public class CandidateProfile
 		this.registration = registration;
 	}
 
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)  
+    private Set<PostProfile> postProfile;
+
+	public Set<PostProfile> getPostProfile()
+	{
+		return postProfile;
+	}
+
+	public void setPostProfile(Set<PostProfile> postProfile)
+	{
+		this.postProfile = postProfile;
+	}
+
+	
+	
+	
 }
