@@ -54,8 +54,6 @@ public class CandidateProfileModel {
 
 	private String consultantId;
 	
-	private MultipartFile jdFile;
-	
 	private MultipartFile resumeFile;
 	
 	public String getConsultantId() {
@@ -163,16 +161,7 @@ public class CandidateProfileModel {
 		this.resumePath = resumePath;
 	}
 
-	public MultipartFile getJdFile()
-	{
-		return jdFile;
-	}
-
-	public void setJdFile(MultipartFile jdFile)
-	{
-		this.jdFile = jdFile;
-	}
-
+	
 	public MultipartFile getResumeFile()
 	{
 		return resumeFile;
@@ -196,5 +185,17 @@ public class CandidateProfileModel {
 		this.post = post;
 	}
 	
-	
+	@Lob
+	private String screeningNote;
+
+	public String getScreeningNote()
+	{
+		return screeningNote;
+	}
+
+	public void setScreeningNote(String screeningNote)
+	{
+		this.screeningNote = screeningNote;
+	}
+
 }

@@ -31,7 +31,7 @@
       </div>
     </div>
   </div>
-  <nav>
+  <nav class="nav">
     <div class="container"> <a href="javascript:void(0);" onClick="$('.toggle_menu').slideToggle();" class="toggle-icon"></a>
       <ul class="toggle_menu">
         <li><a href="home">Home</a></li>

@@ -115,4 +115,15 @@ public class PostProfileServiceImpl implements PostProfileService
 	{
 		return this.postProfileDao.countAllProfileListByConsultantIdInRange(consultantId);
 	}
+	
+	@Override
+	public boolean checkPostProfileAvailability(long postId, String email, String contact)
+	{
+		return this.postProfileDao.checkPostProfileAvailability(postId, email, contact);
+	}
+	
+	public List<PostProfile> getAllPostProfile(int first, int max)
+	{
+		return this.postProfileDao.getAllPostProfile(first, max);
+	}
 }

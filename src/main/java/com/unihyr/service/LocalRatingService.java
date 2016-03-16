@@ -8,8 +8,11 @@ public interface LocalRatingService
 {
 
 	public LocalRating getLocalRatingById(String id);
-	
-	public int addLocalRating(LocalRating rating);
+
+	public long addLocalRating(LocalRating rating);
+
 	public List<LocalRating> getGlobalRatingList();
+
+	List<LocalRating> getLocalRatingListByRangeConsIndustry(int noOfRows, int consId, int industryId);
 
 }

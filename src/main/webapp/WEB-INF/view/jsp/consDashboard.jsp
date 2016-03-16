@@ -17,12 +17,12 @@
 	function  loadconsdashboardposts(pn)
 	{
 		var db_post_status = $('#cons_db_post_status').val();
-		
-// 		alert("hello " + db_post_status);
+		var db_sel_client = $('#cons_db_sel_client').val();
+// 		alert("hello " + db_sel_client);
 		$.ajax({
 			type : "GET",
 			url : "consDashboardList",
-			data : {'pn':pn,'db_post_status':db_post_status},
+			data : {'pn':pn,'db_post_status':db_post_status,'db_sel_client':db_sel_client},
 			contentType : "application/json",
 			success : function(data) {
 //				alert(data);
@@ -32,6 +32,65 @@
 		        alert(xhr.status);
 		      }
 	    }) ;
+	}
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	$(document.body).on('change', '.sel_posts' ,function(){
+	  var val = [];
+	  if($('.sel_posts:checkbox').length > $('.sel_posts:checkbox:checked').length)
+	  {
+		  $('#sel_all').removeAttr("checked");
+	  }
+	  else
+	  {
+	  	$('#sel_all').attr("checked","checked");
+	  }
+
+	  
+        $(':checkbox:checked').each(function(i){
+        val[i] = $(this).val();
+      });
+        alert(val);
+    });
+	
+	$(document.body).on('change', '#sel_all' ,function(){
+// 		alert("test");
+		if($('#sel_all').attr('checked'))
+		{
+// 			alert("checked");
+			$('.sel_posts:checkbox').attr('checked','checked')
+		}
+		else
+		{
+			$('.sel_posts:checkbox').removeAttr('checked')
+		}
+		
+	});
+	
+	
+	
+  });
+	function actionSelected()
+	{
+		var val = [];
+		 $(':checkbox:checked').each(function(i){
+	        val[i] = $(this).val();
+	      });
+	 
+		
+		 $.ajax({
+				type : "GET",
+				url : "bulkAction",
+				data : {'pids':val.toString(),'abc':"1234567890"},
+				contentType : "application/json",
+				success : function(data) {
+					alert(data);
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+			        alert(xhr.status);
+			      }
+		    }) ;
 	}
 </script>
 
@@ -100,7 +159,7 @@
 		    
 	    </div>
    	</div>
-    <div id="post_detail" style="padding-top: 25px">
+    <div id="post_detail" style="padding: 25px 20px">
     </div>
   </div>
 </div>

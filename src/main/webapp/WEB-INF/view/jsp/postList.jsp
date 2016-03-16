@@ -50,7 +50,7 @@
 		
 	%>
       <div class="filter">
-        <div class="col-md-7"><span>Showing <%= cc %> of <%= totalCount %></span></div>
+        <div class="col-md-7 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
         <div class="col-md-5">
 <!--           <div class="set_col"><a href=""><img src="images/ic_1.png" alt="img"> <img src="images/ic_2.png" alt="img"></a></div> -->
           <ul class="page_nav">

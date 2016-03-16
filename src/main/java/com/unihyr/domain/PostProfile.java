@@ -1,7 +1,9 @@
 package com.unihyr.domain;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -96,6 +99,19 @@ public class PostProfile
 	public void setProfile(CandidateProfile profile)
 	{
 		this.profile = profile;
+	}
+	
+	@OneToMany(mappedBy="postProfile", cascade=CascadeType.ALL)  
+	private Set<Inbox> messages;
+
+	public Set<Inbox> getMessages()
+	{
+		return messages;
+	}
+
+	public void setMessages(Set<Inbox> messages)
+	{
+		this.messages = messages;
 	}
 	
 	

@@ -20,7 +20,7 @@
 </head>
 <body style="background-image: url('images/bg-image.png')">
 	<section>
-		<div class="container">
+		<div class="container" style="background: inherit;">
 			<div style="width: 500px;margin: 20% auto; text-align: center;">
 				<h1 style="font-size: 85px;">404 Error</h1>
 				<h1>Page Not Found </h1>

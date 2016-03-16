@@ -20,7 +20,7 @@
 </head>
 <body style="background-image: url('images/bg-image.png')">
 	<section>
-		<div class="container">
+		<div class="container" style="background: inherit;">
 			<div class="login-form">
 				<div class="login-header">
 					<img alt="" src="images/logo.png">

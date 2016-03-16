@@ -34,7 +34,38 @@
 	    }) ;
 	}
 </script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	$(document.body).on('change', '.sel_posts' ,function(){
+	  var val = [];
+	  if($('.sel_posts:checkbox').length > $('.sel_posts:checkbox:checked').length)
+	  {
+		  $('#sel_all').removeAttr("checked");
+	  }
+	  else
+	  {
+	  	$('#sel_all').attr("checked","checked");
+	  }
 
+    });
+	
+	$(document.body).on('change', '#sel_all' ,function(){
+		if($('#sel_all').attr('checked'))
+		{
+			$('.sel_posts:checkbox').attr('checked','checked')
+		}
+		else
+		{
+			$('.sel_posts:checkbox').removeAttr('checked')
+		}
+		
+	});
+	
+	
+	
+  });
+	
+</script>
 
 </head>
 <body class="loading" onload="loadclientdashboardposts('1')">
@@ -92,8 +123,9 @@
 	            <select id="db_post_status">
 	               <option value="all">All</option>
 				   <option value="active">Active</option>
-				   <option value="inactive">Inactive</option>
-<!-- 				   <option value="deleted">Deleted</option> -->
+				   <option value="published">Published</option>
+				   <option value="saved">Saved</option>
+				   <option value="closed">Closed</option>
 				</select>
 	          </div>
 	        </div>
@@ -102,7 +134,7 @@
 		    
 	    </div>
    	</div>
-    <div id="post_detail" style="padding-top: 25px">
+    <div id="post_detail" style="padding: 15px">
     </div>
   </div>
 </div>

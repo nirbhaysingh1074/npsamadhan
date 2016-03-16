@@ -67,17 +67,16 @@ media css
     width: 100%;
 }
 .table thead tr td,.table thead tr th,.table tbody tr td{
-	padding: 10px 5px;
+	padding: 5px;
 	
 }
+
+.table tbody tr:nth-child(even) {background: #CCC}
 .table thead 
 {
 	background: #e5e5e5 none repeat scroll 0 0;
 }
-.table tbody tr td
-{
-	text-align: center;
-}
+
 table {
     background-color: transparent;
 }
@@ -128,9 +127,10 @@ h1, h2, h3, h4{ margin:0px; padding:0px; font-weight:normal;}
 p{ margin:0px; padding:0px; }
 
 .container{
-  width:1000px; 
+  width: 1100px;
   margin-left: auto;
   margin-right: auto;
+  background-color: #fff;
   }
 
 .rw{ width:100%; float:left;}
@@ -147,7 +147,7 @@ p{ margin:0px; padding:0px; }
 	
 .Headr_top{ width:100%; float:left; height:74px; background:#fff; border-bottom:#e5e5e5 1px solid; }
 .logo{ width:auto; float:left; margin-top:10px;}	
-
+.header_right{float: right;}
 .Top_right{ width:auto; float:right; margin-top:35px;}
 
 .Middle{ width:100%; float:left; } 
@@ -198,7 +198,9 @@ text-transform:uppercase; padding-bottom:10px;}
 
 .footer_botm{ width:100%; float:left; background:#1f1e1e; padding:10px 0px;}
 .footer_botm a{ text-decoration:none; margin:0 15px; color:#bfbbbb;} .footer_botm a:hover{ color:#fff;}
-
+@media (min-width: 1000px) and (max-width: 1150px) {
+	.container { width:955px;} 
+}
 @media (min-width: 768px) and (max-width: 999px) {
 .container { width:744px;} 
 .next{ right:10px;} .prev{ left:10px;} .cont_btn{ margin-right:10px;} 
@@ -206,7 +208,8 @@ text-transform:uppercase; padding-bottom:10px;}
 .signup_btn{ margin-right:10px; padding:6px 10px 0; font-size:15px;} 
 .Hwrk img{ max-width:100%;} .footer_top .col_3{ width:100%; margin-top:30px;} 
 .footer_top .col_2{ width:56%;}
-
+.header .header_right{float:right;}
+.rightside_in table tr td, .rightside_in table tr th {font-size: 10px;}
 }
 
 @media (max-width: 767px) {
@@ -221,6 +224,7 @@ text-transform:uppercase; padding-bottom:10px;}
 .Slde_cent .grd .bx p{ font-size:10px;} .prev{ left:10px;} .next{ right:10px;}
 .reg-wrap{width: 100%;}
 .reg-form{margin: 0 auto;}
+.header_right{float: left;text-align: center;width: 100%;}
 }
 
 @media (max-width: 450px) { 

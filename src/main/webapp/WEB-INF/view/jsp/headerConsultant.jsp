@@ -13,6 +13,8 @@
 <link href="css/media.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
+<link rel="stylesheet" href="css/alertify.core.css" />
+<link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.IE.js"></script>
@@ -50,35 +52,23 @@
 	Registration reg = (Registration)request.getSession().getAttribute("registration");
 	
 %>
-	<header>
-		<div class="header">
+<header>
     <div class="container">
-      <div class="logo"> <a href="consdashboard"><img src="images/logo.png" alt="Logo"></a> 
-      	<div class="last_login"><p>Last Login: May 20, 2015 at 09:39 AM</p></div>
-      </div>
-      
-      <div class="header_right">
-        <div class="brnad_logo">
-        	<span>Welcome</span> 
-        	<%
-        		if(reg.getLogo() != null && reg.getLogo().length() > 0)
-        		{
-        			%>
-			        	<img src="<%= reg.getLogo() %>" alt="">
-        			<%
-        		}
-        	%>
-       	</div>
-        <div class="address_info">
-	        <p><span><a href="consultantaccount"><%= reg.getConsultName() %> </a></span ></p>
-	        <p><span>+91-<%= reg.getContact() %> </span></p>
-	        <p><span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></p>
-        </div>
-      </div>
-    </div>
-  </div>
-		<nav>
-			<div class="container">
+		<div class="header">
+	      <div class="logo">
+	      	<a href="consdashboard"><img src="images/logo.png" alt="Logo"></a> 
+	      	
+	      </div>
+	      
+	      <div class="header_right">
+	        
+	        <div class="address_info">
+	        	<p><span><a href="consultantaccount"><%= reg.getConsultName() %> </a></span>| <span>  <a>FAQ </a></span> | <span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></span ></p>
+	        </div>
+	      </div>
+	    </div>
+  	
+		<nav class="nav">
 				<a href="javascript:void(0);"
 					onClick="$('.toggle_menu').slideToggle();" class="toggle-icon"></a>
 				<ul class="toggle_menu">
@@ -88,9 +78,9 @@
 					<li class="${currentpage == 'cons_billingdetails' ? 'active' : ''}"><a href="cons_billingdetails">Billing Details</a></li>
 					<li class="${currentpage == 'cons_profilecenter' ? 'active' : ''}"><a href="cons_profilecenter">Profiles Center</a></li>
 				</ul>
-			</div>
 		</nav>
-	</header>
+	</div>
+</header>
 
 </body>
 </html>

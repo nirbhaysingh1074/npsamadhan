@@ -60,6 +60,7 @@ public class Registration implements Serializable
 	
 	private String logo;
 	
+	private String websiteUrl;
 	
 	private Set<Industry> industries = new HashSet<>();
 	
@@ -139,7 +140,6 @@ public class Registration implements Serializable
 	}
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
 	public LoginInfo getLog() {
 		return log;
 	}
@@ -260,6 +260,16 @@ public class Registration implements Serializable
 	public void setFounderContact(String founderContact)
 	{
 		this.founderContact = founderContact;
+	}
+
+	public String getWebsiteUrl()
+	{
+		return websiteUrl;
+	}
+
+	public void setWebsiteUrl(String websiteUrl)
+	{
+		this.websiteUrl = websiteUrl;
 	}
 
 	public String getLogo()

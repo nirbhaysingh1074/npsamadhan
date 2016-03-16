@@ -28,6 +28,7 @@ public class CandidateProfile
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long profileId;
 
+	
 	@Column(nullable = false)
 	private String name;
 
@@ -65,27 +66,7 @@ public class CandidateProfile
 	
 
 	@Column
-	private String jdID;
-
-	@Column
 	private String resumePath;
-
-
-//	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-//    @JoinTable(name="profile_posts", 
-//                joinColumns={@JoinColumn(name="profileId")}, 
-//                inverseJoinColumns={@JoinColumn(name="postId")})
-//	private Set<Post> postionList = new HashSet<Post>();
-
-//	public Set<Post> getPostionList()
-//	{
-//		return postionList;
-//	}
-//
-//	public void setPostionList(Set<Post> postionList)
-//	{
-//		this.postionList = postionList;
-//	}
 
 	@ManyToOne(cascade =
 	{ CascadeType.ALL })
@@ -122,6 +103,7 @@ public class CandidateProfile
 		this.profileId = profileId;
 	}
 
+	
 	public String getName()
 	{
 		return name;
@@ -222,16 +204,7 @@ public class CandidateProfile
 		this.published = published;
 	}
 
-	public String getJdID()
-	{
-		return jdID;
-	}
-
-	public void setJdID(String jdID)
-	{
-		this.jdID = jdID;
-	}
-
+	
 	public String getResumePath()
 	{
 		return resumePath;
@@ -265,6 +238,22 @@ public class CandidateProfile
 		this.postProfile = postProfile;
 	}
 
+	@Column
+	@Lob
+	private String screeningNote;
+
+	public String getScreeningNote()
+	{
+		return screeningNote;
+	}
+
+	public void setScreeningNote(String screeningNote)
+	{
+		this.screeningNote = screeningNote;
+	}
+	
+	
+	
 	
 	
 	

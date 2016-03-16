@@ -59,4 +59,23 @@ public class RegistrationServiceImpl implements RegistrationService
 	{
 		return this.registrationDao.getConsultantsByPost(postId);
 	}
+	
+	@Override
+	public List<Registration> getClientsByIndustyForConsultant(String consultantId)
+	{
+		return this.registrationDao.getClientsByIndustyForConsultant(consultantId);
+	}
+	
+	@Override
+	public long countConsultantList()
+	{
+		return this.registrationDao.countConsultantList();
+	}
+	
+	@Override
+	public long countClientsList()
+	{
+		return this.registrationDao.countClientsList();
+	}
+	
 }

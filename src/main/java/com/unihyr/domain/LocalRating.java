@@ -14,98 +14,145 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="localRating")
-public class LocalRating 
+@Table(name = "localRating")
+public class LocalRating
 {
 	@Id
-	@Column(nullable=false)
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long sn;
-	
-	@ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="ratingParamId", referencedColumnName="id")
-	private RatingParameter ratingParameter;
-	
-	
-	@ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="postId", referencedColumnName="postId")
-	private Post post;
-	
-	
-	@ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name="consultantId", referencedColumnName="userId")
-	private Registration registration;
-	
-	
-	
-	@Column(nullable=false)
-	private String value;
-	
-	@Column(nullable=false)
-	private Date dateOfRecord;
-	
-	@Column
-	private int recordCount;
 
-	public long getSn() {
+	@ManyToOne(cascade =
+	{ CascadeType.ALL })
+	@JoinColumn(name = "ratingParamId", referencedColumnName = "id")
+	private RatingParameter ratingParameter;
+
+	@ManyToOne(cascade =
+	{ CascadeType.ALL })
+	@JoinColumn(name = "postId", referencedColumnName = "postId")
+	private Post post;
+
+	@Column(nullable = false)
+	private int industryId;
+
+	@ManyToOne(cascade =
+	{ CascadeType.ALL })
+	@JoinColumn(name = "consultantId", referencedColumnName = "userId")
+	private Registration registration;
+
+	@Column(nullable = false)
+	private boolean status;
+
+	@Column(nullable = false)
+	private String ratingParamValue;
+
+	@Column(nullable = false)
+	private Date createDate;
+
+
+	private Date modifyDate;
+
+	private Date deleteDate;
+	
+
+	public boolean isStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(boolean status)
+	{
+		this.status = status;
+	}
+
+	public int getIndustryId()
+	{
+		return industryId;
+	}
+
+	public void setIndustryId(int industryId)
+	{
+		this.industryId = industryId;
+	}
+
+	public Date getCreateDate()
+	{
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate)
+	{
+		this.createDate = createDate;
+	}
+
+	public Date getModifyDate()
+	{
+		return modifyDate;
+	}
+
+	public void setModifyDate(Date modifyDate)
+	{
+		this.modifyDate = modifyDate;
+	}
+
+	public Date getDeleteDate()
+	{
+		return deleteDate;
+	}
+
+	public void setDeleteDate(Date deleteDate)
+	{
+		this.deleteDate = deleteDate;
+	}
+
+	public String getRatingParamValue()
+	{
+		return ratingParamValue;
+	}
+
+	public void setRatingParamValue(String ratingParamValue)
+	{
+		this.ratingParamValue = ratingParamValue;
+	}
+
+	public long getSn()
+	{
 		return sn;
 	}
 
-	public void setSn(long sn) {
+	public void setSn(long sn)
+	{
 		this.sn = sn;
 	}
 
-	public RatingParameter getRatingParameter() {
+	public RatingParameter getRatingParameter()
+	{
 		return ratingParameter;
 	}
 
-	public void setRatingParameter(RatingParameter ratingParameter) {
+	public void setRatingParameter(RatingParameter ratingParameter)
+	{
 		this.ratingParameter = ratingParameter;
 	}
 
-	public Post getPost() {
+	public Post getPost()
+	{
 		return post;
 	}
 
-	public void setPost(Post post) {
+	public void setPost(Post post)
+	{
 		this.post = post;
 	}
 
-	public Registration getRegistration() {
+	public Registration getRegistration()
+	{
 		return registration;
 	}
 
-	public void setRegistration(Registration registration) {
+	public void setRegistration(Registration registration)
+	{
 		this.registration = registration;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public Date getDateOfRecord() {
-		return dateOfRecord;
-	}
-
-	public void setDateOfRecord(Date dateOfRecord) {
-		this.dateOfRecord = dateOfRecord;
-	}
-
-	public int getRecordCount() {
-		return recordCount;
-	}
-
-	public void setRecordCount(int recordCount) {
-		this.recordCount = recordCount;
-	}
-	
-
-	
-	
-	
-	
 }

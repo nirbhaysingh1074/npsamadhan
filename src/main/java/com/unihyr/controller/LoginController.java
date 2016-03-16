@@ -172,6 +172,7 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
+			
 			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
 			reg.setLog(login);

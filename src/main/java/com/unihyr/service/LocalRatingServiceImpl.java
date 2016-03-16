@@ -27,9 +27,9 @@ public class LocalRatingServiceImpl implements LocalRatingService {
 	}
 
 	@Override
-	public int addLocalRating(LocalRating rating) {
+	public long addLocalRating(LocalRating rating) {
 		// TODO Auto-generated method stub
-		return 0;
+		return localRatingDao.addLocalRating(rating);
 	}
 
 	@Override
@@ -37,5 +37,9 @@ public class LocalRatingServiceImpl implements LocalRatingService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Override
+	public List<LocalRating> getLocalRatingListByRangeConsIndustry(int noOfRows,int consId,int industryId) {
+	return localRatingDao.getLocalRatingListByRangeConsIndustry(noOfRows, consId, industryId);
+	
+	}
 }

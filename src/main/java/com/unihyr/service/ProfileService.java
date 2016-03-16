@@ -71,4 +71,6 @@ public interface ProfileService
 	
 	public long countAllInactiveProfilesByPost(String clientId);
 	
+	
+	public long countProfileList();
 }

@@ -3,6 +3,7 @@ package com.unihyr.dao;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
@@ -46,7 +47,18 @@ public class PostProfileDaoImpl implements PostProfileDao
 	@Override
 	public PostProfile getPostProfile(long ppid)
 	{
-		return (PostProfile)this.sessionFactory.getCurrentSession().get(PostProfile.class, ppid);
+		List<PostProfile> list = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.add(Restrictions.eq("ppid", ppid))
+				.setFetchMode("messages", FetchMode.JOIN)
+				.setFirstResult(0)
+				.setMaxResults(1)
+				.list();
+		if(list.size() > 0)
+		{
+			return list.get(0);
+		}
+		return null;
+//		return (PostProfile)this.sessionFactory.getCurrentSession().get(PostProfile.class, ppid);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -56,6 +68,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 		List<PostProfile> list = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
 				.add(Restrictions.eq("post.postId", postid))
 				.add(Restrictions.eq("profile.profileId", profileId))
+				.setFetchMode("messages", FetchMode.JOIN)
 				.setFirstResult(0)
 				.setMaxResults(1)
 				.list();
@@ -76,6 +89,8 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.eq("clientAlias.userid", clientId))
 				.add(Restrictions.isNull("postAlias.deleteDate"))
 				.addOrder(Order.desc("submitted"))
+				.setFetchMode("messages", FetchMode.JOIN)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
 				.setMaxResults(max)
 				.list();
@@ -107,6 +122,8 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.eq("postAlias.postId", postId))
 				.add(Restrictions.isNull("postAlias.deleteDate"))
 				.addOrder(Order.desc("submitted"))
+				.setFetchMode("messages", FetchMode.JOIN)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
 				.setMaxResults(max)
 				.list();
@@ -138,6 +155,8 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.eq("clientAlias.userid", clientId))
 				.add(Restrictions.eq("consAlias.userid", consultantId))
 				.addOrder(Order.desc("submitted"))
+				.setFetchMode("messages", FetchMode.JOIN)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
 				.setMaxResults(max)
 				.list();
@@ -178,6 +197,8 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.eq("consAlias.userid", consultantId))
 				.add(Restrictions.eq("post.postId", postId))
 				.addOrder(Order.desc("submitted"))
+				.setFetchMode("messages", FetchMode.JOIN)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
 				.setMaxResults(max)
 				.list();
@@ -196,6 +217,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.eq("clientAlias.userid", clientId))
 				.add(Restrictions.eq("consAlias.userid", consultantId))
 				.add(Restrictions.eq("post.postId", postId))
+				
 				.add(Restrictions.isNull("postAlias.deleteDate"))
 				.setProjection(Projections.rowCount()).uniqueResult();
 		
@@ -203,7 +225,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 	}
 
 	
-	
+	@Override
 	public List<PostProfile> getProfileListByConsultantIdInRange(String consultantId, int first, int max)
 	{
 		List<PostProfile> list = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
@@ -215,6 +237,8 @@ public class PostProfileDaoImpl implements PostProfileDao
 				
 				.createAlias("post", "postAlias")
 				.add(Restrictions.isNull("postAlias.deleteDate"))
+				.setFetchMode("messages", FetchMode.JOIN)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.addOrder(Order.desc("submitted"))
 				.setFirstResult(first)
 				.setMaxResults(max)
@@ -222,7 +246,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 		return list;
 	}
 	
-	
+	@Override
 	public List<PostProfile> getProfileListByConsultantIdAndPostIdInRange(String consultantId, long postId, int first, int max)
 	{
 		
@@ -236,7 +260,8 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.createAlias("post", "postAlias")
 				.add(Restrictions.eq("postAlias.postId", postId))
 				.add(Restrictions.isNull("postAlias.deleteDate"))
-				
+				.setFetchMode("messages", FetchMode.JOIN)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.addOrder(Order.desc("submitted"))
 				.setFirstResult(first)
 				.setMaxResults(max)
@@ -246,7 +271,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 
 //	public List<PostProfile> getProfileListByConsultantIdAndClientAndPostIdInRange(String consultantId, String clientId, String postId, int i, int j);
 	
-	
+	@Override
 	public long countProfileListByConsultantIdInRange(String consultantId)
 	{
 		long count = (Long)this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
@@ -263,6 +288,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 	}
 
 
+	@Override
 	public long countProfileListByConsultantIdAndPostIdInRange(String consultantId, long postId)
 	{
 		long count = (Long)this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
@@ -279,6 +305,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 		return count;
 	}
 
+	@Override
 	public long countAllProfileListByConsultantIdInRange(String consultantId)
 	{
 		long count = (Long)this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
@@ -290,5 +317,33 @@ public class PostProfileDaoImpl implements PostProfileDao
 		return count;
 	}
 	
+	@Override
+	public boolean checkPostProfileAvailability(long postId, String email, String contact)
+	{
+		long count = (Long)this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("profile", "profileAlias")
+				.createAlias("post", "postAlias")
+				.add(Restrictions.eq("profileAlias.email", email))
+				.add(Restrictions.eq("profileAlias.contact", contact))
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.setProjection(Projections.rowCount()).uniqueResult();
+		
+		if(count > 0)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public List<PostProfile> getAllPostProfile(int first, int max)
+	{
+		List<PostProfile> list = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+				.addOrder(Order.desc("submitted"))
+				.setFirstResult(first)
+				.setMaxResults(max)
+				.list();
+		return list;
+	}
 	
 }

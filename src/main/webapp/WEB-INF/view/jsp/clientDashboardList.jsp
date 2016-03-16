@@ -54,8 +54,15 @@
       
 	    <div class="positions_info ">
 	      <div class="filter">
-	        <div class="col-md-7"><span>Showing <%= cc %> of <%= totalCount %></span></div>
-	         <div class="col-md-5">
+	      	 <div class="col-md-4">
+	      	 	<button id="del_post">Delete</button>
+	      	 	<button id="close_post" >Close</button>
+	      	 	<button id="act_post">Active</button>
+	      	 	<button id="inact_post">Inactive</button>
+	      	 	
+	      	 </div>
+	         <div class="col-md-4 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
+	         <div class="col-md-4 ">
                 <ul class="page_nav unselectable">
                 	<%
 		          		if(pn > 1)
@@ -73,7 +80,7 @@
 			      			<%
 		          		}
 		          		%>
-				            <li class="active current_page"><a><%= pn %></a></li>
+				            <li class="active current_page" id="<%= pn %>"><a><%= pn %></a></li>
 		          		<%
 			          	if(pn < tp)
 			      		{
@@ -100,13 +107,17 @@
 		        <table class="table no-margin" style="border: 1px solid gray;">
 		        	<thead>
 		        		<tr>
-		       				<th>Sno.</th>
+		       				<th align="left" width="2%"><input id="sel_all" type="checkbox"></th>
+		       				<th width="5%">Published</th>
+		       				<th align="left"  width="5%">Status</th>
 		       				<th align="left">Position</th>
-		       				<th>Location</th>
-		       				<th>Posted Date</th>
-		       				<th>No. of Partners</th>
-		       				<th>Profiles Received</th>
-		       				<th>Shortlisted</th>
+		       				<th align="left">Location</th>
+		       				<th width="10%">Posted Date</th>
+<!-- 		       				<th>&nbsp;</th> -->
+		       				<th width="10%">Received</th>
+		       				<th width="10%">Shortlisted</th>
+		       				
+		       				<th width="10%">Action</th>
 		       			</tr>
 	       			</thead>
 	       			<tbody>
@@ -120,33 +131,69 @@
 	       							Set<Integer> cons = new HashSet(); 
 	       							Set<Long> shortListed = new HashSet(); 
 	       							%>
-						       			<tr>
-						        			<td><%= count++ %></td>
-<%-- 						        			<td><%= post.getPostId() %></td> --%>
-						       				<td style="float: left;" class="pre_check">
-						       					<a id="<%= post.getPostId() %>" class="view_post"><%= post.getTitle() %> </a>
+						       			<tr id="<%= post.getPostId()%>">
+<%-- 						        			<td><%= count++ %></td> --%>
+						        			<td><input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>"></td>
+					       					<td class="status" style="text-align: center;">
+					       						<%
+							                  		if(post.getPublished() != null)
+							                  		{
+							                  			%>
+							                  				<img class="" src="images/check-cloud.png" width="20px"  title="Published on <%= DateFormats.ddMMMMyyyy.format(post.getPublished())%>">
+							                  			<%
+							                  		}
+							                  		else
+							                  		{
+							                  			%>
+							                  				<img class="st_unpublished" src="images/cloud-gray.png" width="20px" title="Click to publish">
+							                  			<%
+							                  		}
+							                  	%>
+				       						</td>
+						       				<td>
+					       						<%
+					       							if(post.isActive())
+					       							{
+					       								out.println("Active");
+					       							}
+					       							else
+					       							{
+					       								out.println("Inactive");
+					       							}
+					       						%>
+					       					</td>
+					       					<td>
+						       					<%
+						       						if(post.getPostProfile() != null && !post.getPostProfile().isEmpty())
+						       						{
+						       							%>
+									       					<a href="clientpostapplicants?pid=<%=post.getPostId()%>">
+									       						<%= post.getTitle() %> 
+									       					</a>
+						       							<%	
+						       						}
+						       						else
+						       						{
+						       							%>
+									       					<a >
+									       						<%= post.getTitle() %> 
+									       					</a>
+						       							<%
+						       						}
+						       					%>
 					       					</td>
 						       				<td><%= post.getLocation() %></td>
-						       				<td><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
-						       				<td>
-							       				<%
-							       					Iterator<PostProfile> it = post.getPostProfile().iterator();
-							       					while(it.hasNext())
-							       					{
-							       						PostProfile pp  = it.next();
-							       						cons.add(pp.getProfile().getRegistration().getLid());
-							       						if(pp.getAccepted() != null)
-							       						{
-							       							shortListed.add(pp.getProfile().getProfileId());
-							       						}
-							       					}
-							       					out.println(cons.size());
-							       					
-							       				%>
-							       				
+						       				<td style="text-align: center;"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
+
+						       				<td style="text-align: center;"><%= post.getPostProfile().size() %></td>
+						       				<td style="text-align: center;"><%= shortListed.size() %></td>
+						       				
+						       				<td  style="text-align: center;">
+						       					<div class="pre_check">
+								                  	<a id="<%= post.getPostId() %>" class="view_post "><img width="30px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
+							                  	</div>
+						       					<a href="clienteditpost?pid=<%= post.getPostId()%>"><button style="margin: 2px 0;padding: 2px 5px" title="Click to edit this post">Edit</button></a>
 						       				</td>
-						       				<td><%= post.getPostProfile().size() %></td>
-						       				<td><%= shortListed.size() %></td>
 						        		</tr>
 	       							<%
 	       						}

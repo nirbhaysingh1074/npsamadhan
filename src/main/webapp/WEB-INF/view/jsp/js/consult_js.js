@@ -38,20 +38,22 @@ jQuery(document).ready(function() {
 		
 		var pid = $(this).attr("id");
 		
-		var r = confirm("Are you interested for this post ?");
-		if(r)
-		{
+		alertify.confirm("Are you interested for this post ?", function (e, str) {
+		if (e) {
+		
 			$.ajax({
 				type : "GET",
 				url : "consPostInterest",
 				data : {'pid':pid},
 				contentType : "application/json",
 				success : function(data) {
-					if(data == "success")
+					var obj = jQuery.parseJSON(data);
+					if(obj.status == "success")
 					{
-//					alert(data);
 						row.removeClass("post_interest");
-						row.html("<img src='images/view-icon.png' alt='interested'>");
+						row.html("<img src='images/int-icon.png' alt='interested'>");
+						row.prop('title','You show interest for this post');
+						alertify.success("Add interest for post "+obj.jobCode);
 					}
 					
 				},
@@ -62,27 +64,49 @@ jQuery(document).ready(function() {
 			
 		}
 		
+		});
+		
 		
 	});
 	
 	$(document.body).on('click', '#postsList > li' ,function(){
-//		alert("hello to all"+ $(this).attr("id"));
+		var pid=$(this).attr("id");
 		$("#postsList > .active").removeClass("active");
 		$(this).addClass("active");
 		
 		var clientId = $('#selectionOfClient').val();
 		if(clientId == "")
 		{
-			alert("Select Client first !");
+			alertify.error("Select Client first !");
 			return false;
 		}
+		
+		$('.view_id .view_post').removeClass('btn_disabled');
+		$('.view_id .view_post').attr('id',pid);
+		$('.upload_new_profile').removeClass('btn_disabled');
 		
 		fillProfiles("1") ;
 	});
 	
 	$(document.body).on('change', '#cons_db_post_status' ,function(){
+		$('#cons_db_sel_client').val("");
 		loadconsdashboardposts("1");
 	});
+	
+	$(document.body).on('change', '#cons_db_sel_client' ,function(){
+		loadconsdashboardposts("1");
+	});
+	
+	$(document.body).on('change', '#selectionOfClient' ,function(){
+		$('#postsList > li').removeClass('active');
+		$('.view_id .view_post').addClass('btn_disabled');
+		$('.view_id .view_post').attr('id','');
+		
+		$('.upload_new_profile').addClass('btn_disabled');
+		fillPosts(this.value);
+	});
+	
+	
 	
 });
 

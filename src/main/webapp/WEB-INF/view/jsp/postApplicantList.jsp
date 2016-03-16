@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Inbox"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
@@ -55,8 +56,8 @@
 			%>
 		
             <div class="filter">
-              <div class="col-md-7"><span>Showing <%= cc %> of <%= totalCount %></span> </div>
-              <div class="col-md-5">
+              <div class="col-md-6 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span> </div>
+              <div class="col-md-6">
                 <ul class="page_nav unselectable">
                 	<%
 		          		if(pn > 1)
@@ -96,88 +97,94 @@
                 </ul>
               </div>
             </div>
-            <table class="new_tabl">
-              <tr>
-                <th>Basic Information</th>
-                <th>&nbsp;</th>
-                <th>Status</th>
-                <th>&nbsp;</th>
-              </tr>
-              <%
-              	
-              	if(ppList != null && !ppList.isEmpty())
-              	{
-              		for(PostProfile pp : ppList)
-              		{
-	              		%>
-							<tr>
-								<td>
-									<h3><%=pp.getProfile().getName()%></h3>
-									<p>
-										+91 <%=pp.getProfile().getContact()%><br>
-										<%= pp.getProfile().getCurrentRole() %>, <%= pp.getProfile().getCurrentOrganization() %><br>
-										Salary: <%= pp.getProfile().getCurrentCTC() %>
-									</p>
-								</td>
-								<td>
-									<h3><%=pp.getProfile().getEmail()%></h3>
-									<p>Relocation: <%= pp.getProfile().getWillingToRelocate() %></p>
-									<p>Expectation: <%=pp.getProfile().getExpectedCTC() %></p>
-									<p>NP: <%= pp.getProfile().getNoticePeriod() %></p>
-									<h3><%= pp.getProfile().getRegistration().getConsultName() %></h3>
-								</td>
-								<td>
-									<h3> <%=pp.getPost().getTitle() %></h3>
-									<p><%= pp.getPost().getLocation() %></p>
-									<p><%= pp.getPost().getExp_min() %> - <%= pp.getPost().getExp_max() %> Years </p>
-									<p><%= pp.getPost().getCtc_min() %> - <%= pp.getPost().getCtc_max() %> Lacs</p>
-									<p><%= DateFormats.ddMMMMyyyyathhmm.format(pp.getSubmitted()) %></p>
-								</td>
-								<td>
-									<p>
-										<a href="" class="btn search_btn">View Applicant</a>
-									</p><br>
-									<p id="<%= pp.getPpid()%>" class="profile_status">
-										<%
-											if(pp.getAccepted() != null)
-											{
-												%>
-													<h3>Accepted</h3>
+            <table class="table no-margin" style="border: 1px solid gray;">
+		        	<thead>
+		        		<tr>
+		       				<th align="left">Name</th>
+		       				<th align="left">Phone</th>
+		       				<th align="left">Current Role</th>
+		       				<th align="left">Organization</th>
+		       				<th align="left">Curent Salary</th>
+		       				<th>Notice Period </th>
+		       				<th>Submitted</th>
+		       				<th>Status</th>
+		       			</tr>
+	       			</thead>
+	       			<tbody>
+	       				<%
+	       				if(ppList != null && !ppList.isEmpty())
+	                  	{
+	       					
+	                  		for(PostProfile pp : ppList)
+	                  		{
+	                  			
+	                  			Iterator<Inbox> it = pp.getMessages().iterator();
+	                  			int unviewed = 0;
+	                  			while(it.hasNext())
+	                  			{
+	                  				Inbox msg = it.next();
+		                  			if(msg.getClient()== null && !msg.isViewed())
+		                  			{
+		                  				unviewed++;
+		                  			}
+		                  			
+	                  			}
+                  				System.out.println(">>>>>>>>>>>> hello "+ unviewed);
+	                  					
+	                  			%>
+	                  				<tr>
+	                  					<td>
+	                  						<%
+	                  							if(unviewed > 0)
+	                  							{
+	                  								%>
+	                  									<span style="padding: 0px 6px;background-color:pink; border-radius:10px;margin-right: 5px;color:#000"><%= unviewed %></span>
+	                  								<%
+	                  							}
+	                  						%>
+	                  						<a href="clientapplicantinfo?ppid=<%= pp.getPpid() %>" ><%= pp.getProfile().getName()%> </a>
+                  						</td>
+	                  					<td><%= pp.getProfile().getContact()%></td>
+	                  					<td><%= pp.getProfile().getCurrentRole()%></td>
+	                  					<td><%= pp.getProfile().getCurrentOrganization()%></td>
+	                  					<td><%= pp.getProfile().getCurrentCTC()%></td>
+	                  					<td><%= pp.getProfile().getNoticePeriod()%></td>
+	                  					<td><%= DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
+	                  					<td align="center">
+	                  						<p id="<%= pp.getPpid()%>" class="profile_status">
 												<%
-											}
-											else if(pp.getRejected() != null)
-											{
+													if(pp.getAccepted() != null)
+													{
+														%>
+															<h3>Accepted</h3>
+														<%
+													}
+													else if(pp.getRejected() != null)
+													{
+														%>
+															<h3>Rejected</h3>
+														<%
+													}
+													else
+													{
+														%>
+															<a  class="accept_profile"><img title="Click to accept profile" src="images/accept-icon.png" alt="Accept" style="width: 20px;"></a> 
+															<a  class="reject_profile"><img title="Click to reject profile" src="images/cancel.png" alt="Reject" style="width: 20px;"></a>
+														<%
+													}
 												%>
-													<h3>Rejected</h3>
-												<%
-											}
-											else
-											{
-												%>
-													<a  class="accept_profile"><img src="images/accept-icon.png" alt="img"></a> 
-													<a  class="reject_profile"><img src="images/cancel.png" alt="img"></a>
-												<%
-											}
-										%>
-									</p>
-								</td>
-							</tr>
-						<%
-					}
-				}
-              	else
-              	{
-              		%><tr>
-              			<td>
-              				<h3>No Record is available</h3>
-              			</td>
-           				</tr>
-              		<%
-              	}
-			%>
-              
-              
-            </table>
+											</p>
+	                  					</td>
+	                  					
+	                  				</tr>
+	                  				
+	                  			<%
+	                  			
+	                  		}
+	                  	}
+	       				%>
+	       			</tbody>
+       		</table>
             <div class="block tab_btm">
               <div class="pagination">
                 <ul>

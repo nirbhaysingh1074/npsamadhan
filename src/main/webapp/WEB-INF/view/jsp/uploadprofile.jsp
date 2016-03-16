@@ -6,16 +6,42 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UniHyr</title>
+<script type="text/javascript">
+	function conscheckapplicant()
+	{
+		var pid = $('#postId').val();
+		var email = $('#email').val();
+		var contact = $('#contact').val();
+		
+// 		alert("pid : " +pid);
+// 		alert("email : " +email);
+// 		alert("contact : " +contact);
+		if(email != "" && contact != "")
+		{
+			$.ajax({
+				type : "GET",
+				url : "conscheckapplicant",
+				data : {'pid':pid,'email':email,'contact':contact},
+				contentType : "application/json",
+				success : function(data) {
+					var obj = jQuery.parseJSON(data);
+					if(obj.status == true)
+					{
+						alertify.error("Profile already uploaded for this post !");
+						$('#email').focus();
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.responseText);
+				}
+			}) ;
+		}
+	}
+
+</script>
 </head>
 <body class="loading">
 
-	<div class="breadcrumbs">
-		<div class="breadcrumbs_in">
-			<div class="container">
-				<h2>Upload profile</h2>
-			</div>
-		</div>
-	</div>
 	<div class="mid_wrapper">
 		<div class="container">
 			<div class="form_cont">
@@ -27,7 +53,7 @@
 									<label>Client</label>
 								</dt>
 								<dd>
-									<form:select path="post.client.lid" disabled="disabled">
+									<form:select path="post.client.lid" id="postId" disabled="disabled">
 										<form:option value="${post.client.lid}">${post.client.organizationName}</form:option>
 									</form:select>
 									<span class='error'><form:errors path="post.client.lid" /></span>
@@ -52,7 +78,7 @@
 								</dt>
 								<dd>
 									<form:input path="name" required="required"/>
-									<span class='error'><form:errors path="name"  /></span>
+									<span class='error'>&nbsp;<form:errors path="name"  /></span>
 								</dd>
 							</dl>
 
@@ -61,8 +87,8 @@
 									<label>Email</label>
 								</dt>
 								<dd>
-									<form:input path="email" type="email" required="required"/>
-									<span class='error'><form:errors path="email" /></span>
+									<form:input path="email" type="email" required="required" onchange="conscheckapplicant()"/>
+									<span class='error'>&nbsp;${profileExist }<form:errors path="email" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -71,7 +97,7 @@
 								</dt>
 								<dd>
 									<form:input path="currentRole" required="required"/>
-									<span class='error'><form:errors path="currentRole" /></span>
+									<span class='error'>&nbsp;<form:errors path="currentRole" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -83,7 +109,7 @@
 										<form:option value="Yes">Yes</form:option>
 										<form:option value="No">No</form:option>
 									</form:select>
-									<span class='error'><form:errors path="willingToRelocate" /></span>
+									<span class='error'>&nbsp;<form:errors path="willingToRelocate" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -92,7 +118,7 @@
 								</dt>
 								<dd>
 									<form:input path="noticePeriod" required="required"/>
-									<span class='error'><form:errors path="noticePeriod" /></span>
+									<span class='error'>&nbsp;<form:errors path="noticePeriod" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -100,17 +126,17 @@
 									<label>Phone</label>
 								</dt>
 								<dd>
-									<form:input path="contact" required="required" cssClass="number_only"/>
-									<span class="error"><form:errors path="contact" /></span>
+									<form:input path="contact" required="required" onchange="conscheckapplicant()" cssClass="number_only"/>
+									<span class="error">&nbsp;<form:errors path="contact" /></span>
 								</dd>
 							</dl>
 							<dl>
 								<dt>
-									<label>Current Organization</label>
+									<label>Current Org</label>
 								</dt>
 								<dd>
 									<form:input path="currentOrganization" required="required"/>
-									<span class="error"><form:errors path="currentOrganization" /></span>
+									<span class="error">&nbsp;<form:errors path="currentOrganization" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -119,7 +145,7 @@
 								</dt>
 								<dd>
 									<form:input path="currentCTC" />
-									<span class="error"><form:errors path="currentCTC" /></span>
+									<span class="error">&nbsp;<form:errors path="currentCTC" /></span>
 								</dd>
 							</dl>
 							<dl>
@@ -128,22 +154,10 @@
 								</dt>
 								<dd>
 									<form:input path="expectedCTC" />
-									<span class="error"><form:errors path="expectedCTC" /></span>
+									<span class="error">&nbsp;<form:errors path="expectedCTC" /></span>
 								</dd>
 							</dl>
-							<dl>
-								<dt>
-									<label>Upload JD</label>
-								</dt>
-								<dd>
-									<div class="file_up">
-										<form:input path="jdID" />
-										<span class='error'><form:errors path="jdID" /></span> <span>
-											<input type="file"  name="jdFile" class="select_jd"/>
-										</span>
-									</div>
-								</dd>
-							</dl>
+							
 							<dl>
 								<dt>
 									<label>Upload Resume</label>
@@ -151,7 +165,7 @@
 								<dd>
 									<div class="file_up">
 										<form:input path="resumePath" />
-										<span class='error'><form:errors path="resumePath" /></span> <span>
+										<span class='error'>&nbsp;<form:errors path="resumePath" /></span> <span>
 											<input type="file" name="resumeFile" class="select_jd"/>
 										</span>
 									</div>
@@ -161,7 +175,7 @@
 					</div>
 				<div class="block coment_fild">
 					<p>Screening Notes</p>
-					<textarea></textarea>
+					<form:textarea path="screeningNote" id="editor1"></form:textarea>
 				</div>
 				<div class="block form_submt alin_cnt">
 					<input type="submit" value="Upload" class="btn yelo_btn">
@@ -170,6 +184,19 @@
 			</div>
 		</div>
 	</div>
-
+<script src="ckeditor/ckeditor.js"></script>
+<script src="ckeditor/bootstrap3-wysihtml5.all.js"></script>
+<script>
+      $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        CKEDITOR.replace('editor1');
+        CKEDITOR.config.toolbar =
+            [{ name: 'document', items : [ 'Source'] },
+             { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+                ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+            ];
+      });
+    </script>
 </body>
 </html>

@@ -23,6 +23,8 @@
 </head>
 <body class="loading">
 	<%
+		Registration sel_client = (Registration)request.getAttribute("selClient");
+		List<Registration> clientList = (List<Registration>) request.getAttribute("clientList");
 		Registration reg = (Registration)request.getSession().getAttribute("registration");
 	
 		long totalCount = (Long)request.getAttribute("totalCount");
@@ -57,8 +59,30 @@
       
 	    <div class="positions_info ">
 	      <div class="filter">
-	        <div class="col-md-7"><span>Showing <%= cc %> of <%= totalCount %></span></div>
-	         <div class="col-md-5">
+	        <div class="col-md-3">
+	        	<select id="cons_db_sel_client" style="padding: 2px; border-radius:0;font-size: 14px">
+	        		<option value="">All Clients</option>
+	        		<%
+						for (Registration client : clientList) 
+						{
+							if(sel_client != null && sel_client.getUserid().equals(client.getUserid()))
+							{
+								%>
+									<option value="<%=client.getUserid()%>" selected="selected"><%=client.getOrganizationName()%></option>
+								<%
+							}
+							else
+							{
+								%>
+									<option value="<%=client.getUserid()%>"><%=client.getOrganizationName()%></option>
+								<%
+							}
+						}
+					%>
+	        	</select>
+	        </div>
+	        <div class="col-md-4 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
+	         <div class="col-md-5	">
                 <ul class="page_nav unselectable">
                 	<%
 		          		if(pn > 1)
@@ -103,13 +127,15 @@
 		        <table class="table no-margin" style="border: 1px solid gray;">
 		        	<thead>
 		        		<tr>
-		       				<th>Sno.</th>
+		       				<th align="left"><input id="sel_all" type="checkbox"></th>
+		       				<th align="left">Status</th>
 		       				<th align="left">Position</th>
-		       				<th>Client</th>
-		       				<th>Location</th>
+		       				<th align="left">Client</th>
+		       				<th align="left">Location</th>
 		       				<th>Posted Date</th>
-		       				<th>Profiles Submitted</th>
+		       				<th>Submitted</th>
 		       				<th>Shortlisted</th>
+		       				<th>Action</th>
 		       			</tr>
 	       			</thead>
 	       			<tbody>
@@ -123,15 +149,38 @@
 	       							
 	       							%>
 						       			<tr>
-						        			<td><%= count++ %></td>
-<%-- 						        			<td><%= post.getPostId() %></td> --%>
-						       				<td style="float: left;" class="pre_check">
-						       					<a href="clientpostapplicants?pid=<%= post.getPostId()%>" id="<%= post.getPostId() %>" class="view_post"><%= post.getTitle() %> </a>
+						        			<td><input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>"></td>
+						        			<td><%
+						        					if(post.isActive())
+						        					{
+						        						out.println("Active");
+						        					}
+						        					else
+						        					{
+						        						out.println("Inactive");
+						        					}
+												%>
+											</td>
+						       				<td>
+						       					<%
+						       						if(post.getPublished() != null && post.getDeleteDate() == null)
+						       						{
+						       							%>
+									       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" id="<%= post.getPostId() %>" class="view_post"><%= post.getTitle() %> </a>
+						       							<%
+						       						}
+						       						else
+						       						{
+						       							%>
+							       							<a><%= post.getTitle() %> </a>
+						       							<%
+						       						}
+						       					%>
 					       					</td>
 					       					<td><%= post.getClient().getOrganizationName() %></td>
 						       				<td><%= post.getLocation() %></td>
-						       				<td><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
-						       				<td>
+						       				<td align="center"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
+						       				<td align="center"  title="No of profiles uploaded.">
 						       					<%
 						       						Iterator<PostProfile> it = post.getPostProfile().iterator();
 						       						int prsub = 0;
@@ -152,8 +201,17 @@
 						       						}
 						       						out.println(prsub);
 						       					%>
+					       					</td>
+					       					<td  align="center" title="No. of profiles shortlisted">
+						       					<%= prshort %>
 						       				</td>
-						       				<td><%= prshort %></td>
+						       				<td align="center" >
+						       					<div class="pre_check" style="float: none;padding:0;">
+							                		<a id="<%= post.getPostId() %>" class="view_post " title="Click to view post detail">
+							                			<img width="30px" alt="View" src="images/view-icon.png">
+						                			</a>
+							                	</div>
+						       				</td>
 						       				
 						        		</tr>
 	       							<%

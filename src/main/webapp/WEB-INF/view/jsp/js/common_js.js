@@ -16,4 +16,70 @@ jQuery(document).ready(function() {
         }
     });
 	
+	
+	$(document.body).on('click', '.pre_check > .view_post' ,function(){
+//		alert("pid ");
+		var pid = $(this).attr("id");
+		if(pid != "")
+		{
+			$.ajax({
+				type : "GET",
+				url : "viewPostDetail",
+				data : {'pid':pid},
+				contentType : "application/json",
+				success : function(data) {
+//				alert(data);
+					$('#positions_info').hide();
+					$('#post_detail').html(data);
+					$('#post_detail').show();
+					
+					
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.status);
+				}
+			}) ;
+		}
+	});
+	
+
+	$(document.body).on('click', '.page_nav  .back_list_view' ,function(){
+//		alert("back");
+		$('#post_detail').html("");
+		$('#post_detail').hide();
+		$('#positions_info').show();
+	});
+	
+	
+	$(document.body).on('click', '.applicant_msg .send_msg' ,function(){
+		var msg_text = $('#msg_text').val();
+//		alert("Hello to all :"+msg_text);
+		
+		
+		var ppid = $(this).attr("id");
+		$('#msg_text').val('');
+		if(msg_text != "")
+		{
+			$.ajax({
+				type : "GET",
+				url : "sendInboxMsg",
+				data : {'ppid':ppid,'msg_text':msg_text},
+				contentType : "application/json",
+				success : function(data) {
+					var obj = jQuery.parseJSON(data);
+					if(obj.status)
+					{
+						$('.inbox_col').append(obj.msg_text);
+						var objDiv = document.getElementById("inbox_msg");
+						objDiv.scrollTop = objDiv.scrollHeight;
+					}
+					
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.status);
+				}
+			}) ;
+		}
+	});
+	
 });

@@ -29,7 +29,6 @@ public class UploadProfileTest {
 		profile.setExpectedCTC("");
 		profile.setCurrentOrganization("");
 		profile.setNoticePeriod("");
-		profile.setJdID("");
 		profile.setCurrentRole("");
 		profile.setWillingToRelocate("");
 		profile.setResumePath("");

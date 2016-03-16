@@ -75,7 +75,11 @@ public interface ProfileDao
 
 	public long countProfileListByConsultantIdAndPostIdInRange(String consultantId, String postId);
 
+
 	
+	
+	public long countProfileList();
+
 	
 	
 }

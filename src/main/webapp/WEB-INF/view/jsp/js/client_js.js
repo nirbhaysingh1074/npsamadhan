@@ -17,15 +17,11 @@ jQuery(document).ready(function() {
 		$('#cons_list > li').removeClass("active");
 //		alert(" text :"+$(this).find('option:selected').text());
 		var pid = $(this).val();
-		$('.selected_consultantname h2').html("Profiles for All Hiring Partners");
-		if(pid != "0")
-		{
-			$('#selected_postname').html("Profiles for "+$(this).find('option:selected').text());
-		}
-		else
-		{
-			$('#selected_postname').html("Profiles for All Posts");
-		}
+//		if(pid == "" || pid == "0")
+//		{
+//			$('#cons_list').html("");
+//			return false;
+//		}
 		$.ajax({
 			type : "GET",
 			url : "postConsultantList",
@@ -52,12 +48,19 @@ jQuery(document).ready(function() {
 	});
 	
 	$(document.body).on('click', '#cons_list > li' ,function(){
-		$('#cons_list > li').removeClass("active");
-		$(this).addClass("active");
-		var conid = $(this).val();
-		$('.selected_consultantname h2').html($(this).find("a").html());
-		loadclientposts("1");
 		
+		
+		$('#cons_list > li').removeClass("active");
+		var selected_post = $('#selected_post').val();
+		if(selected_post != "" && selected_post != "0")
+		{
+			$(this).addClass("active");
+			loadclientposts("1");
+		}
+		else
+		{
+			alertify.error("Select post first !");
+		}
 	});
 	
 	$(document.body).on('change', '#db_post_status ' ,function(){
@@ -67,33 +70,6 @@ jQuery(document).ready(function() {
 	
 	
 	
-	$(document.body).on('click', '.pre_check > .view_post' ,function(){
-//		alert("pid ");
-		var pid = $(this).attr("id");
-		$.ajax({
-			type : "GET",
-			url : "viewPostDetail",
-			data : {'pid':pid},
-			contentType : "application/json",
-			success : function(data) {
-//				alert(data);
-				$('#positions_info').hide();
-				$('#post_detail').html(data);
-				$('#post_detail').show();
-				
-				
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
-		      }
-	    }) ;
-	});
-	$(document.body).on('click', '.page_nav  .back_list_view' ,function(){
-//		alert("back");
-		$('#post_detail').html("");
-		$('#post_detail').hide();
-		$('#positions_info').show();
-	});
 	
 	$(document.body).on('change', '.select_jd' ,function(){
 		$(this).parent().siblings("input").val($(this).val());
@@ -105,9 +81,10 @@ jQuery(document).ready(function() {
 //		alert("Hello to all accept"+$(this).parent().attr("id"));
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
-		var r = confirm("Are you sure to accept ?");
-		if(r)
-		{
+		
+		alertify.confirm("Are you sure to accept ?", function (e, str) {
+		if (e) {
+			
 			$.ajax({
 				type : "GET",
 				url : "clientacceptreject",
@@ -117,26 +94,30 @@ jQuery(document).ready(function() {
 					var obj = jQuery.parseJSON(data);
 					if(obj.status == "accepted")
 					{
-						selected.html("<h3>Accepted</h3>")
+						selected.html("<h3><img src='images/ic_17.png' alt='' width='20px' align='top'> Accepted</h3>")
+						alertify.success("Profile accepted successfilly !");
 					}
 					else
 					{
-						alert("Oops something wrong !");
+						alertify.error("Oops something wrong !");
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
 				}
 			}) ;
+		
 		}
+		});
 	});
 	
 	$(document.body).on('click', '.profile_status > .reject_profile' ,function(){
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
-		var r = confirm("Are you sure to reject ?");
-		if(r)
-		{
+		
+		alertify.confirm("Are you sure to reject ?", function (e, str) {
+		if (e) {
+			
 			$.ajax({
 				type : "GET",
 				url : "clientacceptreject",
@@ -146,23 +127,173 @@ jQuery(document).ready(function() {
 					var obj = jQuery.parseJSON(data);
 					if(obj.status == "rejected")
 					{
-						selected.html("<h3>Rejected</h3>")
+						selected.html("<h3><img src='images/ic_16.png' alt='' width='20px' align='top'> Rejected</h3>")
+						alertify.success("Profile rejected successfilly !");
 					}
 					else
 					{
-						alert("Oops something wrong !");
+						alertify.error("Oops something wrong !");
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
 				}
 			}) ;
+		
 		}
+		});
+		
 	});
 	
 	
+	$(document.body).on('click', '.status > .st_published' ,function(){
+		var sel_img = $(this);
+		var pid = $(this).parent().parent().attr("id");
+		alertify.confirm("Are you sure to unpublish ?", function (e, str) {
+		if (e) {
+			
+			$.ajax({
+				type : "GET",
+				url : "clientunpublishpost",
+				data : {'pid':pid},
+				contentType : "application/json",
+				success : function(data) {
+					var obj = jQuery.parseJSON(data);
+					if(obj.status == "success")
+					{
+						sel_img.removeClass("st_published");
+						sel_img.addClass("st_unpublished");
+						sel_img.attr("src","images/cloud-gray.png");
+						alertify.success("Post unpublished successfilly !");
+					}
+					else
+					{
+						alertify.error("Oops something wrong !");
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.status);
+				}
+			}) ;
+			
+		}
+		});
+	});
 	
 	
+	$(document.body).on('click', '.status > .st_unpublished' ,function(){
+		var sel_img = $(this);
+		var pid = $(this).parent().parent().attr("id");
+		alertify.confirm("Are you sure to publish ?", function (e, str) {
+		if (e) {
+			
+			$.ajax({
+				type : "GET",
+				url : "clientpublishpost",
+				data : {'pid':pid},
+				contentType : "application/json",
+				success : function(data) {
+					var obj = jQuery.parseJSON(data);
+					if(obj.status == "success")
+					{
+						sel_img.attr("src","images/check-cloud.png");
+						sel_img.removeClass("st_unpublished");
+//						sel_img.addClass("st_published");
+						alertify.success("Hi, You posted "+obj.jobCode+" successfully !");
+					}
+					else
+					{
+						alertify.error("Oops something wrong !");
+					}
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					alert(xhr.status);
+				}
+			}) ;
+			
+		}
+		});
+	});
+	
+	
+	$(document.body).on('click', '.filter  #act_post' ,function(){
+//		alert("set Active");
+		
+		var val = [];
+		 $('.sel_posts:checkbox:checked').each(function(i){
+	        val[i] = $(this).val();
+	      });
+	 
+		 if(! val.length > 0)
+		 {
+		 
+//			 alert("length ;"+ val.length);
+			 return false;
+		 }
+
+		 	alertify.confirm("Are you sure to active this post ?", function (e, str) {
+				if (e) 
+				{
+					$.ajax({
+						type : "GET",
+						url : "clientBulkActive",
+						data : {'pids':val.toString()},
+						contentType : "application/json",
+						success : function(data) {
+							var obj = jQuery.parseJSON(data);
+							if(obj.status == "success")
+							{
+								loadclientdashboardposts($('.page_nav .current_page').attr("id"));
+							}
+						},
+						error: function (xhr, ajaxOptions, thrownError) {
+					        alert(xhr.status);
+					      }
+				    }) ;
+				}
+		 	});
+	});
+	
+	
+	$(document.body).on('click', '.filter  #inact_post' ,function(){
+//		alert("set Inactive");
+		
+		var val = [];
+		 $('.sel_posts:checkbox:checked').each(function(i){
+	        val[i] = $(this).val();
+	     
+		 });
+		 if(! val.length > 0)
+		 {
+		 
+//			 alert("length ;"+ val.length);
+			 return false;
+		 }
+		 
+		alertify.confirm("Are you sure to inactive this post ?", function (e, str) {
+			if (e) 
+			{
+				$.ajax({
+					type : "GET",
+					url : "clientBulkInactive",
+					data : {'pids':val.toString()},
+					contentType : "application/json",
+					success : function(data) {
+						var obj = jQuery.parseJSON(data);
+						if(obj.status == "success")
+						{
+							loadclientdashboardposts($('.page_nav .current_page').attr("id"));
+						}
+						
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+						alert(xhr.status);
+					}
+				}) ;
+			}
+		 
+		});
+	});
 });
 
 

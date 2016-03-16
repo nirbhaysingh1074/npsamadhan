@@ -1,3 +1,6 @@
+<%@page import="com.unihyr.domain.Inbox"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="com.unihyr.domain.Post"%>
 <%@page import="com.unihyr.domain.Registration"%>
@@ -27,7 +30,7 @@
 %>
 
 <div class="filter">
-	<div class="col-md-7">
+	<div class="col-md-7 pagi_summary">
 		<span>Showing <%=cc%> of <%=totalCount%></span>
 	</div>
 			<div class="col-md-5">
@@ -70,51 +73,87 @@
                 </ul>
               </div>
 </div>
-<table width="100%" border="0" class="new_tabl">
-	<tr>
-		<th>Basic Information</th>
-		<th>&nbsp;</th>
-		<th>Status</th>
-		<th>&nbsp;</th>
-	</tr>
-	<%
-	
-		if(profileList != null && !profileList.isEmpty())
-		{
-			for (PostProfile pp : profileList) 
+<table class="table no-margin" style="border: 1px solid gray;">
+	<thead>
+		<tr>
+			<th align="left">Name</th>
+			<th align="left">Phone</th>
+			<th align="left">Current Role</th>
+			<th align="left">Organization</th>
+			<th align="left">Curent Salary</th>
+			<th>Notice Period</th>
+			<th>Submitted</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%
+			if (profileList != null && !profileList.isEmpty()) 
 			{
-				%>
+				for (PostProfile pp : profileList) 
+				{
+					Iterator<Inbox> it = pp.getMessages().iterator();
+          			int unviewed = 0;
+          			while(it.hasNext())
+          			{
+          				Inbox msg = it.next();
+              			if(msg.getConsultant()== null && !msg.isViewed())
+              			{
+              				unviewed++;
+              			}
+              			
+          			}
+      				System.out.println(">>>>>>>>>>>> hello "+ unviewed);
+          				
+					
+					%>
+					<tr>
+						<td>
+							<%
+       							if(unviewed > 0)
+       							{
+       								%>
+       									<span style="padding: 0px 6px;background-color:pink; border-radius:10px;margin-right: 5px;color:#000"><%= unviewed %></span>
+       								<%
+       							}
+       						%>
+							<a href="consapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a></td>
+						<td><%=pp.getProfile().getContact()%></td>
+						<td><%=pp.getProfile().getCurrentRole()%></td>
+						<td><%=pp.getProfile().getCurrentOrganization()%></td>
+						<td><%=pp.getProfile().getCurrentCTC()%></td>
+						<td><%=pp.getProfile().getNoticePeriod()%></td>
+						<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
+						<td>
+							<p id="<%=pp.getPpid()%>" class="profile_status">
+								<%
+									if (pp.getAccepted() != null)
+									{
+									%>
+											
+										<h3>Accepted</h3> <%
+							 		}
+									else if (pp.getRejected() != null) 
+									{
+							 		%>
+										<h3>Rejected</h3> <%
+							 		} else 
+							 		{
+									 %>
+										<h3>In Progress</h3>
+									<%
+							 		}
+							 %>
+							</p>
+						</td>
 			
-				<tr>
-					<td>
-						<h3><%=pp.getProfile().getName()%></h3>
-						<p><%=pp.getProfile().getContact()%>, <br>
-							<%=pp.getProfile().getCurrentRole()%>,
-							<%=pp.getProfile().getCurrentOrganization()%><br>
-							Salary:<%=pp.getProfile().getCurrentCTC()%> Lacs
-						</p></td>
-					<td>
-						<p>
-							Relocation:	<%=pp.getProfile().getWillingToRelocate()%>
-							
-						</p>
-						<p>Location: <%= pp.getProfile().getCurrentOrganization() %></p>
-						<p>NP:	<%=pp.getProfile().getNoticePeriod()%></p>
-						<p>Exp. CTC:	<%=pp.getProfile().getExpectedCTC()%> Lacs</p>
-					</td>
-					<td><a href=""><img src="images/ic_17.png" alt="img"
-							align="top"></a> Shortlist/Inprogress</td>
-					<td><p>
-							<a href="" class="btn search_btn">View Applicant</a>
-						</p>
-				</tr>
+					</tr>
 			
-				<%
+					<%
+				}
 			}
-		}
-	%>
-
-
+		%>
+	</tbody>
 </table>
 <div class="block tab_btm">
 	<div class="pagination">

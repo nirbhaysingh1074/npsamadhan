@@ -14,30 +14,41 @@ public interface PostService
 	
 	public List<Post> getPosts();
 	
+	public long countPosts();
+	
 	public List<Post> getPosts(int first, int max);
 	
-	public List<Post> getPostsByClient(String userid);
+	public List<Post> getActivePostsByClient(String userid);
 	
-	public List<Post> getPostsByClient(String userid, int first, int max);
+	public List<Post> getActivePostsByClient(String userid, int first, int max);
 	
-	public long countPostByClient(String userid);
+	public long countActivePostByClient(String userid);
 
 	
 	public List<Post> getAllPostsByClient(String userid, int first, int max);
 	
 	public long countAllPostByClient(String userid);
 	
-	public List<Post> getAllInactivePostsByClient(String userid, int first, int max);
+	public List<Post> getPublishedPostsByClient(String userid, int first, int max);
 	
-	public long countAllInactivePostByClient(String userid);
+	public long countPublishedPostByClient(String userid);
 
-	public List<Post> getDeletedPostsByClient(String userid, int first, int max);
+	public List<Post> getClosedPostsByClient(String userid, int first, int max);
 	
-	public long countDeletedPostByClient(String userid);
+	public long countClosedPostByClient(String userid);
 
+	public List<Post> getSavedPostsByClient(String clientId, int first, int max);
+	
+	public long countSavedPostByClient(String clientId);
+	
 	public List<Post> getPostsByIndustryUsingConsultantId(String consultantId, int first, int max);
 
 	public long countPostsByIndustryUsingConsultantId(String name);
+	
+	public List<Post> getPostsByIndustryId(int industryId, int first, int max);
+
+	public long countPostsByIndustryId(int industryId);
+
 
 	public List<Post> getPostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max);
 
@@ -51,5 +62,16 @@ public interface PostService
 
 	public long countInactivePostsBySubmittedProfilesByConsultantId(String consultantId);
 
-	
+	public List<Post> getPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max);
+
+	public long countPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId);
+
+	public List<Post> getAllPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max);
+
+	public long countAllPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId);
+
+	public List<Post> getInactivePostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max);
+
+	public long countInactivePostsBySubmittedProfilesByConsultantId(String consultantId, String clientId);
+
 }

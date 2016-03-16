@@ -218,4 +218,9 @@ public class ProfileServiceImpl implements ProfileService {
 		return this.profileDao.countAllInactiveProfilesByPost(clientId);
 	}
 	
+	
+	public long countProfileList()
+	{
+		return this.profileDao.countProfileList();
+	}
 }

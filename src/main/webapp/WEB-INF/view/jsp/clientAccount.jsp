@@ -152,6 +152,15 @@
 								
 							</dd>
 						</dl>
+						<dl>
+							<dt>
+								<label>Website URL</label>
+							</dt>
+							<dd>
+								<label><% if(reg.getWebsiteUrl() != null){out.println(reg.getWebsiteUrl());}  %></label>
+								
+							</dd>
+						</dl>
 						<%
 							if(reg.getIndustries() != null)
 							{

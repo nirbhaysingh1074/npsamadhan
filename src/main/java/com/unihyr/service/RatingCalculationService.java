@@ -15,4 +15,7 @@ public interface RatingCalculationService
 	
 	public void update(RatingCalculation RatingCalculation);
 
+	public void calculateTurnAroundTime();
+	
+	
 }

@@ -40,5 +40,12 @@ public class RatingCalculationServiceImpl implements RatingCalculationService
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void calculateTurnAroundTime()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

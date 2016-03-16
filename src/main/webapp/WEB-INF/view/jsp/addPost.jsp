@@ -13,13 +13,6 @@
 </head>
 <body class="loading">
 
-	<div class="breadcrumbs">
-	  <div class="breadcrumbs_in">
-	    <div class="container">
-	      <h2>New Post</h2>
-	    </div>
-	  </div>
-	</div>
 	<div class="mid_wrapper">
 	  <div class="container">
 	    <div class="form_cont">
@@ -68,33 +61,33 @@
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Experience(In Years)</label>
+	              <label>Experience</label>
 	            </dt>
 	            <dd>
 	              <div class="row">
 	                <div class="col-md-6">
 	                  <form:select path="exp_min">
-	                    <form:option value="0">0 year</form:option>
-	                    <form:option value="1">1 year</form:option>
-	                    <form:option value="2">2 year</form:option>
-	                    <form:option value="3">3 year</form:option>
-	                    <form:option value="4">4 year</form:option>
-	                    <form:option value="5">5 year</form:option>
-	                    <form:option value="6">6 year</form:option>
-	                    <form:option value="7">7 year</form:option>
+	                    <form:option value="0">0 Year</form:option>
+	                    <form:option value="1">1 Years</form:option>
+	                    <form:option value="2">2 Years</form:option>
+	                    <form:option value="3">3 Years</form:option>
+	                    <form:option value="4">4 Years</form:option>
+	                    <form:option value="5">5 Years</form:option>
+	                    <form:option value="6">6 Years</form:option>
+	                    <form:option value="7">7 Years</form:option>
 	                  </form:select>
 	                  <span class='error'><form:errors path="exp_min"/></span>
 	                </div>
 	                <div class="col-md-6">
 	                  <form:select path="exp_max">
-	                    <form:option value="0">0 year</form:option>
-	                    <form:option value="1">1 year</form:option>
-	                    <form:option value="2">2 year</form:option>
-	                    <form:option value="3">3 year</form:option>
-	                    <form:option value="4">4 year</form:option>
-	                    <form:option value="5">5 year</form:option>
-	                    <form:option value="6">6 year</form:option>
-	                    <form:option value="7">7 year</form:option>
+	                    <form:option value="0">0 Year</form:option>
+	                    <form:option value="1">1 Years</form:option>
+	                    <form:option value="2">2 Years</form:option>
+	                    <form:option value="3">3 Years</form:option>
+	                    <form:option value="4">4 Years</form:option>
+	                    <form:option value="5">5 Years</form:option>
+	                    <form:option value="6">6 Years</form:option>
+	                    <form:option value="7">7 Years</form:option>
 	                  </form:select>
 	                  <span class='error'><form:errors path="exp_max"/></span>
 	                </div>
@@ -103,43 +96,21 @@
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Compensation (In Lacs)</label>
+	              <label>Compensation</label>
 	            </dt>
 	            <dd>
 	              <div class="row">
 	                <div class="col-md-6">
-	                  <form:input path="ctc_min" class="number_only"/>
+	                  <form:input path="ctc_min" class="number_only" style="padding-right: 50px"/>
+	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">Lacs</span>
 	                  <span class='error'><form:errors path="ctc_min"/></span>
 	                </div>
 	                <div class="col-md-6">
-	                  <form:input path="ctc_max" class="number_only"/>
+	                  <form:input path="ctc_max" class="number_only" style="padding-right: 50px"/>
+	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">Lacs</span>
 	                  <span class='error'><form:errors path="ctc_max"/></span>
 	                </div>
 	              </div>
-	            </dd>
-	          </dl>
-	          <dl>
-	            <dt>
-	              <label>Upload JD</label>
-	            </dt>
-	            <dd>
-	              <div class="file_up">
-	              	<form:input path="uploadjd" disabled="disabled" />
-	              	<span class='error'><form:errors path="uploadjd"/></span>
-	              	<span>
-	              		<input type="file" name = "file" class="select_jd" />
-              		</span>
-	              </div>
-	            </dd>
-	          </dl>
-	          
-	          <dl>
-	            <dt>
-	              <label>comments</label>
-	            </dt>
-	            <dd>
-	              <form:textarea path="comment"></form:textarea>
-	              <span class='error'><form:errors path="comment"/></span>
 	            </dd>
 	          </dl>
 	          
@@ -149,11 +120,18 @@
 	          
 	        </div>
 	      </div>
-	      <div class="block coment_fild">
+	      <div class="block coment_fild"  >
 	        <p>Additional Description</p>
-	        <form:textarea path="additionDetail"></form:textarea>
+	        <form:textarea path="additionDetail" id="editor1"></form:textarea>
 	        <span class='error'><form:errors path="additionDetail"/></span>
 	      </div>
+	      <br>
+	      <div class="block coment_fild" style="padding-top: 35px">
+	        <p>Additional Comments</p>
+	        <form:textarea path="comment" ></form:textarea>
+             <span class='error'><form:errors path="comment"/></span>
+	      </div>
+	      
 	      <div class="block form_submt alin_cnt">
 	        <input type="submit" name="btn_response" value="Publish" class="btn yelo_btn">
 	        <input type="submit" name="btn_response" value="Save" class="btn yelo_btn">
@@ -162,6 +140,19 @@
 	    </div>
 	  </div>
 	</div>
-
+<script src="ckeditor/ckeditor.js"></script>
+<script src="ckeditor/bootstrap3-wysihtml5.all.js"></script>
+<script>
+      $(function () {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        CKEDITOR.replace('editor1');
+        CKEDITOR.config.toolbar =
+            [{ name: 'document', items : [ 'Source'] },
+             { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+                ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
+            ];
+      });
+    </script>
 </body>
 </html>

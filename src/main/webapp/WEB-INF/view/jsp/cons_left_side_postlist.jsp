@@ -13,7 +13,7 @@
 		int i=0;
 		for (PostConsultant pc : postList)
 		{
-				
+					
 			%>
 				<li id="<%=pc.getPost().getPostId() %>">
 				<a href="javascript:void(0)"><%=pc.getPost().getTitle()%></a></li>

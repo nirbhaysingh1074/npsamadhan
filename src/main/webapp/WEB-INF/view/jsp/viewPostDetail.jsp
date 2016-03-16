@@ -18,7 +18,9 @@
 	
 	
 </style>
+<link rel="stylesheet" type="text/css" href="css/demo.css">
 
+<script type="text/javascript" src="js/accordion.js"></script>
 </head>
 <body class="loading">
 	<%
@@ -27,17 +29,45 @@
 		{
 			%>
 		      <div class="filter">
-		        <div class="col-md-7"><span><%= post.getTitle() %></span></div>
+		        <div class="col-md-7  pagi_summary"><span><%= post.getJobCode()%> ( <%= post.getTitle() %> - <%= post.getLocation() %> )</span></div>
 		        <div class="col-md-5">
 		<!--           <div class="set_col"><a href=""><img src="images/ic_1.png" alt="img"> <img src="images/ic_2.png" alt="img"></a></div> -->
 		          <ul class="page_nav">
+		            <li class="active"><a href="clienteditpost?pid=<%=post.getPostId() %>">Edit</a></li>
 		            <li class="active"><a class="back_list_view" > <img alt="" src="images/back-arrow.png" width="12px "> Back</a></li>
 		          </ul>
 		        </div>
 		      </div>
-		      <div class="positions_tab  bottom-margin" style="border: 1px solid gray;background: #fff5db none repeat scroll 0 0;">
+		      <div class="positions_tab  bottom-margin" style="border: 1px solid gray;">
 		        <div class="form_cont">
+			        <!-- 
+			        <div class="accordion">
+						<div class="accordion-section">
+							<a class="accordion-section-title active" href="#accordion-1">Accordion Section #1</a>
+							<div id="accordion-1" class="accordion-section-content open" style="display: block;">
+								<p>Mauris interdum fringilla augue vitae tincidunt. Curabitur vitae tortor id eros euismod ultrices. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent nulla mi, rutrum ut feugiat at, vestibulum ut neque? Cras tincidunt enim vel aliquet facilisis. Duis congue ullamcorper vehicula. Proin nunc lacus, semper sit amet elit sit amet, aliquet pulvinar erat. Nunc pretium quis sapien eu rhoncus. Suspendisse ornare gravida mi, et placerat tellus tempor vitae.</p>
+							</div>
+						</div>
+			
+						<div class="accordion-section">
+							<a class="accordion-section-title" href="#accordion-2">Accordion Section #2</a>
+							<div id="accordion-2" class="accordion-section-content">
+								<p>Mauris interdum fringilla augue vitae tincidunt. Curabitur vitae tortor id eros euismod ultrices. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent nulla mi, rutrum ut feugiat at, vestibulum ut neque? Cras tincidunt enim vel aliquet facilisis. Duis congue ullamcorper vehicula. Proin nunc lacus, semper sit amet elit sit amet, aliquet pulvinar erat. Nunc pretium quis sapien eu rhoncus. Suspendisse ornare gravida mi, et placerat tellus tempor vitae.</p>
+							</div>
+						</div>
+			
+					</div>
+			         -->
 			        <div class="form_col">
+						<dl>
+							<dt>
+								<label>Job Code</label>
+							</dt>
+							<dd>
+								<label><%= post.getJobCode() %></label>
+								
+							</dd>
+						</dl>
 						<dl>
 							<dt>
 								<label>Title</label>
@@ -96,34 +126,6 @@
 						
 						<dl>
 							<dt>
-								<label>Comment</label>
-							</dt>
-							<dd>
-								<label><%= post.getComment() %></label>
-								
-							</dd>
-						</dl>
-						<%
-							if(post.getUploadjd() != null && post.getUploadjd().trim().length() > 0)
-							{
-								%>
-								<dl>
-									<dt>
-										<label>Upload JD</label>
-									</dt>
-									<dd>
-										<label><a ><%= post.getUploadjd() %> </a></label>
-										
-									</dd>
-								</dl>
-								<%
-								
-							}
-						
-						
-						%>
-						<dl>
-							<dt>
 								<label>Publish Status</label>
 							</dt>
 							<dd>
@@ -146,6 +148,58 @@
 								
 							</dd>
 						</dl>
+						<dl>
+							<dt>
+								<label>Active Status</label>
+							</dt>
+							<dd>
+								<label>
+									<%
+										if(post.isActive())
+										{
+											%>
+												<span>Active</span>
+											<%
+										}
+										else
+										{
+											%>
+												<span>Inactive</span>
+											<%
+										}
+									%>
+								</label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Client</label>
+							</dt>
+							<dd>
+								<label>
+									<%=
+										post.getClient().getOrganizationName()
+										
+									%>
+								</label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Comment</label>
+							</dt>
+							<dd>
+								<label><%= post.getComment() %></label>
+								
+							</dd>
+						</dl>
+						
+						<div class="clearfix" style="padding: 15px">
+							<h3><b>Additional Description</b></h3><br>
+							<p><%= post.getAdditionDetail() %></p>
+						</div>
 						<div class="clearfix" style="padding: 15px">
 							<h3><b>Applied Candidates</b></h3><br>
 							<%
@@ -157,8 +211,8 @@
 			                  		PostProfile cp = it.next();
 		                  			%>
 		                  				<p><%= i++ %>. 
-		                  					<%= cp.getProfile().getName() %>
-<%-- 		                  					<%= cp.getRegistration().getConsultName() %> --%>
+		                  					<%= cp.getProfile().getName() %>-
+		                  					<%= cp.getProfile().getRegistration().getConsultName() %>
 		                  				</p>
 		                  			<%
 		                  		}

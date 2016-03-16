@@ -1,5 +1,6 @@
 package com.unihyr.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,12 +22,22 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="post")
-public class Post 
+public class Post implements Serializable
 {
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7878507665232547622L;
+
 	@Id
 	@Column(nullable=false)
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long postId;
+	
+	@Column
+	private String jobCode;
 	
 	@Column(nullable=false)
 	private String title;
@@ -66,9 +77,12 @@ public class Post
 	@Column
 	private Date published;
 	
+	@Column(columnDefinition = "boolean default fasle" ,nullable=false)
+	private boolean isActive;
 	
-//	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "postionList")
-//	private Set<CandidateProfile> profileList = new HashSet<CandidateProfile>();
+	@Column
+	private Date closeDate;
+	
 	
 	
 	public long getPostId() {
@@ -77,6 +91,16 @@ public class Post
 
 	public void setPostId(long postId) {
 		this.postId = postId;
+	}
+
+	public String getJobCode()
+	{
+		return jobCode;
+	}
+
+	public void setJobCode(String jobCode)
+	{
+		this.jobCode = jobCode;
 	}
 
 	public String getTitle() {
@@ -258,6 +282,26 @@ public class Post
 	}
 	
 	
+	public boolean isActive()
+	{
+		return isActive;
+	}
+
+	public void setActive(boolean isActive)
+	{
+		this.isActive = isActive;
+	}
+
+	public Date getCloseDate()
+	{
+		return closeDate;
+	}
+
+	public void setCloseDate(Date closeDate)
+	{
+		this.closeDate = closeDate;
+	}
+
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)  
 	private Set<PostProfile> postProfile;
 

@@ -41,4 +41,8 @@ public interface PostProfileService
 
 	public long countAllProfileListByConsultantIdInRange(String consultantId);
 	
+	public boolean checkPostProfileAvailability(long postId, String email, String contact);
+	
+	public List<PostProfile> getAllPostProfile(int first, int max);
+	
 }

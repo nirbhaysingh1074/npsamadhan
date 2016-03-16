@@ -37,11 +37,11 @@
 		<div class="container">
 			<div class="reg-form">
 				<form:form method="POST" action="consultantregistration" commandName="regForm">
-					<div class="reg-header">
+					<div class="reg-header bottom-padding">
 						<a href="home"><img alt="" src="images/logo.png"></a>
 						<h2 style="float: right;">Registration for Consultant</h2>
 					</div>
-					<div class="login-wrap"></div>
+					
 					<div class="reg-wrap">
 						<div>
 							<label>Consultant Name</label>

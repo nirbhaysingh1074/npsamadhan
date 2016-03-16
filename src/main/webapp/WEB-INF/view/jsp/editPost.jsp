@@ -9,17 +9,10 @@
 <style type="text/css">
 	.error{color: red;}
 </style>
-
+<link rel="stylesheet" href="ckeditor/bootstrap3-wysihtml5.css">
 </head>
 <body class="loading">
 
-	<div class="breadcrumbs">
-	  <div class="breadcrumbs_in">
-	    <div class="container">
-	      <h2>New Post</h2>
-	    </div>
-	  </div>
-	</div>
 	<div class="mid_wrapper">
 	  <div class="container">
 	    <div class="form_cont">
@@ -120,38 +113,19 @@
 	              </div>
 	            </dd>
 	          </dl>
-	          <dl>
-	            <dt>
-	              <label>Upload JD</label>
-	            </dt>
-	            <dd>
-	              <div class="file_up">
-	              	<form:input path="uploadjd" disabled="disabled" />
-	              	<span class='error'><form:errors path="uploadjd"/></span>
-	              	<span>
-	              		<input type="file" name = "file" id="select_jd" />
-              		</span>
-	              </div>
-	            </dd>
-	          </dl>
-	          <dl>
-	            <dt>
-	              <label>comments</label>
-	            </dt>
-	            <dd>
-	              <form:textarea path="comment"></form:textarea>
-	              <span class='error'><form:errors path="comment"/></span>
-	            </dd>
-	          </dl>
-	          
-	          
 	          
 	        </div>
 	      </div>
 	      <div class="block coment_fild">
 	        <p>Additional Description</p>
-	        <form:textarea path="additionDetail"></form:textarea>
+	        <form:textarea path="additionDetail" id="editor1"></form:textarea>
 	        <span class='error'><form:errors path="additionDetail"/></span>
+	      </div>
+	      <br>
+	      <div class="block coment_fild" style="padding-top: 35px">
+	        <p>comments</p>
+	        <form:textarea path="comment" ></form:textarea>
+             <span class='error'><form:errors path="comment"/></span>
 	      </div>
 	      <div class="block form_submt alin_cnt">
 	        <input type="submit" name="btn_response" value="Publish" class="btn yelo_btn">
@@ -161,6 +135,15 @@
 	    </div>
 	  </div>
 	</div>
-
+<script src="ckeditor/ckeditor.js"></script>
+<script>
+      $(function () {
+    	  
+        CKEDITOR.replace('editor1',{
+            toolbar : 'Simple'
+        });
+        
+      });
+    </script>
 </body>
 </html>

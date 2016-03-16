@@ -30,7 +30,19 @@ public class PostConsultant
     @JoinColumn(name = "lid"  , nullable= false)
 	private Registration consultant;
 	
+	private double totalRating;
+	
 	private Date createDate;
+
+	public double getTotalRating()
+	{
+		return totalRating;
+	}
+
+	public void setTotalRating(double totalRating)
+	{
+		this.totalRating = totalRating;
+	}
 
 	public long getPcid()
 	{
@@ -71,8 +83,4 @@ public class PostConsultant
 	{
 		this.createDate = createDate;
 	}
-	
-	
-	
-	
 }

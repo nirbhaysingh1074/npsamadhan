@@ -416,4 +416,14 @@ public class ProfileDaoImpl implements ProfileDao
 		return count.longValue();
 	}
 
+	
+	public long countProfileList()
+	{
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(CandidateProfile.class);
+		criteria.add(Restrictions.isNull("deleteDate"))
+        .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+		.setProjection(Projections.rowCount());
+		
+		return (Long)criteria.uniqueResult();
+	}
 }

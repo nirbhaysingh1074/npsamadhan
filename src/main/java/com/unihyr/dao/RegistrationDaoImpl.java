@@ -1,18 +1,26 @@
 package com.unihyr.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.unihyr.constraints.Roles;
 import com.unihyr.domain.CandidateProfile;
+import com.unihyr.domain.Industry;
+import com.unihyr.domain.Post;
+import com.unihyr.domain.PostConsultant;
 import com.unihyr.domain.Registration;
 
 @Repository
@@ -77,6 +85,73 @@ public class RegistrationDaoImpl implements RegistrationDao
 		query.addEntity(Registration.class);
 		List<Registration> list = (List<Registration>)query.list();
 		return list;
+	}
+	
+	@Override
+	public List<Registration> getClientsByIndustyForConsultant(String consultantId)
+	{
+		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(PostConsultant.class)
+				.createAlias("post", "postAlias")
+				.createAlias("postAlias.client", "clientAlias")
+				.createAlias("consultant", "conAlias")
+				.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("clientAlias.lid")))))
+				.add(Restrictions.eq("conAlias.userid", consultantId))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+				
+		List<Integer[]> idList = criteria.list();
+		//get the id's from the projection
+//        List<Integer> longList = new ArrayList<Integer>();
+//        for (Object[] record : idList) {
+//            longList.add((Integer) record[1]);
+//        }
+
+		if (idList.size() > 0)
+		{
+			
+			criteria = this.sessionFactory.getCurrentSession().createCriteria(Registration.class);
+			criteria.add(Restrictions.in("lid", idList));
+		}
+		else
+		{
+		//no results, so let's ommit the second query to the DB
+	         return new ArrayList<Registration>();
+        }
+
+		return criteria.list();
+		
+	}
+	
+	@Override
+	public long countConsultantList()
+	{
+		Disjunction or = Restrictions.disjunction();
+		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_CON_MANAGER.toString()));
+		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_CON_USER.toString()));
+		
+		long count = (Long)this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
+				.createCriteria("log", "logAlias")
+				.createCriteria("logAlias.roles", "roleAlias")
+				.add(or)
+				.setProjection(Projections.rowCount())
+				.uniqueResult();
+		return count;
+	}
+	
+	@Override
+	public long countClientsList()
+	{
+		Disjunction or = Restrictions.disjunction();
+		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_MANAGER.toString()));
+		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_USER.toString()));
+		
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Registration.class);
+		criteria.createCriteria("log", "logAlias");
+		criteria.createCriteria("logAlias.roles", "roleAlias");
+		criteria.add(Restrictions.or(Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_MANAGER.toString()),Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_USER.toString())));
+		
+		long count = (Long)criteria.setProjection(Projections.rowCount())
+				.uniqueResult();
+		return count;
 	}
 	
 }

@@ -20,6 +20,8 @@
 	</style>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/client_js.js"></script>
+	<script type="text/javascript" src="js/common_js.js"></script>
+	
 </head>
 <body style="background-image: url('images/bg-image.png')">
 	<%
@@ -37,11 +39,11 @@
 		<div class="container">
 			<div class="reg-form">
 				<form:form method="POST" action="clientregistration" commandName="regForm">
-					<div class="reg-header">
+					<div class="reg-header bottom-padding" >
 						<a href="home"><img alt="" src="images/logo.png"></a>
 						<h2 style="float: right;">Registration for Employer</h2>
 					</div>
-					<div class="login-wrap"></div>
+					
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Organization Name</label>
@@ -57,9 +59,9 @@
 						</div>
 					</div>
 					<div class="reg-wrap">
-						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Password <img alt="" src="images/question-mark.png" width="11px" title="password must contain alphanumeric and one special symbol "></label>
-							<form:password path="password"  required="required" title="password must contain alphanumeric and one special symbol "/>
+						<div style="padding-bottom: 10px;" class='clearfix' title="password must contain alphanumeric with atleast one capital later and one special symbol ">
+							<label>Password <img alt="" src="images/question-mark.png" width="11px" ></label>
+							<form:password path="password"  required="required" />
 							<span class="error">&nbsp;<form:errors path="password" /></span>
 						</div>
 					</div>
@@ -73,7 +75,8 @@
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Revenues</label>
-							<form:input path="revenue" cssClass="number_only" maxlength="10"  required="required"/>
+							<form:input path="revenue" cssClass="number_only" maxlength="10"  required="required" style="padding-right: 150px" />
+							<span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">  INR (Millions)</span>
 							<span class="error">&nbsp;<form:errors path="revenue" /></span>
 						</div>
 					</div>
@@ -91,7 +94,7 @@
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>No. of Peoples</label>
+							<label>Org Size</label>
 							<form:input path="noofpeoples" cssClass="number_only" maxlength="10"  required="required"/>
 							<span class="error">&nbsp;<form:errors path="noofpeoples" /></span>
 						</div>
@@ -99,7 +102,8 @@
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Contact No.</label>
-							<form:input path="contact" cssClass="number_only" maxlength="11" minlength="10"  required="required"/>
+							<form:input path="contact" cssStyle="padding-left:45px;" cssClass="number_only" maxlength="11" minlength="10"  required="required"/>
+							<span style="position: relative; padding: 5px; border-right: 1px solid rgb(212, 212, 212); float: left; margin-top: -30px;font-size: 16px;"> +91 </span>
 							<span class="error">&nbsp;<form:errors path="contact" /></span>
 						</div>
 					</div>
@@ -117,7 +121,14 @@
 							<span class="error">&nbsp;<form:errors path="hoAddress" /></span>
 						</div>
 					</div>
-					
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Website URL</label>
+							<form:input path="websiteUrl" />
+							<span class="error">&nbsp;<form:errors path="websiteUrl" /></span>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
 					<div class="login-footer bottom-padding clearfix">
 						<div class="form_submt bottom-padding10" class='clearfix'>
 					        <button type="submit" class=" btn-login btn yelo_btn">Sign up</button>

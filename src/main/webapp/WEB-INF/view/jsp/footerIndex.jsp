@@ -7,7 +7,7 @@
 </head>
 <body class="loading">
 <footer class="clearfix">
-  <div class="container">
+  <div class="container" style="background: inherit;">
     <ul class="ft_menu">
       <li><a href="">Terms of Use</a> <span>|</span></li>
       <li><a href="">Privacy Policy</a> <span>|</span></li>
@@ -18,6 +18,7 @@
 </footer>
 <!--SCRIPTS-->
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script src="js/alertify.min.js"></script>
 <script type="text/javascript">
 $(".toggle-icon").click(function(){
   $(".toggle-icon").toggleClass("active");

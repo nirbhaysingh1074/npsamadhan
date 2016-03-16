@@ -54,6 +54,8 @@ public class ClientRegistrationModel
 	
 	private int usersRequired;
 
+	private String websiteUrl;
+	
 	public String getUserid() {
 		return userid;
 	}
@@ -153,6 +155,16 @@ public class ClientRegistrationModel
 
 	public void setUsersRequired(int usersRequired) {
 		this.usersRequired = usersRequired;
+	}
+
+	public String getWebsiteUrl()
+	{
+		return websiteUrl;
+	}
+
+	public void setWebsiteUrl(String websiteUrl)
+	{
+		this.websiteUrl = websiteUrl;
 	}
 	
 	

@@ -12,12 +12,15 @@
 <link href="css/media.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
-
+<link rel="stylesheet" href="css/alertify.core.css" />
+<link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
+	
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.IE.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/client_js.js"></script>
 <script type="text/javascript" src="js/common_js.js"></script>
+
 
 <script>
 		function getLogOut(){
@@ -43,10 +46,23 @@
 			return true;
 		}
 </script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	alertify.set({
+		labels : {
+			ok     : "OK",
+			cancel : "Cancel"
+		},
+		delay : 5000,
+		buttonReverse : false,
+		buttonFocus   : "ok"
+	});
+});
 
+</script>
 
 </head>
-<body class="loading">
+<body class="loading" style="background-image: url('images/bg-image.png')">
 <tilesx:useAttribute name="currentpage"/>
 
 
@@ -57,43 +73,28 @@
 	Registration reg = (Registration)request.getSession().getAttribute("registration");
 	
 %>
-  <div class="header">
-    <div class="container">
-      <div class="logo"> <a href="clientdashboard"><img src="images/logo.png" alt="Logo"></a> 
-      	<div class="last_login"><p>Last Login: May 20, 2015 at 09:39 AM</p></div>
+<div class="container">
+   <div class="header">
+      <div class="logo"> 
+      	<a href="clientdashboard"><img src="images/logo.png" alt="Logo"></a> 
       </div>
-      
       <div class="header_right">
-        <div class="brnad_logo">
-        	<span>Welcome</span> 
-        	<%
-        		if(reg.getLogo() != null && reg.getLogo().length() > 0)
-        		{
-        			%>
-			        	<img src="<%= reg.getLogo() %>" alt="">
-        			<%
-        		}
-        	%>
-       	</div>
         <div class="address_info">
-	        <p><span><a href="clientaccount"><%= reg.getOrganizationName() %> </a></span ></p>
-	        <p><span>+91-<%= reg.getContact() %> </span></p>
-	        <p><span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></p>
+	        <p><span><a href="clientaccount"><%= reg.getOrganizationName() %> </a></span>| <span>  <a>FAQ </a></span> | <span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></span ></p>
         </div>
       </div>
     </div>
-  </div>
-  <nav>
-    <div class="container"> <a href="javascript:void(0);" onClick="$('.toggle_menu').slideToggle();" class="toggle-icon"></a>
-      <ul class="toggle_menu">
-        <li class="${currentpage == 'clientdashboard' ? 'active' : ''}"><a href="clientdashboard">Home</a></li>
-        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientyourpost">New Post</a></li>
-        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Your Positions </a></li>
-        <li><a href="clientbillingdetail">Billing Details</a></li>
-        <li><a href="clientprofilecenter">Profiles Center</a></li>
-      </ul>
-    </div>
-  </nav>
+	  <nav class="nav">
+	   		<a href="javascript:void(0);" onClick="$('.toggle_menu').slideToggle();" class="toggle-icon"></a>
+	      <ul class="toggle_menu">
+	        <li class="${currentpage == 'clientdashboard' ? 'active' : ''}"><a href="clientdashboard">Home</a></li>
+	        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientaddpost">New Post</a></li>
+	        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Manage Positions </a></li>
+	        <li><a href="clientprofilecenter">Profiles Center</a></li>
+	        <li><a href="clientbillingdetail">Billing Details</a></li>
+	      </ul>
+	  </nav>
+</div>
 </header>
 
 </body>

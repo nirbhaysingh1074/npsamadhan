@@ -23,6 +23,7 @@
    	    <mapping class="com.unihyr.domain.LoginHistory"/>
    	    <mapping class="com.unihyr.domain.PostProfile"/>
    	    <mapping class="com.unihyr.domain.PostConsultant"/>
+   	    <mapping class="com.unihyr.domain.Inbox"/>
    	    
    	    
     </session-factory>

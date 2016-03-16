@@ -3,6 +3,8 @@ package com.unihyr.controller;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +45,7 @@ import com.unihyr.domain.Registration;
 import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientRegistrationModel;
 import com.unihyr.model.PostModel;
+import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
 import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.PostProfileService;
@@ -70,6 +73,8 @@ public class ClientController
 	private ProfileService profileService;
 	@Autowired
 	private PostProfileService postProfileService;
+	@Autowired
+	private InboxService inboxService;
 
 	
 	
@@ -81,7 +86,7 @@ public class ClientController
 		
 		map.addAttribute("totalposts", postService.countAllPostByClient(principal.getName()));
 		map.addAttribute("totalprofiles", postProfileService.countPostProfileByClient(principal.getName()));
-		map.addAttribute("totalActive", postService.countPostByClient(principal.getName()));
+		map.addAttribute("totalActive", postService.countActivePostByClient(principal.getName()));
 		return "clientDashboard";
 	}
 	
@@ -91,25 +96,32 @@ public class ClientController
 		int rpp = GeneralConfig.rpp;
 		int pn = Integer.parseInt(request.getParameter("pn"));
 		String db_post_status = request.getParameter("db_post_status");
-		if(db_post_status.equals("all"))
+		
+		if(db_post_status.equals("active"))
+		{
+			map.addAttribute("postList", postService.getActivePostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countActivePostByClient(principal.getName()));
+		}
+		else if(db_post_status.equals("published"))
+		{
+			map.addAttribute("postList", postService.getPublishedPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countPublishedPostByClient(principal.getName()));
+		}
+		else if(db_post_status.equals("saved"))
+		{
+			
+			map.addAttribute("postList", postService.getSavedPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countSavedPostByClient(principal.getName()));
+		}
+		else if(db_post_status.equals("closed"))
+		{
+			map.addAttribute("postList", postService.getClosedPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", postService.countClosedPostByClient(principal.getName()));
+		}
+		else
 		{
 			map.addAttribute("postList", postService.getAllPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
 			map.addAttribute("totalCount", postService.countAllPostByClient(principal.getName()));
-		}
-		else if(db_post_status.equals("active"))
-		{
-			map.addAttribute("postList", postService.getPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", postService.countPostByClient(principal.getName()));
-		}
-		else if(db_post_status.equals("inactive"))
-		{
-			map.addAttribute("postList", postService.getAllInactivePostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", postService.countAllInactivePostByClient(principal.getName()));
-		}
-		else if(db_post_status.equals("deleted"))
-		{
-			map.addAttribute("postList", postService.getDeletedPostsByClient(principal.getName(), (pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", postService.countDeletedPostByClient(principal.getName()));
 		}
 		
 		map.addAttribute("rpp", rpp);
@@ -162,40 +174,44 @@ public class ClientController
 			post.setCreateDate(dt);
 			post.setClient(registrationService.getRegistationByUserId(principal.getName()));
 			
+			SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+			String jobCode = "GEN"+df.format(date);
+			long pid = postService.addPost(post);
 			
-			MultipartFile imagefile = model.getFile();
-	        String filename=imagefile.getOriginalFilename();
-	        String newfilename=null;
-	        long pid  = 0;
-	        try
-	        {
-	        	if (!(filename.equals("")))
-	        	{
-	        	    newfilename=filename.replace(" ", "-");
-	        		String imageextension=FilenameUtils.getExtension(newfilename);
-	        		System.out.println("file extension="+imageextension);
-	        		post.setUploadjd(newfilename);
-	        		pid = postService.addPost(post);
-	        		File img = new File (System.getProperty("catalina.base")+"/unihyr_uploads/post/"+pid+"/"+newfilename);
-	        		if(!img.exists())
-	        		{
-	        			img.mkdirs();
-	        		}
-	        		imagefile.transferTo(img);			
-	        	}
-	        	else
-	        	{
-	        		pid = postService.addPost(post);
-	        	}
-			    
-		    }
-		    catch (IOException ie)
-			        {
-				ie.printStackTrace();
+			if(pid < 10)
+			{
+				jobCode+="000000"+pid;
+			}
+			else if(pid < 100)
+			{
+				jobCode+="00000"+pid;
+			}
+			else if(pid < 1000)
+			{
+				jobCode+="0000"+pid;
+			}
+			else if(pid < 10000)
+			{
+				jobCode+="000"+pid;
+			}
+			else if(pid < 100000)
+			{
+				jobCode+="00"+pid;
+			}
+			else if(pid < 1000000)
+			{
+				jobCode+="0"+pid;
+			}
+			else
+			{
+				jobCode+=""+pid;
 			}
 			
+			post.setJobCode(jobCode);
+			postService.updatePost(post);
+			
 		}
-		return "redirect:clientyourpost";
+		return "redirect:clientdashboard";
 	}
 
 	@RequestMapping(value = "/clienteditpost", method = RequestMethod.GET)
@@ -258,10 +274,7 @@ public class ClientController
 				{
 					post.setPublished(dt);
 				}
-				else
-				{
-					post.setPublished(null);
-				}
+				
 				post.setModifyDate(dt);
 				if(!post.getClient().getUserid().endsWith(principal.getName()))
 				{
@@ -269,40 +282,12 @@ public class ClientController
 				}
 				
 				
+				postService.updatePost(post);
 				
-				MultipartFile imagefile = model.getFile();
-		        String filename=imagefile.getOriginalFilename();
-		        String newfilename=null;
-		        try
-		        {
-		        	if (!(filename.equals("")))
-		        	{
-		        	    newfilename=filename.replace(" ", "-");
-		        		String imageextension=FilenameUtils.getExtension(newfilename);
-		        		System.out.println("file extension="+imageextension);
-		        		post.setUploadjd(newfilename);
-		        		postService.updatePost(post);
-		        		File img = new File (System.getProperty("catalina.base")+"/unihyr_uploads/post/"+post.getPostId()+"/"+newfilename);
-		        		if(!img.exists())
-		        		{
-		        			img.mkdirs();
-		        		}
-		        		imagefile.transferTo(img);			
-		        	}
-		        	else
-		        	{
-		        		postService.updatePost(post);
-		        	}
-				    
-			    }
-			    catch (IOException ie)
-				        {
-					ie.printStackTrace();
-				}
 				
 			}
 		}
-		return "redirect:clientyourpost";
+		return "redirect:clientdashboard";
 	}
 
 	@RequestMapping(value = "/clientyourpost", method = RequestMethod.GET)
@@ -327,13 +312,35 @@ public class ClientController
 	@RequestMapping(value = "/clientpostapplicants", method = RequestMethod.GET)
 	public String clientpostapplicants(ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		List<Registration> cons = registrationService.getConsultantsByClient(principal.getName());
-		map.addAttribute("consList",cons);
+		String pid = request.getParameter("pid");
+		System.out.println("pid : " + pid);
+		if(pid != null)
+		{
+			Post post = postService.getPost(Long.parseLong(pid));
+			if(post != null)
+			{
+				map.addAttribute("ppList", postProfileService.getPostProfileByPost(post.getPostId(),0, GeneralConfig.rpp));
+				map.addAttribute("totalCount", postProfileService.countPostProfileByPost(post.getPostId()));
+				map.addAttribute("rpp", GeneralConfig.rpp);
+				map.addAttribute("pn", 1);
+				map.addAttribute("sel_post", post);
+				List<Registration> cons = registrationService.getConsultantsByClient(principal.getName());
+				map.addAttribute("consList",cons);
+			}
+//			for empty table begin
+			else
+			{
+				map.addAttribute("ppList",new ArrayList<PostProfile>());
+				map.addAttribute("totalCount", 0);
+				map.addAttribute("rpp", GeneralConfig.rpp);
+				map.addAttribute("pn", 1);
+				map.addAttribute("sel_post", "");
+			}
+//			for empty table end
+			
+		}
 		
-		
-		
-		
-		map.addAttribute("postsList", postService.getPostsByClient(principal.getName()));
+		map.addAttribute("postsList", postService.getActivePostsByClient(principal.getName()));
 		return "clientPostApplicants";
 	}
 
@@ -346,8 +353,10 @@ public class ClientController
 		String conid = request.getParameter("conid");
 		if(pid == 0 && (conid == null || conid.trim().length() == 0))
 		{
-			map.addAttribute("ppList", postProfileService.getPostProfileByClient(principal.getName(),(pn - 1) * rpp, rpp));
-			map.addAttribute("totalCount", postProfileService.countPostProfileByClient(principal.getName()));
+//			map.addAttribute("ppList", postProfileService.getPostProfileByClient(principal.getName(),(pn - 1) * rpp, rpp));
+//			map.addAttribute("totalCount", postProfileService.countPostProfileByClient(principal.getName()));
+			map.addAttribute("ppList", new ArrayList<PostProfile>());// postProfileService.getPostProfileByPost(pid,(pn - 1) * rpp, rpp));
+			map.addAttribute("totalCount", 0L);//postProfileService.countPostProfileByPost(pid));
 		}
 		else if(pid > 0 && (conid != null && conid.trim().length() > 0))
 		{
@@ -426,14 +435,14 @@ public class ClientController
 	{
 		int pid = Integer.parseInt(request.getParameter("pid"));
 		List<Registration> list = null;
-		if(pid == 0 )
-		{
-			list = registrationService.getConsultantsByClient(principal.getName());
-		}
-		else
+		if(pid > 0 )
 		{
 			list = registrationService.getConsultantsByPost(pid);
 		}
+//		else
+//		{
+//			list = registrationService.getConsultantsByClient(principal.getName());
+//		}
 		JSONObject obj = new JSONObject();
 		
 		JSONArray cons = new JSONArray();
@@ -476,6 +485,127 @@ public class ClientController
 		map.addAttribute("status", request.getParameter("status"));
 		return "clientAccount";
 	}
+	
+	@RequestMapping(value = "/clientapplicantinfo", method = RequestMethod.GET)
+	public String clientApplicantInfo(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long ppid)
+	{
+		PostProfile postProfile = postProfileService.getPostProfile(ppid);
+		
+		map.addAttribute("postProfile", postProfile);
+		
+		map.addAttribute("msgList", inboxService.getInboxMessages(ppid, 0, 10));
+		inboxService.setViewedByClient(ppid);
+		return "clientApplicantInfo";
+	}
+	
+	@RequestMapping(value = "/clientunpublishpost", method = RequestMethod.GET)
+	public @ResponseBody String clientunpublishpost(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
+	{
+		JSONObject object = new JSONObject();
+		Post post = postService.getPost(pid);
+		if(post != null)
+		{
+			post.setPublished(null);
+			postService.updatePost(post);
+			object.put("status", "success");
+			return object.toJSONString();
+		}
+		object.put("status", "failed");
+		return object.toJSONString();
+	}
+	
+	@RequestMapping(value = "/clientBulkActive", method = RequestMethod.GET)
+	public @ResponseBody String clientBulkActive(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		JSONObject object = new JSONObject();
+		String pids = request.getParameter("pids");
+		if(pids != null && pids.length() > 0)
+		{
+			String[] ids = pids.split(",");
+			try
+			{
+				for(String pid : ids)
+				{
+					Post post = postService.getPost(Long.parseLong(pid.trim()));
+					if(post != null)
+					{
+						post.setActive(true);
+						postService.updatePost(post);
+					}
+				}
+				
+				object.put("status", "success");
+				return object.toJSONString();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		
+		object.put("status", "failed");
+		return object.toJSONString();
+	}
+	@RequestMapping(value = "/clientBulkInactive", method = RequestMethod.GET)
+	public @ResponseBody String clientBulkInactive(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		JSONObject object = new JSONObject();
+		String pids = request.getParameter("pids");
+		if(pids != null && pids.length() > 0)
+		{
+			String[] ids = pids.split(",");
+			try
+			{
+				for(String pid : ids)
+				{
+					Post post = postService.getPost(Long.parseLong(pid.trim()));
+					if(post != null)
+					{
+						post.setActive(false);
+						postService.updatePost(post);
+					}
+				}
+				
+				object.put("status", "success");
+				return object.toJSONString();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		
+		object.put("status", "failed");
+		return object.toJSONString();
+	}
+	
+	
+	
+	@RequestMapping(value = "/clientpublishpost", method = RequestMethod.GET)
+	public @ResponseBody String clientpublishpost(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
+	{
+		JSONObject object = new JSONObject();
+		Post post = postService.getPost(pid);
+		if(post != null)
+		{
+			Date date = new Date();
+			java.sql.Date dt = new java.sql.Date(date.getTime());
+			post.setPublished(dt);
+			postService.updatePost(post);
+			object.put("status", "success");
+			object.put("jobCode", post.getJobCode());
+			return object.toJSONString();
+		}
+		object.put("status", "failed");
+		return object.toJSONString();
+	}
+	
+	
+	
+	
+	
 	
 	private Set<String> allowedImageExtensions;
 	@RequestMapping(value = "/client.uploadLogo", method = RequestMethod.POST)

@@ -1,5 +1,6 @@
 package com.unihyr.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -14,27 +15,53 @@ import com.unihyr.domain.GlobalRating;
 
 @Service
 @Transactional
-public class GlobalRatingServiceImpl implements GlobalRatingService {
+public class GlobalRatingServiceImpl implements GlobalRatingService
+{
 
-	@Autowired GlobalRatingDao globalRatingDao;
-	
+	@Autowired
+	GlobalRatingDao globalRatingDao;
+
 	@Override
-	public GlobalRating getGlobalRatingById(String id) {
+	public GlobalRating getGlobalRatingById(String id)
+	{
 		// TODO Auto-generated method stub
 		return globalRatingDao.getGlobalRatingById(id);
 	}
 
 	@Override
-	public long addGlobalRating(GlobalRating rating) {
+	public long addGlobalRating(GlobalRating rating)
+	{
 		// TODO Auto-generated method stub
 		return globalRatingDao.addGlobalRating(rating);
 	}
 
 	@Override
-	public List<GlobalRating> getGlobalRatingList() {
+	public List<GlobalRating> getGlobalRatingList()
+	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
+	@Override
+	public  List<GlobalRating>  getGlobalRatingListByIndustryAndConsultant(int industryId,
+			int consultantId)
+	{
+		// TODO Auto-generated method stub
+		return globalRatingDao.getGlobalRatingListByIndustryAndConsultant(industryId, consultantId);
+	}
+
+	@Override
+	public  List<GlobalRating>  getGlobalRatingListByIndustryAndConsultantRange(int industryId,
+			int consultantId,int first,int max)
+	{
+		// TODO Auto-generated method stub
+		return globalRatingDao.getGlobalRatingListByIndustryAndConsultantRange(industryId, consultantId,first,max);
+	}
+
+
+	@Override
+	public long updateGlobalRating(GlobalRating rating)
+	{
+		return globalRatingDao.updateGlobalRating(rating);
+		}
 }

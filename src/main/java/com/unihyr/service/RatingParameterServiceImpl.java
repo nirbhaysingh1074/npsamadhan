@@ -20,7 +20,7 @@ public class RatingParameterServiceImpl implements RatingParameterService
 	@Override
 	public int addRatingParameter(RatingParameter RatingParameter) {
 		// TODO Auto-generated method stub
-		return 0;
+		return ratingParameterDao.addRatingParameter(RatingParameter);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class RatingParameterServiceImpl implements RatingParameterService
 	@Override
 	public List<RatingParameter> getRatingParameterList() {
 		// TODO Auto-generated method stub
-		return null;
+		return ratingParameterDao.getRatingParameterList();
 	}
 	
 	

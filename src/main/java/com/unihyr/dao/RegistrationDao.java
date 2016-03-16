@@ -19,6 +19,10 @@ public interface RegistrationDao
 	
 	public List<Registration> getConsultantsByPost(long postId);
 	
+	public List<Registration> getClientsByIndustyForConsultant(String consultantId);
 	
+	public long countConsultantList();
+	
+	public long countClientsList();
 	
 }
