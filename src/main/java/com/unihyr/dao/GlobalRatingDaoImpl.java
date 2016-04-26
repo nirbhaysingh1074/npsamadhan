@@ -70,7 +70,7 @@ public class GlobalRatingDaoImpl implements GlobalRatingDao
 	}
 
 	@Override
-	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId, int consultantId)
+	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId, String consultantId)
 	{
 		String sql = "SELECT * FROM globalrating WHERE industryId=:industryId and consultantId=:consultantId";
 		Session session = this.sessionFactory.getCurrentSession();
@@ -79,21 +79,21 @@ public class GlobalRatingDaoImpl implements GlobalRatingDao
 		Criterion crt1 = Restrictions.eq("consultantId", consultantId);
 		LogicalExpression lg = Restrictions.and(crt, crt1);
 		cr.add(lg);
-		cr.addOrder(Order.desc("ratingParamValue"));
+		cr.addOrder(Order.desc("createDate"));
 		return (List<GlobalRating>) cr.list();
 	}
 
 	@Override
-	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultantRange(int industryId, int consultantId,
+	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultantRange(int industryId, String consultantId,
 			int first,int max)
 	{
 		Session session = this.sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(GlobalRating.class);
 		Criterion crt = Restrictions.eq("industryId", industryId);
-		Criterion crt1 = Restrictions.eq("consultantId", consultantId);
+		Criterion crt1 = Restrictions.eq("registration.userid", consultantId);
 		LogicalExpression lg = Restrictions.and(crt, crt1);
 		cr.add(lg);
-		cr.addOrder(Order.desc("ratingParamValue"));
+		cr.addOrder(Order.desc("createDate"));
 		cr.setFirstResult(first);
 		cr.setMaxResults(max);
 		return (List<GlobalRating>) cr.list();

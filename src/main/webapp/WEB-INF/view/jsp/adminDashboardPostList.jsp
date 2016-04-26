@@ -1,111 +1,77 @@
+<%@page import="com.unihyr.domain.Registration"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.domain.Post"%>
 <%@page import="java.util.List"%>
 <%
 	List<Post> postList = (List)request.getAttribute("postList");
-%>
-<div class="col-md-6 col-sm-12 col-xs-12">
-	<div class="box box-success">
-           <div class="box-header with-border bg-green">
-             <h3 class="box-title">Post List</h3>
 
-             <div class="box-tools pull-right">
-               <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
-               </button>
-               <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button>
-             </div>
-           </div>
-           <!-- /.box-header -->
-           <div class="box-body no-padding">
-               <table class="table posts">
-				<thead class="bg-gray">
-					<tr>
-						<th>Job Code</th>
-						<th>Post Title</th>
-						<th>Client</th>
-						<th>Date</th>
-						<th>Status</th>
-					</tr>
-				</thead>
-				<tbody >
-					<%
-						if(postList != null && !postList.isEmpty())
-						{
-							for(Post post : postList)
-							{
-								%>
-									<tr>
-										<td><%= post.getJobCode() %></td>
-										<td><%= post.getTitle() %></td>
-										<td><%= post.getClient().getOrganizationName() %></td>
-										<td><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
-										<td><% if(post.isActive()){out.println("Active");}else{out.println("Inactive");} %></td>
-									</tr>
-								<%
-							}
-						}
-					%>
-					
-				</tbody>
-			</table>
-           </div>
-           <!-- /.box-body -->
-      </div>
+	if(postList != null && !postList.isEmpty())
+	{
+		for(Post post : postList)
+		{
+			%>
+				<tr>
+					<td><a target="_blank" href="adminviewjd?pid=<%= post.getPostId()%>"><%= post.getJobCode() %></a></td>
+					<td><%= post.getTitle() %></td>
+					<td><%= post.getClient().getOrganizationName() %></td>
+					<td><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
+					<td><% if(post.isActive()){%><span class="label label-success">Active</span><%}else{%><span class="label label-danger">Inactive</span><%} %></td>
+					<td><% if(post.getVerifyDate() != null){%><span class="label label-success">Verified</span><%}else{%><span class="label label-danger">Not Verified</span><%} %></td>
+				</tr>
+			<%
+		}
+	}
 
-	
-</div>
-<%
 	List<PostProfile> ppList = (List)request.getAttribute("ppList");
-%>
-<div class="col-md-6 col-sm-12 col-xs-12">
-	<div class="box box-success">
-           <div class="box-header with-border bg-green">
-             <h3 class="box-title">Profiles Uploaded</h3>
+	if(ppList != null && !ppList.isEmpty())
+	{
+		for(PostProfile pp : ppList)
+		{
+			%>
+				<tr>
+					<td><a target="_blank" href="adminviewprofile?ppid=<%= pp.getPpid()%>"><%= pp.getProfile().getName() %></a></td>
+					<td><%= pp.getProfile().getCurrentRole() %></td>
+					<td><%= pp.getPost().getTitle() %></td>
+					<td><%= DateFormats.ddMMMMyyyy.format(pp.getSubmitted()) %></td>
+				</tr>
+			<%
+		}
+	}
 
-             <div class="box-tools pull-right">
-               <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
-               </button>
-               <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button>
-             </div>
-           </div>
-           <!-- /.box-header -->
-           <div class="box-body no-padding">
-               <table class="table posts">
-				<thead class="bg-gray">
-					<tr>
-						<th>Candidate Name</th>
-						<th>Current Role</th>
-						<th>Post Title</th>
-						<th>Submitted</th>
-						
-					</tr>
-				</thead>
-				<tbody >
-					<%
-						if(ppList != null && !ppList.isEmpty())
-						{
-							for(PostProfile pp : ppList)
-							{
-								%>
-									<tr>
-										<td><%= pp.getProfile().getName() %></td>
-										<td><%= pp.getProfile().getCurrentRole() %></td>
-										<td><%= pp.getPost().getTitle() %></td>
-										<td><%= DateFormats.ddMMMMyyyy.format(pp.getSubmitted()) %></td>
-									</tr>
-								<%
-							}
-						}
-					%>
-					
-				</tbody>
-			</table>
-           </div>
-           <!-- /.box-body -->
-      </div>
-
+	List<Registration> regList = (List)request.getAttribute("empList");
 	
-</div>
+	if(regList != null && !regList.isEmpty())
+	{
+		for(Registration reg : regList)
+		{
+			%>
+				<tr>
+					<td><a target="_blank" href="adminuserderail?userid=<%= reg.getUserid()%>"><%= reg.getOrganizationName() %></a></td>
+					<td><%= reg.getUserid() %></td>
+					<td><%= reg.getContact() %></td>
+					<td><%= DateFormats.ddMMMMyyyy.format(reg.getRegdate()) %></td>
+				</tr>
+			<%
+		}
+	}
+
+	List<Registration> consList = (List)request.getAttribute("consList");
+	
+	if(consList != null && !consList.isEmpty())
+	{
+		for(Registration reg : consList)
+		{
+			%>
+				<tr>
+					<td><a target="_blank" href="adminuserderail?userid=<%= reg.getUserid()%>" > <%= reg.getConsultName() %></a></td>
+					<td><%= reg.getUserid() %></td>
+					<td><%= reg.getContact() %></td>
+					<td><%= DateFormats.ddMMMMyyyy.format(reg.getRegdate()) %></td>
+				</tr>
+			<%
+		}
+	}
+%>
 
 		

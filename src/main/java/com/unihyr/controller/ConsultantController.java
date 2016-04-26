@@ -3,11 +3,20 @@ package com.unihyr.controller;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import javax.servlet.ServletException;
@@ -16,7 +25,9 @@ import javax.validation.Valid;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.criterion.Restrictions;
 import org.hsqldb.lib.StringUtil;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,20 +45,27 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.unihyr.constraints.DateFormats;
 import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.constraints.Roles;
+import com.unihyr.domain.BillingDetails;
 import com.unihyr.domain.CandidateProfile;
+import com.unihyr.domain.GlobalRating;
+import com.unihyr.domain.Industry;
 import com.unihyr.domain.Inbox;
 import com.unihyr.domain.Post;
 import com.unihyr.domain.PostConsultant;
 import com.unihyr.domain.PostProfile;
+import com.unihyr.domain.RatingParameter;
 import com.unihyr.domain.Registration;
 import com.unihyr.model.CandidateProfileModel;
 import com.unihyr.model.PostModel;
+import com.unihyr.service.BillingService;
+import com.unihyr.service.GlobalRatingService;
 import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
 import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.ProfileService;
+import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
 
 @Controller
@@ -66,39 +84,132 @@ public class ConsultantController
 	@Autowired
 	IndustryService industryService;
 	@Autowired
+	GlobalRatingService globalRatingService;
+	@Autowired
+	RatingParameterService ratingParamService;
+
+	@Autowired
 	InboxService inboxService;
+	@Autowired
+	private BillingService billingService;
+	
 
 	@RequestMapping(value = "/uploadprofile", method = RequestMethod.GET)
-	public String uploadprofile(ModelMap map, HttpServletRequest request, @RequestParam long pid)
+	public String uploadprofile(ModelMap map, HttpServletRequest request,Principal principal , @RequestParam long pid)
 	{
 		Post post = postService.getPost(pid);
-		if(post != null)
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.WEEK_OF_MONTH, -1);
+		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+		try
 		{
-			map.addAttribute("post", post);
-			System.out.println("Hello to all from uploadprofile");
 			
-			CandidateProfileModel model = new CandidateProfileModel();
-			model.setPost(post);
-			map.addAttribute("uploadProfileForm", model);
-			return "uploadprofile";
-		}
+			Date rowDate = df.parse(df.format(cal.getTime()));
+			long quata =  postProfileService.countPostProfilesForPostByDate(post.getPostId(), principal.getName(), rowDate);
+			if(post != null && post.isActive() )
+			{
+				if(post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
+				{
+					map.addAttribute("quataExceed", false);
+				}
+				else
+				{
+					map.addAttribute("quataExceed", true);
+				}
+				map.addAttribute("post", post);
+				System.out.println("Hello to all from uploadprofile");
+				
+				CandidateProfileModel model = new CandidateProfileModel();
+				model.setPost(post);
+				map.addAttribute("uploadProfileForm", model);
+				return "uploadprofile";
+			}
+		} 
+		catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return "redirect:consdashboard";
 	}
 
 	@RequestMapping(value = "/uploadprofile", method = RequestMethod.POST)
 	public String consultant_uploadProfile(@ModelAttribute(value = "uploadProfileForm") @Valid CandidateProfileModel model, BindingResult result, ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		if (result.hasErrors() || postProfileService.checkPostProfileAvailability(model.getPost().getPostId(), model.getEmail(), model.getContact()))
+		boolean email_st = postProfileService.checkPostProfileAvailability(model.getPost().getPostId(), model.getEmail(), null);
+		boolean contact_st = postProfileService.checkPostProfileAvailability(model.getPost().getPostId(), null, model.getContact());
+		
+		MultipartFile resumefile = model.getResumeFile();
+        String resumefilename=resumefile.getOriginalFilename();
+        String resumeNewfilename=null;
+        
+		boolean valid = true;
+		List<String> uploadMsg = new ArrayList<>();
+		
+		Post post = postService.getPost(model.getPost().getPostId());
+		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+		try
 		{
-			if(!result.hasErrors())
+			
+			Date rowDate = df.parse(df.format(new Date()));
+			long quata =  postProfileService.countPostProfilesForPostByDate(post.getPostId(), principal.getName(), rowDate);
+			
+			if(post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
 			{
-				map.addAttribute("profileExist", "Profile already uploaded for this post !");
+				map.addAttribute("quataExceed", false);
 			}
-			map.addAttribute("post", postService.getPost(model.getPost().getPostId()));
+			else
+			{
+				map.addAttribute("quataExceed", true);
+				map.addAttribute("post", post);
+				return "uploadprofile";
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		if(!(resumefilename.equals("")))
+		{
+			String extension=FilenameUtils.getExtension(resumefilename);
+			System.out.println("file extenson="+extension);
+			if (!GeneralConfig.filetype.contains(extension))
+			{
+				System.out.println("inside file extension check");
+				map.addAttribute("fileuploaderror","true");
+				uploadMsg.add("File type must be Doc, Docx or PDF. ");
+				valid = false;
+			}
+			if (resumefile.getSize()>GeneralConfig.filesize)
+			{
+				map.addAttribute("fileuploaderror","true");
+				uploadMsg.add("File size must not be greater than 1 Mb.");
+				valid = false;
+			}        			
+			
+		}
+		
+		
+		if (result.hasErrors() || email_st || contact_st || !valid)
+		{
+			if(email_st)
+			{
+				map.addAttribute("profileExist_email", "Profile with this email alreadt uploaded for this post !");
+			}
+			if(contact_st)
+			{
+				map.addAttribute("profileExist_contact", "Profile with this contact already uploaded for this post !");
+			}
+			
+			map.addAttribute("post", post);
+			map.addAttribute("uploadMsg", uploadMsg);
 			return "uploadprofile";
 		} 
 		else
 		{
+			
+			
 			System.out.println("form submitted successfully");
 			CandidateProfile profile = new CandidateProfile();
 			profile.setName(model.getName());
@@ -111,15 +222,17 @@ public class ConsultantController
 			profile.setCurrentRole(model.getCurrentRole());
 			profile.setScreeningNote(model.getScreeningNote());
 			profile.setWillingToRelocate(model.getWillingToRelocate());
+			profile.setResumeText(model.getResumeText());
 			profile.setResumePath(model.getResumePath());
+			profile.setCtcComments(model.getCtcComments());
+			profile.setCurrentLocation(model.getCurrentLocation());
 			profile.setRegistration(registrationService.getRegistationByUserId(principal.getName()));
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
 			profile.setDate(dt);
-			
 			profile.setPublished(dt);
 
-			Post post = postService.getPost(model.getPost().getPostId());
+			
 			PostProfile pp = null;
 			if(post != null)
 			{
@@ -127,21 +240,26 @@ public class ConsultantController
 				pp.setSubmitted(dt);
 				pp.setPost(post);
 			}
+			else
+			{
+				return "redirect:consdashboard";
+			}
 			
 			
 	        
-	        MultipartFile resumefile = model.getResumeFile();
-	        String resumefilename=resumefile.getOriginalFilename();
-	        String resumeNewfilename=null;
 	        
 	        try
 	        {
         		if(!(resumefilename.equals("")))
         		{
         			resumeNewfilename=resumefilename.replace(" ", "-");
+        			
+        			
+        			
+        			
         			resumeNewfilename = UUID.randomUUID().toString()+resumeNewfilename;
         			profile.setResumePath(resumeNewfilename);
-        			File img = new File (System.getProperty("catalina.base")+"/unihyr_uploads/profile/"+principal.getName()+"/"+resumeNewfilename);
+        			File img = new File ("/var/unihyr/data/"+resumeNewfilename);
         			if(!img.exists())
         			{
         				img.mkdirs();
@@ -154,6 +272,7 @@ public class ConsultantController
         		profile.setProfileId(prid);
         		pp.setProfile(profile);
         		long ppid = postProfileService.addPostProfile(pp);
+        		map.addAttribute("upload_success", true);
         		return "redirect:consapplicantinfo?ppid="+ppid;
         		
 	        }
@@ -170,6 +289,18 @@ public class ConsultantController
 	@RequestMapping(value = "/cons_your_positions", method = RequestMethod.GET)
 	public String cons_your_positions(ModelMap map, HttpServletRequest request,Principal principal)
 	{
+		Registration cons = registrationService.getRegistationByUserId(principal.getName());
+		if(cons.getAdmin() != null)
+		{
+			cons = cons.getAdmin();
+		}
+
+		map.addAttribute("totalActive", postService.countPostsFilteredForConsultant(cons.getUserid(), null,null, null));
+		map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(null, cons.getUserid()));
+		map.addAttribute("totalshortlist", postProfileService.countShortListedProfileByClientOrConsultant(null, cons.getUserid()));
+		map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(null, cons.getUserid()));
+		map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(null, cons.getUserid()));
+
 		String pid = request.getParameter("pid");
 		System.out.println("pid : " + pid);
 		if(pid != null && pid.length() > 0)
@@ -177,33 +308,43 @@ public class ConsultantController
 			Post post = postService.getPost(Long.parseLong(pid));
 			if(post != null)
 			{
-				map.addAttribute("postConsList", postConsultnatService.getInterestedPostForConsultantByClient(principal.getName(), post.getClient().getUserid()));
-				map.addAttribute("selClient", post.getClient());
+				Registration client = post.getClient();
+				if(post.getClient().getAdmin() != null)
+				{
+					client = post.getClient().getAdmin();
+				}
+				map.addAttribute("postConsList", postConsultnatService.getInterestedPostForConsultantByClient(cons.getUserid(), client.getUserid(),"percentile"));
 				
-				map.addAttribute("profileList", postProfileService.getPostProfileByClientPostAndConsultant(post.getClient().getUserid(), principal.getName(), post.getPostId(), 0, GeneralConfig.rpp_cons));
-				map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(post.getClient().getUserid(), principal.getName(), post.getPostId()));
+				map.addAttribute("selClient", client);
+				
+				map.addAttribute("profileList", postProfileService.getPostProfileByClientPostAndConsultant(client.getUserid(), cons.getUserid(), post.getPostId(), 0, GeneralConfig.rpp_cons,"submitted","submitted"));
+				map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(client.getUserid(), cons.getUserid(), post.getPostId(),"submitted"));
 				map.addAttribute("postSelected",post.getPostId());
 				map.addAttribute("rpp", GeneralConfig.rpp_cons);
 				map.addAttribute("pn", 1);
 			}
 		}
 		System.out.println("Hello to all from uploadprofile");
-		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(principal.getName()));
+		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(cons.getUserid()));
+		
+
+		
 		return "cons_your_positions";
 	}
 
 	@RequestMapping(value = "/profilelistbyconsidclientid", method = RequestMethod.GET)
 	public String profilelistbyconsidclientid(ModelMap map, @RequestParam String clientId, @RequestParam String postId,
-			@RequestParam String pageNo, Principal principal)
+			@RequestParam String pageNo, Principal principal,HttpServletRequest request)
 	{
 		int pn=Integer.parseInt(pageNo);
-		
+
+		String sortParam = request.getParameter("sortParam");
 		pn = (pn - 1) * GeneralConfig.rpp_cons;
 
 		if(clientId != null && clientId.length() > 0  && postId != null && postId.length() > 0)
 		{
-			map.addAttribute("profileList", postProfileService.getPostProfileByClientPostAndConsultant(clientId, principal.getName(), Long.parseLong(postId), pn, GeneralConfig.rpp_cons));
-			map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(clientId, principal.getName(), Long.parseLong(postId)));
+			map.addAttribute("profileList", postProfileService.getPostProfileByClientPostAndConsultant(clientId, principal.getName(), Long.parseLong(postId), pn, GeneralConfig.rpp_cons,"submitted",sortParam));
+			map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(clientId, principal.getName(), Long.parseLong(postId),sortParam));
 			map.addAttribute("postSelected",postId);
 		}
 		else
@@ -213,25 +354,38 @@ public class ConsultantController
 		}
 		map.addAttribute("rpp", GeneralConfig.rpp_cons);
 		map.addAttribute("pn", Integer.parseInt(pageNo));
+		map.addAttribute("sortParam", sortParam);
 		return "profilelistbyconsidclientid";
 	}
 
 	@RequestMapping(value = "/cons_leftside_postlist", method = RequestMethod.GET)
 	public String cons_leftside_postlist(ModelMap map, @RequestParam String clientId, Principal principal)
 	{
+		Registration cons = registrationService.getRegistationByUserId(principal.getName());
+		if(cons.getAdmin() != null)
+		{
+			cons = cons.getAdmin();
+		}
 		if(clientId != null && clientId.trim().length() > 0 && !clientId.equals("1"))
 		{
-			map.addAttribute("postConsList", postConsultnatService.getInterestedPostForConsultantByClient(principal.getName(), clientId));
+			List<PostConsultant> pcList=postConsultnatService.getInterestedPostForConsultantByClient(cons.getUserid(), clientId,"percentile");
+			map.addAttribute("postConsList", pcList);
 		}
-		
-		
 		return "cons_leftside_postlist";
 	}
 	
 	@RequestMapping(value = "/consnewposts", method = RequestMethod.GET)
-	public String consnewposts(ModelMap map, HttpServletRequest request)
+	public String consnewposts(ModelMap map, HttpServletRequest request,Principal principal)
 	{
-		map.addAttribute("indList", industryService.getIndustryList());
+		List<Industry> indList = new ArrayList<Industry>();
+			Set<Industry> inds =  registrationService.getRegistationByUserId(principal.getName()).getIndustries();
+			Iterator<Industry> it = inds.iterator();
+			while(it.hasNext())
+			{
+				indList.add(it.next());
+			}
+		
+		map.addAttribute("indList",indList);
 		return "consnewposts";
 	}
 	@RequestMapping(value = "/consnewpostslist", method = RequestMethod.GET)
@@ -240,28 +394,44 @@ public class ConsultantController
 		System.out.println("sel_industry : " + sel_industry);
 		int rpp = GeneralConfig.rpp;
 		int pn = Integer.parseInt(request.getParameter("pn"));
+		String sortParam = request.getParameter("sortParam");
 		if(sel_industry > 0)
 		{
-			map.addAttribute("postList", postService.getPostsByIndustryId(sel_industry, (pn - 1) * rpp, rpp));
+			//map.addAttribute("postList", postService.getPostsByIndustryId(sel_industry, (pn - 1) * rpp, rpp,sortParam));
+			map.addAttribute("postList", postService.getPostsByIndustryId(sel_industry, 0, 1000,sortParam));
 			map.addAttribute("totalCount", postService.countPostsByIndustryId(sel_industry));
 		}
 		else
 		{
-			map.addAttribute("postList", postService.getPostsByIndustryUsingConsultantId(principal.getName(), (pn - 1) * rpp, rpp));
+			//map.addAttribute("postList", postService.getPostsByIndustryUsingConsultantId(principal.getName(), (pn - 1) * rpp, rpp,sortParam));
+			map.addAttribute("postList", postService.getPostsByIndustryUsingConsultantId(principal.getName(), 0, 1000,sortParam));
 			map.addAttribute("totalCount", postService.countPostsByIndustryUsingConsultantId(principal.getName()));
 		}
 		map.addAttribute("rpp", rpp);
 		map.addAttribute("pn", pn);
+		map.addAttribute("sortParam", sortParam);
 		return "consnewpostslist";
 	}
 	@RequestMapping(value = "/consdashboard", method = RequestMethod.GET)
 	public String consdashboard(ModelMap map, Principal principal)
 	{
-		
-		map.addAttribute("totalProfiles", profileService.countAllProfileListByConsultantIdInRange(principal.getName()));
-		map.addAttribute("sendProfiles", postProfileService.countAllProfileListByConsultantIdInRange(principal.getName()));
-		map.addAttribute("totalActive", profileService.countProfileListByConsultantIdInRange(principal.getName()));
-		return "consdashboard";
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		if(reg != null)
+		{
+			if(reg.getAdmin() != null)
+			{
+				reg = reg.getAdmin();
+			}
+			
+			map.addAttribute("totalActive", postService.countPostsFilteredForConsultant(reg.getUserid(), null,null, null));
+			map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(null, reg.getUserid()));
+			map.addAttribute("totalshortlist", postProfileService.countShortListedProfileByClientOrConsultant(null, reg.getUserid()));
+			map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(null, reg.getUserid()));
+			map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(null, reg.getUserid()));
+
+			return "consdashboard";
+		}
+		return "redirect:login";
 	}
 	@RequestMapping(value = "/consDashboardList", method = RequestMethod.GET)
 	public String consDashboardList(ModelMap map, HttpServletRequest request ,Principal principal)
@@ -270,58 +440,33 @@ public class ConsultantController
 		int pn = Integer.parseInt(request.getParameter("pn"));
 		String db_post_status = request.getParameter("db_post_status");
 		String db_sel_client = request.getParameter("db_sel_client");
-		if(db_post_status.equals("active"))
+		String db_sel_loc = request.getParameter("db_sel_loc");
+		
+		String sortParam = request.getParameter("sortParam");
+		
+		Registration consultant = registrationService.getRegistationByUserId(principal.getName());
+		if(consultant.getAdmin() != null)
 		{
-			if(db_sel_client != null && db_sel_client.length() > 0)
-			{
-				
-				map.addAttribute("postList", postService.getPostsBySubmittedProfilesByConsultantId(principal.getName(), db_sel_client, (pn - 1) * rpp, rpp));
-				map.addAttribute("totalCount", postService.countPostsBySubmittedProfilesByConsultantId(principal.getName(), db_sel_client));
-			}
-			else
-			{
-				map.addAttribute("postList", postService.getPostsBySubmittedProfilesByConsultantId(principal.getName(), (pn - 1) * rpp, rpp));
-				map.addAttribute("totalCount", postService.countPostsBySubmittedProfilesByConsultantId(principal.getName()));
-				
-			}
+			consultant = consultant.getAdmin(); 
 		}
-		else if(db_post_status.equals("inactive"))
-		{
-			if(db_sel_client != null && db_sel_client.length() > 0)
-			{
-				map.addAttribute("postList", postService.getInactivePostsBySubmittedProfilesByConsultantId(principal.getName(), db_sel_client, (pn - 1) * rpp, rpp));
-				map.addAttribute("totalCount", postService.countInactivePostsBySubmittedProfilesByConsultantId(principal.getName(), db_sel_client));
-				
-			}
-			else
-			{
-				map.addAttribute("postList", postService.getInactivePostsBySubmittedProfilesByConsultantId(principal.getName(), (pn - 1) * rpp, rpp));
-				map.addAttribute("totalCount", postService.countInactivePostsBySubmittedProfilesByConsultantId(principal.getName()));
-				
-			}
-		}
-		else 
-		{
-			if(db_sel_client != null && db_sel_client.length() > 0)
-			{
-				map.addAttribute("postList", postService.getAllPostsBySubmittedProfilesByConsultantId(principal.getName(), db_sel_client, (pn - 1) * rpp, rpp));
-				map.addAttribute("totalCount", postService.countAllPostsBySubmittedProfilesByConsultantId(principal.getName(), db_sel_client));
-				
-			}
-			else
-			{
-				map.addAttribute("postList", postService.getAllPostsBySubmittedProfilesByConsultantId(principal.getName(), (pn - 1) * rpp, rpp));
-				map.addAttribute("totalCount", postService.countAllPostsBySubmittedProfilesByConsultantId(principal.getName()));
-				
-			}
-		}
-		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(principal.getName()));
+		
+		
+		// get post list by consultant (by passing client id(optional) , status(optional) , location(optional), sorted by parameter start count and maximum rows)
+		map.addAttribute("postList", postService.getPostsFilteredForConsultant(consultant.getUserid(), db_sel_client,db_post_status, db_sel_loc, (pn - 1) * rpp, rpp,sortParam));
+		map.addAttribute("totalCount", postService.countPostsFilteredForConsultant(consultant.getUserid(), db_sel_client,db_post_status, db_sel_loc));
+		 
+		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(consultant.getUserid()));
+		map.addAttribute("locList", postService.getLocationsByConsultant(consultant.getUserid()));
 		if(db_sel_client != null && db_sel_client.length() > 0)
 		{
 			map.addAttribute("selClient", registrationService.getRegistationByUserId(db_sel_client));
 		}
+		map.addAttribute("db_post_status", db_post_status);
+		map.addAttribute("db_sel_loc", db_sel_loc);
+		
 		map.addAttribute("rpp", rpp);
 		map.addAttribute("pn", pn);
+		map.addAttribute("sortParam", sortParam);
 
 		return "consDashboardList";
 	}
@@ -329,36 +474,157 @@ public class ConsultantController
 	@RequestMapping(value = "/consultantaccount", method = RequestMethod.GET)
 	public String consultantaccount(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
+		map.addAttribute("registration", registrationService.getRegistationByUserId(principal.getName()));
+		map.addAttribute("co-users", registrationService.getCoUsersByUserid(principal.getName()));
 		map.addAttribute("status", request.getParameter("status"));
 		return "consultantAccount";
 	}
 	
+
 	
-	@RequestMapping(value = "/consPostInterest", method = RequestMethod.GET)
-	public @ResponseBody String clientPostInterest(ModelMap map, HttpServletRequest request, Principal principal, @RequestParam long pid)
+	@RequestMapping(value = "/consBulkInterest", method = RequestMethod.GET)
+	public @ResponseBody String consBulkInterest(ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		System.out.println("pid : " + pid);
-		Post post = postService.getPost(pid);
+
+		JSONObject object = new JSONObject();
+		String pids = request.getParameter("pids");
+		if(pids != null && pids.length() > 0)
+		{
+			String[] ids = pids.split(",");
+			try
+			{
+				System.out.println("value is " +pids);
+				for(String pid : ids)
+				{
+		Post post = postService.getPost(Long.parseLong(pid.trim()));
 		JSONObject obj = new JSONObject();
 		if(post != null)
 		{
 			PostConsultant pc = new PostConsultant();
-			
+
+			long trTime1 = 0;
+			long srRatio1 = 0;
+			long crRatio1 = 0;
+			long trTime2 = 0;
+			long srRatio2 = 0;
+			long crRatio2 = 0;
+			int counter1=0;
+			int counter2=0;
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
 			
 			pc.setCreateDate(dt);
 			pc.setPost(post);
-			pc.setConsultant(registrationService.getRegistationByUserId(principal.getName()));
+			Registration consultant=registrationService.getRegistationByUserId(principal.getName());
+
+			Set<Industry> industry = consultant.getIndustries();
+			Iterator<Industry> inIterator = industry.iterator();
+			Industry in = null;
+			while (inIterator.hasNext())
+			{
+				in = (Industry) inIterator.next();
+			}
+			pc.setConsultant(consultant);
+			List<GlobalRating> rating=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(),consultant.getUserid(), 0, GeneralConfig.globalRatingMaxRows1);
+			counter1=rating.size()/GeneralConfig.NoOfRatingParams;
+			int N=counter1;
+			int i=0,j=0,k=0;
+			for (GlobalRating globalRating : rating)
+			{
+				RatingParameter param = globalRating.getRatingParameter();
+				switch (param.getName())
+				{
+				case "turnaroundtime":
+				{
+					trTime1 += globalRating.getRatingParamValue()*(N-i);
+					i++;
+					break;
+				}
+				case "shortlistRatio":
+				{
+					srRatio1 += globalRating.getRatingParamValue()*(N-j);
+					j++;
+					break;
+				}
+				case "closureRate":
+				{
+					crRatio1 += globalRating.getRatingParamValue()*(N-k);
+					k++;
+					break;
+				}
+				default:
+					break;
+				}
+			}
+			int div=(N*(N+1))/2;
+			
+			if(div > 0)
+			{
+				pc.setTurnAround(trTime1/div);
+				pc.setShortlistRatio(srRatio1/div);
+				pc.setClosureRatio(crRatio1/div);
+				
+			}
+			else
+			{
+				pc.setTurnAround(0);
+				pc.setShortlistRatio(0);
+				pc.setClosureRatio(0);
+				
+			}
+						
+			
 			post.getPostConsultants().add(pc);
 			post.setPostConsultants(post.getPostConsultants());
 			postService.updatePost(post);
-			obj.put("status", "success");
-			obj.put("jobCode", post.getJobCode());
-			return obj.toJSONString();
+
+			List<PostConsultant> pcList=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"turnAround");
+			int count=0;
+			for (PostConsultant postConsultant : pcList)
+			{
+				count++;
+				postConsultant.setPercentileTr(count*100/pcList.size());
+				postConsultnatService.updatePostConsultant(postConsultant);
+			}
+			
+			List<PostConsultant> srRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"shortlistRatio");
+			 count=0;
+			for (PostConsultant postConsultant : srRatio)
+			{
+				count++;
+				postConsultant.setPercentileSh(count*100/pcList.size());
+				postConsultnatService.updatePostConsultant(postConsultant);
+			}
+			
+			List<PostConsultant> clRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"closureRatio");
+			 count=0;
+				List<RatingParameter> ratingparam=ratingParamService.getRatingParameterList();
+			for (PostConsultant postConsultant : clRatio)
+			{
+				count++;
+				postConsultant.setPercentileCl(count*100/pcList.size());
+				postConsultnatService.updatePostConsultant(postConsultant);
+				postConsultant.setPercentile(((postConsultant.getPercentileTr()*ratingparam.get(0).getWeightage())/100)+
+						((postConsultant.getPercentileSh()*ratingparam.get(1).getWeightage())/100)+
+						((postConsultant.getPercentileCl()*ratingparam.get(2).getWeightage())/100));
+
+				postConsultnatService.updatePostConsultant(postConsultant);
+			}
+			
 		}
-		obj.put("status", "failed");
-		return obj.toJSONString();
+				}
+		object.put("status", "success");
+		return object.toJSONString();
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+}
+
+
+object.put("status", "failed");
+return object.toJSONString();
 	}
 	
 	
@@ -373,6 +639,22 @@ public class ConsultantController
 		return "consApplicantInfo";
 	}
 	
+	@RequestMapping(value = "/consviewjd", method = RequestMethod.GET)
+	public String viewConsPostDetail(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		String pid = request.getParameter("pid");
+		if(pid != null && pid.trim().length() > 0)
+		{
+			Post post = postService.getPost(Long.parseLong(pid));
+			if(post != null)
+			{
+				map.addAttribute("post", post);
+				return "viewConsPostDetail";
+			}
+			
+		}
+		return "redirect:consdashboard";
+	}
 	
 	
 	
@@ -436,15 +718,27 @@ public class ConsultantController
 		return "failed";
     }
 	
-	@RequestMapping(value = "/conscheckapplicant", method = RequestMethod.GET)
-	public @ResponseBody String consCheckApplicantAvailability(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
+	@RequestMapping(value = "/conscheckapplicantbyemail", method = RequestMethod.GET)
+	public @ResponseBody String consCheckApplicantAvailabilityByEmail(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
 	{
 		String email = request.getParameter("email");
+		JSONObject obj = new JSONObject();
+		if(email != null && email.trim().length() > 0)
+		{
+			obj.put("status", postProfileService.checkPostProfileAvailability(pid, email, null));
+			return obj.toJSONString();
+		}
+		obj.put("status", false);
+		return obj.toJSONString();
+	}
+	@RequestMapping(value = "/conscheckapplicantbycontact", method = RequestMethod.GET)
+	public @ResponseBody String consCheckApplicantAvailabilityByContact(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
+	{
 		String contact = request.getParameter("contact");
 		JSONObject obj = new JSONObject();
-		if(email != null && email.trim().length() > 0 && contact != null && contact.trim().length() > 0)
+		if(contact != null && contact.trim().length() > 0)
 		{
-			obj.put("status", postProfileService.checkPostProfileAvailability(pid, email, contact));
+			obj.put("status", postProfileService.checkPostProfileAvailability(pid, null, contact));
 			return obj.toJSONString();
 		}
 		obj.put("status", false);
@@ -498,5 +792,150 @@ public class ConsultantController
 		return obj.toJSONString();
 	}
 	
+
+	@RequestMapping(value = "/consBulkClose", method = RequestMethod.GET)
+	public @ResponseBody String consBulkClose(ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		JSONObject object = new JSONObject();
+		String pids = request.getParameter("pids");
+		if (pids != null && pids.length() > 0)
+		{
+			String[] ids = pids.split(",");
+			try
+			{
+				for (String pid : ids)
+				{
+					Post post = postService.getPost(Long.parseLong(pid.trim()));
+					if (post != null)
+					{
+						if(post.getCloseRequestConsultant()!=null){
+							if(post.getCloseRequestConsultant().indexOf(principal.getName())<0)
+						post.setCloseRequestConsultant(post.getCloseRequestConsultant()+","+principal.getName());
+								
+								
+						}else{
+							post.setCloseRequestConsultant(principal.getName());	
+						}
+						postService.updatePost(post);
+					}
+				}
+				object.put("status", "success");
+				return object.toJSONString();
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		object.put("status", "failed");
+		return object.toJSONString();
+	}
+
+	@RequestMapping(value = "/consacceptoffer", method = RequestMethod.GET)
+	public @ResponseBody String consacceptoffer(ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		JSONObject obj = new JSONObject();
+		try
+		{
+			long ppid = Long.parseLong(request.getParameter("ppid"));
+			String ppstatus  = request.getParameter("ppstatus"); 
+			PostProfile pp = postProfileService.getPostProfile(ppid);
+			
+			if(pp != null)
+			{
+				Date date = new Date();
+				java.sql.Date dt = new java.sql.Date(date.getTime());
+				
+				if(ppstatus.equals("join_accept"))
+				{
+					pp.setJoinDate(dt);
+
+					BillingDetails billingDetailscl =billingService.getBillingDetailsById(pp.getPpid());
+					billingDetailscl.setJoiningDate(dt);
+					
+					long payDay=Long.parseLong(pp.getPost().getClient().getPaymentDays()+"");
+					billingDetailscl.setPaymentDueDateForAd(new java.sql.Date(
+							dt.getTime() + (payDay) * 24 * 60 * 60 * 1000));
+					
+					try{
+					billingDetailscl.setPaymentDueDateForCo(new java.sql.Date(
+							dt.getTime() + (payDay) * 24 * 60 * 60 * 1000
+									+ (Long.parseLong(pp.getProfile().getRegistration().getPaymentDays()+"")) * 24 * 60 * 60 * 1000));
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					billingService.updateBillingDetails(billingDetailscl);
+					obj.put("status", "join_accept");
+				}
+				else if(ppstatus.equals("join_reject"))
+				{
+					String rej_reason = request.getParameter("rej_reason");
+					pp.setJoinDropDate(dt);
+					pp.setRejectReason(rej_reason);
+					obj.put("status", "join_reject");
+				}
+				else
+				{
+					obj.put("status", "failed");
+				}
+				
+				postProfileService.updatePostProfile(pp);
+				return obj.toJSONString();
+				
+			}
+			
+			
+		} catch (Exception e)
+		{
+			// TODO: handle exception
+		}
+		obj.put("status", "failed");
+		
+		return obj.toJSONString();
+	}
+	@RequestMapping(value = "/consviewuser", method = RequestMethod.GET)
+	public String clientViewUser(ModelMap map, Principal principal, @RequestParam String uid)
+	{
+		Registration reg = registrationService.getRegistationByUserId(uid);
+		if(reg != null)
+		{
+			map.addAttribute("registration", reg);
+			return "consViewUser";
+		}
+		return "redirect:clientdashboard";
+
+	}
 	
+	@RequestMapping(value = "/consmessages", method = RequestMethod.GET)
+	public @ResponseBody String consmessages(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		JSONObject object = new JSONObject();
+		List<Inbox> mList = inboxService.getMessageByConsultant(principal.getName(), 0, 100);
+		JSONArray array = new JSONArray();
+		JSONObject jm = null;
+		try
+		{
+			for(Inbox m : mList)
+			{
+				jm = new JSONObject();
+				jm.put("cons", m.getPostProfile().getPost().getClient().getOrganizationName());
+				jm.put("ptitle", m.getPostProfile().getPost().getTitle());
+				jm.put("message", m.getMessage());
+				jm.put("ppid", m.getPostProfile().getPpid());
+				
+				array.add(jm);
+			}
+			object.put("mList", array);
+			object.put("status", true);
+			return object.toJSONString();
+			
+		} 
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		object.put("status", false);
+		return object.toJSONString();
+
+	}
 }

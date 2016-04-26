@@ -23,7 +23,8 @@
 		<div class="container" style="background: inherit;">
 			<div class="login-form">
 				<div class="login-header">
-					<img alt="" src="images/logo.png">
+					<a href="home"><img alt="" src="images/logo.png"></a>
+					<a href="home"><span class="close" title="Home Page">X</span></a>
 				</div>
 				<div class="login-wrap">
 						<%
@@ -61,7 +62,7 @@
 							</div>
 							<div class='clearfix'>
 								<input type="checkbox" style="vertical-align: middle" id="j_remember" name="_spring_security_remember_me">
-								remember me
+								Remember me
 							</div>
 							<div class="form_submt alin_cnt bottom-padding10"
 								class='clearfix'>

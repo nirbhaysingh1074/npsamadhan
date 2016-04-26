@@ -2,6 +2,7 @@ package com.unihyr.dao;
 
 import java.util.List;
 
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,9 @@ public class LoginInfoDaoImpl implements LoginInfoDao
 	@Override
 	public LoginInfo findUserById(String userid)
 	{
-		List<LoginInfo> logList = this.sessionFactory.getCurrentSession().createCriteria(LoginInfo.class).add(Restrictions.eq("userid", userid)).list();
+		List<LoginInfo> logList = this.sessionFactory.getCurrentSession().createCriteria(LoginInfo.class).add(Restrictions.eq("userid", userid))
+				.setFetchMode("roles", FetchMode.JOIN)
+				.list();
 		if(!logList.isEmpty())
 		{
 			return logList.get(0);
@@ -57,21 +60,18 @@ public class LoginInfoDaoImpl implements LoginInfoDao
 		return false;
 	}
 	
-	public boolean updatePassword(String userid, String password)
+	public boolean updatePassword(String userid, String oldPassword, String password)
 	{
 		List<LoginInfo> logList = this.sessionFactory.getCurrentSession().createCriteria(LoginInfo.class).add(Restrictions.eq("userid", userid)).list();
 		if(!logList.isEmpty())
 		{
 			LoginInfo info = logList.get(0);
-			boolean status = BCrypt.checkpw(password, info.getPassword());
-			if(status)
-			{
-				String encryptedpwd=BCrypt.hashpw(password, BCrypt.gensalt());
-				info.setPassword(encryptedpwd);
-				this.sessionFactory.getCurrentSession().update(info);
-				return true;
-			}
 			
+			String encryptedpwd=BCrypt.hashpw(password, BCrypt.gensalt());
+			info.setPassword(encryptedpwd);
+			this.sessionFactory.getCurrentSession().update(info);
+			return true;
+		
 		}
 		return false;
 	}

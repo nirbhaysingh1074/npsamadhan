@@ -13,5 +13,5 @@ public interface LoginInfoService
 	
 	public boolean checkUser(String userid, String password);
 	
-	public boolean updatePassword(String userid, String password);
+	public boolean updatePassword(String userid, String oldPassword, String password);
 }

@@ -15,8 +15,9 @@
 		{
 					
 			%>
-				<li id="<%=pc.getPost().getPostId() %>">
-				<a href="javascript:void(0)"><%=pc.getPost().getTitle()%></a></li>
+				<li title="<%=pc.getPercentile() %>,<%=pc.getTurnAround() %>,<%=pc.getShortlistRatio() %>,<%=pc.getClosureRatio() %>" id="<%=pc.getPost().getPostId() %>">
+			<a title="Click to view your positions" href="cons_your_positions?pid=<%= pc.getPost().getPostId()%>" >
+			<%=pc.getPost().getTitle()%></a></li>
 			<%
 			
 		}

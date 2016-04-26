@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.hibernate.Session;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,13 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.constraints.Roles;
+import com.unihyr.constraints.Validation;
+import com.unihyr.domain.Industry;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Registration;
 import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientRegistrationModel;
 import com.unihyr.model.ConsultRegModel;
 import com.unihyr.service.IndustryService;
+import com.unihyr.service.LocationService;
 import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.RegistrationService;
@@ -44,6 +49,8 @@ public class LoginController
 	private LoginInfoService loginInfoService;
 	@Autowired
 	private UserRoleService userRoleService;
+	@Autowired
+	private LocationService locationService;
 
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -127,11 +134,18 @@ public class LoginController
 		
 		return "resetPassword";
 	}
+	@RequestMapping(value = "/regSuccess", method = RequestMethod.GET)
+	public String regSuccess(ModelMap map)
+	{
+		
+		return "regSuccess";
+	}
 	
 	@RequestMapping(value = "/clientregistration", method = RequestMethod.GET)
 	public String registration(ModelMap map)
 	{
 		map.addAttribute("industryList", industryService.getIndustryList());
+		map.addAttribute("locList", locationService.getLocationList());
 		System.out.println("Hello to all from registration");
 		map.addAttribute("regForm", new ClientRegistrationModel());
 		return "registration";
@@ -154,6 +168,7 @@ public class LoginController
 			if (user != null)
 			{
 				map.addAttribute("industryList", industryService.getIndustryList());
+				map.addAttribute("locList", locationService.getLocationList());
 				map.addAttribute("uidex", "exist");
 				return "registration";
 			}
@@ -165,6 +180,7 @@ public class LoginController
 		{
 			System.out.println("in validation");
 			map.addAttribute("industryList", industryService.getIndustryList());
+			map.addAttribute("locList", locationService.getLocationList());
 			return "registration";
 		} else
 		{
@@ -183,7 +199,7 @@ public class LoginController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("orgName", reg.getOrganizationName());
-			return "redirect:/login";
+			return "redirect:/regSuccess";
 		}
 	}
 
@@ -191,8 +207,10 @@ public class LoginController
 	public String consultRegistration(ModelMap map)
 	{
 		map.addAttribute("industryList", industryService.getIndustryList());
-		System.out.println("Hello to all from consult registration");
-		map.addAttribute("regForm", new ConsultRegModel());
+		map.addAttribute("locList", locationService.getLocationList());
+		ConsultRegModel model = new ConsultRegModel();
+		model.setConsultant_type(true);
+		map.addAttribute("regForm", model);
 		return "consultRegistration";
 	}
 
@@ -205,23 +223,33 @@ public class LoginController
 	{
 
 		System.out.println("userid in controller" + userid);
+		System.out.println("indusries : " + request.getParameterValues("industries"));
+		String []industries = request.getParameterValues("industries");
+		boolean valid = true;
 		try
 		{
 			Registration user = registrationService.getRegistationByUserId(userid);
 			if (user != null)
 			{
-				map.addAttribute("industryList", industryService.getIndustryList());
+				valid = false;
 				map.addAttribute("uidex", "exist");
-				return "consultRegistration";
 			}
+			if(industries== null || industries.length < 1)
+			{
+				valid = false;
+				map.addAttribute("industry_req", "Please select atleast one industry");
+			}
+			
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		if (result.hasErrors())
+		if (result.hasErrors() || !valid)
 		{
 			System.out.println("in validation");
 			map.addAttribute("industryList", industryService.getIndustryList());
+			map.addAttribute("locList", locationService.getLocationList());
+			map.addAttribute("sel_inds", industries);
 			return "consultRegistration";
 		} else
 		{
@@ -229,17 +257,38 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
-			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
-			login.setReg(reg);
-			reg.setLog(login);
-			urole.setUserrole(Roles.ROLE_CON_MANAGER.toString());
-			Set<UserRole> roles = new HashSet<UserRole>();
-			roles.add(urole);
-			login.setRoles(roles);
-			loginInfoService.addLoginInfo(login, null);
-			map.addAttribute("regSuccess", "true");
-			map.addAttribute("orgName", reg.getConsultName());
-			return "redirect:/login";
+			
+			Set<Industry> indset = new HashSet<>();
+			try
+			{
+				for(String ind : industries)
+				{
+					Industry inds = industryService.getIndustry(Integer.parseInt(ind));
+					if(inds != null)
+					{
+						indset.add(inds);
+					}
+				}
+				
+				reg.setIndustries(indset);
+				login.setReg(reg);
+				reg.setLog(login);
+				urole.setUserrole(Roles.ROLE_CON_MANAGER.toString());
+				Set<UserRole> roles = new HashSet<UserRole>();
+				roles.add(urole);
+				login.setRoles(roles);
+				loginInfoService.addLoginInfo(login, null);
+				map.addAttribute("regSuccess", "true");
+				map.addAttribute("orgName", reg.getConsultName());
+				return "redirect:/regSuccess";
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				map.addAttribute("industryList", industryService.getIndustryList());
+				return "consultRegistration";
+			}
+			
 		}
 	}
 
@@ -250,10 +299,11 @@ public class LoginController
 		{
 			if(loginInfoService.checkUser(principal.getName(), oldPassword))
 			{
-				boolean status = loginInfoService.updatePassword(principal.getName(), oldPassword);
+				boolean status = loginInfoService.updatePassword(principal.getName(), oldPassword, password);
 				if(status)
 				{
 					map.addAttribute("status", "success");
+					
 					return "redirect:userAcccount";
 				}
 			}
@@ -262,6 +312,31 @@ public class LoginController
 		}
 		map.addAttribute("status", "notmatched");
 		return "redirect:userAcccount";
+	}
+	
+	
+	@RequestMapping(value = "/changeChildPassword", method = RequestMethod.POST)
+	public String changeChildPassword(Principal principal ,ModelMap map , HttpServletRequest request, @RequestParam("childId") String childId, @RequestParam("newPassword") String password, @RequestParam("rePassword") String rePassword)
+	{
+		Registration child = registrationService.getRegistationByUserId(childId);
+		map.addAttribute("registration",child);
+		if(child != null && child.getAdmin() != null && child.getAdmin().getUserid().equals(principal.getName()))
+		{
+			if(password != null && GeneralConfig.checkPasswordValid(password) && password.equals(rePassword))
+			{
+				boolean status = loginInfoService.updatePassword(childId, null, password);
+				if(status)
+				{
+					map.addAttribute("status", "success");
+					return "redirect:clientviewuser?uid="+childId;
+				}
+			}
+			map.addAttribute("status", "notmatched");
+			return "redirect:clientviewuser?uid="+childId;
+		
+		}
+		return "redirect:userAcccount";
+	
 	}
 	
 	@RequestMapping(value = "/userAcccount", method = RequestMethod.GET)
@@ -281,5 +356,22 @@ public class LoginController
 			return "redirect:consultantaccount";
 		}
 		return "redirect:error";
+	}
+	
+	
+	@RequestMapping(value = "/checkUserExistance", method = RequestMethod.GET)
+	public @ResponseBody String checkUserExistance(Principal principal ,ModelMap map, HttpServletRequest request , @RequestParam String userid)
+	{
+		map.addAttribute("status", request.getParameter("status"));
+		JSONObject obj = new JSONObject();
+		
+		Registration reg = registrationService.getRegistationByUserId(userid);
+		if(reg!= null)
+		{
+			obj.put("uidexist", true);
+			return obj.toJSONString();
+		}
+		obj.put("uidexist", false);
+		return obj.toJSONString();
 	}
 }

@@ -64,9 +64,33 @@ public class CandidateProfile
 	@Column
 	private Date published;
 	
+	@Column
+	private String currentLocation;
 
 	@Column
 	private String resumePath;
+	@Column
+	private String ctcComments;
+	
+	public String getCtcComments()
+	{
+		return ctcComments;
+	}
+
+	public void setCtcComments(String ctcComments)
+	{
+		this.ctcComments = ctcComments;
+	}
+
+	public String getCurrentLocation()
+	{
+		return currentLocation;
+	}
+
+	public void setCurrentLocation(String currentLocation)
+	{
+		this.currentLocation = currentLocation;
+	}
 
 	@ManyToOne(cascade =
 	{ CascadeType.ALL })
@@ -237,10 +261,23 @@ public class CandidateProfile
 	{
 		this.postProfile = postProfile;
 	}
-
+	
 	@Column
 	@Lob
 	private String screeningNote;
+	@Column
+	@Lob
+	private String resumeText;
+
+	public String getResumeText()
+	{
+		return resumeText;
+	}
+
+	public void setResumeText(String resumeText)
+	{
+		this.resumeText = resumeText;
+	}
 
 	public String getScreeningNote()
 	{

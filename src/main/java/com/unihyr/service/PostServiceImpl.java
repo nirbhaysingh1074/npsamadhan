@@ -1,5 +1,6 @@
 package com.unihyr.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +57,9 @@ public class PostServiceImpl implements PostService
 	}
 	
 	@Override
-	public List<Post> getActivePostsByClient(String userid, int first, int max)
+	public List<Post> getActivePostsByClient(String userid, int first, int max,String sortParam)
 	{
-		return this.postDao.getActivePostsByClient(userid, first, max);
+		return this.postDao.getActivePostsByClient(userid, first, max,sortParam);
 	}
 	
 	@Override
@@ -68,9 +69,9 @@ public class PostServiceImpl implements PostService
 	}
 	
 	@Override
-	public List<Post> getAllPostsByClient(String userid, int first, int max)
+	public List<Post> getAllPostsByClient(String userid, int first, int max,String sortParam)
 	{
-		return this.postDao.getAllPostsByClient(userid, first, max);
+		return this.postDao.getAllPostsByClient(userid, first, max,sortParam);
 	}
 	
 	@Override
@@ -80,9 +81,9 @@ public class PostServiceImpl implements PostService
 	}
 	
 	@Override
-	public List<Post> getPublishedPostsByClient(String userid, int first, int max)
+	public List<Post> getPublishedPostsByClient(String userid, int first, int max,String sortParam)
 	{
-		return this.postDao.getPublishedPostsByClient(userid, first, max);
+		return this.postDao.getPublishedPostsByClient(userid, first, max,sortParam);
 	}
 	
 	@Override
@@ -93,9 +94,9 @@ public class PostServiceImpl implements PostService
 
 	
 	@Override
-	public List<Post> getClosedPostsByClient(String userid, int first, int max)
+	public List<Post> getClosedPostsByClient(String userid, int first, int max,String sortParam)
 	{
-		return this.postDao.getClosedPostsByClient(userid, first, max);
+		return this.postDao.getClosedPostsByClient(userid, first, max,sortParam);
 	}
 	
 	@Override
@@ -104,9 +105,9 @@ public class PostServiceImpl implements PostService
 		return this.postDao.countClosedPostByClient(userid);
 	}
 	
-	public List<Post> getSavedPostsByClient(String clientId, int first, int max)
+	public List<Post> getSavedPostsByClient(String clientId, int first, int max, String sortParam)
 	{
-		return this.postDao.getSavedPostsByClient(clientId, first, max);
+		return this.postDao.getSavedPostsByClient(clientId, first, max, sortParam);
 	}
 	
 	public long countSavedPostByClient(String clientId)
@@ -116,10 +117,10 @@ public class PostServiceImpl implements PostService
 	
 	
 	@Override
-	public List<Post> getPostsByIndustryUsingConsultantId(String consultantId, int first, int max)
+	public List<Post> getPostsByIndustryUsingConsultantId(String consultantId, int first, int max,String sortParam)
 	{
 		
-		return this.postDao.getPostsByIndustryUsingConsultantId(consultantId, first, max);
+		return this.postDao.getPostsByIndustryUsingConsultantId(consultantId, first, max,sortParam);
 	}
 
 	@Override
@@ -130,9 +131,9 @@ public class PostServiceImpl implements PostService
 	}
 	
 	@Override
-	public List<Post> getPostsByIndustryId(int industryId, int first, int max)
+	public List<Post> getPostsByIndustryId(int industryId, int first, int max,String sortParam)
 	{
-		return this.postDao.getPostsByIndustryId(industryId, first, max);
+		return this.postDao.getPostsByIndustryId(industryId, first, max,sortParam);
 	}
 
 	@Override
@@ -143,9 +144,9 @@ public class PostServiceImpl implements PostService
 
 	
 	@Override
-	public List<Post> getPostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max)
+	public List<Post> getPostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max,String sortParam)
 	{
-		return this.postDao.getPostsBySubmittedProfilesByConsultantId(consultantId, first, max);
+		return this.postDao.getPostsBySubmittedProfilesByConsultantId(consultantId, first, max,sortParam);
 	}
 
 	@Override
@@ -155,9 +156,9 @@ public class PostServiceImpl implements PostService
 	}
 
 	@Override
-	public List<Post> getAllPostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max)
+	public List<Post> getAllPostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max,String sortParam)
 	{
-		return this.postDao.getAllPostsBySubmittedProfilesByConsultantId(consultantId, first, max);
+		return this.postDao.getAllPostsBySubmittedProfilesByConsultantId(consultantId, first, max,sortParam);
 	}
 
 	@Override
@@ -167,9 +168,9 @@ public class PostServiceImpl implements PostService
 	}
 
 	@Override
-	public List<Post> getInactivePostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max)
+	public List<Post> getInactivePostsBySubmittedProfilesByConsultantId(String consultantId, int first, int max,String sortParam)
 	{
-		return this.postDao.getInactivePostsBySubmittedProfilesByConsultantId(consultantId, first, max);
+		return this.postDao.getInactivePostsBySubmittedProfilesByConsultantId(consultantId, first, max,sortParam);
 	}
 
 	@Override
@@ -179,9 +180,9 @@ public class PostServiceImpl implements PostService
 	}
 
 	@Override
-	public List<Post> getPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max)
+	public List<Post> getPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max,String sortParam)
 	{
-		return this.postDao.getPostsBySubmittedProfilesByConsultantId(consultantId, clientId, first, max);
+		return this.postDao.getPostsBySubmittedProfilesByConsultantId(consultantId, clientId, first, max,sortParam);
 	}
 
 	@Override
@@ -191,9 +192,9 @@ public class PostServiceImpl implements PostService
 	}
 
 	@Override
-	public List<Post> getAllPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max)
+	public List<Post> getAllPostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max,String sortParam)
 	{
-		return this.postDao.getAllPostsBySubmittedProfilesByConsultantId(consultantId, clientId, first, max);
+		return this.postDao.getAllPostsBySubmittedProfilesByConsultantId(consultantId, clientId, first, max,sortParam);
 	}
 
 	@Override
@@ -203,9 +204,9 @@ public class PostServiceImpl implements PostService
 	}
 
 	@Override
-	public List<Post> getInactivePostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max)
+	public List<Post> getInactivePostsBySubmittedProfilesByConsultantId(String consultantId, String clientId, int first, int max,String sortParam)
 	{
-		return this.postDao.getInactivePostsBySubmittedProfilesByConsultantId(consultantId, clientId, first, max);
+		return this.postDao.getInactivePostsBySubmittedProfilesByConsultantId(consultantId, clientId, first, max,sortParam);
 	}
 
 	@Override
@@ -214,4 +215,32 @@ public class PostServiceImpl implements PostService
 		return this.postDao.countInactivePostsBySubmittedProfilesByConsultantId(consultantId, clientId);
 	}
 
+	@Override
+	public void deletePost(Post post)
+	{
+			this.postDao.deletePost(post);
+	}
+
+	@Override
+	public List<Post> getAllPostBetweenDates(Date sDate, Date eDate, int first, int max)
+	{
+		return this.postDao.getAllPostBetweenDates(sDate, eDate, first, max);
+	}
+	
+	
+	
+	public List<Post> getPostsFilteredForConsultant(String consultantId, String clientId, String status, String location, int first, int max, String sortParam)
+	{
+		return this.postDao.getPostsFilteredForConsultant(consultantId, clientId, status, location, first, max, sortParam);
+	}
+	
+	public long countPostsFilteredForConsultant(String consultantId, String clientId, String status, String location)
+	{
+		return this.postDao.countPostsFilteredForConsultant(consultantId, clientId, status, location);
+	}
+	
+	public List<String> getLocationsByConsultant(String consultantId)
+	{
+		return this.postDao.getLocationsByConsultant(consultantId);
+	}
 }

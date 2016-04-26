@@ -5,6 +5,7 @@
 <%@page import="java.util.List"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -17,12 +18,15 @@
 	function  loadclientdashboardposts(pn)
 	{
 		var db_post_status = $('#db_post_status').val();
-		
+		var sortParam=$('#sortParam').val();
+		if(typeof sortParam != 'undefined'){}
+		else
+			sortParam='published';
 // 		alert("hello " + db_post_status);
 		$.ajax({
 			type : "GET",
 			url : "clientDashboardList",
-			data : {'pn':pn,'db_post_status':db_post_status},
+			data : {'pn':pn,'db_post_status':db_post_status,'sortParam':sortParam},
 			contentType : "application/json",
 			success : function(data) {
 //				alert(data);
@@ -66,70 +70,99 @@ jQuery(document).ready(function() {
   });
 	
 </script>
-
+<style type="text/css">
+.report_sum{padding: 5px 0;}
+</style>
 </head>
 <body class="loading" onload="loadclientdashboardposts('1')">
 <div class="mid_wrapper">
   <div class="container">
   	<div id="positions_info">
-	  	<div style="padding-bottom: 0" class="rightside_in new_table">
-	        <div class="bottom-padding">
-	        	<div class="col-md-4">
-	        		Total number of positions posted
-	        	</div>
-	        	<div class="col-md-2">
-	        		${totalposts}
-	        	</div>
-	        	
-	        	<div class="col-md-4" style="text-align: center;">
-	        		<%
-	        			long totalposts = (Long)request.getAttribute("totalposts");
-	        			long totalActive = (Long)request.getAttribute("totalActive");
-	        			long active = 0;
-	        			long inactive = 0;
-	        			if(totalposts > 0)
-	        			{
-		        			active = (totalActive*100)/totalposts;
-		        			inactive = 100-active;
-		        			if(active > 0)
-		        			{
-			        			%>
-					        		<div style="float:left; width: <%= active%>%; background-color: green;"><%= active %> % </div>
-					        	<%
-		        			}
-		        			if(inactive > 0)
-		        			{
-			        			%>
-					        		<div style="float:left;width: <%= inactive%>%; background-color: red;"><%= inactive%> % </div>
-			        			<%
-		        			}
-	        			}
-	        			
-	        		%>
-	        		
-	        	</div>
-	        	<div style="clear: both;"></div>
-	        	<div class="col-md-4">
-	        		Total number of profiles received
-	        	</div>
-	        	<div class="col-md-2">
-	        		${totalprofiles }
-	        	</div>
-	        	
+		  	<div style="padding-bottom: 0" class="rightside_in new_table">
+		  		<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+			        <div class="bottom-padding" style=" border: 2px solid gray; border-radius: 5px; margin-bottom: 10px;  padding: 10px;">
+				        <div class="bottom-padding">
+				        	
+				        	<div class="col-md-4 report_sum" >
+					        	<div class="col-md-9">
+					        		Active Positions
+					        	</div>
+					        	<div class="col-md-3">
+					        		${totalActive}
+					        	</div>
+				        	</div>
+				        	<div class="col-md-4 report_sum" >
+					        	<div class="col-md-9">
+					        		InActive Positions
+					        	</div>
+					        	<div class="col-md-3">
+					        		${totalposts - totalActive}
+					        	</div>
+				        	</div>
+				        	<div class="col-md-4 report_sum" >
+					        	<div class="col-md-9">
+					        		No of Profile Recieved
+					        	</div>
+					        	<div class="col-md-3">
+					        		${totalprofiles }
+					        	</div>
+				        	</div>
+				        	<div class="col-md-4 report_sum" >
+					        	<div class="col-md-9">
+					        		No of Profile Shortlisted
+					        	</div>
+					        	<div class="col-md-3">
+					        		${totalshortlist }
+					        	</div>
+				        	</div>
+				        	<div class="col-md-4 report_sum" >
+					        	<div class="col-md-9">
+					        		No of Candidate Joined
+					        	</div>
+					        	<div class="col-md-3">
+					        		${totaljoin }
+					        	</div>
+				        	</div>
+				        	<div class="col-md-4 report_sum" >
+					        	<div class="col-md-9">
+					        		No of Partners
+					        	</div>
+					        	<div class="col-md-3">
+					        		${totalpartner }
+					        	</div>
+				        	</div>
+				        	
+				        </div>
+			        </div>
+			    </sec:authorize> --%>
+		        <div class="block consulting">
+		          <div style="    float: left;">
+		            <select id="db_post_status">
+		               <option value="all">All</option>
+					   <option value="active">Active</option>
+					   <option value="published">Published</option>
+					   <option value="saved">Saved</option>
+					   <option value="closed">Closed</option>
+					</select>
+		          </div>
+		         <div  class="sort_by"> <span>Sort by</span>
+	          <select id="sortParam" onchange="loadclientdashboardposts('1')">
+	            <option value="published">Recent Posts</option>
+	            <option value="location">Location(A-Z)</option>
+	            <option value="title">Job Post(A-Z)</option>
+	          </select>
 	        </div>
-	        <br><br>
-	        <div class="block consulting">
-	          <div class="">
-	            <select id="db_post_status">
-	               <option value="all">All</option>
-				   <option value="active">Active</option>
-				   <option value="published">Published</option>
-				   <option value="saved">Saved</option>
-				   <option value="closed">Closed</option>
-				</select>
-	          </div>
-	        </div>
-	    </div>
+	        <%
+	        String sortParam=(String)request.getAttribute("sortParam");
+	        %>
+	        <script type="text/javascript">
+	        <%if(sortParam!=null){%>
+	        $("#sortParam").val('<%=sortParam%>');
+	        $("#sortParam option[value='<%=sortParam%>']").attr('selected','selected');
+	        <%}%>
+	        </script>
+		        </div>
+		    </div>
 	  	<div class="client_db_posts" >
 		    
 	    </div>

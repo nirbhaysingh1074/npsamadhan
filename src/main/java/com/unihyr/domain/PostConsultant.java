@@ -27,21 +27,101 @@ public class PostConsultant
 	private Post post;
 	
 	@ManyToOne  
-    @JoinColumn(name = "lid"  , nullable= false)
+    @JoinColumn(name = "lid")
 	private Registration consultant;
+
+	@Column(nullable = false)
+	private double turnAround;
 	
-	private double totalRating;
+	@Column(nullable = false)
+	private double shortlistRatio;
+	
+	@Column(nullable = false)
+	private double closureRatio;
+	
+	@Column(nullable = false)
+	private double percentileTr;
+	
+	@Column(nullable = false)
+	private double percentileSh;
+	
+	@Column(nullable = false)
+	private double percentileCl;
+	
+	@Column(nullable = false)
+	private double percentile;
 	
 	private Date createDate;
 
-	public double getTotalRating()
+	
+	public double getPercentileTr()
 	{
-		return totalRating;
+		return percentileTr;
 	}
 
-	public void setTotalRating(double totalRating)
+	public void setPercentileTr(double percentileTr)
 	{
-		this.totalRating = totalRating;
+		this.percentileTr = percentileTr;
+	}
+
+	public double getPercentileSh()
+	{
+		return percentileSh;
+	}
+
+	public void setPercentileSh(double percentileSh)
+	{
+		this.percentileSh = percentileSh;
+	}
+
+	public double getPercentileCl()
+	{
+		return percentileCl;
+	}
+
+	public void setPercentileCl(double percentileCl)
+	{
+		this.percentileCl = percentileCl;
+	}
+
+	public double getPercentile()
+	{
+		return percentile;
+	}
+
+	public void setPercentile(double percentile)
+	{
+		this.percentile = percentile;
+	}
+
+	public double getTurnAround()
+	{
+		return turnAround;
+	}
+
+	public void setTurnAround(double turnAround)
+	{
+		this.turnAround = turnAround;
+	}
+
+	public double getShortlistRatio()
+	{
+		return shortlistRatio;
+	}
+
+	public void setShortlistRatio(double shortlistRatio)
+	{
+		this.shortlistRatio = shortlistRatio;
+	}
+
+	public double getClosureRatio()
+	{
+		return closureRatio;
+	}
+
+	public void setClosureRatio(double closureRatio)
+	{
+		this.closureRatio = closureRatio;
 	}
 
 	public long getPcid()

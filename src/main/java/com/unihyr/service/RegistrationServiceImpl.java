@@ -13,13 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unihyr.dao.RegistrationDao;
 import com.unihyr.domain.Registration;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
+
 @Service
 @Transactional
 public class RegistrationServiceImpl implements RegistrationService
 {
 	
 	
-	
+	@Autowired private JavaMailSender mailSender;
 	@Autowired private RegistrationDao registrationDao;
 	
 	@Override
@@ -33,8 +37,6 @@ public class RegistrationServiceImpl implements RegistrationService
 	{
 		registrationDao.update(registration);
 	}
-	
-	
 	
 	@Override
 	public int countUsers()
@@ -77,5 +79,19 @@ public class RegistrationServiceImpl implements RegistrationService
 	{
 		return this.registrationDao.countClientsList();
 	}
+
+	public List<Registration> getClientList(int first, int max)
+	{
+		return this.registrationDao.getClientList(first, max);
+	}
 	
+	public List<Registration> getConsultantList(int first, int max)
+	{
+		return this.registrationDao.getConsultantList(first, max);
+	}
+	
+	public List<Registration> getCoUsersByUserid(String userid)
+	{
+		return this.registrationDao.getCoUsersByUserid(userid);
+	}
 }

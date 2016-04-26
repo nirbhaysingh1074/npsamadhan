@@ -9,6 +9,7 @@
 <%@page import="java.util.List"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -96,13 +97,27 @@
     <div class="positions_info">
 
 	<%
-		Registration reg = (Registration)request.getSession().getAttribute("registration");
+		Registration reg = (Registration)request.getAttribute("registration");
 		if(reg != null)
 		{
+			if(reg.getAdmin() != null)
+			{
+				%>
+			      <div class="filter">
+			        <div class="col-md-7 pagi_summary"><span><%= reg.getConsultName() %> ( <%= reg.getName() %>)</span></div>
+			      </div>
+				<%
+
+			}
+			else
+			{
+				%>
+			      <div class="filter">
+			        <div class="col-md-7 pagi_summary"><span><%= reg.getConsultName() %></span></div>
+			      </div>
+				<%
+			}
 			%>
-		      <div class="filter">
-		        <div class="col-md-7"><span><%= reg.getConsultName() %></span></div>
-		      </div>
 		      <div class="positions_tab" style="border: 1px solid gray;background: #fff5db none repeat scroll 0 0;">
 		        <div class="form_cont">
 			        <div class="form_col">
@@ -135,9 +150,25 @@
 								</div>
 							</dd>
 						</dl>
+						<%
+						if(reg.getAdmin() != null)
+						{
+							%>
+							<dl>
+								<dt>
+									<label>User Name</label>
+								</dt>
+								<dd>
+									<label><%= reg.getName()%></label>
+									
+								</dd>
+							</dl>
+							<%
+						}
+						%>
 						<dl>
 							<dt>
-								<label>Name</label>
+								<label>Consultant Name</label>
 							</dt>
 							<dd>
 								<label><%= reg.getConsultName()%></label>
@@ -198,18 +229,25 @@
 								
 							</dd>
 						</dl>
+						<%
+							if(reg.isConsultant_type())
+							{
+								%>
+									<dl>
+										<dt>
+											<label>Organization Size </label>
+										</dt>
+										<dd>
+											<label><%= reg.getNoofpeoples() %> </label>
+											
+										</dd>
+									</dl>
+								<%
+							}
+						%>
 						<dl>
 							<dt>
-								<label>No. of Peoples </label>
-							</dt>
-							<dd>
-								<label><%= reg.getNoofpeoples() %> </label>
-								
-							</dd>
-						</dl>
-						<dl>
-							<dt>
-								<label>Office Address</label>
+								<label>Address</label>
 							</dt>
 							<dd>
 								<label><%= reg.getOfficeLocations() %> </label>
@@ -217,22 +255,10 @@
 							</dd>
 						</dl>
 						
-						<dl>
-							<dt>
-								<label>Head Office Address</label>
-							</dt>
-							<dd>
-								<label><%= reg.getHoAddress() %></label>
-								
-							</dd>
-						</dl>
-						
-						
-						
 			        </div>
 			        <div class="form_col">
 			        	<div class="filter bottom-margin" style="border-radius:0">
-					        <div class="col-md-7"><span>Change Password  ${status }</span></div>
+					        <div class="col-md-7 pagi_summary"><span>Change Password </span></div>
 					    </div>
 					    <%
 					    	String status = (String)request.getAttribute("status");
@@ -309,6 +335,68 @@
 							</dl>
 						</form>
 			        </div>
+			        
+			        
+			        
+				    <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+				        <div class="form_col">
+				        	<div class="filter bottom-margin" style="border-radius:0">
+						        <div class="col-md-7 pagi_summary"><span>Co-Users</span></div>
+						        <div class="col-md-5 pagi_summary ">
+								    <div class="text-right">
+								    	<a href="consnewuser" style="color: #fff;">Add New User</a>
+								    </div>
+								    
+						        </div>
+						    </div>
+						    <table class="table">
+						    	<thead>
+						    		<tr>
+						    			<th class="text-left">User Name</th>
+						    			<th class="text-left">User Id</th>
+						    			<th>Create Date</th>
+					    			</tr>
+					    		</thead>
+					    		<tbody>
+								    <%
+								    	List<Registration> co_users = (List)request.getAttribute("co-users");
+								    	if(co_users != null && ! co_users.isEmpty())
+								    	{
+								    		for(Registration user : co_users)
+								    		{
+								    			%>
+									    			<tr>
+									    				<td><%= user.getName() %></td>
+									    				<td><%= user.getUserid() %></td>
+									    				<td class="text-center"><%= DateFormats.getTimeValue(user.getRegdate()) %></td>
+									    			</tr>
+								    			<%
+								    		}
+								    	}
+								    	else
+								    	{
+								    		%>
+								    			<tr>
+								    				<td colspan="3">
+								    					<span>No user available</span>
+								    				</td>
+								    			</tr>
+								    		<%
+								    	}
+								    %>
+					    		</tbody>
+						    </table>
+				    	</div>
+			    	</sec:authorize>
+			    </div>
+	        </div>
+			        
+			        
+			        
+			        
+			        
+			        
+			        
 		        </div>
 		        
 		      </div>

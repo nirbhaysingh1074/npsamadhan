@@ -16,10 +16,14 @@
 	function  loadclientposts(pn)
 	{
 // 		alert("hello");
+var sortParam=$('#sortParam').val();
+if(typeof sortParam != 'undefined'){}
+else
+	sortParam='published';
 		$.ajax({
 			type : "GET",
 			url : "loadclientposts",
-			data : {'pn':pn},
+			data : {'pn':pn,'sortParam':sortParam},
 			contentType : "application/json",
 			success : function(data) {
 //				alert(data);
@@ -41,7 +45,26 @@
     </div>
 
     <div class="positions_info" id="post_detail" style="display: none;">
-
+<table class="table no-margin" style="border: 1px solid gray;">
+									<thead>
+										<tr>
+											<th align="left">Name</th>
+											<th align="left">Phone</th>
+											<th align="left">Current Role</th>
+											<th align="left">Organization</th>
+											<th align="left">Curent Salary</th>
+											<th>Notice Period</th>
+											<th>Submitted</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									<tbody><tr>
+														<td colspan="8" style="width: auto;">
+															<strong>No candidate submitted for this  role till now</strong> 
+														</td>
+													</tr>
+									</tbody>
+								</table>
     </div>
     
   </div>

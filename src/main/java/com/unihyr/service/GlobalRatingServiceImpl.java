@@ -44,7 +44,7 @@ public class GlobalRatingServiceImpl implements GlobalRatingService
 
 	@Override
 	public  List<GlobalRating>  getGlobalRatingListByIndustryAndConsultant(int industryId,
-			int consultantId)
+			String consultantId)
 	{
 		// TODO Auto-generated method stub
 		return globalRatingDao.getGlobalRatingListByIndustryAndConsultant(industryId, consultantId);
@@ -52,7 +52,7 @@ public class GlobalRatingServiceImpl implements GlobalRatingService
 
 	@Override
 	public  List<GlobalRating>  getGlobalRatingListByIndustryAndConsultantRange(int industryId,
-			int consultantId,int first,int max)
+			String consultantId,int first,int max)
 	{
 		// TODO Auto-generated method stub
 		return globalRatingDao.getGlobalRatingListByIndustryAndConsultantRange(industryId, consultantId,first,max);

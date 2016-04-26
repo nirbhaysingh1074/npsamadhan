@@ -157,8 +157,10 @@ public class ProfileDaoImpl implements ProfileDao
 	@Override
 	public List<CandidateProfile> getProfileList(int first, int max)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return this.sessionFactory.getCurrentSession().createCriteria(CandidateProfile.class)
+				.setFirstResult(first)
+				.setMaxResults(max)
+				.list();
 	}
 
 	@Override

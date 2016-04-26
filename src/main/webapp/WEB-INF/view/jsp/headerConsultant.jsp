@@ -20,7 +20,10 @@
 <script type="text/javascript" src="js/jquery.IE.js"></script>
 <script type="text/javascript" src="js/consult_js.js"></script>
 <script type="text/javascript" src="js/common_js.js"></script>
+<link rel="stylesheet" href="css/model.popup.css" />
 
+
+<script src="js/alertify.min.js"></script>
 <script>
 		function getLogOut(){
 			if (XMLHttpRequest)
@@ -65,6 +68,18 @@
 	        <div class="address_info">
 	        	<p><span><a href="consultantaccount"><%= reg.getConsultName() %> </a></span>| <span>  <a>FAQ </a></span> | <span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></span ></p>
 	        </div>
+	        <div class="notification">
+			<div class="noti-icon more_product">
+				<div class="icon " >
+					<img style="" src="images/reminder.png">
+				</div>
+			</div>
+			<div class="user_noti_content arrow_box_1">
+				<div class="noti_title">Messages</div>
+				<div class="noti_inner ">
+				</div>
+			</div>
+		</div>
 	      </div>
 	    </div>
   	
@@ -74,8 +89,8 @@
 				<ul class="toggle_menu">
 					<li class="${currentpage == 'consdashboard' ? 'active' : ''}"><a href="consdashboard">Home</a></li>
 					<li class="${currentpage == 'consnewposts' ? 'active' : ''}" class="active"><a href="consnewposts">New Post</a></li>
-					<li class="${currentpage == 'cons_your_positions' ? 'active' : ''}"><a href="cons_your_positions">Your Positions</a></li>
-					<li class="${currentpage == 'cons_billingdetails' ? 'active' : ''}"><a href="cons_billingdetails">Billing Details</a></li>
+					<li class="${currentpage == 'cons_your_positions' ? 'active' : ''}"><a href="cons_your_positions">Manage Positions</a></li>
+					<li class="${currentpage == 'consBillingDetails' ? 'active' : ''}"><a href="consBillingDetails">Billing Details</a></li>
 					<li class="${currentpage == 'cons_profilecenter' ? 'active' : ''}"><a href="cons_profilecenter">Profiles Center</a></li>
 				</ul>
 		</nav>

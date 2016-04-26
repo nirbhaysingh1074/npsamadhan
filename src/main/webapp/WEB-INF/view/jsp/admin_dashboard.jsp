@@ -4,10 +4,10 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<script type="text/javascript">
+<script type="text/javascript">
 	function  load_admin_post()
 	{
-		
+		$('#load_admin_post').parent().parent().siblings(".overlay").show();
 		$.ajax({
 			type : "GET",
 			url : "adminDashboardPostList",
@@ -15,6 +15,59 @@
 			contentType : "application/json",
 			success : function(data) {
 				$('#load_admin_post').html(data);
+				$('#load_admin_post').parent().parent().siblings(".overlay").hide();
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.status);
+		      }
+	    }) ;
+	}
+	
+	function  load_admin_profile()
+	{
+		$('#load_admin_profile').parent().parent().siblings(".overlay").show();
+		$.ajax({
+			type : "GET",
+			url : "adminDashboardProfileList",
+			data : {},
+			contentType : "application/json",
+			success : function(data) {
+				$('#load_admin_profile').html(data);
+				$('#load_admin_profile').parent().parent().siblings(".overlay").hide();
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.status);
+		      }
+	    }) ;
+	}
+	function  load_admin_client()
+	{
+		$('#load_admin_client').parent().parent().siblings(".overlay").show();
+		$.ajax({
+			type : "GET",
+			url : "adminDashboardClientList",
+			data : {},
+			contentType : "application/json",
+			success : function(data) {
+				$('#load_admin_client').html(data);
+				$('#load_admin_client').parent().parent().siblings(".overlay").hide();
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.status);
+		      }
+	    }) ;
+	}
+	function  load_admin_consultant()
+	{
+		$('#load_admin_consultant').parent().parent().siblings(".overlay").show();
+		$.ajax({
+			type : "GET",
+			url : "adminDashboardConsultantList",
+			data : {},
+			contentType : "application/json",
+			success : function(data) {
+				$('#load_admin_consultant').html(data);
+				$('#load_admin_consultant').parent().parent().siblings(".overlay").hide();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 		        alert(xhr.status);
@@ -23,7 +76,7 @@
 	}
 </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini" onload="load_admin_post()">
+<body class="hold-transition skin-blue sidebar-mini" onload="load_admin_post(); load_admin_profile(); load_admin_client(); load_admin_consultant();">
   
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
@@ -44,7 +97,7 @@
 			<div class="row">
             <div class="col-md-3 col-sm-6 col-xs-12">
               <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+                <span class="info-box-icon bg-aqua"><img alt="" src="images/job-icon-cabot.png" width="75"></span>
                 <div class="info-box-content">
                   <span class="info-box-text">Total Profiles</span>
                   <span class="info-box-number">${totalProfiles }</span>
@@ -53,7 +106,7 @@
             </div><!-- /.col -->
             <div class="col-md-3 col-sm-6 col-xs-12">
               <div class="info-box">
-                <span class="info-box-icon bg-red"><i class="fa fa-google-plus"></i></span>
+                <span class="info-box-icon bg-red"><img alt="" src="images/job-post.png" width="90"> </span>
                 <div class="info-box-content">
                   <span class="info-box-text">Total Posts</span>
                   <span class="info-box-number">${totalPosts }</span>
@@ -86,12 +139,157 @@
           <!-- Your Page Content Here -->
 			
 			
-		<div class="row" id="load_admin_post">
+		<div class="col-md-6 col-sm-12  no-padding">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="box box-success" style="min-height: 200px">
+			           <div class="box-header with-border bg-green">
+			             <h3 class="box-title">Post List</h3>
+			
+			             <div class="box-tools pull-right">
+			             	<button class="text-green" type="button" onclick="load_admin_post()"><i class="fa fa-fw fa-refresh"></i></button>
+			               <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
+			               </button>
+<!-- 			               <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button> -->
+			             </div>
+			           </div>
+			           <!-- /.box-header -->
+			           <div class="box-body no-padding">
+			               <table class="table posts">
+							<thead class="bg-gray">
+								<tr>
+									<th>Job Code</th>
+									<th>Post Title</th>
+									<th>Client</th>
+									<th>Date</th>
+									<th>Status</th>
+									<th>Verified</th>
+									
+								</tr>
+							</thead>
+							<tbody id="load_admin_post">
+								
+							</tbody>
+						</table>
+			           </div>
+			           <div class="overlay">
+			              <i class="fa fa-refresh fa-spin"></i>
+			            </div>
+			           <!-- /.box-body -->
+			      </div>
+				  <div class="box box-success" style="min-height: 200px">
+			           <div class="box-header with-border bg-green">
+			             <h3 class="box-title">List of Employers</h3>
+			
+			             <div class="box-tools pull-right">
+			               <button class="text-green" type="button" onclick="load_admin_client()"><i class="fa fa-fw fa-refresh"></i></button>
+			               <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
+			               </button>
+<!-- 			               <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button> -->
+			             </div>
+			           </div>
+		           <!-- /.box-header -->
+			           <div class="box-body no-padding">
+			               <table class="table posts">
+							<thead class="bg-gray">
+								<tr>
+									<th>Org Name</th>
+									<th>Email</th>
+									<th>Contact</th>
+									<th>Registered</th>
+									
+								</tr>
+							</thead>
+							<tbody id="load_admin_client">
+								
+							</tbody>
+						</table>
+			           </div>
+			           <div class="overlay">
+			              <i class="fa fa-refresh fa-spin"></i>
+			            </div>
+		           <!-- /.box-body -->
+		      		</div>
+				</div>
+			</div>
 			
 		</div>
+		
+		<div class="col-md-6 col-sm-12 ">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="box box-success" style="min-height: 200px">
+			           <div class="box-header with-border bg-green">
+			             <h3 class="box-title">Profiles Uploaded</h3>
 			
+			             <div class="box-tools pull-right">
+			               <button class="text-green" type="button" onclick="load_admin_profile()"><i class="fa fa-fw fa-refresh"></i></button>
+			               <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
+			               </button>
+<!-- 			               <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button> -->
+			             </div>
+			           </div>
+			           <!-- /.box-header -->
+			           <div class="box-body no-padding">
+			               <table class="table posts">
+							<thead class="bg-gray">
+								<tr>
+									<th>Candidate Name</th>
+									<th>Current Role</th>
+									<th>Post Title</th>
+									<th>Submitted</th>
+									
+								</tr>
+							</thead>
+							<tbody id="load_admin_profile">
+								
+							</tbody>
+						</table>
+			           </div>
+			           <div class="overlay">
+			              <i class="fa fa-refresh fa-spin"></i>
+			            </div>
+			           <!-- /.box-body -->
+			      </div>
+			      <div class="box box-success" style="min-height: 200px">
+		           <div class="box-header with-border bg-green">
+		             <h3 class="box-title">List of Consultants</h3>
+		
+		             <div class="box-tools pull-right">
+		               <button class="text-green" type="button" onclick="load_admin_consultant()"><i class="fa fa-fw fa-refresh"></i></button>
+		               <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
+		               </button>
+<!-- 		               <button data-widget="remove" class="btn btn-box-tool" type="button"><i class="fa fa-times"></i></button> -->
+		             </div>
+		           </div>
+		           <!-- /.box-header -->
+		           <div class="box-body no-padding">
+		             <table class="table posts">
+						<thead class="bg-gray">
+							<tr>
+								<th>Consultant Name</th>
+								<th>Email</th>
+								<th>Contact</th>
+								<th>Registered</th>
+								
+							</tr>
+						</thead>
+						<tbody  id="load_admin_consultant">
+							
+							
+						</tbody>
+					</table>
+		           </div>
+		           <div class="overlay">
+		              <i class="fa fa-refresh fa-spin"></i>
+		            </div>
+		           <!-- /.box-body -->
+	      		</div>
+      			</div> 
+	      </div> 
+		</div>	
 			
-			
+		<div class="clearfix"></div>	
 		<div class="row">
 			<div class="col-md-6"> 
 				<!-- Donut chart -->
@@ -111,14 +309,7 @@
 	          </div>    
           </div>    
               
-              
-              
-              
-              
-              
-              
-              
-              
+      
               
               
               

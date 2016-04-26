@@ -1,5 +1,30 @@
 jQuery(document).ready(function() {
 	
+	
+	$(document.body).on('click','.noti-icon',function(event){
+	      
+		if($('.user_noti_content').css('display')=='none')
+		{
+			$('.user_noti_content').css('display','block');
+		}
+		else 
+		{
+			$('.user_noti_content').css('display','none');
+		}
+		event.stopPropagation();
+			
+	});
+
+	$('html').click(function(e) {  
+		
+		$('.user_noti_content').css('display','none');
+		e.stopPropagation();
+	});
+	
+	$(document.body).on('click','.user_noti_content',function(event){
+		event.stopPropagation();
+	});
+			
 	$(".number_only").keydown(function (e) {
         // Allow: backspace, delete, tab, escape, enter and .
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
@@ -16,8 +41,15 @@ jQuery(document).ready(function() {
         }
     });
 	
-	
-	$(document.body).on('click', '.pre_check > .view_post' ,function(){
+	$(document.body).on('change', '.number_pasitive' ,function(){
+		
+		if($(this).val() < 0)
+		{
+			$(this).val('0'); 
+		}
+//		alert("hello" );
+	});
+	$(document.body).on('click', '.pre_check > .1view_post' ,function(){
 //		alert("pid ");
 		var pid = $(this).attr("id");
 		if(pid != "")

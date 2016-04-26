@@ -40,8 +40,8 @@ public class LoginInfoServiceImpl implements LoginInfoService
 	
 	
 	@Override
-	public boolean updatePassword(String userid, String password)
+	public boolean updatePassword(String userid, String oldPassword, String password)
 	{
-		return this.loginInfoDao.updatePassword(userid, password);
+		return this.loginInfoDao.updatePassword(userid, oldPassword, password);
 	}
 }

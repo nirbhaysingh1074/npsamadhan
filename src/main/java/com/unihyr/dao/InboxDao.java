@@ -16,4 +16,9 @@ public interface InboxDao
 	
 	public boolean setViewedByConsultant(long ppid);
 	
+	public List<Inbox> getMessageByClient(String userid, int first, int max);
+	
+	public List<Inbox> getMessageByConsultant(String userid, int first, int max);
+	
+	
 }

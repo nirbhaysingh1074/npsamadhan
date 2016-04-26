@@ -20,9 +20,7 @@ import javax.persistence.Table;
 @Table(name="logininfo")
 public class LoginInfo implements Serializable
 {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 503239969044315259L;
 
 	private int lid;

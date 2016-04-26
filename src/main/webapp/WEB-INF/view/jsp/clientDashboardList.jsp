@@ -10,6 +10,7 @@
 <%@page import="java.util.List"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -54,15 +55,16 @@
       
 	    <div class="positions_info ">
 	      <div class="filter">
-	      	 <div class="col-md-4">
-	      	 	<button id="del_post">Delete</button>
-	      	 	<button id="close_post" >Close</button>
-	      	 	<button id="act_post">Active</button>
-	      	 	<button id="inact_post">Inactive</button>
-	      	 	
-	      	 </div>
-	         <div class="col-md-4 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
-	         <div class="col-md-4 ">
+<!-- 	      	 <div class="col-md-4">&nbsp; -->
+<%-- 	      	 	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')"> --%>
+<!-- 		      	 	<button id="del_post">Delete</button> -->
+<!-- 		      	 	<button id="close_post" >Close</button> -->
+<!-- 		      	 	<button id="act_post">Activate</button> -->
+<!-- 		      	 	<button id="inact_post">Inactivate</button> -->
+<%-- 	      	 	</sec:authorize> --%>
+<!-- 	      	 </div> -->
+	         <div class="col-md-6 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
+	         <div class="col-md-6 ">
                 <ul class="page_nav unselectable">
                 	<%
 		          		if(pn > 1)
@@ -103,21 +105,24 @@
               </div>
 	      </div>
 	      <div class="positions_tab">
-	        <div class="">
+	        <div >
 		        <table class="table no-margin" style="border: 1px solid gray;">
 		        	<thead>
 		        		<tr>
+		       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 		       				<th align="left" width="2%"><input id="sel_all" type="checkbox"></th>
+		       				</sec:authorize>
 		       				<th width="5%">Published</th>
 		       				<th align="left"  width="5%">Status</th>
+		       				<th align="left">Job Id</th>
 		       				<th align="left">Position</th>
 		       				<th align="left">Location</th>
 		       				<th width="10%">Posted Date</th>
-<!-- 		       				<th>&nbsp;</th> -->
+		       				<th >No of Partners</th> 
 		       				<th width="10%">Received</th>
 		       				<th width="10%">Shortlisted</th>
 		       				
-		       				<th width="10%">Action</th>
+		       				<th  width="10%">Action</th>
 		       			</tr>
 	       			</thead>
 	       			<tbody>
@@ -129,39 +134,75 @@
 	       						for(Post post : postList)
 	       						{
 	       							Set<Integer> cons = new HashSet(); 
-	       							Set<Long> shortListed = new HashSet(); 
+	       							Set<Long> shortListed = new HashSet();
+	       							Iterator<PostProfile> it = post.getPostProfile().iterator();
+	       							while(it.hasNext())
+	       							{
+	       								PostProfile pp = it.next();
+	       								if(pp.getAccepted() != null)
+	       								{
+	       									shortListed.add(pp.getPpid());
+	       								}
+	       							}
 	       							%>
-						       			<tr id="<%= post.getPostId()%>">
-<%-- 						        			<td><%= count++ %></td> --%>
-						        			<td><input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>"></td>
+						       				<tr id="<%= post.getPostId()%>">
+											<%-- <td><%= count++ %></td> --%>
+											<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+						        				<td><input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>"></td>
+						        			</sec:authorize>
 					       					<td class="status" style="text-align: center;">
 					       						<%
 							                  		if(post.getPublished() != null)
 							                  		{
 							                  			%>
-							                  				<img class="" src="images/check-cloud.png" width="20px"  title="Published on <%= DateFormats.ddMMMMyyyy.format(post.getPublished())%>">
+							                  				<img  src="images/check-cloud.png" width="20px"  title="Published on <%= DateFormats.ddMMMMyyyy.format(post.getPublished())%>">
 							                  			<%
 							                  		}
 							                  		else
 							                  		{
 							                  			%>
+							                  			<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 							                  				<img class="st_unpublished" src="images/cloud-gray.png" width="20px" title="Click to publish">
+							                  			</sec:authorize>
+							                  			<sec:authorize access="hasRole('ROLE_EMP_USER')">
+							                  				<img  src="images/cloud-gray.png" width="20px" title="Click to publish">
+							                  			</sec:authorize>
 							                  			<%
 							                  		}
 							                  	%>
 				       						</td>
-						       				<td>
+						       				<td class='act_status'>
+		       									<%
+		       									if(post.getCloseDate()!=null){
+					       							out.println("Closed");
+					       						}else{
+		       									%>
+		       									<select id="sel_act_inact" style="padding: 0;width: 65px;font-size: 11px;border-radius: 0;">
 					       						<%
 					       							if(post.isActive())
 					       							{
-					       								out.println("Active");
+					       								%>
+				       										<option value="Active" selected="selected">Active</option>
+				       										<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+				       											<option value="Inactive">Inactive</option>
+				       										</sec:authorize>
+					       								<%
 					       							}
 					       							else
 					       							{
-					       								out.println("Inactive");
+					       								%>
+					       									<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+				       											<option value="Active" >Active</option>
+				       										</sec:authorize>
+				       										
+				       										<option value="Inactive" selected="selected">Inactive</option>
+					       								<%
 					       							}
 					       						%>
+		       									</select>
+		       									<%} %>
 					       					</td>
+					       					<td style="font-size: 9px;"><%= post.getJobCode() %></td>
 					       					<td>
 						       					<%
 						       						if(post.getPostProfile() != null && !post.getPostProfile().isEmpty())
@@ -175,7 +216,7 @@
 						       						else
 						       						{
 						       							%>
-									       					<a >
+									       					<a title="No profile submitted!"  href="clientpostapplicants?pid=<%=post.getPostId()%>">
 									       						<%= post.getTitle() %> 
 									       					</a>
 						       							<%
@@ -185,14 +226,20 @@
 						       				<td><%= post.getLocation() %></td>
 						       				<td style="text-align: center;"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
 
+						       				<td style="text-align: center;"><%= post.getPostConsultants().size() %></td>
+						       				
 						       				<td style="text-align: center;"><%= post.getPostProfile().size() %></td>
+						       				
+						       				
 						       				<td style="text-align: center;"><%= shortListed.size() %></td>
 						       				
 						       				<td  style="text-align: center;">
 						       					<div class="pre_check">
-								                  	<a id="<%= post.getPostId() %>" class="view_post "><img width="30px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
+								                  	<a href="viewPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
 							                  	</div>
-						       					<a href="clienteditpost?pid=<%= post.getPostId()%>"><button style="margin: 2px 0;padding: 2px 5px" title="Click to edit this post">Edit</button></a>
+						       					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+						       					<a target="_blank" href="clienteditpost?pid=<%= post.getPostId()%>"><button style="/* margin: 2px 0; */padding: 2px 5px" pid="<%= post.getPostId()%>" title="Click to edit this post">Edit</button></a>
+						       					</sec:authorize>
 						       				</td>
 						        		</tr>
 	       							<%

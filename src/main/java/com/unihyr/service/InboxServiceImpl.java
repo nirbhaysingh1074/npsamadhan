@@ -39,4 +39,14 @@ public class InboxServiceImpl implements InboxService
 	{
 		return this.inboxDao.setViewedByConsultant(ppid);
 	}
+	
+	public List<Inbox> getMessageByClient(String userid, int first, int max)
+	{
+		return this.inboxDao.getMessageByClient(userid, first, max);
+	}
+	
+	public List<Inbox> getMessageByConsultant(String userid, int first, int max)
+	{
+		return this.inboxDao.getMessageByConsultant(userid, first, max);
+	}
 }

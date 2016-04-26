@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
+<%@page import="com.artofsolving.jodconverter.DocumentConverter"%>
+<%@page import="java.net.ConnectException"%>
+<%@page import="com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection"%>
+<%@page import="com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="com.unihyr.domain.CandidateProfile"%>
@@ -8,6 +13,7 @@
 <%@page import="java.util.List"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -23,6 +29,9 @@
 <script type="text/javascript" src="js/accordion.js"></script>
 </head>
 <body class="loading">
+<div class="mid_wrapper">
+  <div class="container" >
+  	<div class="new_post_info" style="margin-top: 10px">
 	<%
 		Post post = (Post)request.getAttribute("post");
 		if(post != null)
@@ -33,31 +42,58 @@
 		        <div class="col-md-5">
 		<!--           <div class="set_col"><a href=""><img src="images/ic_1.png" alt="img"> <img src="images/ic_2.png" alt="img"></a></div> -->
 		          <ul class="page_nav">
+		            <%
+
+			            if(post.getDeleteDate() == null)
+		            	{ 
+		            		%>
+		            			<li class="active" ><a href="clientpostapplicants?pid=<%=post.getPostId()%>">Applied Candidates</a></li> 
+		            		<%
+		            	}
+		            
+			           /*  if(post.getDeleteDate() == null)
+		            	{ */
+		            		%>
+	          				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+<%-- 		            			<li class="active post_delete" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Delete</a></li> --%>
+		            		<%
+		            	//}
+			            
+		            	if(post.getCloseDate() == null)
+		            	{
+		            	if(post.getCloseRequestClient()!=null){
+		            		%>
+	            			<li class="active" id="<%= post.getPostId()%>" title="Reqeust sent already"><a href="javascript:void(0)">Close</a></li>
+	            		<%
+		            	}else{
+		            		%>
+		            			<li class="active post_close" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Close</a></li>
+		            		<%
+		            	}}
+			            
+		            	if(post.isActive())
+		            	{
+		            		%>
+		            			<li class="active post_inactivate" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Inactivate</a></li>
+		            		<%
+		            	}
+		            	else
+		            	{
+		            		%>
+		            			<li class="active post_activate" id="<%= post.getPostId()%>"><a href="#">Activate</a></li>
+		            		<%
+		            	}
+		            
+		            
+		            %>
+		            
 		            <li class="active"><a href="clienteditpost?pid=<%=post.getPostId() %>">Edit</a></li>
-		            <li class="active"><a class="back_list_view" > <img alt="" src="images/back-arrow.png" width="12px "> Back</a></li>
+		          </sec:authorize>
 		          </ul>
 		        </div>
 		      </div>
 		      <div class="positions_tab  bottom-margin" style="border: 1px solid gray;">
 		        <div class="form_cont">
-			        <!-- 
-			        <div class="accordion">
-						<div class="accordion-section">
-							<a class="accordion-section-title active" href="#accordion-1">Accordion Section #1</a>
-							<div id="accordion-1" class="accordion-section-content open" style="display: block;">
-								<p>Mauris interdum fringilla augue vitae tincidunt. Curabitur vitae tortor id eros euismod ultrices. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent nulla mi, rutrum ut feugiat at, vestibulum ut neque? Cras tincidunt enim vel aliquet facilisis. Duis congue ullamcorper vehicula. Proin nunc lacus, semper sit amet elit sit amet, aliquet pulvinar erat. Nunc pretium quis sapien eu rhoncus. Suspendisse ornare gravida mi, et placerat tellus tempor vitae.</p>
-							</div>
-						</div>
-			
-						<div class="accordion-section">
-							<a class="accordion-section-title" href="#accordion-2">Accordion Section #2</a>
-							<div id="accordion-2" class="accordion-section-content">
-								<p>Mauris interdum fringilla augue vitae tincidunt. Curabitur vitae tortor id eros euismod ultrices. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent nulla mi, rutrum ut feugiat at, vestibulum ut neque? Cras tincidunt enim vel aliquet facilisis. Duis congue ullamcorper vehicula. Proin nunc lacus, semper sit amet elit sit amet, aliquet pulvinar erat. Nunc pretium quis sapien eu rhoncus. Suspendisse ornare gravida mi, et placerat tellus tempor vitae.</p>
-							</div>
-						</div>
-			
-					</div>
-			         -->
 			        <div class="form_col">
 						<dl>
 							<dt>
@@ -89,22 +125,41 @@
 						
 						<dl>
 							<dt>
-								<label>Function</label>
+								<label>No of posts</label>
+							</dt>
+							<dd>
+								<label><%= post.getNoOfPosts() %></label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Role</label>
+							</dt>
+							<dd>
+								<label><%= post.getRole() %></label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Designation</label>
+							</dt>
+							<dd>
+								<label><%= post.getDesignation()%></label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Role Type</label>
 							</dt>
 							<dd>
 								<label><%= post.getFunction() %></label>
 								
 							</dd>
 						</dl>
-						<dl>
-							<dt>
-								<label>Criteria</label>
-							</dt>
-							<dd>
-								<label><%= post.getCriteria() %></label>
-								
-							</dd>
-						</dl>
+						
 						<dl>
 							<dt>
 								<label>Exp.</label>
@@ -116,7 +171,7 @@
 						</dl>
 						<dl>
 							<dt>
-								<label>Expected Salary</label>
+								<label>Annual CTC</label>
 							</dt>
 							<dd>
 								<label><%= post.getCtc_min() %> - <%= post.getCtc_max() %> Lacs</label>
@@ -172,6 +227,24 @@
 								
 							</dd>
 						</dl>
+						<%
+							if(post.getDeleteDate() != null)
+							{
+								%>
+									<dl>
+										<dt>
+											<label>Delete On</label>
+										</dt>
+										<dd>
+											<label>
+															<span><%= DateFormats.ddMMMMyyyyathhmm.format(post.getDeleteDate()) %></span>
+											</label>
+											
+										</dd>
+									</dl>
+								<%
+							}
+						%>
 						<dl>
 							<dt>
 								<label>Client</label>
@@ -188,46 +261,146 @@
 						</dl>
 						<dl>
 							<dt>
-								<label>Comment</label>
+								<label>Profile Quota</label>
+							</dt>
+							<dd>
+								<label><% if( post.getProfileParDay()> 0){%><%=post.getProfileParDay()%><%}else{%>NA<%} %></label>
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Additional Comments</label>
 							</dt>
 							<dd>
 								<label><%= post.getComment() %></label>
 								
 							</dd>
 						</dl>
+						<dl>
+							<dt>
+								<label>Profile Quata</label>
+							</dt>
+							<dd>
+								<%
+									if(post.getProfileParDay() > 0)
+									{
+										%>
+											<label><%= post.getProfileParDay() %></label>
+										<%
+									}
+									else
+									{
+										%>
+											<label>No Limit</label>
+										<%
+									}
+								%>
+								
+							</dd>
+						</dl>
+						<%
+							if(post.getEditSummary() != null)
+							{
+								%>
+									<dl>
+										<dt>
+											<label>Edit Summary</label>
+										</dt>
+										<dd>
+											<label><%= post.getEditSummary() %></label>
+											
+										</dd>
+									</dl>
+								<%
+							}
+						%>
+						
+						<%
+							if(post.getUploadjd() != null)
+							{
+								%>
+									<dl>
+										<dt>
+											<label><a href="data/<%= post.getUploadjd()%>">Download JD</a></label>
+										</dt>
+									</dl>
+								<%
+							}
+						%>
 						
 						<div class="clearfix" style="padding: 15px">
-							<h3><b>Additional Description</b></h3><br>
+							<h3><b>Job Description</b></h3><br>
 							<p><%= post.getAdditionDetail() %></p>
 						</div>
-						<div class="clearfix" style="padding: 15px">
-							<h3><b>Applied Candidates</b></h3><br>
-							<%
-			                  	Set<PostProfile> prof = post.getPostProfile();
-			                  	Iterator<PostProfile> it = prof.iterator();
-			                  	int i =1;
-			                  	while(it.hasNext())
-		                  		{
-			                  		PostProfile cp = it.next();
-		                  			%>
-		                  				<p><%= i++ %>. 
-		                  					<%= cp.getProfile().getName() %>-
-		                  					<%= cp.getProfile().getRegistration().getConsultName() %>
-		                  				</p>
-		                  			<%
-		                  		}
-			                  
-			                  %>
-							
-							
-						</div>
+						
 			        </div>
 		        </div>
+		        <div id="jobDescription">
+		        
+		        </div>
+		        
+		        
 		        
 		      </div>
-			<%
-		}
+		     
+							  <%
+							 if(post.getUploadjd()!=null){
+
+					            String scheme = request.getScheme();
+							    String serverName = request.getServerName();
+							    int serverPort = request.getServerPort();
+							    
+							    
+// 					            String inPath="data/"+ pp.getProfile().getResumePath();
+// 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
+// 					         	String outPath="/var/unihyr/data/"+otp+".pdf";
+					         	 
+					            String inPath="/var/unihyr/data/"+ post.getUploadjd();
+					         	String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
+					         	String outPath="/var/unihyr/data/"+otp+".pdf";
+					        	//Conversion.convertPDF(inPath, outPath);
+					        	
+
+					        	java.io.File inputFile = new java.io.File(inPath); //
+					        	java.io.File outputFile = new java.io.File(outPath); //
+					        	  OpenOfficeConnection connection = new	  SocketOpenOfficeConnection("127.0.0.1",8100);
+					        	  try {
+					        		connection.connect();
+					        	} catch (ConnectException e) {
+					        		// TODO Auto-generated catch block
+					        		e.printStackTrace();
+					        	} // convert 
+					        	  DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
+					        	  converter.convert(inputFile, outputFile); // close
+					        	  connection.disconnect(); 
+
+					        		String pathh=outputFile.getName();
+
+					        	
+					        	%>
+
+
+					        			
+					        			<script type="text/javascript">
+					        			 	var x = document.createElement("EMBED");
+					        			 	//path=path.replace(/\//g, "////");
+					        			    x.setAttribute("src", "data/<%=pathh%>");
+					        			    x.setAttribute("height", "600px");
+					        			    x.setAttribute("width", "100%");
+					        				$('#jobDescription').append(x);
+					        			</script>
+					        			
+		      
+		      
+		      
+		      
+		      
+			<%}%> 
+		<%}
 		
-	%>
+	%> 
+	</div>
+</div>
+</div>
 </body>
 </html>

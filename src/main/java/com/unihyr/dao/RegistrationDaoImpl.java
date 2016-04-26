@@ -1,5 +1,6 @@
 package com.unihyr.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,6 +36,9 @@ public class RegistrationDaoImpl implements RegistrationDao
 		List<Registration> logList = this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
 				.add(Restrictions.eq("userid", userid))
 				.setFetchMode("industries", FetchMode.JOIN)
+				.setFetchMode("log", FetchMode.JOIN)
+				.setFetchMode("log.roles", FetchMode.JOIN)
+				.setFetchMode("subuser", FetchMode.JOIN)
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.list();
 		if(!logList.isEmpty())
@@ -54,7 +58,10 @@ public class RegistrationDaoImpl implements RegistrationDao
 	@Override
 	public List<Registration> getRegistrations(int first, int max)
 	{
-		return this.sessionFactory.getCurrentSession().createCriteria(Registration.class).addOrder(Order.desc("lid")).setFirstResult(first).setMaxResults(max).list();
+		return this.sessionFactory.getCurrentSession().createCriteria(Registration.class).addOrder(Order.desc("lid")).setFirstResult(first).setMaxResults(max)
+				.setFetchMode("log", FetchMode.JOIN)
+				
+				.list();
 	}
 	
 	@Override
@@ -79,12 +86,16 @@ public class RegistrationDaoImpl implements RegistrationDao
 	@Override
 	public List<Registration> getConsultantsByPost(long postId)
 	{
-		String hql = "select DISTINCT reg.* from registration reg INNER JOIN candidateprofile cp ON reg.userid = cp.consultantId AND cp.profileId in(SELECT pp.profileId FROM postprofile pp where pp.postId = :postId)";
-		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
-		query.setParameter("postId",postId);
-		query.addEntity(Registration.class);
-		List<Registration> list = (List<Registration>)query.list();
-		return list;
+		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
+				.createAlias("postConsultants", "pcAlias")
+				.createAlias("pcAlias.post", "postAlias")
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+				
+				.setFetchMode("postConsultants", FetchMode.JOIN);
+		return criteria.list();
+				
+		
 	}
 	
 	@Override
@@ -95,16 +106,11 @@ public class RegistrationDaoImpl implements RegistrationDao
 				.createAlias("postAlias.client", "clientAlias")
 				.createAlias("consultant", "conAlias")
 				.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("clientAlias.lid")))))
+				.add(Restrictions.isNull("clientAlias.admin"))
 				.add(Restrictions.eq("conAlias.userid", consultantId))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 				
 		List<Integer[]> idList = criteria.list();
-		//get the id's from the projection
-//        List<Integer> longList = new ArrayList<Integer>();
-//        for (Object[] record : idList) {
-//            longList.add((Integer) record[1]);
-//        }
-
 		if (idList.size() > 0)
 		{
 			
@@ -124,34 +130,49 @@ public class RegistrationDaoImpl implements RegistrationDao
 	@Override
 	public long countConsultantList()
 	{
-		Disjunction or = Restrictions.disjunction();
-		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_CON_MANAGER.toString()));
-		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_CON_USER.toString()));
+		String sql = "select count(*) from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1" ;
 		
-		long count = (Long)this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
-				.createCriteria("log", "logAlias")
-				.createCriteria("logAlias.roles", "roleAlias")
-				.add(or)
-				.setProjection(Projections.rowCount())
-				.uniqueResult();
-		return count;
+		BigInteger bi = (BigInteger)this.sessionFactory.getCurrentSession().createSQLQuery(sql).setString("role1", Roles.ROLE_CON_USER.toString()).setString("role", Roles.ROLE_CON_MANAGER.toString()).uniqueResult();
+		
+		return bi.longValue();
 	}
 	
 	@Override
 	public long countClientsList()
 	{
-		Disjunction or = Restrictions.disjunction();
-		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_MANAGER.toString()));
-		or.add(Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_USER.toString()));
 		
-		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Registration.class);
-		criteria.createCriteria("log", "logAlias");
-		criteria.createCriteria("logAlias.roles", "roleAlias");
-		criteria.add(Restrictions.or(Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_MANAGER.toString()),Restrictions.eq("roleAlias.userrole", Roles.ROLE_EMP_USER.toString())));
+		String sql = "select count(*) from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1" ;
 		
-		long count = (Long)criteria.setProjection(Projections.rowCount())
-				.uniqueResult();
-		return count;
+		BigInteger bi = (BigInteger)this.sessionFactory.getCurrentSession().createSQLQuery(sql).setString("role1", Roles.ROLE_EMP_USER.toString()).setString("role", Roles.ROLE_EMP_MANAGER.toString()).uniqueResult();
+		
+		return bi.longValue();
+		
+		
+	}
+
+	public List<Registration> getClientList(int first, int max)
+	{
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1" ;
+		
+		return  (List<Registration>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).addEntity(Registration.class).setString("role1", Roles.ROLE_EMP_USER.toString()).setString("role", Roles.ROLE_EMP_MANAGER.toString()).list();
+		
+		
+	}
+	
+	public List<Registration> getConsultantList(int first, int max)
+	{
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1" ;
+		
+		return  (List<Registration>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).addEntity(Registration.class).setString("role1", Roles.ROLE_CON_USER.toString()).setString("role", Roles.ROLE_CON_MANAGER.toString()).list();
+		
+	}
+	
+	public List<Registration> getCoUsersByUserid(String userid)
+	{
+		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
+				.add(Restrictions.eq("admin.userid", userid))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return criteria.list();
 	}
 	
 }

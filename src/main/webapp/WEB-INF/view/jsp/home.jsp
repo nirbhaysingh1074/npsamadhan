@@ -10,21 +10,189 @@
     <link rel="stylesheet" href="css/style.css" media="screen" />
 	<link rel="stylesheet" href="css/font-awesome.css" media="screen"   />
 
+<script src="js/jquery.min.js"></script>
+<style>
+
+
+
+#slider {
+  position: relative;
+  overflow: hidden;
+  margin: 20px auto 0 auto;
+  border-radius: 4px;
+}
+
+#slider ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 518px;
+  list-style: none;
+}
+
+#slider ul li {
+  position: relative;
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0;
+  width: 1200px;
+  height: 518px;
+  background: #ccc;
+  text-align: center;
+  /* line-height: 300px; */
+}
+
+a.control_prev, a.control_next {
+  position: absolute;
+  top: 40%;
+  z-index: 999;
+  display: block;
+  padding: 4% 3%;
+  width: auto;
+  height: auto;
+  /* background: #2a2a2a; */
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+a.control_prev:hover, a.control_next:hover {
+  opacity: 1;
+  -webkit-transition: all 0.2s ease;
+}
+
+a.control_prev {
+  border-radius: 0 2px 2px 0;
+}
+
+a.control_next {
+  right: 0;
+  border-radius: 2px 0 0 2px;
+}
+
+.slider_option {
+  position: relative;
+  margin: 10px auto;
+  width: 160px;
+  font-size: 18px;
+}
+.slde_m_img img{
+height: 100%;
+width: 100%;
+}
+</style>
+<script>
+jQuery(document).ready(function ($) {
+
+   setInterval(function () {
+        moveRight();
+    }, 4000); 
+
+    $('#slider ul li').css("width",$(window).width());
+    $('#slider ul li').css("top",-5);
+    
+	var slideCount = $('#slider ul li').length;
+	var slideWidth = $('#slider ul li').width();
+	var slideHeight = $('#slider ul li').height();
+	var sliderUlWidth = slideCount * slideWidth;
+	
+	$('#slider').css({ width: slideWidth, height: slideHeight });
+	
+	$('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+	
+    $('#slider ul li:last-child').prependTo('#slider ul');
+
+    function moveLeft() {
+        $('#slider ul').animate({
+            left: + slideWidth
+        }, 200, function () {
+            $('#slider ul li:last-child').prependTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    function moveRight() {
+        $('#slider ul').animate({
+            left: - slideWidth
+        }, 700, function () {
+            $('#slider ul li:first-child').appendTo('#slider ul');
+            $('#slider ul').css('left', '');
+        });
+    };
+
+    $('a.control_prev').click(function () {
+        moveLeft();
+    });
+
+    $('a.control_next').click(function () {
+        moveRight();
+    });
+
+});    
+
+</script>
+<style type="text/css">
+.home-nav ul{
+	float: left;
+}
+.home-nav ul li{
+color: #100f0f;
+float: left;
+font-size: 12px;
+margin: 0 5px;
+list-style: outside none none;
+}
+
+.home-nav ul li a{
+	
+    color: #000;
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 1px;
+    padding: 7px 10px 6px;
+    text-align: center;
+    cursor: pointer;
+}
+.home-nav ul li a:hover{
+	
+    border-bottom: 5px solid #F8B910;
+}
+
+</style>
+
+
+
+
 </head>
 <body>
 
 <header id="header">
 	<div class="Headr_top ">
 		<div class="container ">
-			<div class="logo"><a href="home"><img src="images/logo.png" alt="img" border="0"></a></div>
-				<div class="Top_right Light13 Bold grey1 Link1">
-				<a href="login">Employer Sign In</a>    |   <a href="login">Hiring Partner Sign In</a>
+			<div class="logo">
+				<a href="home"><img src="images/logo.png" alt="img" border="0"></a>
+			</div>
+			<div class="home-nav" >
+				<ul style="margin-bottom: 0px; margin-top: 27px;">
+					<li><a>How It Works </a></li>
+					<li><a>Features</a></li>
+					<li><a>Customers</a></li>
+					<li><a>About</a></li>
+				</ul>	
+			</div>
+			<div class="Top_right Light13 Bold grey1 Link1">
+				<a href="login">Employer Sign In</a>    |   <a href="login">Hiring Partner Sign In</a>  <!-- |  
+				<a href="clientregistration">Employer Sign Up</a>    |   <a href="consultantregistration">Hiring Partner Sign Up</a> -->
 			</div>
 		</div>
 	</div>
 </header>
 <section class="Middle">
-	<div class="Slider">
+	<!-- <div class="Slider">
 		<div class="prev"><a href=""><img src="images/arw1.png" border="0" alt="img"></a></div> 
 		<div class="next"><a href=""><img src="images/arw2.png" border="0" alt="img"></a></div>
 		<div class="slde_m_img rw"><img src="images/banner_img.jpg" alt="img"></div>
@@ -32,13 +200,76 @@
 			<div class="container">
 				<div class="grd">
 					<div class="bx">
-						<h2>Lorem Ipsum is simply dummy text</h2>
-						<p>It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-					</div>
+							<h3>Hiring Simplified | Accelerated | Improved</h3>
+							<p> UniHyr is a whole new
+							and exciting approach to hiring. Connecting reputed organizations
+							with varied hiring requirements to an elaborate network of
+							recruitment advisors that form part of our network. Helping
+							hundreds of recruiters hire quality talent in an amazingly short
+							time.</p>
+						</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
+	
+	
+	
+<div id="slider" style="margin-top: 0px;">
+  <a href="javascript:void(0)" class="control_next"><img src="images/arw2.png" border="0" alt="img"></a>
+  <a href="javascript:void(0)" class="control_prev"><img src="images/arw1.png" border="0" alt="img"></a>
+  <ul>
+    <li><div class="Slde_cent"> 
+			<div class="container">
+				<div class="grd">
+					<div class="bx">
+							<h2>Hiring Simplified | Accelerated | Improved</h2>
+							<p> UniHyr is a whole new
+							and exciting approach to hiring. Connecting reputed organizations
+							with varied hiring requirements to an elaborate network of
+							recruitment advisors that form part of our network. Helping
+							hundreds of recruiters hire quality talent in an amazingly short
+							time.</p>
+						</div>
+				</div>
+			</div>
+		</div><div style="width:100%;height: 100%;" class="slde_m_img rw"><img src="images/banner_img.jpg" alt="img"></div></li>
+    <li><div class="Slde_cent"> 
+			<div class="container">
+				<div class="grd">
+					<div class="bx">
+							<h2>Get the right talent  in super quick time!
+</h2>
+						
+						</div>
+				</div>
+			</div>
+		</div><div style="width:100%;height: 100%;"  class="slde_m_img rw"><img src="images/image2.png" alt="img"></div></li>
+    <li><div class="Slde_cent"> 
+			<div class="container">
+				<div class="grd">
+					<div class="bx">
+							<h2>Super Simple!</h2>
+							
+						</div>
+				</div>
+			</div>
+		</div><div style="width:100%;height: 100%;"  class="slde_m_img rw"><img src="images/image3.png" alt="img"></div></li>
+    <li><div class="Slde_cent"> 
+			<div class="container">
+				<div class="grd">
+					<div class="bx">
+							<h2>Leverage the power of our competitive partner network
+
+</h2>
+							
+						</div>
+				</div>
+			</div>
+		</div><div style="width:100%;height: 100%;"  class="slde_m_img rw"><img src="images/image4.png" alt="img"></div></li>
+   
+  </ul>  
+</div>
 
 	<div class="Scrlbr">
 		<div class="container">
@@ -160,7 +391,6 @@
 	</footer>
 
 
-<script src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
 
 

@@ -7,12 +7,10 @@
     
     <session-factory>
      	<property name="hbm2ddl.auto">update</property>
-<!--    	    <mapping resource="com/unihyr/domain/logininfo_registration_userrole.hbm.xml"/> -->
 		<mapping class="com.unihyr.domain.LoginInfo"/>
 		<mapping class="com.unihyr.domain.Registration"/>
 		<mapping class="com.unihyr.domain.UserRole"/>
 		<mapping class="com.unihyr.domain.Persistent_Logins"/>
-		
    	    <mapping class="com.unihyr.domain.Post"/>
    	    <mapping class="com.unihyr.domain.Industry"/>
    	    <mapping class="com.unihyr.domain.CandidateProfile"/>
@@ -24,8 +22,8 @@
    	    <mapping class="com.unihyr.domain.PostProfile"/>
    	    <mapping class="com.unihyr.domain.PostConsultant"/>
    	    <mapping class="com.unihyr.domain.Inbox"/>
-   	    
-   	    
+   	    <mapping class="com.unihyr.domain.Location"/>
+   	    <mapping class="com.unihyr.domain.BillingDetails"/>
     </session-factory>
     
 </hibernate-configuration>

@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.model.ClientRegistrationModel"%>
+<%@page import="com.unihyr.domain.Location"%>
+<%@page import="java.util.Arrays"%>
+<%@page import="java.util.List"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <head>
@@ -13,7 +17,7 @@
 	<link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
 	<link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 	<style type="text/css">
-		input[type="text"], input[type="password"], input[type="tel"], input[type="search"], input[type="email"], textarea, select 
+		input[type="text"], input[type="number"], input[type="password"], input[type="tel"], input[type="search"], input[type="email"], textarea, select 
 		{
 			margin-top: 10px;
 		}
@@ -21,7 +25,147 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/client_js.js"></script>
 	<script type="text/javascript" src="js/common_js.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$(".btn_submit").click(function() {
+// 			alert("Hello")	;
+			var valid = true;
+			
+			
+			var org = $('#organizationName').val();
+			var userid = $('#userid').val();
+			var password = $('#password').val();
+			var repassword = $('#repassword').val();
+			var revenue = $('#revenue').val();
+			var industry = $('#industry').val();
+			var noofpeoples = $('#noofpeoples').val();
+			var contact = $('#contact').val();
+			var officeLocations = $('#officeLocations').val();
+			
+			var websiteUrl = $('#websiteUrl').val();
+			var nooflocation = $('#hoAddress').val();
+			var about = $('#about').val();
+			var officeAddress = $("#officeAddress").val();
+// 			alert(officeLocations);
+			
+			$('.error').html('&nbsp;');
+			if(org == "")
+			{
+				$('.org_error').html('Please enter organization name ')
+				valid = false;
+			}
+			
+			if(userid == "" || !isEmail(userid))
+			{
+				$('.userid_error').html("Please enter a valid email");
+				valid = false;
+			}
+			
+			if(password == "")
+			{
+				$('.password_error').html("please enter a valid password");
+				valid = false;
+			}
+			
+			if(repassword == "" || password != repassword)
+			{
+				$('.repassword_error').html("Password do not match. Please re-enter both passwords");
+				valid = false;
+			}
+			
+			if(revenue == "")
+			{
+				$('.revenue_error').html("Please enter revenue");
+				valid = false;
+			}
+			
+			if(industry == "" || industry =='0')
+			{
+				$('.industry_error').html("Please select an industry");
+				valid = false;
+			}
+			if(contact == "" || contact.length != 10 )
+			{
+				$('.contact_error').html("Please enter a valid phone number");
+				valid = false;
+			}
+			if(officeLocations == null || officeLocations == "")
+			{
+				$('.officeLocations_error').html("Please select city");
+				valid = false;
+			}
+			if(websiteUrl == "" || !isUrlValid(websiteUrl))
+			{
+				$('.websiteUrl_error').html("Please enter a valid url");
+				valid = false;
+			}
+			
+			if(nooflocation == "" || !jQuery.isNumeric( nooflocation ))
+			{
+				$('#hoAddress').val('0');
+				$('.hoAddress_error').html("Please enter a valid no of locations");
+				valid = false;
+			}
+			
+			if(officeAddress == "")
+			{
+				$('.officeAddress_error').html("Please enter office address");
+				valid = false;
+			}
+			
+			
+			
+			if(!valid)
+			{
+				return false;
+			}
+			
+		});
+
+		
+	});
+
 	
+	function isEmail(email) {
+		  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		  return regex.test(email);
+		}
+	function isUrlValid(url) {
+	    return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+	}
+	function checkUserExistance()
+	{
+		$('.userid_error').html("&nbsp;");
+		var userid = $('#userid').val();
+		if(!isEmail(userid))
+		{
+			$('.userid_error').html("Please enter a valid email.");
+			$('#userid').focus();
+			return false;
+		}
+		$.ajax({
+			type : "GET",
+			url : "checkUserExistance",
+			data : {'userid':userid},
+			contentType : "application/json",
+			success : function(data) {
+				var obj = jQuery.parseJSON(data);
+				if(obj.uidexist)
+				{
+					$('.userid_error').html("This email already registered.");
+					$('#userid').focus();
+				}
+				
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.status);
+		      }
+	    }) ;
+	}
+	</script>
+	<style type="text/css">
+	.req{color: red;}
+	</style>
 </head>
 <body style="background-image: url('images/bg-image.png')">
 	<%
@@ -36,7 +180,8 @@
 
 
 	<section>
-		<div class="container">
+		<div class="container reg_page" style="margin: 50px auto;">
+			<a href="home"><span class="close" title="Home Page">X</span></a>
 			<div class="reg-form">
 				<form:form method="POST" action="clientregistration" commandName="regForm">
 					<div class="reg-header bottom-padding" >
@@ -46,92 +191,150 @@
 					
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Organization Name</label>
-							<form:input path="organizationName" required="required"/>
-							<span class="error">&nbsp;<form:errors path="organizationName" /></span>
+							<label>Organization Name<span class="req">*</span></label>
+							<form:input path="organizationName" />
+							<span class="error org_error">&nbsp;<form:errors path="organizationName" /></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Email id</label>
-							<form:input path="userid" type="email"  required="required"/>
-							<span class="error">&nbsp;<form:errors path="userid" /> <%= usermsg %></span>
+							<label>Email id<span class="req">*</span></label>
+							<form:input path="userid" type="email"  onchange="checkUserExistance()"/>
+							<span class="error userid_error">&nbsp;<form:errors path="userid" /> <%= usermsg %></span>
 						</div>
 					</div>
+					<div class="clearfix"></div>
 					<div class="reg-wrap">
-						<div style="padding-bottom: 10px;" class='clearfix' title="password must contain alphanumeric with atleast one capital later and one special symbol ">
-							<label>Password <img alt="" src="images/question-mark.png" width="11px" ></label>
-							<form:password path="password"  required="required" />
-							<span class="error">&nbsp;<form:errors path="password" /></span>
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Password <span class="req">*</span></label>
+							<form:password path="password"   />
+							<span style="font-size: 9px;">(Password must contain at least six characters and alphanumeric!) </span><br>
+							<span class="error password_error">&nbsp;<form:errors path="password" /></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Re-Password</label>
-							<form:password path="repassword"  required="required" />
-							<span class="error">&nbsp;<form:errors path="repassword" /></span>
+							<label>Re-Password<span class="req">*</span></label>
+							<form:password path="repassword"   />
+							<span class="error repassword_error">&nbsp;<form:errors path="repassword" /></span>
 						</div>
 					</div>
+					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Revenues</label>
-							<form:input path="revenue" cssClass="number_only" maxlength="10"  required="required" style="padding-right: 150px" />
+							<label>Revenues<span class="req">*</span></label>
+							<form:input path="revenue" cssClass="number_only" maxlength="10"   style="padding-right: 150px" />
 							<span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">  INR (Millions)</span>
-							<span class="error">&nbsp;<form:errors path="revenue" /></span>
+							<span class="error revenue_error">&nbsp;<form:errors path="revenue" /></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Industry</label>
-							<form:select path="industry.id" >
+							<label>Industry<span class="req">*</span></label>
+							<form:select path="industry.id" id="industry">
 			            		<form:option value="0">Select Industry</form:option>
 			            		<c:forEach var="item" items="${industryList}">
 								   <form:option value="${item.id}">${item.industry }</form:option>
 								</c:forEach>
 			            	</form:select>
-			            	<span class="error">&nbsp;<form:errors path="industry.id" /></span>
+			            	<span class="error industry_error">&nbsp;<form:errors path="industry.id" /></span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>No. of employees<span class="req">*</span></label>
+							<form:input path="noofpeoples" cssClass="number_only" maxlength="10"  />
+							<span class="error noofpeoples_error">&nbsp;<form:errors path="noofpeoples" /></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Org Size</label>
-							<form:input path="noofpeoples" cssClass="number_only" maxlength="10"  required="required"/>
-							<span class="error">&nbsp;<form:errors path="noofpeoples" /></span>
+							<label>Contact No.<span class="req">*</span></label>
+							<form:input path="contact" cssStyle="padding-left:35px;" cssClass="number_only" maxlength="10" minlength="10"  />
+							<span style="position: relative; padding: 5px; border-right: 1px solid rgb(212, 212, 212); float: left; margin-top: -27px;font-size: 12px;"> +91 </span>
+							<span class="error contact_error">&nbsp;<form:errors path="contact" /></span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Website URL<span style="font-size: 9px;"></span><span class="req">*</span></label>
+							<form:input path="websiteUrl" placeholder='http://www.example.com' />
+							<span class="error websiteUrl_error">&nbsp;<form:errors path="websiteUrl" /></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Contact No.</label>
-							<form:input path="contact" cssStyle="padding-left:45px;" cssClass="number_only" maxlength="11" minlength="10"  required="required"/>
-							<span style="position: relative; padding: 5px; border-right: 1px solid rgb(212, 212, 212); float: left; margin-top: -30px;font-size: 16px;"> +91 </span>
-							<span class="error">&nbsp;<form:errors path="contact" /></span>
+							<label>No. of locations<span class="req">*</span></label>
+							<form:input path="hoAddress" class="number_only number_pasitive"/>
+							<span class="error hoAddress_error">&nbsp;<form:errors path="hoAddress" /></span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Office Address<span class="req">*</span></label>
+							<form:textarea path="officeAddress" />
+							<span class="error officeAddress_error">&nbsp;<form:errors path="officeAddress" /></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Office Address</label>
-							<form:input path="officeLocations" required="required"  />
-							<span class="error">&nbsp;<form:errors path="officeLocations"  /></span>
+							<label>About Company</label>
+							<form:textarea path="about"  rows="4"/>
+							
+							<span class="error about_error">&nbsp;<form:errors path="about" /></span>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<%
+					ClientRegistrationModel model = (ClientRegistrationModel) request.getAttribute("regForm");
+					List<Location> locList = (List)request.getAttribute("locList");
+					String [] aa = (String[])request.getAttribute("sel_inds");
+					List<String> sel_inds = null;
+					if(aa != null)
+					{
+						sel_inds = Arrays.asList(aa);
+					}
+					%>
+					
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Head Office Address</label>
-							<form:input path="hoAddress" />
-							<span class="error">&nbsp;<form:errors path="hoAddress" /></span>
+							<label>City<span class="req">*</span></label>
+							<form:select path="officeLocations" >
+								<form:option value="">Select City</form:option>
+			            		<%
+			            			if(locList != null && !locList.isEmpty())
+			            			{
+			            				for(Location loc : locList)
+			            				{
+			            					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc.getLocation()))
+			            					{
+			            						%>
+			            							<form:option value="<%= loc.getLocation() %>" selected = "selected"><%= loc.getLocation() %></form:option>
+			            						<%
+			            					}
+			            					else
+			            					{
+			            						%>
+			            							<form:option value="<%= loc.getLocation() %>"><%= loc.getLocation() %></form:option>
+			            						<%
+			            					}
+			            				}
+			            			}
+			            		%>
+			            	</form:select>
+							
+<%-- 							<form:input path="officeLocations"   /> --%>
+							<span class="error officeLocations_error">&nbsp;<form:errors path="officeLocations"  /></span>
 						</div>
 					</div>
-					<div class="reg-wrap">
-						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Website URL</label>
-							<form:input path="websiteUrl" />
-							<span class="error">&nbsp;<form:errors path="websiteUrl" /></span>
-						</div>
-					</div>
-					<div style="clear: both;"></div>
+					
+					<div class="clearfix"></div>
 					<div class="login-footer bottom-padding clearfix">
 						<div class="form_submt bottom-padding10" class='clearfix'>
-					        <button type="submit" class=" btn-login btn yelo_btn">Sign up</button>
+					        <button type="submit" class="btn_submit btn-login btn yelo_btn" >Sign up</button>
 					    </div>
 				        <a href="login"> Already have an account ?</a>
 					</div>

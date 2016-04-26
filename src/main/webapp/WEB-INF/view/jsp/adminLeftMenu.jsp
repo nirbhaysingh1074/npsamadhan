@@ -30,8 +30,12 @@
           <ul class="sidebar-menu">
             <li class="header">HEADER</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-            <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+            <li class="active"><a href="adminuserlist"><i class="fa  fa-users"></i> <span>Users</span></a></li>
+            <li><a href="adminpostlist"><i class="fa fa-link"></i> <span>Posts</span></a></li>
+            <li><a href="adminprofilelist"><i class="fa fa-file-text"></i> <span>Profiles</span></a></li>
+            <li><a href="adminindustries"><i class="fa fa-fw fa-folder-open"></i> <span>Industries</span></a></li>
+            <li><a href="adminlocations"><i class="fa fa-fw fa-map-marker"></i> <span>Locations</span></a></li>
+            
             <li class="treeview">
               <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">

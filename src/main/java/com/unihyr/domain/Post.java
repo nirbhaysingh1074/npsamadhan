@@ -24,11 +24,6 @@ import javax.persistence.Table;
 @Table(name="post")
 public class Post implements Serializable
 {
-	
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7878507665232547622L;
 
 	@Id
@@ -55,10 +50,10 @@ public class Post implements Serializable
 	private int exp_max;
 	
 	@Column(nullable=false)
-	private int ctc_min;
+	private double ctc_min;
 	
 	@Column(nullable=false)
-	private int ctc_max;
+	private double ctc_max;
 	
 	@Column
 	private String criteria;
@@ -77,14 +72,113 @@ public class Post implements Serializable
 	@Column
 	private Date published;
 	
-	@Column(columnDefinition = "boolean default fasle" ,nullable=false)
+	@Column(nullable=false)
 	private boolean isActive;
 	
 	@Column
 	private Date closeDate;
 	
+	@Column(nullable=false)
+	private int noOfPosts;
 	
+	@Column(nullable=false)
+	private String role;
+
+	@Column(nullable=false)
+	private String designation;
+
+	@Column
+	private String closeRequestClient;
+	@Column
+	private String closeRequestConsultant;
+
+	@Column(nullable=false)
+	private int profileParDay;
+
+	@Column
+	private String workHourStartHour;
+	@Column
+	private String workHourEndHour;
+	@Column
+	private String workHourStartMin;
+	@Column
+	private String workHourEndMin;
 	
+	@Column
+	@Lob
+	private String editSummary;
+	
+
+	public String getEditSummary()
+	{
+		return editSummary;
+	}
+
+	public void setEditSummary(String editSummary)
+	{
+		this.editSummary = editSummary;
+	}
+
+	public String getWorkHourStartHour()
+	{
+		return workHourStartHour;
+	}
+
+	public void setWorkHourStartHour(String workHourStartHour)
+	{
+		this.workHourStartHour = workHourStartHour;
+	}
+
+	public String getWorkHourEndHour()
+	{
+		return workHourEndHour;
+	}
+
+	public void setWorkHourEndHour(String workHourEndHour)
+	{
+		this.workHourEndHour = workHourEndHour;
+	}
+
+	public String getWorkHourStartMin()
+	{
+		return workHourStartMin;
+	}
+
+	public void setWorkHourStartMin(String workHourStartMin)
+	{
+		this.workHourStartMin = workHourStartMin;
+	}
+
+	public String getWorkHourEndMin()
+	{
+		return workHourEndMin;
+	}
+
+	public void setWorkHourEndMin(String workHourEndMin)
+	{
+		this.workHourEndMin = workHourEndMin;
+	}
+
+	public String getCloseRequestClient()
+	{
+		return closeRequestClient;
+	}
+
+	public void setCloseRequestClient(String closeRequestClient)
+	{
+		this.closeRequestClient = closeRequestClient;
+	}
+
+	public String getCloseRequestConsultant()
+	{
+		return closeRequestConsultant;
+	}
+
+	public void setCloseRequestConsultant(String closeRequestConsultant)
+	{
+		this.closeRequestConsultant = closeRequestConsultant;
+	}
+
 	public long getPostId() {
 		return postId;
 	}
@@ -143,19 +237,19 @@ public class Post implements Serializable
 		this.exp_max = exp_max;
 	}
 
-	public int getCtc_min() {
+	public double getCtc_min() {
 		return ctc_min;
 	}
 
-	public void setCtc_min(int ctc_min) {
+	public void setCtc_min(double ctc_min) {
 		this.ctc_min = ctc_min;
 	}
 
-	public int getCtc_max() {
+	public double getCtc_max() {
 		return ctc_max;
 	}
 
-	public void setCtc_max(int ctc_max) {
+	public void setCtc_max(double ctc_max) {
 		this.ctc_max = ctc_max;
 	}
 
@@ -200,27 +294,14 @@ public class Post implements Serializable
 		this.published = published;
 	}
 
-//	public Set<CandidateProfile> getProfileList()
-//	{
-//		return profileList;
-//	}
-//
-//	public void setProfileList(Set<CandidateProfile> profileList)
-//	{
-//		this.profileList = profileList;
-//	}
 
 
-
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne()
 	@JoinColumn(name = "clientId", referencedColumnName = "userid" , nullable=false)
 	private Registration client;
 	
 	
-//	@Column
-//	private String lastModifier;
-
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne()
 	@JoinColumn(name = "lastModifier", referencedColumnName = "userid")
 	private Registration lastModifier;
 	
@@ -234,9 +315,41 @@ public class Post implements Serializable
 	@Column
 	private Date deleteDate;
 
+	@Column
+	private Date verifyDate;
 	
 
 	
+	public int getNoOfPosts()
+	{
+		return noOfPosts;
+	}
+
+	public void setNoOfPosts(int noOfPosts)
+	{
+		this.noOfPosts = noOfPosts;
+	}
+
+	public String getRole()
+	{
+		return role;
+	}
+
+	public void setRole(String role)
+	{
+		this.role = role;
+	}
+
+	public String getDesignation()
+	{
+		return designation;
+	}
+
+	public void setDesignation(String designation)
+	{
+		this.designation = designation;
+	}
+
 	public Registration getClient()
 	{
 		return client;
@@ -302,6 +415,18 @@ public class Post implements Serializable
 		this.closeDate = closeDate;
 	}
 
+	public int getProfileParDay()
+	{
+		return profileParDay;
+	}
+
+	public void setProfileParDay(int profileParDay)
+	{
+		this.profileParDay = profileParDay;
+	}
+
+
+
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)  
 	private Set<PostProfile> postProfile;
 
@@ -328,6 +453,16 @@ public class Post implements Serializable
 	public void setPostConsultants(Set<PostConsultant> postConsultants)
 	{
 		this.postConsultants = postConsultants;
+	}
+
+	public Date getVerifyDate()
+	{
+		return verifyDate;
+	}
+
+	public void setVerifyDate(Date verifyDate)
+	{
+		this.verifyDate = verifyDate;
 	}
 
 	

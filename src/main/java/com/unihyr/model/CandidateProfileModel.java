@@ -47,7 +47,12 @@ public class CandidateProfileModel {
 
 	private String currentCTC;
 	private String expectedCTC;
+	@NotBlank(message="{NotBlank.consForm.currentLocation}")
+	private String currentLocation;
 
+	private String ctcComments;
+	
+	
 	private String jdID;
 
 	private String resumePath;
@@ -56,6 +61,26 @@ public class CandidateProfileModel {
 	
 	private MultipartFile resumeFile;
 	
+	public String getCtcComments()
+	{
+		return ctcComments;
+	}
+
+	public void setCtcComments(String ctcComments)
+	{
+		this.ctcComments = ctcComments;
+	}
+
+	public String getCurrentLocation()
+	{
+		return currentLocation;
+	}
+
+	public void setCurrentLocation(String currentLocation)
+	{
+		this.currentLocation = currentLocation;
+	}
+
 	public String getConsultantId() {
 		return consultantId;
 	}
@@ -184,9 +209,11 @@ public class CandidateProfileModel {
 	{
 		this.post = post;
 	}
-	
+
 	@Lob
 	private String screeningNote;
+	@Lob
+	private String resumeText;
 
 	public String getScreeningNote()
 	{
@@ -196,6 +223,16 @@ public class CandidateProfileModel {
 	public void setScreeningNote(String screeningNote)
 	{
 		this.screeningNote = screeningNote;
+	}
+
+	public String getResumeText()
+	{
+		return resumeText;
+	}
+
+	public void setResumeText(String resumeText)
+	{
+		this.resumeText = resumeText;
 	}
 
 }

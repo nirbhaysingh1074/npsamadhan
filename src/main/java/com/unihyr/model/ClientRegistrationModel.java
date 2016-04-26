@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -25,8 +26,7 @@ public class ClientRegistrationModel
 	private String organizationName;
 	
 	
-//	@NotEmpty(message="{NotEmpty.regForm.password}")
-	@Pattern(regexp="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?=\\S+$).{8,20}$",message="{Pattern.regForm.password}")
+	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
 	private String password;
 	
 	@NotNull(message="{NotNull.regForm.repassword}")
@@ -43,7 +43,7 @@ public class ClientRegistrationModel
 	@Min(value=1 ,message="{Min.regForm.revenue}")
 	private int revenue;
 	
-	@Length(max=11,min=10,message="{Length.regForm.contact}")
+	@Length(max=10,min=10,message="{Length.regForm.contact}")
 //    @NotEmpty(message="{NotEmpty.regForm.contact}")
 	@NumberFormat(style=Style.NUMBER)
 	private String contact;
@@ -55,6 +55,8 @@ public class ClientRegistrationModel
 	private int usersRequired;
 
 	private String websiteUrl;
+	
+	private String officeAddress;
 	
 	public String getUserid() {
 		return userid;
@@ -165,6 +167,30 @@ public class ClientRegistrationModel
 	public void setWebsiteUrl(String websiteUrl)
 	{
 		this.websiteUrl = websiteUrl;
+	}
+	
+	@Lob
+	private String about;
+
+	public String getAbout()
+	{
+		return about;
+	}
+
+	public void setAbout(String about)
+	{
+		this.about = about;
+	}
+
+	@Lob
+	public String getOfficeAddress()
+	{
+		return officeAddress;
+	}
+
+	public void setOfficeAddress(String officeAddress)
+	{
+		this.officeAddress = officeAddress;
 	}
 	
 	

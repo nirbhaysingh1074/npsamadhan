@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<%@page import="java.util.List"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.NumberFormat"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html dir="ltr" lang="en-US">
@@ -9,65 +12,291 @@
 <style type="text/css">
 	.error{color: red;}
 </style>
+<style type="text/css">
+.fileUpload {
+    background: gray none repeat scroll 0 0;
+    border-radius: 0 5px 5px 0;
+    color: #fff;
+    float: right;
+    height: 27px;
+    margin: -27px 0;
+    overflow: hidden;
+    padding: 6px;
+    position: relative;
+}
+.fileUpload input.upload {
+    
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+</style>
 
+<script type="text/javascript">
+	function validateForm()
+	{
+		var title = $('#title').val();
+		var location = $('#location').val();
+		var fun = $('#function').val();
+		var noOfPosts = $('#noOfPosts').val();
+		var role = $('#role').val();
+		var designation = $('#designation').val();
+		var exp_min = $('#exp_min').val();
+		var exp_max = $('#exp_max').val();
+		var ctc_min = $('#ctc_min').val();
+		var ctc_max = $('#ctc_max').val();
+		
+		var workHourStartHour = $('#workHourStartHour').val();
+		var workHourStartMin = $('#workHourStartMin').val();
+		var workHourEndHour = $('#workHourEndHour').val();
+		var workHourEndMin = $('#workHourEndMin').val();
+		
+		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); //$('#additionDetail').val();
+		var select_jd = $('.select_jd').val();
+		
+		
+		$('.error').html('&nbsp;');
+		var valid = true;
+		
+		if(title == "")
+		{
+			$('.title_error').html('Please enter post title')
+			valid = false;
+		}
+		if(location == "")
+		{
+			$('.location_error').html('Please select post location')
+			valid = false;
+		}
+		if(fun == "")
+		{
+			$('.function_error').html('Please enter post function')
+			valid = false;
+		}
+		if(noOfPosts == ""||noOfPosts == "0")
+		{
+			$('.noOfPosts_error').html('Please enter no of posts')
+			valid = false;
+		}
+		if(role == "")
+		{
+			$('.role_error').html('Please enter post role')
+			valid = false;
+		}
+		if(designation == "")
+		{
+			$('.designation_error').html('Please enter post designation')
+			valid = false;
+		}
+		if(exp_min == ""  || isNaN(exp_min))
+		{
+			$('.exp_min_error').html('Please select minimum expirence')
+			valid = false;
+		}
+		if(exp_max == ""  || isNaN(exp_max) || exp_min >= exp_max)
+		{
+			$('.exp_max_error').html('Min cannot be greater than Max')
+			valid = false;
+		}
+		if(ctc_min == ""  || isNaN(ctc_min))
+		{
+			$('.ctc_min_error').html('Please enter minimum ctc')
+			valid = false;
+		}
+		if(ctc_max == ""  || isNaN(ctc_max) || ctc_min >= ctc_max)
+		{
+			$('.ctc_max_error').html('Min cannot be greater than Max')
+			valid = false;
+		}
+		if(select_jd == "" && additionDetail == "")
+		{
+			$('.uploadjd_error').html("Please select JD or enter job description");
+			valid = false;
+		}
+		if(workHourStartHour >= workHourEndHour)
+		{
+
+			$('.workHourStartHour_error').html("Start Hour should be greator than end hour");
+			valid = false;
+		}
+		
+		
+		/* if(additionDetail == "")
+		{
+			$('.additionDetail_error').html('Please enter job discription')
+			valid = false;
+		} */
+		
+		
+
+		if(!valid)
+		{
+			return false;
+		}
+		
+	}
+
+</script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	
+	$(document.body).on('change', '.select_jd' ,function(){
+		var valid = true;
+		
+		var f=this.files[0];
+//			var size = f.size||f.fileSize;
+		$('.uploadjd_error').html("");
+		var extension = f.name.replace(/^.*\./, '');
+		if (extension == f.name) {
+            extension = '';
+        } else
+		{
+            extension = extension.toLowerCase();
+        }
+		switch (extension) {
+	        case 'doc':
+	        		break;
+	        case 'docx':
+	        	break;
+	        case 'pdf':
+	        	break;
+	        default:
+				$('.uploadjd_error').html("Please select doc, docx or pdf file only.");
+        		$('#select_jd').val("");
+	            valid = false;
+    	}
+		if(valid && f.size > 2048000)
+		{
+			$('#select_jd').val("");
+        	$('.uploadjd_error').html("Please select file less than 2 MB.");
+			valid = false;
+		}
+		
+		if(!valid)
+		{
+			$('.select_jd').val("");
+			$(this).val("");
+		}
+//			alert(extension);
+	});
+});
+</script>
 </head>
 <body class="loading">
 
 	<div class="mid_wrapper">
 	  <div class="container">
 	    <div class="form_cont">
-          <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data">
+          <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 	      <div class="block">
 	        <div class="form_col">
+	          <%
+					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
+					if(fileuploaderror != null && fileuploaderror.equals("true"))
+					{
+						%>
+						<%
+						List<String> uploadMsg = (List)request.getAttribute("uploadMsg");
+						if(uploadMsg != null && !uploadMsg.isEmpty())
+						{
+							for(String msg : uploadMsg)
+							{
+								%>
+									<dl>
+										<dd>
+											<label class="error"> * <%=  msg%></label>
+										</dd>
+									</dl>
+								<%
+							}
+						}
+						%>
+						
+						<%
+						
+					}
+				%>
 	          <dl>
 	            <dt>
-	              <label>Title</label>
+	              <label>Title<span class='error'>*</span></label>
 	            </dt>
 	            <dd>
-	              <form:input path="title" required="required"/>
-	              <span class='error'><form:errors path="title" /></span>
+	              <form:input path="title"  />
+	              <span class='error title_error'><form:errors path="title" /></span>
 	            </dd>
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Location </label>
+	              <label>Location<span class='error'>*</span> </label>
 	            </dt>
 	            <dd>
-	              <form:input path="location" required="required"/>
-	              <span class='error'><form:errors path="location"/></span>
+	              <form:select path="location">
+	              	<form:option value="">Select Location</form:option>
+	            		<c:forEach var="item" items="${locList}">
+						   <form:option value="${item.location}">${item.location}</form:option>
+						</c:forEach>
+	            	</form:select>
+	              
+<%-- 	              <form:input path="location" /> --%>
+	              <span class='error location_error'><form:errors path="location"/></span>
 	            </dd>
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Function</label>
+	              <label>Role Type<span class='error'>*</span></label>
 	            </dt>
 	            <dd>
-	              <form:input path="function" required="required"/>
-	              <span class='error'><form:errors path="function"/></span>
+	              <form:select path="function">
+	                    <form:option value="Individual Contributor">Individual Contributor</form:option>
+	                    <form:option value="Team Leading">Team Leading</form:option>
+	            </form:select>
+<%-- 	              <form:input path="function" /> --%>
+	              <span class='error function_error'><form:errors path="function"/></span>
 	            </dd>
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Criteria</label>
+	              <label>No of positions<span class='error'>*</span></label>
 	            </dt>
 	            <dd>
-	              <form:select path="criteria">
-	                <form:option value="">Select Criteria</form:option>
-	                <form:option value="ABC">ABC</form:option>
-	                
-	              </form:select>
-	                <span class='error'><form:errors path="criteria"/></span>
+	              <form:input path="noOfPosts" class="number_only number_pasitive" maxlength="5" />
+	              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
+	            </dd>
+	          </dl>
+	          <dl style="clear: both;">
+	          
+	            <dt>
+	              <label>Role<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <form:input path="role" />
+	              <span class='error role_error'><form:errors path="role"/></span>
 	            </dd>
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Experience</label>
+	              <label>Designation<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <form:input path="designation" />
+	              <span class='error designation_error'><form:errors path="designation"/></span>
+	            </dd>
+	          </dl>
+	          <dl>
+	            <dt>
+	              <label>Experience<span class='error'>*</span></label>
 	            </dt>
 	            <dd>
 	              <div class="row">
 	                <div class="col-md-6">
 	                  <form:select path="exp_min">
-	                    <form:option value="0">0 Year</form:option>
+	                    <form:option value="0">0 Years (Min)</form:option>
 	                    <form:option value="1">1 Years</form:option>
 	                    <form:option value="2">2 Years</form:option>
 	                    <form:option value="3">3 Years</form:option>
@@ -76,11 +305,11 @@
 	                    <form:option value="6">6 Years</form:option>
 	                    <form:option value="7">7 Years</form:option>
 	                  </form:select>
-	                  <span class='error'><form:errors path="exp_min"/></span>
+	                  <span class='error exp_min_error'><form:errors path="exp_min"/></span>
 	                </div>
 	                <div class="col-md-6">
 	                  <form:select path="exp_max">
-	                    <form:option value="0">0 Year</form:option>
+	                    <form:option value="0">0 Years (Max)</form:option>
 	                    <form:option value="1">1 Years</form:option>
 	                    <form:option value="2">2 Years</form:option>
 	                    <form:option value="3">3 Years</form:option>
@@ -89,41 +318,127 @@
 	                    <form:option value="6">6 Years</form:option>
 	                    <form:option value="7">7 Years</form:option>
 	                  </form:select>
-	                  <span class='error'><form:errors path="exp_max"/></span>
+	                  <span class='error exp_max_error' ><form:errors path="exp_max"/></span>
 	                </div>
 	              </div>
 	            </dd>
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Compensation</label>
+	              <label>Annual CTC<span class='error'>*</span></label>
 	            </dt>
 	            <dd>
 	              <div class="row">
 	                <div class="col-md-6">
-	                  <form:input path="ctc_min" class="number_only" style="padding-right: 50px"/>
-	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">Lacs</span>
-	                  <span class='error'><form:errors path="ctc_min"/></span>
+	                  <form:input path="ctc_min" class="number_only" style="padding-right: 75px"  />
+	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Min INR Lacs)</span>
+	                  <span class='error ctc_min_error'><form:errors path="ctc_min"/></span>
 	                </div>
 	                <div class="col-md-6">
-	                  <form:input path="ctc_max" class="number_only" style="padding-right: 50px"/>
-	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">Lacs</span>
-	                  <span class='error'><form:errors path="ctc_max"/></span>
+	                  <form:input path="ctc_max" class="number_only" style="padding-right: 75px" />
+	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Max INR Lacs)</span>
+	                  <span class='error ctc_max_error'><form:errors path="ctc_max"/></span>
 	                </div>
 	              </div>
 	            </dd>
 	          </dl>
+	          <dl  style="clear: both">
+					<dt>
+						<label>Profile Quota</label>
+					</dt>
+					<dd>
+						<form:input path="profileParDay" class="number_only" />
+						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
+					</dd>
+			  </dl>
+	          <dl>
+					<dt>
+						<label>Upload JD</label>
+					</dt>
+					<dd>
+						<div class="file_up" style="float: left;">
+							<form:input path="uploadjd" disabled = "true"/>
+							<div class="fileUpload">
+							    <span>Browse</span>
+							    <input type="file" class="upload select_jd" name="uploadJdfile" />
+							</div>
+						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
+						    
+						</div>
+						<div style="float: left;">
+						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
+    border-radius: 0 5px 5px 0;
+    float: right;
+    height: 27px;
+    overflow: hidden;
+    position: relative;padding: 5px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
+					</div>
+					</dd>
+				</dl>
 	          
 	          
-	          
-	          
+	          <dl>
+	            <dt>
+	              <label><br>Normal Work Hours<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <div class="row">
+	                <div class="col-md-3">Start Hour
+	                  <form:select path="workHourStartHour">
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=23;i++){ %>
+	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
+						<%} %>
+	                  </form:select>
+	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
+	                </div>
+	                <div class="col-md-3">Start Min
+	                  <form:select path="workHourStartMin">
+	                   
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=59;i++){ %>
+	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
+						<%} %>
+	                  </form:select>
+	                  <span class='error workHourStartMin_error'><form:errors path="workHourStartMin"/></span>
+	                </div>
+	                <div class="col-md-3"> End Hour
+	                  <form:select path="workHourEndHour">
+	                    <%
+		                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=22;i++){ %>
+	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
+						<%} %>
+						 <form:option selected="true"  value="<%=formatter.format(23) %>"><%=formatter.format(23) %></form:option>
+						
+	                  </form:select>
+	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
+	                </div>
+	                <div class="col-md-3"> End Min
+	                  <form:select path="workHourEndMin">
+	                    <%
+		                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=58;i++){ %>
+	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
+						<%} %>
+						 <form:option selected="true" value="<%=formatter.format(59) %>"><%=formatter.format(59) %></form:option>
+						
+	                  </form:select>
+	                  <span class='error workHourEndMin_error'><form:errors path="workHourEndMin"/></span>
+	                </div>
+	                
+	              </div>
+	            </dd>
+	          </dl>
 	          
 	        </div>
 	      </div>
-	      <div class="block coment_fild"  >
-	        <p>Additional Description</p>
-	        <form:textarea path="additionDetail" id="editor1"></form:textarea>
-	        <span class='error'><form:errors path="additionDetail"/></span>
+	      <div class="block coment_fild"  id="jobDescriptionText">
+	        <p>Job Description (please paste the JD here)</p>
+	        <form:textarea path="additionDetail" id="additionDetail" ></form:textarea>
+	        <span class='error additionDetail_error'><form:errors path="additionDetail"/></span>
 	      </div>
 	      <br>
 	      <div class="block coment_fild" style="padding-top: 35px">
@@ -146,12 +461,8 @@
       $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
-        CKEDITOR.replace('editor1');
-        CKEDITOR.config.toolbar =
-            [{ name: 'document', items : [ 'Source'] },
-             { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
-                ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink']
-            ];
+        CKEDITOR.replace('additionDetail');
+        
       });
     </script>
 </body>

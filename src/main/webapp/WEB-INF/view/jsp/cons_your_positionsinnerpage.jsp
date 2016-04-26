@@ -80,10 +80,11 @@
 			<th align="left">Phone</th>
 			<th align="left">Current Role</th>
 			<th align="left">Organization</th>
-			<th align="left">Curent Salary</th>
-			<th>Notice Period</th>
-			<th>Submitted</th>
-			<th>Status</th>
+			<th align="left">Curent Salary (In Lacs)</th>
+			<th align="left">Notice Period (In Days)</th>
+			<th align="left">Submitted</th>
+			<th align="left">Status</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -103,25 +104,26 @@
               			}
               			
           			}
-      				System.out.println(">>>>>>>>>>>> hello "+ unviewed);
+//       				System.out.println(">>>>>>>>>>>> hello "+ unviewed);
           				
 					
 					%>
 					<tr>
 						<td>
-							<%
+							
+							<%=pp.getProfile().getName()%>
+							<%-- <%
        							if(unviewed > 0)
        							{
        								%>
-       									<span style="padding: 0px 6px;background-color:pink; border-radius:10px;margin-right: 5px;color:#000"><%= unviewed %></span>
+       									<span title="Unread Message" style="padding: 0px 6px;background-color:pink; border-radius:10px;margin-right: 5px;color:#000"><%= unviewed %></span>
        								<%
        							}
-       						%>
-							<a href="consapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a></td>
+       						%> --%></td>
 						<td><%=pp.getProfile().getContact()%></td>
 						<td><%=pp.getProfile().getCurrentRole()%></td>
 						<td><%=pp.getProfile().getCurrentOrganization()%></td>
-						<td><%=pp.getProfile().getCurrentCTC()%></td>
+						<td><%=pp.getProfile().getCurrentCTC()%> </td>
 						<td><%=pp.getProfile().getNoticePeriod()%></td>
 						<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 						<td>
@@ -131,7 +133,7 @@
 									{
 									%>
 											
-										<h3>Accepted</h3> <%
+										<h3>Shortlisted</h3> <%
 							 		}
 									else if (pp.getRejected() != null) 
 									{
@@ -146,11 +148,27 @@
 							 %>
 							</p>
 						</td>
-			
+						<td>
+							<p style="width: 105px; border-radius: 2px;">
+								<a style="line-height: 0.42857em; background: url(images/ic_12.png) no-repeat 3px 4px #f8b910; padding: 8px 18px 8px 18px;"
+								class="btn search_btn"  target="_blank" href="consapplicantinfo?ppid=<%=pp.getPpid()%>">View
+								Applicant</a>
+							</p>
+						</td>
 					</tr>
 			
 					<%
 				}
+			}
+			else
+			{
+				%>
+					<tr>
+						<td colspan="8" style="width: auto;">
+							<strong>No candidate submitted for this  role till now</strong> 
+						</td>
+					</tr>
+				<%
 			}
 		%>
 	</tbody>
@@ -191,9 +209,21 @@
 			%>
 		</ul>
 	</div>
-	<div class="sort_by">
-		<span>Order by</span> <select>
-			<option>Recent</option>
-		</select>
-	</div>
+	  <div class="sort_by"> <span>Filter by</span>
+		          <select id="sortParam"  onchange="fillProfiles('1')">
+		             <option value="submitted">Submitted</option>
+		            <option value="accepted">Shortlisted</option>
+		            <option value="rejected">Rejected</option>
+		            <option value="pending">Pending</option>
+		            <option value="recruited">Recruited</option>
+		          </select>
+		        </div> <%
+        String sortParam=(String)request.getAttribute("sortParam");
+        %>
+        <script type="text/javascript">
+        <%if(sortParam!=null){%>
+        $("#sortParam").val('<%=sortParam%>');
+        $("#sortParam option[value='<%=sortParam%>']").attr('selected','selected');
+        <%}%>
+        </script>
 </div>

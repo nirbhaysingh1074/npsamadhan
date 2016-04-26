@@ -37,9 +37,31 @@ public class PostProfile
 	
 	@Column
 	private Date accepted;
-	
+
 	@Column
 	private Date rejected;
+	
+	@Column
+	private Date recruited;
+	
+	@Column
+	private Date declinedDate ;
+	
+	@Column
+	private Date offerDate;
+	
+	@Column
+	private Date offerDropDate;
+	
+	@Column
+	private Date joinDate;
+	
+	@Column
+	private Date joinDropDate;
+	
+	@Column
+	private String rejectReason;
+	
 
 	public long getPpid()
 	{
@@ -90,7 +112,26 @@ public class PostProfile
 	{
 		this.rejected = rejected;
 	}
+	public Date getRecruited()
+	{
+		return recruited;
+	}
 
+	public void setRecruited(Date recruited)
+	{
+		this.recruited = recruited;
+	}
+
+	public Date getDeclinedDate()
+	{
+		return declinedDate;
+	}
+
+	public void setDeclinedDate(Date declinedDate)
+	{
+		this.declinedDate = declinedDate;
+	}
+	
 	public CandidateProfile getProfile()
 	{
 		return profile;
@@ -101,6 +142,62 @@ public class PostProfile
 		this.profile = profile;
 	}
 	
+	public Date getOfferDate()
+	{
+		return offerDate;
+	}
+
+	public void setOfferDate(Date offerDate)
+	{
+		this.offerDate = offerDate;
+	}
+
+	public Date getOfferDropDate()
+	{
+		return offerDropDate;
+	}
+
+	public void setOfferDropDate(Date offerDropDate)
+	{
+		this.offerDropDate = offerDropDate;
+	}
+
+	public Date getJoinDate()
+	{
+		return joinDate;
+	}
+
+	public void setJoinDate(Date joinDate)
+	{
+		this.joinDate = joinDate;
+	}
+
+
+
+	public Date getJoinDropDate()
+	{
+		return joinDropDate;
+	}
+
+	public void setJoinDropDate(Date joinDropDate)
+	{
+		this.joinDropDate = joinDropDate;
+	}
+
+
+
+	public String getRejectReason()
+	{
+		return rejectReason;
+	}
+
+	public void setRejectReason(String rejectReason)
+	{
+		this.rejectReason = rejectReason;
+	}
+
+
+
 	@OneToMany(mappedBy="postProfile", cascade=CascadeType.ALL)  
 	private Set<Inbox> messages;
 

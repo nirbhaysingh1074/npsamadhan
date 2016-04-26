@@ -25,4 +25,10 @@ public interface RegistrationDao
 	
 	public long countClientsList();
 	
+	public List<Registration> getClientList(int first, int max);
+	
+	public List<Registration> getConsultantList(int first, int max);
+	
+	public List<Registration> getCoUsersByUserid(String userid);
+	
 }

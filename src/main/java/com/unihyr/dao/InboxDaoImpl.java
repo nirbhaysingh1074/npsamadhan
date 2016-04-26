@@ -78,4 +78,29 @@ public class InboxDaoImpl implements InboxDao
 		}
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List<Inbox> getMessageByClient(String userid, int first, int max)
+	{
+		return this.sessionFactory.getCurrentSession().createCriteria(Inbox.class)
+				.createAlias("postProfile", "ppAlias")
+				.createAlias("ppAlias.post", "postAlias")
+				.createAlias("postAlias.client", "clientAlias")
+				.add(Restrictions.eq("clientAlias.userid", userid))
+				.add(Restrictions.eq("isViewed", false))
+				.addOrder(Order.desc("createDate"))
+				.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Inbox> getMessageByConsultant(String userid, int first, int max)
+	{
+		return this.sessionFactory.getCurrentSession().createCriteria(Inbox.class)
+				.createAlias("postProfile", "ppAlias")
+				.createAlias("ppAlias.profile", "prAlias")
+				.createAlias("prAlias.registration", "regAlias")
+				.add(Restrictions.eq("regAlias.userid", userid))
+				.add(Restrictions.eq("isViewed", false))
+				.addOrder(Order.desc("createDate"))
+				.list();
+	}
 }

@@ -1,6 +1,9 @@
 package com.unihyr.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.Lob;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -20,14 +23,14 @@ public class ConsultRegModel
 	@NotBlank(message="{NotBlank.regForm.consultName}")
 	private String consultName;
 	
-	@NotBlank(message="{NotBlank.regForm.founderName}")
-	private String founderName;
-	
-	@NotBlank(message="{NotBlank.regForm.founderContact}")
-	private String founderContact;
+//	@NotBlank(message="{NotBlank.regForm.founderName}")
+//	private String founderName;
+//	
+//	@NotBlank(message="{NotBlank.regForm.founderContact}")
+//	private String founderContact;
 	
 //	@NotEmpty(message="{NotEmpty.regForm.password}")
-	@Pattern(regexp="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?=\\S+$).{8,20}$",message="{Pattern.regForm.password}")
+	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
 	private String password;
 	
 	@NotNull(message="{NotNull.regForm.repassword}")
@@ -38,7 +41,7 @@ public class ConsultRegModel
 	
 	private String hoAddress;
 	
-	@Min(value=1  ,message="{Min.regForm.noofpeoples}")
+	@Min(value=0  ,message="{Min.regForm.noofpeoples}")
 	private int noofpeoples;
 	
 	@Min(value=0 ,message="{Min.regForm.revenue}")
@@ -47,13 +50,14 @@ public class ConsultRegModel
 	@Min(value=0 ,message="{Min.regForm.revenue}")
 	private int yearsInIndusrty;
 	
-	@Length(max=11,min=10,message="{Length.regForm.contact}")
+	@Length(max=10,min=10,message="{Length.regForm.contact}")
 	@NumberFormat(style=Style.NUMBER)
 	private String contact;
 	
 	
-	private Industry industry ;
+	private String officeAddress;
 	
+	private String firmType;
 	
 	private int usersRequired;
 
@@ -80,31 +84,6 @@ public class ConsultRegModel
 	{
 		this.consultName = consultName;
 	}
-
-
-	public String getFounderName()
-	{
-		return founderName;
-	}
-
-
-	public void setFounderName(String founderName)
-	{
-		this.founderName = founderName;
-	}
-
-
-	public String getFounderContact()
-	{
-		return founderContact;
-	}
-
-
-	public void setFounderContact(String founderContact)
-	{
-		this.founderContact = founderContact;
-	}
-
 
 	public String getPassword()
 	{
@@ -202,18 +181,6 @@ public class ConsultRegModel
 	}
 
 
-	public Industry getIndustry()
-	{
-		return industry;
-	}
-
-
-	public void setIndustry(Industry industry)
-	{
-		this.industry = industry;
-	}
-
-
 	public int getUsersRequired()
 	{
 		return usersRequired;
@@ -225,6 +192,60 @@ public class ConsultRegModel
 		this.usersRequired = usersRequired;
 	}
 	
+	@Lob
+	public String getOfficeAddress()
+	{
+		return officeAddress;
+	}
+
+
+	public void setOfficeAddress(String officeAddress)
+	{
+		this.officeAddress = officeAddress;
+	}
+
+
+	public String getFirmType()
+	{
+		return firmType;
+	}
+
+
+	public void setFirmType(String firmType)
+	{
+		this.firmType = firmType;
+	}
+
+
+	@Lob
+	private String about;
+
+	public String getAbout()
+	{
+		return about;
+	}
+
+	public void setAbout(String about)
+	{
+		this.about = about;
+	}
+	
+	
+	private boolean consultant_type;
+
+
+	public boolean isConsultant_type()
+	{
+		return consultant_type;
+	}
+
+
+	public void setConsultant_type(boolean consultant_type)
+	{
+		this.consultant_type = consultant_type;
+	}
+
+
 	
 	
 	

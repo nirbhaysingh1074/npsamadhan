@@ -1,6 +1,7 @@
 package com.unihyr.model;
 
 
+import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.validation.constraints.Min;
 
@@ -19,20 +20,29 @@ public class PostModel
 	@NotBlank(message="{NotBlank.postForm.location}")
 	private String location;
 	
-	@NotBlank(message="{NotBlank.postForm.function}")
+	//@NotBlank(message="{NotBlank.postForm.function}")
 	private String function;
 	
 	private int exp_min;
 	
+	
 	private int exp_max;
 	
-	private int ctc_min;
+	private double ctc_min;
 	
-	private int ctc_max;
 	
+	private double ctc_max;
+	
+	private String workHourStartHour;
+	private String workHourStartMin;
 
-	@NotBlank(message="{NotBlank.postForm.criteria}")
-	private String criteria;
+	private String workHourEndHour;
+	private String workHourEndMin;
+	
+	private String editSummary;
+
+//	@NotBlank(message="{NotBlank.postForm.criteria}")
+//	private String criteria;
 	
 	@Lob
 	private String comment;
@@ -42,8 +52,73 @@ public class PostModel
 	@Lob
 	private String additionDetail;
 	
-	private MultipartFile file;
+	@Min(value=1, message="{Min.postForm.noOfPosts}")
+	private int noOfPosts;
 	
+	
+	@NotBlank(message="{NotBlank.postForm.role}")
+	private String role;
+	
+	
+	@NotBlank(message="{NotBlank.postForm.designation}")
+	private String designation;
+	
+	private int profileParDay;
+	
+	private MultipartFile uploadJdfile;
+	
+	
+
+	public String getWorkHourStartHour()
+	{
+		return workHourStartHour;
+	}
+
+	public void setWorkHourStartHour(String workHourStartHour)
+	{
+		this.workHourStartHour = workHourStartHour;
+	}
+
+	public String getWorkHourStartMin()
+	{
+		return workHourStartMin;
+	}
+
+	public void setWorkHourStartMin(String workHourStartMin)
+	{
+		this.workHourStartMin = workHourStartMin;
+	}
+
+	public String getWorkHourEndHour()
+	{
+		return workHourEndHour;
+	}
+
+	public void setWorkHourEndHour(String workHourEndHour)
+	{
+		this.workHourEndHour = workHourEndHour;
+	}
+
+	public String getWorkHourEndMin()
+	{
+		return workHourEndMin;
+	}
+
+	public void setWorkHourEndMin(String workHourEndMin)
+	{
+		this.workHourEndMin = workHourEndMin;
+	}
+
+	public String getEditSummary()
+	{
+		return editSummary;
+	}
+
+	public void setEditSummary(String editSummary)
+	{
+		this.editSummary = editSummary;
+	}
+
 	public long getPostId() {
 		return postId;
 	}
@@ -89,32 +164,35 @@ public class PostModel
 	}
 
 	public void setExp_max(int exp_max) {
+		
 		this.exp_max = exp_max;
 	}
-
-	public int getCtc_min() {
+	
+	public double getCtc_min() {
 		return ctc_min;
 	}
 
-	public void setCtc_min(int ctc_min) {
+	public void setCtc_min(double ctc_min) {
 		this.ctc_min = ctc_min;
 	}
 
-	public int getCtc_max() {
+	public double getCtc_max() {
 		return ctc_max;
 	}
 
-	public void setCtc_max(int ctc_max) {
+	
+	public void setCtc_max(double ctc_max) {
+		
 		this.ctc_max = ctc_max;
 	}
 
-	public String getCriteria() {
-		return criteria;
-	}
-
-	public void setCriteria(String criteria) {
-		this.criteria = criteria;
-	}
+//	public String getCriteria() {
+//		return criteria;
+//	}
+//
+//	public void setCriteria(String criteria) {
+//		this.criteria = criteria;
+//	}
 
 	public String getComment() {
 		return comment;
@@ -140,14 +218,55 @@ public class PostModel
 		this.additionDetail = additionDetail;
 	}
 
-	public MultipartFile getFile()
+	public int getNoOfPosts()
 	{
-		return file;
+		return noOfPosts;
 	}
 
-	public void setFile(MultipartFile file)
+	public void setNoOfPosts(int noOfPosts)
 	{
-		this.file = file;
+		this.noOfPosts = noOfPosts;
 	}
+
+	public String getRole()
+	{
+		return role;
+	}
+
+	public void setRole(String role)
+	{
+		this.role = role;
+	}
+
+	public String getDesignation()
+	{
+		return designation;
+	}
+
+	public void setDesignation(String designation)
+	{
+		this.designation = designation;
+	}
+
+	public MultipartFile getUploadJdfile()
+	{
+		return uploadJdfile;
+	}
+
+	public void setUploadJdfile(MultipartFile uploadJdfile)
+	{
+		this.uploadJdfile = uploadJdfile;
+	}
+
+	public int getProfileParDay()
+	{
+		return profileParDay;
+	}
+
+	public void setProfileParDay(int profileParDay)
+	{
+		this.profileParDay = profileParDay;
+	}
+
 	
 }	

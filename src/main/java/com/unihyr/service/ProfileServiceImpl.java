@@ -44,8 +44,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public List<CandidateProfile> getProfileList(int first, int max) {
-		// TODO Auto-generated method stub
-		return null;
+		return profileDao.getProfileList(first, max);
 	}	
 	
 	@Override

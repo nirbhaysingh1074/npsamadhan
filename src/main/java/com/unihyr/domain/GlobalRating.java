@@ -30,10 +30,6 @@ public class GlobalRating
 	@Column(nullable = false)
 	private int industryId;
 	
-	@ManyToOne(cascade ={ CascadeType.ALL })
-	@JoinColumn(name = "postId", referencedColumnName = "postId")
-	private Post post;
-
 	@ManyToOne(cascade =
 	{ CascadeType.ALL })
 	@JoinColumn(name = "consultantId", referencedColumnName = "userId")
@@ -49,15 +45,7 @@ public class GlobalRating
 
 	private Date deleteDate;
 	
-	public Post getPost()
-	{
-		return post;
-	}
-
-	public void setPost(Post post)
-	{
-		this.post = post;
-	}
+	
 
 	public int getIndustryId()
 	{

@@ -25,7 +25,7 @@ public class RegistrationForm
 	private String userid;
 	
 	@NotEmpty(message="{NotEmpty.indexForm.password}")
-	@Pattern(regexp="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])(?=\\S+$).{8,20}$",message="{Pattern.indexForm.password}")
+	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.indexForm.password}")
 	private String password;
 	
 	@NotNull(message="{NotNull.indexForm.repassword}")
@@ -77,7 +77,7 @@ public class RegistrationForm
 		this.gender = gender;
 	}
 	
-	@Length(max=11,min=10,message="{Length.indexForm.contact}")
+	@Length(max=10,min=10,message="{Length.indexForm.contact}")
     @NotEmpty(message="{NotEmpty.indexForm.contact}")
 	@NumberFormat(style=Style.NUMBER)
 	private String contact;

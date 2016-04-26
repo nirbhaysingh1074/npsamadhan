@@ -15,14 +15,32 @@ media css
  .login-form{max-width: 400px;background-color: #fff;margin: 100px auto; border-radius: 5px;}
  .reg-form{max-width: 800px;background-color: #fff;margin: 50px auto; border-radius: 5px;}
  .login-wrap{padding: 25px;box-shadow:0 4px 4px rgba(0, 0, 0, 0.6) inset;}
- .reg-wrap{padding: 0 25px;float: left;width: 50%;}
+ .reg-wrap{padding: 0 25px;float: left;width: 50%;margin-bottom: 5px;}
  .login-header{text-align: center;padding:20px 0;}
+ .login-header .close
+ 	{
+ 		float: right; position: relative; 
+ 		padding: 4px 10px; font-size: 16px; 
+ 		border-radius: 45%; background-color: gray; 
+ 		color: #fff; cursor:pointer;
+ 		top: -15px; right: 5px;
+	}
+.reg_page .close
+ 	{
+ 		float: right; position: relative; 
+ 		padding: 4px 10px; font-size: 16px; 
+ 		border-radius: 45%; background-color: gray; 
+ 		color: #fff; cursor:pointer;
+ 		top: 5px; right: 5px;
+	}
+	
  .reg-header{padding:20px 25px;}
  .login-footer {padding: 0 25px;}
  .back_list_view{cursor: pointer;}
  #cons_list > li{cursor: pointer;}
  .accept_profile, .reject_profile{cursor: pointer;}
- .accept_profile img, .reject_profile img{width: 35px}
+ .accept_profile img, .reject_profile img{    width: 19px;
+    height: 19px;}
  .success{color: green;}
  .error{color: red;}
  .warning{color: #EEFF99;}
@@ -49,7 +67,7 @@ media css
     border: 1px solid transparent;
     cursor: pointer;
     display: inline-block;
-    font-size: 14px;
+ 
     font-weight: normal;
     line-height: 1.42857;
     margin-bottom: 0;
@@ -157,15 +175,15 @@ p{ margin:0px; padding:0px; }
 .prev{ position:absolute; left:10%; top:50%; margin-top:-22px; width:26px;} .next{ position:absolute; right:10%; top:50%; width:26px; margin-top:-22px;}
 .Slde_cent .grd .bx{ background:rgba(0,0,0,.4); width:100%; float:left; padding:15px; text-align:center;} 
 .Slde_cent .grd .bx h2{font-family: 'OpenSansBold'; font-size:34px; color:#fff; text-transform:uppercase;} 
-.Slde_cent .grd .bx p{ font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#fff;} 
+.Slde_cent .grd .bx p{ font-family:Arial, Helvetica, sans-serif;  color:#fff;} 
 
 .Scrlbr{ width:100%; float:left; height:58px; background:#f8b910;} 
-.cont_btn{ display:block; width:156px; text-decoration:none;  height:58px; background:#000000; text-align:center; color:#fff; font-family: 'OpenSansBold'; font-size:18px; text-transform:uppercase; padding:22px 5px 0; float:left; margin-right:30px;} .cont_btn:hover{ background:#333;} 
+.cont_btn{ display:block; width:156px; text-decoration:none;  height:58px; background:#000000; text-align:center; color:#fff; font-family: 'OpenSansBold'; text-transform:uppercase; padding:22px 5px 0; float:left; margin-right:30px;} .cont_btn:hover{ background:#333;} 
 .sign_title{ padding-top:18px;} 
-.signup_btn{ display:block; float:left; margin-right:20px; height:34px; border-radius:3px; background:#fff; text-decoration:none; font-family:'OpensansSemibold'; font-size:16px; color:#000000; padding:6px 18px 0; margin-top:14px;} .signup_btn:hover{ background:#000; color:#fff;} 
+.signup_btn{ display:block; float:left; margin-right:20px; height:34px; border-radius:3px; background:#fff; text-decoration:none; font-family:'OpensansSemibold';  color:#000000; padding:6px 18px 0; margin-top:14px;} .signup_btn:hover{ background:#000; color:#fff;} 
 
 .title_rw{ width:100%; float:left; text-align:center; margin-bottom:30px;} 
-.title_rw h2{font-family: 'OpenSansBold'; color:#000000; font-size:22px; background:url(../images/tle_botm.jpg) no-repeat center bottom; 
+.title_rw h2{font-family: 'OpenSansBold'; color:#000000;  background:url(../images/tle_botm.jpg) no-repeat center bottom; 
 text-transform:uppercase; padding-bottom:10px;} 
 
 .Hwrk{ width:100%; float:left; padding:35px 0px;} 
@@ -177,8 +195,8 @@ text-transform:uppercase; padding-bottom:10px;}
 .featserv ul li .thumbnl img{border-radius:100%; margin-bottom:-5px;} 
 .featserv ul li h3{font-family: 'OpenSansBold'; font-size:18px; color:#000; margin-bottom:4px;} 
 .featserv ul li h4{font-family: 'OpenSansRegular'; font-size:14px; color:#f8b910; text-transform:uppercase; margin-bottom:6px;} 
-.featserv ul li p{font-family: 'OpenSanslight'; font-size:13px; color:#000000; line-height:20px; margin-bottom:10px;} 
-.readmore{ display:inline-block; background:#f8b910; color:#fff; text-decoration:none; font-family: 'OpenSansRegular'; font-size:14px; padding:7px 16px; border-radius:3px;}
+.featserv ul li p{font-family: 'OpenSanslight'; font-size:12px; color:#000000; line-height:20px; margin-bottom:10px;} 
+.readmore{ display:inline-block; background:#f8b910; color:#fff; text-decoration:none; font-family: 'OpenSansRegular'; font-size:12px; padding:7px 16px; border-radius:3px;}
 .readmore:hover{ background:#000; color:#fff;} 
 
 .Comnt{ width:100%; float:left; padding:35px 0px;} .comnt_sec{ width:100%; float:left; padding:0 50px; text-align:center;} 
@@ -205,7 +223,7 @@ text-transform:uppercase; padding-bottom:10px;}
 .container { width:744px;} 
 .next{ right:10px;} .prev{ left:10px;} .cont_btn{ margin-right:10px;} 
 .Scrlbr p.font21{ font-size:18px;} .Scrlbr p.m_r_20{ margin-right:10px;} 
-.signup_btn{ margin-right:10px; padding:6px 10px 0; font-size:15px;} 
+.signup_btn{ margin-right:10px; padding:6px 10px 0; } 
 .Hwrk img{ max-width:100%;} .footer_top .col_3{ width:100%; margin-top:30px;} 
 .footer_top .col_2{ width:56%;}
 .header .header_right{float:right;}
@@ -229,7 +247,7 @@ text-transform:uppercase; padding-bottom:10px;}
 
 @media (max-width: 450px) { 
 .Slde_cent{ top:10%;} .Slde_cent .grd{ width:86%; margin:0 7%;}  .cont_btn{ padding-top:18px;}
-.Slde_cent .grd .bx h2{ font-size:14px;}  .Slde_cent .grd .bx p{ font-size:7px;} .prev, .next{ z-index:999;}
+.Slde_cent .grd .bx h2{ font-size:12px;}  .Slde_cent .grd .bx p{ font-size:7px;} .prev, .next{ z-index:999;}
 
 .reg-wrap {width: 100%;}
 .reg-form{margin: 0 auto;}

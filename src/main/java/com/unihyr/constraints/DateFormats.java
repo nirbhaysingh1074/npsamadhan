@@ -1,7 +1,9 @@
 package com.unihyr.constraints;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateFormats 
 {
@@ -31,4 +33,22 @@ public class DateFormats
 		
 		return st;
 	}
+	
+	public static Date getLastMonday(Date date)
+	{
+		
+		Calendar c = GregorianCalendar.getInstance();
+
+        System.out.println("Current week = " + Calendar.DAY_OF_WEEK);
+
+        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        System.out.println("Current week = " + Calendar.DAY_OF_WEEK);
+
+
+        System.out.println("Start Date = " + c.getTime());
+		
+		return c.getTime();
+		
+	}
+	
 }

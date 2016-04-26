@@ -36,7 +36,7 @@
       <ul class="toggle_menu">
         <li><a href="home">Home</a></li>
         <li class="active"><a href="index">New Post</a></li>
-        <li><a href="">Your Positions </a></li>
+        <li><a href="">Manage Positions </a></li>
         <li><a href="">BIlling Details</a></li>
         <li><a href="">Profiles Center</a></li>
       </ul>

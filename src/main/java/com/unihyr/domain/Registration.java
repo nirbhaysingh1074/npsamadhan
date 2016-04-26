@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -32,6 +33,7 @@ public class Registration implements Serializable
 	
 	private int lid;
 	
+	private String name;
 	
 	private String userid;
 	
@@ -62,23 +64,51 @@ public class Registration implements Serializable
 	
 	private String websiteUrl;
 	
+
+	private String about;
+
+	
 	private Set<Industry> industries = new HashSet<>();
 	
 	
 //	------------------ Client Data -------------- 
 	
-	@Column
+	
 	private String organizationName;
 	
-	@Column
+	
 	private int usersRequired;
 	
-	@ManyToOne(cascade =
-		{ CascadeType.ALL })
-		@JoinColumn(name = "profile_id", referencedColumnName = "profileId")
-	private CandidateProfile candidateProfile;
+//	@ManyToOne(cascade =
+//		{ CascadeType.ALL })
+//		@JoinColumn(name = "profile_id", referencedColumnName = "profileId")
+//	private CandidateProfile candidateProfile;
+//	
+
+	private String contractNo;
+
+	private double feePercent1;
+	private double feePercent2;
+	private double feePercent3;
+	private double feePercent4;
+	private double feePercent5;
+	
+
+	private double ctcSlabs1Min;
+	private double ctcSlabs1Max;
+	private double ctcSlabs2Min;
+	private double ctcSlabs2Max;
+	private double ctcSlabs3Min;
+	private double ctcSlabs3Max;
+	private double ctcSlabs4Min;
+	private double ctcSlabs4Max;
+	private double ctcSlabs5Min;
 	
 	
+	
+	private Integer paymentDays;
+
+	private String emptyField;
 	
 	
 	
@@ -87,20 +117,211 @@ public class Registration implements Serializable
 	
 //	------------------ Consultant Data -------------- 	
 	
+
+	public void setFeePercent5(double feePercent5)
+	{
+		this.feePercent5 = feePercent5;
+	}
+
+	
 	@Column
+	public double getFeePercent1()
+	{
+		return feePercent1;
+	}
+
+	public void setFeePercent1(double feePercent1)
+	{
+		this.feePercent1 = feePercent1;
+	}
+
+	@Column
+	public double getFeePercent2()
+	{
+		return feePercent2;
+	}
+
+	public void setFeePercent2(double feePercent2)
+	{
+		this.feePercent2 = feePercent2;
+	}
+
+	@Column
+	public double getFeePercent3()
+	{
+		return feePercent3;
+	}
+
+	public void setFeePercent3(double feePercent3)
+	{
+		this.feePercent3 = feePercent3;
+	}
+
+	@Column
+	public double getFeePercent4()
+	{
+		return feePercent4;
+	}
+
+	public void setFeePercent4(double feePercent4)
+	{
+		this.feePercent4 = feePercent4;
+	}
+
+	@Column
+	public double getFeePercent5()
+	{
+		return feePercent5;
+	}
+
+	public void setCtcSlabs1Min(double feePercent5)
+	{
+		this.feePercent5 = feePercent5;
+	}
+
+	@Column
+	public double getCtcSlabs1Min()
+	{
+		return ctcSlabs1Min;
+	}
+
+	public void CtcSlabs1Min(double ctcSlabs1Min)
+	{
+		this.ctcSlabs1Min = ctcSlabs1Min;
+	}
+
+	@Column
+	public double getCtcSlabs1Max()
+	{
+		return ctcSlabs1Max;
+	}
+
+	public void setCtcSlabs1Max(double ctcSlabs1Max)
+	{
+		this.ctcSlabs1Max = ctcSlabs1Max;
+	}
+
+	@Column
+	public double getCtcSlabs2Min()
+	{
+		return ctcSlabs2Min;
+	}
+
+	public void setCtcSlabs2Min(double ctcSlabs2Min)
+	{
+		this.ctcSlabs2Min = ctcSlabs2Min;
+	}
+
+	@Column
+	public double getCtcSlabs2Max()
+	{
+		return ctcSlabs2Max;
+	}
+
+	public void setCtcSlabs2Max(double ctcSlabs2Max)
+	{
+		this.ctcSlabs2Max = ctcSlabs2Max;
+	}
+
+	@Column
+	public double getCtcSlabs3Min()
+	{
+		return ctcSlabs3Min;
+	}
+
+	public void setCtcSlabs3Min(double ctcSlabs3Min)
+	{
+		this.ctcSlabs3Min = ctcSlabs3Min;
+	}
+
+	@Column
+	public double getCtcSlabs3Max()
+	{
+		return ctcSlabs3Max;
+	}
+
+	public void setCtcSlabs3Max(double ctcSlabs3Max)
+	{
+		this.ctcSlabs3Max = ctcSlabs3Max;
+	}
+
+	@Column
+	public double getCtcSlabs4Min()
+	{
+		return ctcSlabs4Min;
+	}
+
+	public void setCtcSlabs4Min(double ctcSlabs4Min)
+	{
+		this.ctcSlabs4Min = ctcSlabs4Min;
+	}
+
+	@Column
+	public double getCtcSlabs4Max()
+	{
+		return ctcSlabs4Max;
+	}
+
+	public void setCtcSlabs4Max(double ctcSlabs4Max)
+	{
+		this.ctcSlabs4Max = ctcSlabs4Max;
+	}
+
+	@Column
+	public double getCtcSlabs5Min()
+	{
+		return ctcSlabs5Min;
+	}
+
+	public void setCtcSlabs5Min(double ctcSlabs5Min)
+	{
+		this.ctcSlabs5Min = ctcSlabs5Min;
+	}
+
+	@Column
+	public String getContractNo()
+	{
+		return contractNo;
+	}
+
+	public void setContractNo(String contractNo)
+	{
+		this.contractNo = contractNo;
+	}
+
+	
+	@Column
+	public Integer getPaymentDays()
+	{
+		return paymentDays;
+	}
+
+	public void setPaymentDays(Integer paymentDays)
+	{
+		this.paymentDays = paymentDays;
+	}
+
+	@Column
+	public String getEmptyField()
+	{
+		return emptyField;
+	}
+
+	public void setEmptyField(String emptyField)
+	{
+		this.emptyField = emptyField;
+	}
+
+
 	private String consultName;
 	
-	@Column
-	private String founderName;
-	
-	@Column
-	private String founderContact;
 	
 	
-	
-	@Column
 	private int yearsInIndusrty;
 
+	private Set<PostConsultant> postConsultants;
+
+	
 	@Id
 	@Column(nullable=false)
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -120,6 +341,19 @@ public class Registration implements Serializable
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	
+	@Column
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	
 
 	@Column(nullable=false)
 	public Date getRegdate() {
@@ -195,18 +429,7 @@ public class Registration implements Serializable
 	}
 
 	
-	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinTable(name="user_industry", 
-                joinColumns={@JoinColumn(name="lid")}, 
-                inverseJoinColumns={@JoinColumn(name="id")})
-	public Set<Industry> getIndustries() {
-		return industries;
-	}
-
-	public void setIndustries(Set<Industry> industries) {
-		this.industries = industries;
-	}
-
+	
 	
 	@Column
 	public String getOrganizationName() {
@@ -217,7 +440,7 @@ public class Registration implements Serializable
 		this.organizationName = organizationName;
 	}
 
-	@Column(nullable=false)
+	@Column
 	public int getUsersRequired() {
 		return usersRequired;
 	}
@@ -226,6 +449,7 @@ public class Registration implements Serializable
 		this.usersRequired = usersRequired;
 	}
 
+	@Column
 	public String getConsultName() {
 		return consultName;
 	}
@@ -234,6 +458,7 @@ public class Registration implements Serializable
 		this.consultName = consultName;
 	}
 
+	@Column
 	public int getYearsInIndusrty() {
 		return yearsInIndusrty;
 	}
@@ -242,26 +467,7 @@ public class Registration implements Serializable
 		this.yearsInIndusrty = yearsInIndusrty;
 	}
 
-	public String getFounderName()
-	{
-		return founderName;
-	}
-
-	public void setFounderName(String founderName)
-	{
-		this.founderName = founderName;
-	}
-
-	public String getFounderContact()
-	{
-		return founderContact;
-	}
-
-	public void setFounderContact(String founderContact)
-	{
-		this.founderContact = founderContact;
-	}
-
+	@Column
 	public String getWebsiteUrl()
 	{
 		return websiteUrl;
@@ -272,6 +478,7 @@ public class Registration implements Serializable
 		this.websiteUrl = websiteUrl;
 	}
 
+	@Column
 	public String getLogo()
 	{
 		return logo;
@@ -284,22 +491,134 @@ public class Registration implements Serializable
 
 	
 	
-//	@OneToMany(mappedBy="consultant", cascade=CascadeType.ALL)  
-//	private Set<PostConsultant> postConsultants;
-//
-//
-//	public Set<PostConsultant> getPostConsultants()
-//	{
-//		return postConsultants;
-//	}
-//
-//	public void setPostConsultants(Set<PostConsultant> postConsultants)
-//	{
-//		this.postConsultants = postConsultants;
-//	}
+	
+	@OneToMany(mappedBy="consultant", fetch = FetchType.LAZY)  
+	public Set<PostConsultant> getPostConsultants()
+	{
+		return postConsultants;
+	}
+
+	public void setPostConsultants(Set<PostConsultant> postConsultants)
+	{
+		this.postConsultants = postConsultants;
+	}
+
 
 	
+	@Column
+	@Lob
+	public String getAbout()
+	{
+		return about;
+	}
+
+	public void setAbout(String about)
+	{
+		this.about = about;
+	}
 	
 	
+	private Registration admin;
+ 
+    private Set<Registration> subuser = new HashSet<Registration>();
+
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="parent_admin", referencedColumnName="userid" )
+    public Registration getAdmin()
+	{
+		return admin;
+	}
+
+	public void setAdmin(Registration admin)
+	{
+		this.admin = admin;
+	}
+
+	@OneToMany(mappedBy="admin")
+    public Set<Registration> getSubuser()
+	{
+		return subuser;
+	}
+
+	public void setSubuser(Set<Registration> subuser)
+	{
+		this.subuser = subuser;
+	}
+ 
+
+	@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(name="user_industry", 
+                joinColumns={@JoinColumn(name="lid")}, 
+                inverseJoinColumns={@JoinColumn(name="id")})
+	public Set<Industry> getIndustries() {
+		return industries;
+	}
+
+	public void setIndustries(Set<Industry> industries) {
+		this.industries = industries;
+	}
+
+	@Column(nullable= false)
+	private boolean consultant_type;
+
+
+	public boolean isConsultant_type()
+	{
+		return consultant_type;
+	}
+
+
+	public void setConsultant_type(boolean consultant_type)
+	{
+		this.consultant_type = consultant_type;
+	}
 	
+	@Column
+	@Lob
+	private String officeAddress;
+	
+	@Column
+	private String firmType;
+	
+	
+	public String getOfficeAddress()
+	{
+		return officeAddress;
+	}
+
+	public void setOfficeAddress(String officeAddress)
+	{
+		this.officeAddress = officeAddress;
+	}
+
+	public String getFirmType()
+	{
+		return firmType;
+	}
+
+	public void setFirmType(String firmType)
+	{
+		this.firmType = firmType;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		if (!(obj instanceof Registration))
+		{
+			return false;
+		}
+		
+		Registration reg = (Registration) obj;
+		
+		boolean st = reg.getUserid().equals(this.getUserid());
+		
+		return st;
+	}
+
 }
