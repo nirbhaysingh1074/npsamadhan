@@ -591,6 +591,7 @@
 		     <span id="errorTotalCTC" style="display: none;color: red;"></span>
 		    <label>Billable CTC : </label>
 		    <br> <input type="text" id="billableCTC" />
+		    <span id="billableCTCinWords" ></span>
 		     <span id="errorBillableCTC" style="display: none;color: red;"></span>
 		     <label>Joining Date : </label>
 		     <br><input type="text" id="joiningDate" />
