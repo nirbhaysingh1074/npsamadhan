@@ -76,16 +76,17 @@
 <table class="table no-margin" style="border: 1px solid gray;">
 	<thead>
 		<tr>
-			<th align="left">Name</th>
-			<th align="left">Phone</th>
-			<th align="left">Current Role</th>
-			<th align="left">Organization</th>
-			<th align="left">Curent Salary (In Lacs)</th>
-			<th align="left">Notice Period (In Days)</th>
-			<th align="left">Submitted</th>
-			<th align="left">Status</th>
-			<th></th>
-		</tr>
+											<th align="left">Name</th>
+											<th align="left">Phone</th>
+											<th align="left">Current Role</th>
+											<th align="left">Organization</th>
+											<th align="left">Curent Salary (In Lacs)</th>
+											<th align="left">Notice Period (In Days)</th>
+											<th align="left">Submitted</th>
+											<th align="left">Status</th>
+											<th style="width: 120px;">Action</th>
+											<th></th>
+										</tr>
 	</thead>
 	<tbody>
 		<%
@@ -108,46 +109,289 @@
           				
 					
 					%>
-					<tr>
+						<tr class="cons_proile_row">
 						<td>
 							
 							<%=pp.getProfile().getName()%>
-							<%-- <%
+						<%-- 	<%
        							if(unviewed > 0)
        							{
        								%>
        									<span title="Unread Message" style="padding: 0px 6px;background-color:pink; border-radius:10px;margin-right: 5px;color:#000"><%= unviewed %></span>
        								<%
        							}
-       						%> --%></td>
+       						%> --%>
+       						
+       						</td>
 						<td><%=pp.getProfile().getContact()%></td>
 						<td><%=pp.getProfile().getCurrentRole()%></td>
 						<td><%=pp.getProfile().getCurrentOrganization()%></td>
-						<td><%=pp.getProfile().getCurrentCTC()%> </td>
+						<td><%=pp.getProfile().getCurrentCTC()%></td>
 						<td><%=pp.getProfile().getNoticePeriod()%></td>
 						<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
-						<td>
-							<p id="<%=pp.getPpid()%>" class="profile_status">
-								<%
-									if (pp.getAccepted() != null)
-									{
-									%>
-											
-										<h3>Shortlisted</h3> <%
-							 		}
-									else if (pp.getRejected() != null) 
-									{
-							 		%>
-										<h3>Rejected</h3> <%
-							 		} else 
-							 		{
-									 %>
-										<h3>In Progress</h3>
-									<%
-							 		}
-							 %>
-							</p>
-						</td>
+						
+	                  							<%
+													if(pp.getJoinDropDate() != null)
+													{
+														%>
+						                  					<td>
+																<span>Join Dropped</span>
+															</td>
+															
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+													else if(pp.getJoinDate() != null)
+													{
+														%>
+															<td>
+																<span>Joined</span>
+															</td>
+															
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+													else if(pp.getOfferDropDate() != null)
+													{
+														%>
+															<td>
+																<span>Offer Declined</span>
+															</td>
+															
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+													else if(pp.getOfferDate() != null)
+													{
+														%>
+															<td>
+																<span>Offered</span>
+															</td>
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+																<td class="text-center">
+																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
+																		<button  class="join_accept profile_status_button" title="Click to accept offer" >Join</button> 
+																		<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
+																	</p>
+																</td>
+															<%
+															
+														}
+													}
+													else if(pp.getDeclinedDate() != null)
+													{
+														%>
+															<td>
+																<span>Declined</span>
+															</td>
+															
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+													else if(pp.getRecruited() != null)
+													{
+														%>
+															<td>
+																<span>Offer</span>
+															</td>
+															
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+													
+													else if(pp.getRejected() != null)
+													{
+														%>
+															<td>
+																<span>CV Rejected</span>
+															</td>
+															
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+													else if(pp.getAccepted() != null)
+													{
+														%>
+															<td>
+																<span>ShortListed</span>
+															</td>
+															
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+													else
+													{
+														%>
+															<td>
+																<span>Pending</span>
+															</td>
+																
+														<%
+														if( !pp.getPost().isActive())
+														{
+															%>
+							                  					<td class="text-center">
+																	<span>Post Inactive</span>
+																</td>
+																
+															<%
+														}
+														else
+														{
+															%>
+							                  					
+																
+																<td class="text-center">
+															<span>	none required</span>
+																</td>
+															<%
+															
+														}
+													}
+												%>
 						<td>
 							<p style="width: 105px; border-radius: 2px;">
 								<a style="line-height: 0.42857em; background: url(images/ic_12.png) no-repeat 3px 4px #f8b910; padding: 8px 18px 8px 18px;"
