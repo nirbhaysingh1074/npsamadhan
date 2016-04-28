@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="java.net.ConnectException"%>
 <%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
 <%@page import="com.artofsolving.jodconverter.DocumentConverter"%>
@@ -170,8 +171,8 @@ unviewed=0;
 					              					<div class="block btn_row no-margin" style="text-align: left;">
 														<div id="<%= pp.getPpid() %>" class="profile_status">
 															<p>Status : Offered</p>
-															<button  class="join_accept" title="Click to accept offer" >Join</button> 
-															<button class="btn-open" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
+															<button  class="join_accept profile_status_button" title="Click to accept offer" >Join</button> 
+															<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
 														</div>
 													</div>
 					              				</sec:authorize>
@@ -193,8 +194,8 @@ unviewed=0;
 													<div class="block btn_row no-margin" style="text-align: left;">
 														<div id="<%= pp.getPpid() %>" class="profile_status">
 															<p>Status : Recruited</p>
-															<button  class="offer_accept" title="Click to send offer">Offer Accept</button> 
-															<button class="btn-open" data-type="offer_reject" title="Click to reject offer">Reject</button>
+															<button  class="offer_accept profile_status_button" title="Click to send offer">Offer Accept</button> 
+															<button class="btn-open profile_status_button" data-type="offer_reject" title="Click to reject offer">Reject</button>
 														</div>
 													</div>
 												</sec:authorize>
@@ -222,8 +223,8 @@ unviewed=0;
 													<div class="block btn_row no-margin" style="text-align: left;">
 														<div id="<%= pp.getPpid() %>" class="profile_status">
 															<p>Status : Shortlisted - In Progress</p>
-															<button  class="offer_accept" title="Click to send offer">Offer</button> 
-															<button class="btn-open" data-type="reject_recruit" title="Click to decline">Decline</button>
+															<button  class="offer_accept profile_status_button" title="Click to send offer">Offer</button> 
+															<button class="btn-open profile_status_button" data-type="reject_recruit" title="Click to decline">Decline</button>
 														</div>
 													</div>
 												</sec:authorize>
@@ -252,8 +253,8 @@ unviewed=0;
 										                	{
 										                		%>
 										                			<p>Status : Pending</p>
-												                	<button class="accept_profile" title="Click to shortlist profile" style="float: left;">Shortlist </button>
-												                	<button class="btn-open" data-type="reject_profile" title="Click to reject profile">Reject</button>
+												                	<button class="accept_profile profile_status_button" title="Click to shortlist profile" style="float: left;">Shortlist </button>
+												                	<button class="btn-open profile_status_button" data-type="reject_profile" title="Click to reject profile">Reject</button>
 												     	   		<%
 												     	   	}
 								                		%>
@@ -508,11 +509,11 @@ jQuery(document).ready(function() {
 							    
 // 					            String inPath="data/"+ pp.getProfile().getResumePath();
 // 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
-// 					         	String outPath="/var/unihyr/data/"+otp+".pdf";
+// 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					         	 
-					            String inPath="/var/unihyr/data/"+ pp.getProfile().getResumePath();
+					            String inPath=GeneralConfig.UploadPath+ pp.getProfile().getResumePath();
 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
-					         	String outPath="/var/unihyr/data/"+otp+".pdf";
+					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					        	//Conversion.convertPDF(inPath, outPath);
 					        	
 

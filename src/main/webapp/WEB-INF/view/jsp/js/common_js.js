@@ -18,6 +18,7 @@ jQuery(document).ready(function() {
 	$('html').click(function(e) {  
 		
 		$('.user_noti_content').css('display','none');
+		$(".help-desk .desk-content").removeClass("active");
 		e.stopPropagation();
 	});
 	

@@ -197,9 +197,26 @@
         <put-attribute name="body" value="/WEB-INF/view/jsp/clientViewUser.jsp" />
         <put-attribute name="currentpage" value="clientviewuser" cascade="true"/>
     </definition>
+    <definition name="clientViewConsultant" extends="clientTemplate">
+        <put-attribute name="title" value="UniHyr - About Consutant" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/clientViewConsultant.jsp" />
+        <put-attribute name="currentpage" value="clientviewconsultant" cascade="true"/>
+    </definition>
+    
+    
+    <definition name="clientProfileCenter" extends="clientTemplate">
+        <put-attribute name="title" value="UniHyr - Profile Center" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/clientProfileCenter.jsp" />
+        <put-attribute name="currentpage" value="clientprofilecenter" cascade="true"/>
+    </definition>
     
     
     
+    <definition name="clientProfileCenterList" extends="homeTemplate">
+        <put-attribute name="title" value="UniHyr - Profile Center" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/clientProfileCenterList.jsp" />
+        <put-attribute name="currentpage" value="clientprofilecenter" cascade="true"/>
+    </definition>
     
    	<definition name="clientPost" extends="homeTemplate">
         <put-attribute name="title" value="client posts" />
@@ -285,6 +302,19 @@
         <put-attribute name="title" value="UniHyr - View User" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/clientViewUser.jsp" />
         <put-attribute name="currentpage" value="consviewuser" cascade="true"/>
+    </definition>
+    
+    <definition name="consProfileCenter" extends="consultTemplate">
+        <put-attribute name="title" value="UniHyr - Profile Center" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/consProfileCenter.jsp" />
+        <put-attribute name="currentpage" value="consprofilecenter" cascade="true"/>
+    </definition>
+    
+    
+    
+    <definition name="consProfileCenterList" extends="homeTemplate">
+        <put-attribute name="title" value="UniHyr - Profile Center" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/consProfileCenterList.jsp" />
     </definition>
     
     <definition name="consultRegistration" extends="homeTemplate">

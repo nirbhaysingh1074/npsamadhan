@@ -31,4 +31,7 @@ public interface RegistrationDao
 	
 	public List<Registration> getCoUsersByUserid(String userid);
 	
+	public List<Registration> getConsultantsByClientIndustry(String clientId);
+	
+	public List<Registration> getClientAndConsultantAdminList(int first, int max);
 }

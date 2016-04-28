@@ -396,7 +396,8 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															
@@ -423,7 +424,9 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															
@@ -450,7 +453,8 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															
@@ -477,8 +481,8 @@ Post post=null;
 															%>
 																<td class="text-center">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<button  class="join_accept" title="Click to accept offer" >Join</button> 
-																		<button class="btn-open" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
+																		<button  class="join_accept profile_status_button" title="Click to accept offer" >Join</button> 
+																		<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
 																	</p>
 																</td>
 															<%
@@ -506,7 +510,9 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															
@@ -533,7 +539,9 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															
@@ -561,7 +569,9 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															
@@ -588,7 +598,9 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															
@@ -615,7 +627,9 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td>
+																
+																<td class="text-center">
+															<span>	none required</span>
 																</td>
 															<%
 															

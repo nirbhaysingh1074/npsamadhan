@@ -177,7 +177,7 @@
 	             
 	                <%} %>
 	                
-	                <a target="_blank" href="javascript:void(0)" class="btn file_btn view_consultant  btn_disabled"><strong>About Consultant</strong></a>
+	                <a target="_blank" href="javascript:void(0)" class="btn file_btn view_consultant  btn_disabled" style="display: none;"><strong>About Consultant</strong></a>
 	             
 	                </div>
 				
@@ -304,7 +304,8 @@
 						                  					<td>
 																<span>Join Dropped</span>
 															</td>
-															<td>
+															<td class="text-center">
+															<span>None Required</span>
 															</td>
 														<%
 													}
@@ -314,7 +315,8 @@
 															<td>
 																<span>Joined</span>
 															</td>
-															<td>
+															<td class="text-center">
+															<span>None Required</span>
 															</td>
 														<%
 													}
@@ -324,7 +326,8 @@
 															<td>
 																<span>Offer Declined</span>
 															</td>
-															<td>
+															<td class="text-center">
+															<span>None Required</span>
 															</td>
 														<%
 													}
@@ -334,7 +337,8 @@
 															<td>
 																<span>Offered</span>
 															</td>
-															<td>
+															<td class="text-center">
+															<span>None Required</span>
 															</td>
 														<%
 													}
@@ -344,7 +348,8 @@
 															<td>
 																<span>Declined</span>
 															</td>
-															<td>
+															<td class="text-center">
+															<span>None Required</span>
 															</td>
 														<%
 													}
@@ -356,8 +361,8 @@
 															</td>
 															<td class="text-center">
 																<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																	<button class="btn-offer-open" data-type="offer_accept" title="Click to accept offer" onclick="$('#postIdForAccept').val('<%=pp.getPpid() %>')" >Offer Accept</button>
-																	<button class="btn-open" data-type="offer_reject" title="Click to reject offer">Reject</button>
+																	<button class="btn-offer-open profile_status_button" data-type="offer_accept" title="Click to accept offer" onclick="$('#postIdForAccept').val('<%=pp.getPpid() %>')" >Offer Accept</button>
+																	<button class="btn-open profile_status_button" data-type="offer_reject" title="Click to reject offer">Reject</button>
 																</p>
 															</td>
 														<%
@@ -371,6 +376,7 @@
 																<span>CV Rejected</span>
 															</td>
 															<td class="text-center">
+															<span>None Required</span>
 															</td>
 														<%
 													}
@@ -383,8 +389,8 @@
 															<td class="text-center">
 																<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
 																	
-																	<button class="recruit_profile" title="Click to offer">Offer</button>
-																	<button class="btn-open" data-type="reject_recruit" title="Click to decline">Decline</button>
+																	<button class="recruit_profile profile_status_button" title="Click to offer">Offer</button>
+																	<button class="btn-open profile_status_button" data-type="reject_recruit" title="Click to decline">Decline</button>
 																	
 																</p>
 															</td>
@@ -398,8 +404,8 @@
 															</td>
 															<td class="text-center">
 																<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																	<button class="accept_profile" title="Click to shortlist profile">Shortlist</button>
-																	<button class="btn-open" data-type="reject_profile" title="Click to reject profile">Reject</button>
+																	<button class="accept_profile profile_status_button" title="Click to shortlist profile">Shortlist</button>
+																	<button class="btn-open profile_status_button" data-type="reject_profile" title="Click to reject profile">Reject</button>
 																</p>
 															</td>	
 														<%

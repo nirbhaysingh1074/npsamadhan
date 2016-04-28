@@ -145,13 +145,13 @@ jQuery(document).ready(function() {
 					   <option value="closed">Closed</option>
 					</select>
 		          </div>
-		         <div  class="sort_by"> <span>Sort by</span>
+		        <!--  <div  class="sort_by"> <span>Sort by</span>
 	          <select id="sortParam" onchange="loadclientdashboardposts('1')">
 	            <option value="published">Recent Posts</option>
 	            <option value="location">Location(A-Z)</option>
 	            <option value="title">Job Post(A-Z)</option>
 	          </select>
-	        </div>
+	        </div> -->
 	        <%
 	        String sortParam=(String)request.getAttribute("sortParam");
 	        %>

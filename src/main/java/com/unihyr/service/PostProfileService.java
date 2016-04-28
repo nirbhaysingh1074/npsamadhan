@@ -63,4 +63,12 @@ public interface PostProfileService
 	
 	public long countPartnerByClientOrConsultant(String client, String consultant);
 	
+	
+	public List<PostProfile> getPostProfileByClientForCenter(String clientId, int first, int max);
+	
+	public long countPostProfileByClientForCenter(String clientId);
+	
+	public List<PostProfile> getPostProfileByConsForCenter(String consid, int first, int max);
+	
+	public long countPostProfileByConsForCenter(String consid);
 }

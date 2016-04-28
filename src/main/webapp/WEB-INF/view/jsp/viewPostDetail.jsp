@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
 <%@page import="com.artofsolving.jodconverter.DocumentConverter"%>
 <%@page import="java.net.ConnectException"%>
@@ -353,11 +354,11 @@
 							    
 // 					            String inPath="data/"+ pp.getProfile().getResumePath();
 // 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
-// 					         	String outPath="/var/unihyr/data/"+otp+".pdf";
+// 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					         	 
-					            String inPath="/var/unihyr/data/"+ post.getUploadjd();
+					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
 					         	String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
-					         	String outPath="/var/unihyr/data/"+otp+".pdf";
+					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					        	//Conversion.convertPDF(inPath, outPath);
 					        	
 

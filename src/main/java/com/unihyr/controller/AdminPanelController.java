@@ -70,10 +70,6 @@ public class AdminPanelController
 	private RatingCalculationService ratingCalculationService;
 	@Autowired
 	private GlobalRatingService globalRatingService;
-	@Autowired
-	private PostConsultnatService postConsultantService;
-	@Autowired
-	private RatingParameterService ratingParameterService;
 	
 	@Autowired private 	InboxService inboxService;
 	
@@ -111,7 +107,6 @@ public class AdminPanelController
 			java.sql.Date dt = new java.sql.Date(date.getTime());
 			post.setCloseDate(dt);post.setActive(false);
 			postService.updatePost(post);
-			closePost(postId);
 			return "Closed Successfully";
 		} else
 		{
@@ -440,130 +435,4 @@ public class AdminPanelController
 	}
 	
 	
-		
-	public String closePost(long postId)
-	{
-		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
-		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
-		Registration consultant = null;
-		Post post = null;
-		int counter = 0;
-		for (PostConsultant postConsultatnt : postConsultants)
-		{
-			consultant = postConsultatnt.getConsultant();
-			post = postConsultatnt.getPost();
-			Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
-					.getIndustries();
-			Iterator<Industry> inIterator = industry.iterator();
-			Industry in = null;
-			while (inIterator.hasNext())
-			{
-				in = (Industry) inIterator.next();
-			}
-			
-			counter = 0;
-			
-			long publishtime = post.getCreateDate().getTime();
-			long turnaround = 0;
-			long totalSubmitted = postProfileService.countProfileListByConsultantIdAndPostId(consultant.getUserid(),
-					post.getPostId());
-			for (RatingParameter ratingParameter : ratingParams)
-			{
-				switch (ratingParameter.getName())
-				{
-				case "turnaroundtime":
-				{
-					int count = 0;
-					List<PostProfile> postProfilesList = postProfileService
-							.getProfileListByConsultantIdAndPostIdInRangeAsc(consultant.getUserid(), post.getPostId(),
-									0, 3);
-					for (PostProfile postProfile2 : postProfilesList)
-					{
-						long profileTime = postProfile2.getProfile().getDate().getTime();
-						turnaround += profileTime - publishtime;
-						count++;
-					}
-					GlobalRating newGlobalRating = new GlobalRating();
-					Date date = new Date();
-					java.sql.Date dt = new java.sql.Date(date.getTime());
-					newGlobalRating.setCreateDate(dt);
-					newGlobalRating.setIndustryId(in.getId());
-					newGlobalRating.setRatingParameter(ratingParameter);
-					long turTime=0;
-					if (totalSubmitted == 0)
-					{
-						turTime = 0;
-					} else{
-						turTime=turnaround/count;
-					}
-					
-					
-					newGlobalRating.setRatingParamValue(turTime);
-					newGlobalRating.setRegistration(consultant);
-					globalRatingService.addGlobalRating(newGlobalRating);
-					break;
-				}
-				case "shortlistRatio":
-				{
-					long totalShortlisted = postProfileService.countShortlistedProfileListByConsultantIdAndPostId(
-							consultant.getUserid(), post.getPostId());
-					GlobalRating newGlobalRating = new GlobalRating();
-					Date date = new Date();
-					java.sql.Date dt = new java.sql.Date(date.getTime());
-					newGlobalRating.setCreateDate(dt);
-					while (inIterator.hasNext())
-					{
-						in = (Industry) inIterator.next();
-					}
-					newGlobalRating.setIndustryId(in.getId());
-					newGlobalRating.setRatingParameter(ratingParameter);
-					long shrTime=0;
-					if (totalSubmitted == 0)
-					{
-						shrTime = 0;
-					} else
-					{
-					 shrTime=(totalShortlisted * 100 / totalSubmitted) ;
-					}
-					
-					newGlobalRating.setRatingParamValue(shrTime);
-					newGlobalRating.setRegistration(consultant);
-					globalRatingService.addGlobalRating(newGlobalRating);
-					break;
-				}
-				case "closureRate":
-				{
-					long totalRecruited = postProfileService.countRecruitedProfileListByConsultantIdAndPostId(
-							consultant.getUserid(), post.getPostId());
-					GlobalRating newGlobalRating = new GlobalRating();
-					Date date = new Date();
-					java.sql.Date dt = new java.sql.Date(date.getTime());
-					newGlobalRating.setCreateDate(dt);
-					while (inIterator.hasNext())
-					{
-						in = (Industry) inIterator.next();
-					}
-					newGlobalRating.setIndustryId(in.getId());
-					newGlobalRating.setRatingParameter(ratingParameter);
-					long clrTime=0;
-					if (totalSubmitted == 0)
-					{
-						clrTime = 0;
-					} else
-					{
-					clrTime=(totalRecruited * 100 / totalSubmitted) ;
-					}
-						
-					newGlobalRating.setRatingParamValue(clrTime);
-					newGlobalRating.setRegistration(consultant);
-					globalRatingService.addGlobalRating(newGlobalRating);
-					break;
-				}
-				default:
-					break;
-				}
-			}
-		}
-		return null;
-	}
 }

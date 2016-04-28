@@ -190,4 +190,24 @@ public class PostProfileServiceImpl implements PostProfileService
 	}
 	
 	
+	public List<PostProfile> getPostProfileByClientForCenter(String clientId, int first, int max)
+	{
+		return this.postProfileDao.getPostProfileByClientForCenter(clientId, first, max);
+	}
+	
+	public long countPostProfileByClientForCenter(String clientId)
+	{
+		return this.postProfileDao.countPostProfileByClientForCenter(clientId);
+	}
+	
+	public List<PostProfile> getPostProfileByConsForCenter(String consid, int first, int max)
+	{
+		return this.postProfileDao.getPostProfileByConsForCenter(consid, first, max);
+	}
+	
+	public long countPostProfileByConsForCenter(String consid)
+	{
+		return this.postProfileDao.countPostProfileByConsForCenter(consid);
+	}
+	
 }

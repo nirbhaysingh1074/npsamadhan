@@ -57,7 +57,7 @@
        <div class="filter">
         <div class="col-md-4 pagi_summary">
 	      	 	<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
-	      	 	<button id="show_interest">Add to Active Postions</button>
+	      	 	<button id="show_interest" class="profile_status_button">Add to Active Postions</button>
 	      	 	</sec:authorize>
 	      	 	<sec:authorize access="hasRole('ROLE_CON_USER')">
 	      	 		<span >New Posts</span>

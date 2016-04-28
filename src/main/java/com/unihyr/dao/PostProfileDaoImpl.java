@@ -1,6 +1,7 @@
 package com.unihyr.dao;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.unihyr.domain.CandidateProfile;
+import com.unihyr.domain.Post;
 import com.unihyr.domain.PostProfile;
 
 @Repository
@@ -633,4 +635,127 @@ public class PostProfileDaoImpl implements PostProfileDao
 	}
 	
 	
+	
+	
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PostProfile> getPostProfileByClientForCenter(String clientId, int first, int max)
+	{
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
+		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("ppid")))));
+		
+		criteria.createAlias("post", "postAlias");
+		criteria.createAlias("postAlias.client", "clientAlias");
+		
+		Criterion cn1 = Restrictions.eq("clientAlias.userid", clientId);
+		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
+		criteria.add(Restrictions.or(cn1, cn2));
+		
+		criteria.setFirstResult(first);
+		criteria.setMaxResults(max);
+		
+		
+		List<Object[]> idList = criteria.list();
+		//get the id's from the projection
+        List<Long> longList = new ArrayList<Long>();
+        for (Object[] long1 : idList) {
+            Object[] record = long1;
+            longList.add((Long) record[0]);
+        }
+
+		if (longList.size() > 0)
+		{
+			criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
+            criteria.add(Restrictions.in("ppid", longList));
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        } 
+		else
+		{
+		//no results, so let's ommit the second query to the DB
+	         return new ArrayList<PostProfile>();
+        }
+
+		return criteria.list();
+		
+	}
+
+	
+	@Override
+	public long countPostProfileByClientForCenter(String clientId)
+	{
+		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
+
+		criteria.createAlias("post", "postAlias");
+		criteria.createAlias("postAlias.client", "clientAlias");
+		
+//		criteria.add(Restrictions.eq("client.userid", clientId));
+		Criterion cn1 = Restrictions.eq("clientAlias.userid", clientId);
+		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
+		criteria.add(Restrictions.or(cn1, cn2));
+		
+		
+		long count = (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
+		return count;
+	}
+	
+	public List<PostProfile> getPostProfileByConsForCenter(String consid, int first, int max)
+	{
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
+		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("ppid")))));
+		
+		
+		criteria.createAlias("profile", "profileAlias");
+		criteria.createAlias("profileAlias.registration", "consAlias");
+		
+		Criterion cn1 = Restrictions.eq("consAlias.userid", consid);
+		Criterion cn2 = Restrictions.eq("consAlias.admin.userid", consid);
+		criteria.add(Restrictions.or(cn1, cn2));
+		
+		criteria.setFirstResult(first);
+		criteria.setMaxResults(max);
+		
+		
+		List<Object[]> idList = criteria.list();
+		//get the id's from the projection
+        List<Long> longList = new ArrayList<Long>();
+        for (Object[] long1 : idList) {
+            Object[] record = long1;
+            longList.add((Long) record[0]);
+        }
+
+		if (longList.size() > 0)
+		{
+			criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
+            criteria.add(Restrictions.in("ppid", longList));
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        } 
+		else
+		{
+		//no results, so let's ommit the second query to the DB
+	         return new ArrayList<PostProfile>();
+        }
+
+		return criteria.list();
+	}
+	
+	public long countPostProfileByConsForCenter(String consid)
+	{
+		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
+
+		criteria.createAlias("profile", "profileAlias");
+		criteria.createAlias("profileAlias.registration", "consAlias");
+		
+		Criterion cn1 = Restrictions.eq("consAlias.userid", consid);
+		Criterion cn2 = Restrictions.eq("consAlias.admin.userid", consid);
+		criteria.add(Restrictions.or(cn1, cn2));
+		
+		
+		long count = (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+		
+		return count;
+	}
 }

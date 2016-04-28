@@ -62,9 +62,44 @@ jQuery(document).ready(function() {
 });
 
 </script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	
+	$.ajax({
+		type : "GET",
+		url : "clientmessages",
+		data : {},
+		contentType : "application/json",
+		success : function(data) {
+			var obj = jQuery.parseJSON(data);
+//			alert();
+			$('.notification .noti_inner').html("");
+			if(obj.mList.length > 0)
+			{
+				$('.notification .noti-icon').css("background-color","#F8B910");
+				$.each(obj.mList , function(i, val) {
+					
+					$('.notification .noti_inner').append("<a href='clientapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
+							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
+							"<span class='post-title'>"+val.ptitle+"</span>.</div></a>");
+					
+				});
+			}
+			else
+			{
+				$('.notification .noti_inner').append("<p>No message available</p>");
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	        alert(xhr.status);
+	      }
+    }) ;
 
+});
+
+</script>
 </head>
-<body class="loading" style="background-image: url('images/bg-image.png')">
+<body class="loading" style="background-image: url('images/bg-image.png')" >
 <tilesx:useAttribute name="currentpage"/>
 
 
@@ -127,7 +162,7 @@ jQuery(document).ready(function() {
 	        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientaddpost">New Post</a></li>
 	        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Manage Positions </a></li>
 	        <li class="${currentpage == 'clientBillingDetails' ? 'active' : ''}"><a href="clientBillingDetails">Billing Details</a></li>
-	        <li><a href="clientprofilecenter">Profiles Center</a></li>
+	        <li class="${currentpage == 'clientprofilecenter' ? 'active' : ''}"><a href="clientprofilecenter">Profiles Center</a></li>
 	      </ul>
 	  </nav>
 </div>

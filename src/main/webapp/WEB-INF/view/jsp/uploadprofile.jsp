@@ -420,7 +420,7 @@
 								<dd>
 									<form:select path="willingToRelocate">
 										<form:option value="Yes">Yes</form:option>
-										<form:option value="No">No</form:option>
+										<form:option value="No">Not applicable</form:option>
 									</form:select>
 									<span class='error'>&nbsp;<form:errors path="willingToRelocate" /></span>
 								</dd>
@@ -500,7 +500,7 @@
       $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
         // instance, using default configuration.
-        CKEDITOR.replace('editor1');
+//         CKEDITOR.replace('editor1');
         CKEDITOR.replace('resumeText');
         
       });

@@ -77,9 +77,12 @@ public class Post implements Serializable
 	
 	@Column
 	private Date closeDate;
-	
+
 	@Column(nullable=false)
 	private int noOfPosts;
+	
+	@Column
+	private int noOfPostsFilled;
 	
 	@Column(nullable=false)
 	private String role;
@@ -108,6 +111,16 @@ public class Post implements Serializable
 	@Lob
 	private String editSummary;
 	
+
+	public int getNoOfPostsFilled()
+	{
+		return noOfPostsFilled;
+	}
+
+	public void setNoOfPostsFilled(int noOfPostsFilled)
+	{
+		this.noOfPostsFilled = noOfPostsFilled;
+	}
 
 	public String getEditSummary()
 	{

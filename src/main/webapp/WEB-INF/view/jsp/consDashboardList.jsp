@@ -31,8 +31,8 @@
 		List<Registration> clientList = (List<Registration>) request.getAttribute("clientList");
 		Registration reg = (Registration)request.getSession().getAttribute("registration");
 	
-		long totalCount = (Long)request.getAttribute("totalCount");
        	List<Post> postList = (List)request.getAttribute("postList");
+		long totalCount = (Long)request.getAttribute("totalCount");
 		int pn = (Integer) request.getAttribute("pn");
 		int rpp = (Integer) request.getAttribute("rpp");
 		int tp = 0;

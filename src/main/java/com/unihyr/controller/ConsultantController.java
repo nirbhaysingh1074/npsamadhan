@@ -92,7 +92,11 @@ public class ConsultantController
 	InboxService inboxService;
 	@Autowired
 	private BillingService billingService;
-	
+
+	@Autowired
+	private PostConsultnatService postConsultantService;
+	@Autowired
+	private RatingParameterService ratingParameterService;
 
 	@RequestMapping(value = "/uploadprofile", method = RequestMethod.GET)
 	public String uploadprofile(ModelMap map, HttpServletRequest request,Principal principal , @RequestParam long pid)
@@ -259,7 +263,7 @@ public class ConsultantController
         			
         			resumeNewfilename = UUID.randomUUID().toString()+resumeNewfilename;
         			profile.setResumePath(resumeNewfilename);
-        			File img = new File ("/var/unihyr/data/"+resumeNewfilename);
+        			File img = new File (GeneralConfig.UploadPath+resumeNewfilename);
         			if(!img.exists())
         			{
         				img.mkdirs();
@@ -480,7 +484,37 @@ public class ConsultantController
 		return "consultantAccount";
 	}
 	
-
+	
+	@RequestMapping(value = "/consprofilecenter", method = RequestMethod.GET)
+	public String consProfileCenter(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		
+		return "consProfileCenter";
+	}
+	
+	@RequestMapping(value = "/consprofilecenterlist", method = RequestMethod.GET)
+	public String consProfileCenterList(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		
+		String pageno = request.getParameter("pn");
+		int pn = 1;
+		try
+		{
+			pn = Integer.parseInt(pageno);	
+		} catch (NumberFormatException e)
+		{
+			e.printStackTrace();
+		}
+		
+		map.addAttribute("ppList", postProfileService.getPostProfileByConsForCenter(principal.getName(), (pn-1)*GeneralConfig.rpp, GeneralConfig.rpp));
+		map.addAttribute("totalCount", postProfileService.countPostProfileByConsForCenter(principal.getName()));
+		map.addAttribute("pn", pn);
+		map.addAttribute("rpp", GeneralConfig.rpp);
+		return "consProfileCenterList";
+	}
+	
+	
+	
 	
 	@RequestMapping(value = "/consBulkInterest", method = RequestMethod.GET)
 	public @ResponseBody String consBulkInterest(ModelMap map, HttpServletRequest request, Principal principal)
@@ -865,6 +899,23 @@ return object.toJSONString();
 						e.printStackTrace();
 					}
 					billingService.updateBillingDetails(billingDetailscl);
+					Post post=pp.getPost();
+					try{
+					if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()+1))
+					{
+					post.setNoOfPostsFilled(post.getNoOfPosts());
+					postService.updatePost(post);	
+					closePost(pp.getPpid());
+					}else{
+						post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
+						postService.updatePost(post);	
+							
+					}
+					}catch(Exception e){
+					post.setNoOfPosts(0);
+					postService.updatePost(post);	
+					}
+					
 					obj.put("status", "join_accept");
 				}
 				else if(ppstatus.equals("join_reject"))
@@ -937,5 +988,175 @@ return object.toJSONString();
 		object.put("status", false);
 		return object.toJSONString();
 
+	}
+	
+	
+
+	
+	public String closePost(long postId)
+	{
+		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
+		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
+		Registration consultant = null;
+		Post post = null;
+		int counter = 0;
+		for (PostConsultant postConsultatnt : postConsultants)
+		{
+			consultant = postConsultatnt.getConsultant();
+			post = postConsultatnt.getPost();
+			Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
+					.getIndustries();
+			Iterator<Industry> inIterator = industry.iterator();
+			Industry in = null;
+			while (inIterator.hasNext())
+			{
+				in = (Industry) inIterator.next();
+			}
+			
+			counter = 0;
+			
+			long publishtime = post.getCreateDate().getTime();
+			long turnaround = 0;
+			long totalSubmitted = postProfileService.countProfileListByConsultantIdAndPostId(consultant.getUserid(),
+					post.getPostId());
+			for (RatingParameter ratingParameter : ratingParams)
+			{
+				switch (ratingParameter.getName())
+				{
+				case "turnaroundtime":
+				{
+					int count = 0;
+					List<PostProfile> postProfilesList = postProfileService
+							.getProfileListByConsultantIdAndPostIdInRangeAsc(consultant.getUserid(), post.getPostId(),
+									0, 3);
+					for (PostProfile postProfile2 : postProfilesList)
+					{
+						long profileTime = postProfile2.getProfile().getDate().getTime();
+						turnaround += profileTime - publishtime;
+						count++;
+					}
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(ratingParameter);
+					long turTime=0;
+					if (totalSubmitted == 0)
+					{
+						turTime = 0;
+					} else{
+						turTime=turnaround/count;
+					}
+					newGlobalRating.setRatingParamValue(turTime);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.addGlobalRating(newGlobalRating);
+					break;
+				}
+				case "shortlistRatio":
+				{
+					long totalShortlisted = postProfileService.countShortlistedProfileListByConsultantIdAndPostId(
+							consultant.getUserid(), post.getPostId());
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					while (inIterator.hasNext())
+					{
+						in = (Industry) inIterator.next();
+					}
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(ratingParameter);
+					long shrTime=0;
+					if (totalSubmitted == 0)
+					{
+						shrTime = 0;
+					} else
+					{
+					 shrTime=(totalShortlisted * 100 / totalSubmitted) ;
+					}
+					newGlobalRating.setRatingParamValue(shrTime);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.addGlobalRating(newGlobalRating);
+					break;
+				}
+				case "closureRate":
+				{
+					long totalRecruited = postProfileService.countRecruitedProfileListByConsultantIdAndPostId(
+							consultant.getUserid(), post.getPostId());
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					while (inIterator.hasNext())
+					{
+						in = (Industry) inIterator.next();
+					}
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(ratingParameter);
+					long clrTime=0;
+					if (totalSubmitted == 0)
+					{
+						clrTime = 0;
+					} else
+					{
+					clrTime=(totalRecruited * 100 / totalSubmitted) ;
+					}
+						
+					newGlobalRating.setRatingParamValue(clrTime);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.addGlobalRating(newGlobalRating);
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+		post = postService.getPost(postId);
+		Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
+				.getIndustries();
+		Iterator<Industry> inIterator = industry.iterator();
+		Industry in = null;
+		while (inIterator.hasNext())
+		{
+			in = (Industry) inIterator.next();
+		}
+		
+		
+		for (RatingParameter ratingParameter : ratingParams)
+		{
+			switch (ratingParameter.getName())
+			{
+			case "turnaroundtime":
+			{
+				GlobalRating newGlobalRating = new GlobalRating();
+				Date date = new Date();
+				java.sql.Date dt = new java.sql.Date(date.getTime());
+				newGlobalRating.setCreateDate(dt);
+				newGlobalRating.setIndustryId(in.getId());
+				newGlobalRating.setRatingParameter(ratingParameter);
+				newGlobalRating.setRatingParamValue(0);
+				break;
+			}
+			case "shortlistRatio":
+			{
+				
+				break;
+			}
+			case "closureRate":
+			{
+				
+				break;
+			}
+			default:
+				break;
+			}
+		}
+		
+		
+		
+		
+		return null;
 	}
 }

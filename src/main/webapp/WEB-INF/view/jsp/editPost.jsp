@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="com.unihyr.domain.Post"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -50,6 +52,7 @@
 		var ctc_min = $('#ctc_min').val();
 		var ctc_max = $('#ctc_max').val();
 		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); 
+		var select_jd = $('.select_jd').val();
 		
 		
 		$('.error').html('&nbsp;');
@@ -70,7 +73,7 @@
 			$('.function_error').html('Please enter post function')
 			valid = false;
 		}
-		if(noOfPosts == "")
+		if(noOfPosts == ""||noOfPosts == "0")
 		{
 			$('.noOfPosts_error').html('Please enter no of posts')
 			valid = false;
@@ -105,9 +108,9 @@
 			$('.ctc_max_error').html('Min cannot be greater than Max')
 			valid = false;
 		}
-		if(additionDetail == "")
+		if(select_jd == "" && additionDetail == "" && $('#uploadjd').val()=="")
 		{
-			$('.additionDetail_error').html('Please enter job discription')
+			$('.uploadjd_error').html('Please enter job discription or upload JD')
 			valid = false;
 		}
 		
@@ -240,15 +243,19 @@ jQuery(document).ready(function() {
 		            </dd>
 		          </dl>
 		          <dl>
-		            <dt>
-		              <label>Function<span class='error'>*</span></label>
-		            </dt>
-		            <dd>
-		              <form:input path="function" />
-		              <span class='error function_error'><form:errors path="function"/></span>
-		            </dd>
-		          </dl>
-		          <dl>
+	            <dt>
+	              <label>Role Type<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <form:select path="function">
+	                    <form:option value="Individual Contributor">Individual Contributor</form:option>
+	                    <form:option value="Team Leading">Team Leading</form:option>
+	            </form:select>
+<%-- 	              <form:input path="function" /> --%>
+	              <span class='error function_error'><form:errors path="function"/></span>
+	            </dd>
+	          </dl>
+		          <dl >
 		            <dt>
 		              <label>No of positions<span class='error'>*</span></label>
 		            </dt>
@@ -257,7 +264,7 @@ jQuery(document).ready(function() {
 		              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
 		            </dd>
 		          </dl>
-		          <dl>
+		          <dl style="clear: both;">
 		            <dt>
 		              <label>Role<span class='error'>*</span></label>
 		            </dt>
@@ -343,21 +350,111 @@ jQuery(document).ready(function() {
 							<label>Upload JD</label>
 						</dt>
 						<dd>
-							<div class="file_up">
-								<form:input path="uploadjd" disabled = "true"/>
-								<div class="fileUpload">
-								    <span>Browse</span>
-								    <input type="file" class="upload select_jd" name="uploadJdfile" />
-								</div>
-							    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
+						<div class="file_up" style="float: left;">
+							<form:input path="uploadjd" disabled = "true"/>
+							<div class="fileUpload">
+							    <span>Browse</span>
+							    <input type="file" class="upload select_jd" name="uploadJdfile" />
 							</div>
-							<div style="float: left;">
-						    <input style="height: 28px;" type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
+						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
+						    
+						</div>
+						<div style="float: left;">
+						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
+    border-radius: 0 5px 5px 0;
+    float: right;
+    height: 27px;
+    overflow: hidden;
+    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
 					</div>
-						</dd>
+					</dd>
 					</dl>
 		          
-		          
+		          <dl>
+	            <dt>
+	              <label><br>Normal Work Hours<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <div class="row">
+	                <div class="col-md-4">Start Time
+	                  <form:select path="workHourStartHour">
+	                  
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=11;i++){ %>
+						
+	                   <form:option value="'<%=formatter.format(i) %>':00 AM"><%=formatter.format(i) %>:00 AM</form:option>
+	                  
+	                   <form:option value="'<%=formatter.format(i) %>':30 AM"><%=formatter.format(i) %>:30 AM</form:option>
+						<%} %>
+	                     <form:option value="12:00 PM">12:00 PM</form:option>
+	                  
+	                   <form:option value="12:30 PM">12:30 PM</form:option>
+					<%
+	                   for(int i=1;i<=11;i++){ %>
+						
+	                   <form:option value="'<%=formatter.format(i) %>':00 PM"><%=formatter.format(i) %>:00 PM</form:option>
+	                  
+	                   <form:option value="'<%=formatter.format(i) %>':30 PM"><%=formatter.format(i) %>:30 PM</form:option>
+						<%} %>
+	                
+	                 
+	                  </form:select>
+	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
+	                </div>
+	             <%--    <div class="col-md-3">Start Min
+	                  <form:select path="workHourStartMin">
+	                   
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=59;i++){ %>
+	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
+						<%} %>
+	                  </form:select>
+	                  <span class='error workHourStartMin_error'><form:errors path="workHourStartMin"/></span>
+	                </div> --%>
+	                <div class="col-md-4"> End Time
+	                  <form:select path="workHourEndHour">
+	                  
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=11;i++){ %>
+						
+	                   <form:option value="'<%=formatter.format(i) %>':00 AM"><%=formatter.format(i) %>:00 AM</form:option>
+	                  
+	                   <form:option value="'<%=formatter.format(i) %>':30 AM"><%=formatter.format(i) %>:30 AM</form:option>
+						<%} %>
+	                     <form:option value="12:00 PM">12:00 PM</form:option>
+	                  
+	                   <form:option value="12:30 PM">12:30 PM</form:option>
+					<%
+	                   for(int i=1;i<=11;i++){ %>
+						
+	                   <form:option value="'<%=formatter.format(i) %>':00 PM"><%=formatter.format(i) %>:00 AM</form:option>
+	                  
+	                   <form:option value="'<%=formatter.format(i) %>':30 PM"><%=formatter.format(i) %>:30 AM</form:option>
+						<%} %>
+	                
+	                 
+	                  </form:select>
+	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
+	                </div>
+	                <%-- <div class="col-md-3"> End Min
+	                  <form:select path="workHourEndMin">
+	                    <%
+		                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=58;i++){ %>
+	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
+						<%} %>
+						 <form:option selected="true" value="<%=formatter.format(59) %>"><%=formatter.format(59) %></form:option>
+						
+	                  </form:select>
+	                  <span class='error workHourEndMin_error'><form:errors path="workHourEndMin"/></span>
+	                </div> --%>
+	                
+	              </div>
+	            </dd>
+	          </dl>
 		          
 		          
 		          

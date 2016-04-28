@@ -253,7 +253,7 @@ public class ClientController
         			resumeNewfilename=resumefilename.replace(" ", "-");
         			resumeNewfilename = UUID.randomUUID().toString()+resumeNewfilename;
         			post.setUploadjd(resumeNewfilename);
-        			File img = new File ("/var/unihyr/data" + "/"+resumeNewfilename);
+        			File img = new File (GeneralConfig.UploadPath +resumeNewfilename);
         			if(!img.exists())
         			{
         				img.mkdirs();
@@ -296,6 +296,67 @@ public class ClientController
 			}
 			post.setJobCode(jobCode);
 			postService.updatePost(post);
+			
+			List<Registration> consList =  registrationService.getConsultantsByClientIndustry(principal.getName());
+			String ids = "";
+			for(Registration cons : consList)
+			{
+				ids += cons.getUserid()+","; 
+			}
+			String subject = "UniHyr Alert: "+post.getClient().getOrganizationName()+" - "+post.getTitle()+" - "+post.getLocation();
+			
+			String content = "<table cellspacing='0' cellpadding='8' border='0' style='width: 100%; font-family: Arial, Sans-serif;  background-color: #fff' summary=''>"
+					+ "<tbody><tr>"
+					+ "	<td>"
+					+ "<div style='padding: 2px'>"
+					+ "<span></span>"
+					+ "<p>Dear Partner,</p>"
+					+ "<p></p>"
+					+ "<p>Please note the following:</p>"
+					+ "<table cellspacing='0' cellpadding='0' border='0'"
+					+ "summary='Event details'>"
+					+ "<tbody>"
+					+ "<tr>"
+					+ "<td width='100' valign='top' style='padding: 0 1em 10px 0;  white-space: nowrap'><div>"
+					+ "<i style='font-style: normal'>Company</i></div></td>"
+					+ "<td valign='top' style='padding-bottom: 10px; font-weight:bold;'>"
+					+ post.getClient().getOrganizationName()
+					+ "</td>"
+					+ "</tr>"
+					+ "<tr>"
+					+ "<td  valign='top' style='padding: 0 1em 10px 0;   white-space: nowrap'><div>"
+					+ "<i style='font-style: normal'>Position</i>"
+					+ "</div></td>"
+					+ "<td valign='top' style='padding-bottom: 10px; font-weight:bold;'>"
+					+ post.getTitle()
+					+ "</td>"
+					+ "</tr>"
+					+ "<tr>"
+					+ "<td valign='top' style='padding: 0 1em 10px 0;  white-space: nowrap'><div>"
+					+ "<i style='font-style: normal'>Location</i>"
+					+ "</div></td>"
+					+ "<td valign='top' style='padding-bottom: 10px; font-weight:bold;'>"
+					+ post.getLocation()
+					+ "</td>"
+					+ "</tr>"
+					+ "</tbody>"
+					+ "</table>"
+					+ "<p>The above position has been POSTED. Please review revised requirements before submitting further profiles on this position.</p>"
+					+ "<p></p>"
+					+ "<p>Best Regards,</p>"
+					+ "<p></p>"
+					+ "<p><img src ='http://localhost:8081/unihyr/images/logo.png' width='63'> </p>"
+					+ "<p><strong>Admin Team</strong></p><p></p>"
+					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
+					+ "</div>"
+					+ "</td>"
+					+ "</tr>"
+					+ "</tbody>"
+					+ "</table>";
+			
+			mailService.sendMail(ids, subject, content);
+			
+			
 		}
 		return "redirect:clientdashboard";
 	}
@@ -398,6 +459,8 @@ public class ClientController
 				post.setComment(model.getComment());
 				post.setAdditionDetail(model.getAdditionDetail());
 				post.setEditSummary(model.getEditSummary());
+				post.setWorkHourStartHour(model.getWorkHourStartHour());
+				post.setWorkHourEndHour(model.getWorkHourEndHour());
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
 
@@ -421,7 +484,7 @@ public class ClientController
 	        			resumeNewfilename=resumefilename.replace(" ", "-");
 	        			resumeNewfilename = UUID.randomUUID().toString()+resumeNewfilename;
 	        			post.setUploadjd(resumeNewfilename);
-	        			File img = new File ("/var/unihyr/data"
+	        			File img = new File (GeneralConfig.UploadPath
 	        					+ "/"+resumeNewfilename);
 	        			if(!img.exists())
 	        			{
@@ -621,6 +684,36 @@ public class ClientController
 		return "postApplicantList";
 	}
 
+	@RequestMapping(value = "/clientprofilecenter", method = RequestMethod.GET)
+	public String clientProfileCenter(ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		return "clientProfileCenter";
+	}
+	
+	
+	
+	@RequestMapping(value = "/clientProfileCenterList", method = RequestMethod.GET)
+	public String clientProfileCenterList(ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		String pageno = request.getParameter("pn");
+		int pn = 1;
+		try
+		{
+			pn = Integer.parseInt(pageno);	
+		} catch (NumberFormatException e)
+		{
+			e.printStackTrace();
+		}
+		
+		map.addAttribute("ppList", postProfileService.getPostProfileByClientForCenter(principal.getName(), (pn-1)*GeneralConfig.rpp, GeneralConfig.rpp));
+		map.addAttribute("totalCount", postProfileService.countPostProfileByClientForCenter(principal.getName()));
+		map.addAttribute("pn", pn);
+		map.addAttribute("rpp", GeneralConfig.rpp);
+		
+		return "clientProfileCenterList";
+	}
+	
+	
 	@RequestMapping(value = "/clientacceptreject", method = RequestMethod.GET)
 	public @ResponseBody String clientacceptreject(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -1138,6 +1231,21 @@ public class ClientController
 		return object.toJSONString();
 	}
 
+	@RequestMapping(value = "/clientviewconsultant", method = RequestMethod.GET)
+	public String clientViewConsultant(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam String consid)
+	{
+		Registration cons = registrationService.getRegistationByUserId(consid);
+		if(cons != null )
+		{
+			map.addAttribute("cons", cons);
+			return "clientViewConsultant";
+		}
+		return "redirect:clientdashboard";
+	}
+
+	
+	
+	
 	@RequestMapping(value = "/clientmessages", method = RequestMethod.GET)
 	public @ResponseBody String clientmessages(ModelMap map, HttpServletRequest request ,Principal principal)
 	{

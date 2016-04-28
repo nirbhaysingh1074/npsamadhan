@@ -94,4 +94,14 @@ public class RegistrationServiceImpl implements RegistrationService
 	{
 		return this.registrationDao.getCoUsersByUserid(userid);
 	}
+	
+	public List<Registration> getConsultantsByClientIndustry(String clientId)
+	{
+		return this.registrationDao.getConsultantsByClientIndustry(clientId);
+	}
+	
+	public List<Registration> getClientAndConsultantAdminList(int first, int max)
+	{
+		return this.registrationDao.getClientAndConsultantAdminList(first, max);
+	}
 }
