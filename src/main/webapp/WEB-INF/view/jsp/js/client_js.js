@@ -403,7 +403,7 @@ jQuery(document).ready(function() {
 				$('#errorBillableCTC').html('Please enter valid value');
 			}
 			try{
-				joiningDate=$('#joiningDate').val();
+				joiningDate=$('#datepicker').val();
 				/*if(joiningDate=="")
 				{
 					flag=false;
@@ -964,6 +964,7 @@ jQuery(document).ready(function() {
 			}
 		 
 		});
+		
 	});
 	
 	
@@ -1037,5 +1038,27 @@ jQuery(document).ready(function() {
 	
 	
 });
+
+function getAmountInWords(num,idd){
+	if($.isNumeric(num)){
+	$.ajax({
+		type : "GET",
+		url : "getAmountInWords",
+		data : {'amount':num},
+		contentType : "application/json",
+		success : function(data) {
+			$('#'+idd).html(data +" only.");
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	        alert(xhr.status);
+	      }
+    }) ;	
+	}else{
+		alert("wrong input");
+	}
+	
+	
+	
+}
 
 

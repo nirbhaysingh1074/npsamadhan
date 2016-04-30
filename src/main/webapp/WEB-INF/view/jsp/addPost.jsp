@@ -390,9 +390,9 @@ jQuery(document).ready(function() {
 	                   NumberFormat formatter = new DecimalFormat("00");  
 	                   for(int i=00;i<=11;i++){ %>
 						
-	                   <form:option value="'<%=formatter.format(i) %>':00 AM"><%=formatter.format(i) %>:00 AM</form:option>
+	                   <form:option value="<%=formatter.format(i) %>:00 AM"><%=formatter.format(i) %>:00 AM</form:option>
 	                  
-	                   <form:option value="'<%=formatter.format(i) %>':30 AM"><%=formatter.format(i) %>:30 AM</form:option>
+	                   <form:option value="<%=formatter.format(i) %>:30 AM"><%=formatter.format(i) %>:30 AM</form:option>
 						<%} %>
 	                     <form:option value="12:00 PM">12:00 PM</form:option>
 	                  
@@ -400,9 +400,9 @@ jQuery(document).ready(function() {
 					<%
 	                   for(int i=1;i<=11;i++){ %>
 						
-	                   <form:option value="'<%=formatter.format(i) %>':00 PM"><%=formatter.format(i) %>:00 PM</form:option>
+	                   <form:option value="<%=formatter.format(i) %>:00 PM"><%=formatter.format(i) %>:00 PM</form:option>
 	                  
-	                   <form:option value="'<%=formatter.format(i) %>':30 PM"><%=formatter.format(i) %>:30 PM</form:option>
+	                   <form:option value="<%=formatter.format(i) %>:30 PM"><%=formatter.format(i) %>:30 PM</form:option>
 						<%} %>
 	                
 	                 

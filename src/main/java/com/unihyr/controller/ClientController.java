@@ -65,7 +65,12 @@ import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
 
 import scala.sys.process.processInternal;
-
+/**
+ * Controls all the request of UniHyr Client which includes add/edit post, manage 
+ * postions and perform actions on submitted profiles for particular post
+ * actions like shortlist/offer/offer accept/reject
+ * @author Rohit Tiwari
+ */
 @Controller
 public class ClientController
 {
@@ -717,6 +722,14 @@ public class ClientController
 	@RequestMapping(value = "/clientacceptreject", method = RequestMethod.GET)
 	public @ResponseBody String clientacceptreject(ModelMap map, HttpServletRequest request, Principal principal)
 	{
+
+		String subject = "Subject";
+		String content = "Content";
+		boolean st = false;
+		
+		
+		
+		
 		JSONObject obj = new JSONObject();
 		try
 		{
@@ -734,21 +747,25 @@ public class ClientController
 				if(ppstatus.equals("accept"))
 				{
 					pp.setAccepted(dt);
+					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "accepted");
 				}
 				else if(ppstatus.equals("reject"))
 				{
 					pp.setRejected(dt);
+					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "rejected");
 				}
 				else if(ppstatus.equals("recruit") && pp.getAccepted() != null)
 				{
 					pp.setRecruited(dt);
+					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "recruited");
 				}
 				else if(ppstatus.equals("reject_recruit") && pp.getAccepted() != null)
 				{
 					pp.setDeclinedDate(dt);
+					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "reject_recruit");
 				}
 				else if(ppstatus.equals("offer_accept") && pp.getAccepted() != null)
@@ -763,6 +780,7 @@ public class ClientController
 				else if(ppstatus.equals("offer_reject") && pp.getAccepted() != null)
 				{
 					pp.setOfferDropDate(dt);
+					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "offer_reject");
 				}
 				else

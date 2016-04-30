@@ -1,5 +1,9 @@
 package com.unihyr.constraints;
-
+/**
+ * used to generate amount in words 
+ * @author Rohit Tiwari
+ *
+ */
 public class NumberUtils
 {// This snippet may be used freely, as long as the authorship note remains in
 	// the source code.

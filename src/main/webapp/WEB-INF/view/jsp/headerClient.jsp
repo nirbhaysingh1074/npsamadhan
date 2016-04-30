@@ -14,10 +14,10 @@
 <link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
 <link rel="stylesheet" href="css/alertify.core.css" />
 <link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
-	
-<script type="text/javascript" src="js/jquery.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
 <script type="text/javascript" src="js/jquery.IE.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/client_js.js"></script>
 <script type="text/javascript" src="js/common_js.js"></script>
 <script src="js/alertify.min.js"></script>

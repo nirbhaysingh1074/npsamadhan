@@ -188,13 +188,13 @@ jQuery(document).ready(function() {
 					   <option value="inactive">Inactive</option>
 					</select> -->
 		          </div>
-		          <div class="sort_by" style="display: none;"> <span>Sort by</span>
+		        <!--   <div class="sort_by" style="display: none;"> <span>Sort by</span>
 			          <select id="sortParam" onchange="loadconsdashboardposts('1')">
 			            <option value="published">Recent Posts</option>
 			            <option value="location">Location(A-Z)</option>
 			            <option value="title">Job Post(A-Z)</option>
 			          </select>
-			        </div>
+			        </div> -->
 		        </div>
 		    </div>
 	  	<div class="cons_db_posts" >

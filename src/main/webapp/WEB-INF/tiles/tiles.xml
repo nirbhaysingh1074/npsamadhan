@@ -172,11 +172,11 @@
         <put-attribute name="currentpage" value="clientBillingDetails" cascade="true"/>
     </definition>
     
-    <definition name="clientBillInvoice" extends="clientTemplate">
+<!--     <definition name="clientBillInvoice" extends="clientTemplate">
         <put-attribute name="title" value="UniHyr - Bill Invoice" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/clientBillInvoice.jsp" />
         <put-attribute name="currentpage" value="clientBillInvoice" cascade="true"/>
-    </definition>
+    </definition> -->
     <definition name="clientAccount" extends="clientTemplate">
         <put-attribute name="title" value="UniHyr - Client Account Detail" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/clientAccount.jsp" />

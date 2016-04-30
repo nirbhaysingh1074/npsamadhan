@@ -61,13 +61,19 @@ import com.unihyr.service.BillingService;
 import com.unihyr.service.GlobalRatingService;
 import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
+import com.unihyr.service.MailService;
 import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.ProfileService;
 import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
-
+/**
+ * Controls all the request of UniHyr Consultant which includes add/edit post, manage 
+ * postions and perform actions on submitted profiles for particular post
+ * actions like shortlist/offer/offer accept/reject
+ * @author Rohit Tiwari
+ */
 @Controller
 public class ConsultantController
 {
@@ -97,6 +103,8 @@ public class ConsultantController
 	private PostConsultnatService postConsultantService;
 	@Autowired
 	private RatingParameterService ratingParameterService;
+	@Autowired
+	private MailService mailService;
 
 	@RequestMapping(value = "/uploadprofile", method = RequestMethod.GET)
 	public String uploadprofile(ModelMap map, HttpServletRequest request,Principal principal , @RequestParam long pid)
@@ -868,6 +876,10 @@ return object.toJSONString();
 	@RequestMapping(value = "/consacceptoffer", method = RequestMethod.GET)
 	public @ResponseBody String consacceptoffer(ModelMap map, HttpServletRequest request, Principal principal)
 	{
+
+		String subject = "Subject";
+		String content = "Content";
+		boolean st = false;
 		JSONObject obj = new JSONObject();
 		try
 		{
@@ -915,7 +927,8 @@ return object.toJSONString();
 					post.setNoOfPosts(0);
 					postService.updatePost(post);	
 					}
-					
+
+					mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_accept");
 				}
 				else if(ppstatus.equals("join_reject"))
@@ -923,6 +936,8 @@ return object.toJSONString();
 					String rej_reason = request.getParameter("rej_reason");
 					pp.setJoinDropDate(dt);
 					pp.setRejectReason(rej_reason);
+
+					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_reject");
 				}
 				else

@@ -47,7 +47,10 @@ import com.unihyr.service.RatingCalculationService;
 import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
-
+/**
+ * Controls all the request of UniHyr admin
+ * @author Rohit Tiwari
+ */
 @Controller
 public class AdminPanelController
 {

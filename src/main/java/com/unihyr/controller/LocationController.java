@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.unihyr.domain.Industry;
 import com.unihyr.domain.Location;
 import com.unihyr.service.LocationService;
-
+/**
+ * Controls all the request related to Location like addition/updation/deletion
+ * @author Rohit Tiwari
+ */
 @Controller
 public class LocationController
 {

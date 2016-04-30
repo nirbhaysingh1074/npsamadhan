@@ -57,7 +57,7 @@
 </div>
 
 <!--SCRIPTS-->
-<script type="text/javascript" src="js/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
 <script src="js/alertify.min.js"></script>
 <script type="text/javascript">
 $(".toggle-icon").click(function(){

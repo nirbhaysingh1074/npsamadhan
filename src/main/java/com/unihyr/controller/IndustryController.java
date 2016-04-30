@@ -18,7 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.unihyr.domain.Industry;
 import com.unihyr.model.PostModel;
 import com.unihyr.service.IndustryService;
-
+/**
+ * Controls all the request related to Industry like addition/updation/deletion
+ * @author Rohit Tiwari
+ */
 @Controller
 public class IndustryController
 {
