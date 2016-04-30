@@ -4,6 +4,10 @@ import java.util.List;
 
 import com.unihyr.domain.BillingDetails;
 
+/**
+ * Having different methods to generate billing related response.
+ * @author Rohit Tiwari
+ */
 public interface BillingService
 {
 	public BillingDetails getBillingDetailsById(int id);

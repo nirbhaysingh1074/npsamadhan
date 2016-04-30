@@ -6,7 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import scala.languageFeature.reflectiveCalls;
-
+/**
+ * Used to store configuartion variables which will exist 
+ * for whole application
+ * @author Rohit Tiwari
+ */
 public class GeneralConfig 
 {
 	public static final double CESS = 0.5;

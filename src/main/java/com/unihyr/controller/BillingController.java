@@ -21,12 +21,22 @@ import com.unihyr.service.BillingService;
 import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
-
+/**
+ * Controls all the request of handling billing for both client and admin
+ * @author Rohit Tiwari
+ */
 @Controller
 public class BillingController
 {
 	@Autowired BillingService billingService;
 
+	/**
+	 * used to handle request to generate billing details for client
+	 * @param map used to store response attribues
+	 * @param request http servlet request
+	 * @param principal used to get logged in user name
+	 * @return billing details jsp page for client
+	 */
 	@RequestMapping(value = "/clientBillingDetails", method = RequestMethod.GET)
 	public String clientBillingDetails(ModelMap map, HttpServletRequest request ,Principal principal )
 	{
@@ -34,6 +44,14 @@ public class BillingController
 		request.setAttribute("bills",bills);
 		return "clientBillingDetails";
 	}
+	
+	/**
+	 * 
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/consBillingDetails", method = RequestMethod.GET)
 	public String consBillingDetails(ModelMap map, HttpServletRequest request ,Principal principal )
 	{
@@ -41,6 +59,14 @@ public class BillingController
 		request.setAttribute("bills",bills);
 		return "consBillingDetails";
 	}
+	
+	/**
+	 * 
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return String type value which is name of url defined in tiles.
+	 */
 	@RequestMapping(value = "/clientBillInvoice", method = RequestMethod.GET)
 	public String clientBillInvoice(ModelMap map, HttpServletRequest request ,Principal principal )
 	{

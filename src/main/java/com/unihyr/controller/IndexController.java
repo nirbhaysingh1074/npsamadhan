@@ -21,7 +21,10 @@ import com.unihyr.domain.Industry;
 import com.unihyr.domain.Post;
 import com.unihyr.model.ClientRegistrationModel;
 import com.unihyr.service.IndustryService;
-
+/**
+ * Controls request for home page of UniHyr
+ * @author Rohit Tiwari
+ */
 @Controller
 public class IndexController 
 {

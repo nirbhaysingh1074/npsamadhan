@@ -17,8 +17,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uni Hyr</title>
 <script src="js/model.popup.js"></script>
-
-
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
 <style type="text/css">
 .report_sum{padding: 5px 0;}
 </style>
@@ -586,15 +586,18 @@
     <div>
 	    <div class="modal-body">
 	    	<p>Please fill all details</p><br>
-		    <label>Total CTC : </label>
-		    <br><input type="text" id="totalCTC" /><input type="hidden" id="postIdForAccept" />
+		    <label>Total CTC (INR): </label><span style="color: green;font-weight: bold;" id="totalCTCinWords"  ></span>
+		    <br><input type="text" id="totalCTC" onchange="getAmountInWords(this.value,'totalCTCinWords')"  />
+		    <input type="hidden" id="postIdForAccept" />
+		    <br>
 		     <span id="errorTotalCTC" style="display: none;color: red;"></span>
-		    <label>Billable CTC : </label>
-		    <br> <input type="text" id="billableCTC" />
-		    <span id="billableCTCinWords" ></span>
+		    <label>Billable CTC (INR): </label> <span style="color: green;font-weight: bold;"  id="billableCTCinWords" ></span>
+		    <br> <input type="text" id="billableCTC" onchange="getAmountInWords(this.value,'billableCTCinWords')" />
+		    
+		   <br>
 		     <span id="errorBillableCTC" style="display: none;color: red;"></span>
 		     <label>Joining Date : </label>
-		     <br><input type="text" id="joiningDate" />
+		     <br><input type="text"  id="datepicker"/>
 		     <span id="errorJoiningDate" style="display: none;color: red;"></span>
 	    </div>
     	<div  class="model-footer">
@@ -695,6 +698,15 @@ jQuery(document).ready(function() {
 	
 });
 
+</script>
+
+
+<script type="text/javascript">
+jQuery(document).ready(function() {
+$(function() {
+    $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' });
+  });
+});
 </script>
 </body>
 </html>

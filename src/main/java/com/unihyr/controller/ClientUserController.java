@@ -23,7 +23,10 @@ import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientUserModel;
 import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.RegistrationService;
-
+/**
+ * Controls all the request create update delete general users of client
+ * @author Rohit Tiwari
+ */
 @Controller
 public class ClientUserController
 {

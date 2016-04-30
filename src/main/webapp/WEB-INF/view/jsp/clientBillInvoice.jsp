@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.constraints.numbertowordindian"%>
 <%@page import="com.unihyr.constraints.NumberUtils"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.BillingDetails"%>
@@ -176,7 +177,7 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 									<td style="width: 60%;"></td>
 								</tr>
 								<tr style="height: 25px;">
-									<td><%=NumberUtils.convertNumberToWords(total.intValue()) %> Only</td>
+									<td><%=numbertowordindian.numToWordIndian(total.intValue()+"") %> Only</td>
 									<td></td>
 								</tr>
 								<tr>

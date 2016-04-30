@@ -24,7 +24,10 @@ import com.unihyr.service.MailService;
 import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
-
+/**
+ * Controls all mailing system for client
+ * @author Rohit Tiwari
+ */
 @Controller
 public class ClientMailController
 {

@@ -35,7 +35,10 @@ import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
-
+/**
+ * Controls all the request related to Authentication
+ * @author Rohit Tiwari
+ */
 @Controller
 public class LoginController
 {
