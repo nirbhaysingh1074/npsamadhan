@@ -243,7 +243,7 @@ jQuery(document).ready(function() {
 						</c:forEach>
 	            	</form:select>
 	              
-<%-- 	              <form:input path="location" /> --%>
+					<%--  <form:input path="location" /> --%>
 	              <span class='error location_error'><form:errors path="location"/></span>
 	            </dd>
 	          </dl>
@@ -256,7 +256,7 @@ jQuery(document).ready(function() {
 	                    <form:option value="Individual Contributor">Individual Contributor</form:option>
 	                    <form:option value="Team Leading">Team Leading</form:option>
 	            </form:select>
-<%-- 	              <form:input path="function" /> --%>
+					<%-- 	 <form:input path="function" /> --%>
 	              <span class='error function_error'><form:errors path="function"/></span>
 	            </dd>
 	          </dl>
@@ -388,11 +388,13 @@ jQuery(document).ready(function() {
 	                  
 	                   <%
 	                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=11;i++){ %>
+	                   for(int i=00;i<=11;i++){
+	                	   
+	                	   %>
 						
-	                   <form:option value="<%=formatter.format(i) %>:00 AM"><%=formatter.format(i) %>:00 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
 	                  
-	                   <form:option value="<%=formatter.format(i) %>:30 AM"><%=formatter.format(i) %>:30 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
 						<%} %>
 	                     <form:option value="12:00 PM">12:00 PM</form:option>
 	                  
@@ -400,26 +402,16 @@ jQuery(document).ready(function() {
 					<%
 	                   for(int i=1;i<=11;i++){ %>
 						
-	                   <form:option value="<%=formatter.format(i) %>:00 PM"><%=formatter.format(i) %>:00 PM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
 	                  
-	                   <form:option value="<%=formatter.format(i) %>:30 PM"><%=formatter.format(i) %>:30 PM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
 						<%} %>
 	                
 	                 
 	                  </form:select>
 	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
 	                </div>
-	             <%--    <div class="col-md-3">Start Min
-	                  <form:select path="workHourStartMin">
-	                   
-	                   <%
-	                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=59;i++){ %>
-	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
-						<%} %>
-	                  </form:select>
-	                  <span class='error workHourStartMin_error'><form:errors path="workHourStartMin"/></span>
-	                </div> --%>
+	         
 	                <div class="col-md-4"> End Time
 	                  <form:select path="workHourEndHour">
 	                  
@@ -427,9 +419,9 @@ jQuery(document).ready(function() {
 	                   NumberFormat formatter = new DecimalFormat("00");  
 	                   for(int i=00;i<=11;i++){ %>
 						
-	                   <form:option value="'<%=formatter.format(i) %>':00 AM"><%=formatter.format(i) %>:00 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
 	                  
-	                   <form:option value="'<%=formatter.format(i) %>':30 AM"><%=formatter.format(i) %>:30 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
 						<%} %>
 	                     <form:option value="12:00 PM">12:00 PM</form:option>
 	                  
@@ -437,27 +429,16 @@ jQuery(document).ready(function() {
 					<%
 	                   for(int i=1;i<=11;i++){ %>
 						
-	                   <form:option value="'<%=formatter.format(i) %>':00 PM"><%=formatter.format(i) %>:00 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
 	                  
-	                   <form:option value="'<%=formatter.format(i) %>':30 PM"><%=formatter.format(i) %>:30 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
 						<%} %>
 	                
 	                 
 	                  </form:select>
 	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
 	                </div>
-	                <%-- <div class="col-md-3"> End Min
-	                  <form:select path="workHourEndMin">
-	                    <%
-		                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=58;i++){ %>
-	                    <form:option value="<%=formatter.format(i) %>"><%=formatter.format(i) %></form:option>
-						<%} %>
-						 <form:option selected="true" value="<%=formatter.format(59) %>"><%=formatter.format(59) %></form:option>
-						
-	                  </form:select>
-	                  <span class='error workHourEndMin_error'><form:errors path="workHourEndMin"/></span>
-	                </div> --%>
+	             
 	                
 	              </div>
 	            </dd>

@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.constraints.NumberUtils"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.domain.BillingDetails"%>
 <%@page import="java.util.List"%>
@@ -70,7 +71,7 @@
 Commission(%)
 </sec:authorize>
 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-Fee Percent
+Fee Percent(%)
 </sec:authorize>
 	       				</th>
 	       				<th align="left">			<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
@@ -79,7 +80,7 @@ Commission
 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 Fee
 </sec:authorize></th>
-	       				<th align="left">Tax</th>
+	       				<th align="left">Tax(%)</th>
 	       				<th align="left">Total Amount</th>
 	       				<th align="left">Payment Due Date</th>
 	       				<th align="left">Action</th>
@@ -116,8 +117,9 @@ for(BillingDetails bill:bills){
 Yet to Join
 <%} %>
 </td>
-<td><%=bill.getTotalCTC() %></td>
-<td><%=bill.getBillableCTC() %></td>
+<td>
+<%=NumberUtils.convertNumberToCommoSeprated((new Double(bill.getTotalCTC()).intValue())+"") %></td>
+<td><%=NumberUtils.convertNumberToCommoSeprated(new Double(bill.getBillableCTC()).intValue()+"") %></td>
 <td>
 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 <%=bill.getFeePercentForClient() %>
@@ -127,9 +129,9 @@ Yet to Join
 </sec:authorize>
 
 </td>
-<td><%=bill.getFee() %></td>
-<td><%=bill.getTax() %></td>
-<td><%=bill.getTotalAmount() %></td>
+<td><%=NumberUtils.convertNumberToCommoSeprated(new Double(bill.getFee()).intValue()+"") %></td>
+<td><%=bill.getTax()%></td>
+<td><%=NumberUtils.convertNumberToCommoSeprated(new Double(bill.getTotalAmount()).intValue()+"") %></td>
 <td>
 <%if(bill.getPaymentDueDateForAd()!=null){ %>
 <%=DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForAd()) %>

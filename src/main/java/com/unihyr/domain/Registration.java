@@ -21,7 +21,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
+/**
+ * A bean class to set and get all details of User while registration.
+ * @author Rohit Tiwari
+ */
 @Entity
 @Table(name="registration")
 public class Registration implements Serializable
@@ -30,9 +33,13 @@ public class Registration implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 8719433485080003372L;
-	
+	/**
+	 * Unique Identity of each registration
+	 */
 	private int lid;
-	
+	/**
+	 * Name of Registering User
+	 */
 	private String name;
 	
 	private String userid;

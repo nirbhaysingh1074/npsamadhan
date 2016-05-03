@@ -90,4 +90,67 @@ public class NumberUtils
 		}
 		return s + " " + lowNames[n % 10];
 	}
+	/**
+	 * Used to convert Integer number into comma seprated string
+	 * @param num data type String, which will be converted into commoa seprated string
+	 * @return comma seprated string
+	 */
+	public static String convertNumberToCommoSeprated(String num){
+		char[] arr=num.toCharArray();
+ 		String word="";
+ 		int l=arr.length;
+		switch (num.length())
+		{
+		case 9:{
+			for(int i=0;i<arr.length-3;i=i+2){
+				word+=word+""+arr[i]+""+arr[i+1]+",";
+			}
+			word+=arr[2]+""+arr[1]+""+arr[0];
+			break;
+		}
+		case 8:{
+			word=word+arr[0]+",";
+			for(int i=1;i<arr.length-3;i=i+2){
+				word+=word+""+arr[i]+""+arr[i+1]+",";
+			}
+			word+=arr[l-3]+""+arr[l-2]+""+arr[l-1];
+			break;
+		}
+		case 7:{
+			word=arr[0]+""+arr[1]+","+arr[2]+""+arr[3]+","+arr[4]+""+arr[5]+""+arr[6];
+			break;
+		}
+		case 6:{
+			word=arr[0]+","+arr[1]+""+arr[2]+","+arr[3]+""+arr[4]+""+arr[5];
+			break;
+		}
+		case 5:{
+			word=arr[0]+""+arr[1]+","+arr[2]+""+arr[3]+""+arr[4];
+			break;
+		}
+		case 4:{
+			word+=arr[0]+","+arr[1]+""+arr[2]+""+arr[3];
+			break;
+		}
+		case 3:{
+
+			word+=arr[0]+""+arr[1]+""+arr[2];;
+			break;
+		}
+		case 2:{
+			
+			word+=arr[0]+""+arr[1];
+			break;
+		}
+		case 1:{
+			
+			word+=arr[0];
+			break;
+		}
+		default:
+			break;
+		}
+		
+		return word;
+	}
 }
