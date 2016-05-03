@@ -237,6 +237,8 @@ public class ClientController
 			post.setComment(model.getComment());
 			post.setUploadjd(model.getUploadjd());
 			post.setAdditionDetail(model.getAdditionDetail());
+			post.setWorkHourStartHour(model.getWorkHourStartHour());
+			post.setWorkHourEndHour(model.getWorkHourEndHour());
 			post.setActive(true);
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -389,6 +391,8 @@ public class ClientController
 			model.setUploadjd(post.getUploadjd());
 			model.setAdditionDetail(post.getAdditionDetail());
 			model.setEditSummary(post.getEditSummary());
+			model.setWorkHourStartHour(post.getWorkHourStartHour());
+			model.setWorkHourEndHour(post.getWorkHourEndHour());
 			map.addAttribute("postForm", model);
 			map.addAttribute("post", post);
 			map.addAttribute("locList", locationService.getLocationList());

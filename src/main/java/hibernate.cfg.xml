@@ -24,6 +24,7 @@
    	    <mapping class="com.unihyr.domain.Inbox"/>
    	    <mapping class="com.unihyr.domain.Location"/>
    	    <mapping class="com.unihyr.domain.BillingDetails"/>
+   	    <mapping class="com.unihyr.domain.ConfigVariables"/>
     </session-factory>
     
 </hibernate-configuration>
