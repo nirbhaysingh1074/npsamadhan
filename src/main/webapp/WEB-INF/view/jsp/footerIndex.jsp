@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uni Hyr</title>
 <style type="text/css">
+
 .help-desk{position: fixed; bottom: 0; right: 10px;}
 .help-desk .desk-header{
 	padding: 10px 20px; 
@@ -13,13 +14,10 @@
 	
 	cursor: pointer;
 }
-.help-desk .desk-vertical{
-	transform: rotate(90deg);
-	transform-origin: right 0;
-}
 .content-field{margin-top: 10px;}
 .help-desk .desk-content{display: none;background-color: #CCCCCC;padding: 10px 20px;width: 325px;}
 .help-desk .active {display: block;}
+
 </style>
 </head>
 <body class="loading">
@@ -33,6 +31,7 @@
     </ul>
   </div>
 </footer>
+
 <div class="help-desk">
 	<div class="desk-header ">Help Desk</div>
 	<div class="desk-content">
@@ -55,6 +54,7 @@
 		</div>
 	</div>
 </div>
+
 
 <!--SCRIPTS-->
 <!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->

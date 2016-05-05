@@ -28,12 +28,13 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 					<div class="col-md-5">
 						<ul class="page_nav">
 							<li class="active post_activated" id="sdfg"><a
-								href="javascript:void(0)">Print</a></li>
+								href="javascript:void(0)">Print</a>
+								<button onclick="createpdf()">Create Pdf</button></li>
 						</ul>
 					</div>
 				</div>
 				<div class="positions_tab  bottom-margin"
-					style="border: 1px solid gray;">
+					style="border: 1px solid gray;"  id="genpdf"  >
 					<div class="form_cont">
 						<div class="form_col">
 							<table style="width: 100%;">
@@ -42,7 +43,8 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td style="width: 10%"></td>
 										<td style="width: 40%"><img style="width: 140px;"
 											src="images/logo.png" alt="logo" /></td>
-										<td colspan="2" style="width: 20%"><img alt="invoice" src="images/invoice.png"></td>
+										<td colspan="2" style="width: 20%">
+										<img alt="invoice" src="images/invoice.png"></td>
 									</tr>
 									<tr>
 										<td colspan="2"><pre> </pre></td>
@@ -232,7 +234,39 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 	</div>
 	<%} %>
 </body>
-</html>
+
+
+
+
+
+
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+
+
+<script type="text/javascript" src="js/jspdf/jspdf.js"></script>
+
+<script type="text/javascript" src="js/jspdf/acroform.js"></script>
+<script type="text/javascript" src="js/jspdf/addhtml.js"></script>
+<script type="text/javascript" src="js/jspdf/addimage.js"></script>
+<script type="text/javascript" src="js/jspdf/annotations.js"></script>
+<script type="text/javascript" src="js/jspdf/autoprint.js"></script>
+<script type="text/javascript" src="js/jspdf/canvas.js"></script>
+<script type="text/javascript" src="js/jspdf/cell.js"></script>
+<script type="text/javascript" src="js/jspdf/context2d.js"></script>
+<script type="text/javascript" src="js/jspdf/from_html.js"></script>
+<script type="text/javascript" src="js/jspdf/javascript.js"></script>
+<script type="text/javascript" src="js/jspdf/outline.js"></script>
+<script type="text/javascript" src="js/jspdf/png_support.js"></script>
+<script type="text/javascript" src="js/jspdf/prevent_scale_to_fit.js"></script>
+
+<script type="text/javascript" src="js/jspdf/split_text_to_size.js"></script>
+<script type="text/javascript" src="js/jspdf/standard_fonts_metrics.js"></script>
+<script type="text/javascript" src="js/jspdf/svg.js"></script>
+<script type="text/javascript" src="js/jspdf/total_pages.js"></script>
+
+<script type="text/javascript" src="js/jspdf/png.js"></script>
+<script type="text/javascript" src="js/jspdf/zlib.js"></script>
 <script>
 $(function () {
     $('#sdfg').click(function () {
@@ -251,4 +285,35 @@ $(function () {
 
          return true;
     });});
+    
+    
+    
 </script>
+
+
+<script type="text/javascript">
+	var doc = new jsPDF();          
+	var elementHandler = {
+	  /* '#ignorePDF': function (element, renderer) {
+	    return true;
+	  } */
+	};
+	doc.setFontSize(7);
+	function createpdf()
+	{
+		var source = window.document.getElementById("genpdf");
+		doc.fromHTML(
+		    source,
+		    15,
+		    15,
+		    {
+		      'width': 180,'font-size':11/* ,'elementHandlers': elementHandler */
+		    });
+		
+		doc.output("dataurlnewwindow");
+		
+	}
+	
+
+</script>
+</html>

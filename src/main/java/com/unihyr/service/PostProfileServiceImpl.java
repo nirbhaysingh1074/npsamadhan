@@ -209,5 +209,11 @@ public class PostProfileServiceImpl implements PostProfileService
 	{
 		return this.postProfileDao.countPostProfileByConsForCenter(consid);
 	}
+
+	@Override
+	public long countProfileListByPostId(long postId)
+	{
+		return this.postProfileDao.countProfileListByPostId(postId);
+	}
 	
 }

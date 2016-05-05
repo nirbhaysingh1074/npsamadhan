@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Registration"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.NumberFormat"%>
@@ -189,14 +190,131 @@ jQuery(document).ready(function() {
 </script>
 </head>
 <body class="loading">
-
+<% 
+Registration registration=(Registration)request.getAttribute("registration");
+ %>
 	<div class="mid_wrapper">
 	  <div class="container">
 	    <div class="form_cont">
           <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 	      <div class="block">
+	      <div class="block coment_fild" style="padding-top: 15px;margin-left:15px;
+	      border-radius:10px;background-color: #fcfcd2;width: 97%;margin-bottom: 22px;">
+	        
+	        <div class="form_col" >
+	        
+	          <dl style="width: 100%;">
+	          <dt  style="width: 100%;text-align: center;">
+	          <strong style="font-size: 16px;">
+	          Contract Info</strong> </dt>
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt  style="width: 50%;">
+	          <label>Billable CTC Slab1 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs1Min() %> to <%=registration.getCtcSlabs1Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent1() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab2 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs2Min() %> to <%=registration.getCtcSlabs2Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent2() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab3 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs3Min() %> to <%=registration.getCtcSlabs3Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent3() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab4 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs4Min() %> to <%=registration.getCtcSlabs4Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent4() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab5 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs5Min() %> to no limit (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent5() %>
+	          </dd>
+	          
+	          </dl>
+	        
+	        
+	        </div>
+	      </div>
 	        <div class="form_col">
 	          <%
+	          
 					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
 					if(fileuploaderror != null && fileuploaderror.equals("true"))
 					{
@@ -444,8 +562,13 @@ jQuery(document).ready(function() {
 	            </dd>
 	          </dl>
 	          
+	       
 	        </div>
 	      </div>
+	      
+	      
+	      
+	      
 	      <div class="block coment_fild"  id="jobDescriptionText">
 	        <p>Job Description (please paste the JD here)</p>
 	        <form:textarea path="additionDetail" id="additionDetail" ></form:textarea>

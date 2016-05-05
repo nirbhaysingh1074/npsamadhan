@@ -185,6 +185,7 @@ public class AdminPanelController
 			map.addAttribute("userDetail", user);
 			map.addAttribute("loginInfo", loginInfoService.findUserById(userid));
 			map.addAttribute("userRole", userRoleService.getRoleByUserId(userid));
+			map.addAttribute("childUsers", registrationService.getCoUsersByUserid(userid));
 			return "adminUserDerail";
 		}
 		return "redirect:admindashboard";
@@ -313,9 +314,14 @@ public class AdminPanelController
 		return "adminViewProfile";
 	}
 	
-	
-	
-	
+	/**
+	 * 	
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminreatpassword", method = RequestMethod.GET)
 	public @ResponseBody String adminreatpassword(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
 	{
@@ -334,6 +340,14 @@ public class AdminPanelController
 		obj.put("status", false);
 		return obj.toJSONString();
 	}
+	/**
+	 * Used to handle request of admin to disable a User.
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value = "/admindisableuser", method = RequestMethod.GET)
 	public @ResponseBody String admindisableuser(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
 	{
@@ -352,7 +366,14 @@ public class AdminPanelController
 		obj.put("status", false);
 		return obj.toJSONString();
 	}
-	
+	/**
+	 * Used to handle request from admin to enable a User
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminenableuser", method = RequestMethod.GET)
 	public @ResponseBody String adminenableuser(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
 	{
@@ -372,7 +393,14 @@ public class AdminPanelController
 		return obj.toJSONString();
 	}
 	
-	
+	/**
+	 * Used to handle request of admin to verify a job post.
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param pid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminvarifypost", method = RequestMethod.GET)
 	public @ResponseBody String adminvarifypost(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam long pid)
 	{
@@ -391,7 +419,13 @@ public class AdminPanelController
 		obj.put("status", false);
 		return obj.toJSONString();
 	}
-
+	/**
+	 * used for completion of Registration process of any user by filling their contract details
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/admincompletereg", method = RequestMethod.GET)
 	public String admincompletereg(ModelMap map, HttpServletRequest request ,Principal principal )
 	{
@@ -400,13 +434,11 @@ public class AdminPanelController
 		if(registration!= null)
 		{
 			registration.setContractNo(request.getParameter("contractNo"));
-			
 			registration.setFeePercent1(Double.parseDouble(request.getParameter("feePercent1")));
 			registration.setFeePercent2(Double.parseDouble(request.getParameter("feePercent2")));
 			registration.setFeePercent3(Double.parseDouble(request.getParameter("feePercent3")));
 			registration.setFeePercent4(Double.parseDouble(request.getParameter("feePercent4")));
 			registration.setFeePercent5(Double.parseDouble(request.getParameter("feePercent5")));
-
 			registration.setCtcSlabs1Min(Double.parseDouble(request.getParameter("ctcSlabs1Min")));
 			registration.setCtcSlabs1Max(Double.parseDouble(request.getParameter("ctcSlabs1Max")));
 			registration.setCtcSlabs2Min(Double.parseDouble(request.getParameter("ctcSlabs2Min")));
@@ -416,11 +448,8 @@ public class AdminPanelController
 			registration.setCtcSlabs4Min(Double.parseDouble(request.getParameter("ctcSlabs4Min")));
 			registration.setCtcSlabs4Max(Double.parseDouble(request.getParameter("ctcSlabs4Max")));
 			registration.setCtcSlabs5Min(Double.parseDouble(request.getParameter("ctcSlabs5Min")));
-			
 			registration.setPaymentDays(Integer.parseInt(request.getParameter("paymentDays")));
 			registration.setEmptyField(request.getParameter("emptyField"));
-			
-			
 			registrationService.update(registration);
 			LoginInfo info = loginInfoService.findUserById(uid);
 			if(info != null)

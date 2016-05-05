@@ -917,7 +917,7 @@ return object.toJSONString();
 					{
 					post.setNoOfPostsFilled(post.getNoOfPosts());
 					postService.updatePost(post);	
-					closePost(pp.getPpid());
+					closePost(post.getPostId());
 					}else{
 						post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
 						postService.updatePost(post);	
@@ -927,7 +927,7 @@ return object.toJSONString();
 					post.setNoOfPosts(0);
 					postService.updatePost(post);	
 					}
-
+					closePostPre(post.getPostId());
 					mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_accept");
 				}
@@ -953,6 +953,7 @@ return object.toJSONString();
 			
 		} catch (Exception e)
 		{
+			e.printStackTrace();
 			// TODO: handle exception
 		}
 		obj.put("status", "failed");
@@ -1034,6 +1035,7 @@ return object.toJSONString();
 			long turnaround = 0;
 			long totalSubmitted = postProfileService.countProfileListByConsultantIdAndPostId(consultant.getUserid(),
 					post.getPostId());
+			long totalSubmittedbyall = postProfileService.countPostProfileByPost(postId, "submitted");
 			for (RatingParameter ratingParameter : ratingParams)
 			{
 				switch (ratingParameter.getName())
@@ -1095,10 +1097,8 @@ return object.toJSONString();
 					globalRatingService.addGlobalRating(newGlobalRating);
 					break;
 				}
-				case "closureRate":
+				case "industrycoverage":
 				{
-					long totalRecruited = postProfileService.countRecruitedProfileListByConsultantIdAndPostId(
-							consultant.getUserid(), post.getPostId());
 					GlobalRating newGlobalRating = new GlobalRating();
 					Date date = new Date();
 					java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -1115,7 +1115,7 @@ return object.toJSONString();
 						clrTime = 0;
 					} else
 					{
-					clrTime=(totalRecruited * 100 / totalSubmitted) ;
+					clrTime=(totalSubmitted * 100 / totalSubmittedbyall) ;
 					}
 						
 					newGlobalRating.setRatingParamValue(clrTime);
@@ -1128,7 +1128,25 @@ return object.toJSONString();
 				}
 			}
 		}
-		post = postService.getPost(postId);
+		
+		
+		
+		
+		return null;
+	}
+	private String closePostPre(long postId){
+		Post post=postService.getPost(postId);
+		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
+		
+		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
+		Registration consultant = null;
+		int counter = 0;
+		for (PostConsultant postConsultatnt : postConsultants)
+		{
+			consultant = postConsultatnt.getConsultant();
+			post = postConsultatnt.getPost();
+		
+		
 		Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
 				.getIndustries();
 		Iterator<Industry> inIterator = industry.iterator();
@@ -1139,11 +1157,13 @@ return object.toJSONString();
 		}
 		
 		
+		
+		
 		for (RatingParameter ratingParameter : ratingParams)
 		{
 			switch (ratingParameter.getName())
 			{
-			case "turnaroundtime":
+			case "offerdrop":
 			{
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();
@@ -1152,26 +1172,28 @@ return object.toJSONString();
 				newGlobalRating.setIndustryId(in.getId());
 				newGlobalRating.setRatingParameter(ratingParameter);
 				newGlobalRating.setRatingParamValue(0);
-				break;
-			}
-			case "shortlistRatio":
-			{
-				
+				newGlobalRating.setRegistration(consultant);
+				globalRatingService.addGlobalRating(newGlobalRating);
 				break;
 			}
 			case "closureRate":
 			{
-				
+
+				GlobalRating newGlobalRating = new GlobalRating();
+				Date date = new Date();
+				java.sql.Date dt = new java.sql.Date(date.getTime());
+				newGlobalRating.setCreateDate(dt);
+				newGlobalRating.setIndustryId(in.getId());
+				newGlobalRating.setRatingParameter(ratingParameter);
+				newGlobalRating.setRatingParamValue(0);
+				newGlobalRating.setRegistration(consultant);
+				globalRatingService.addGlobalRating(newGlobalRating);
 				break;
 			}
 			default:
 				break;
 			}
-		}
-		
-		
-		
-		
+		}}
 		return null;
 	}
 }
