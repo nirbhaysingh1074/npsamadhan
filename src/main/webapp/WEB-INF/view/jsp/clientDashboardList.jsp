@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
@@ -55,16 +55,16 @@
       
 	    <div class="positions_info ">
 	      <div class="filter">
-<!-- 	      	 <div class="col-md-4">&nbsp; -->
-<%-- 	      	 	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')"> --%>
-<!-- 		      	 	<button id="del_post">Delete</button> -->
+	      	 <div class="col-md-4">&nbsp;
+	      	 	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+		      	 	<button id="del_post">Delete</button>
 <!-- 		      	 	<button id="close_post" >Close</button> -->
 <!-- 		      	 	<button id="act_post">Activate</button> -->
 <!-- 		      	 	<button id="inact_post">Inactivate</button> -->
-<%-- 	      	 	</sec:authorize> --%>
-<!-- 	      	 </div> -->
-	         <div class="col-md-6 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
-	         <div class="col-md-6 ">
+	      	 	</sec:authorize>
+	      	 </div>
+	         <div class="col-md-4 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
+	         <div class="col-md-4">
                 <ul class="page_nav unselectable">
                 	<%
 		          		if(pn > 1)

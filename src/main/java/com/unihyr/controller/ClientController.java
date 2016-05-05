@@ -41,17 +41,20 @@ import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.constraints.Roles;
 import com.unihyr.domain.BillingDetails;
 import com.unihyr.domain.CandidateProfile;
+import com.unihyr.domain.GlobalRating;
 import com.unihyr.domain.Inbox;
 import com.unihyr.domain.Industry;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Post;
 import com.unihyr.domain.PostConsultant;
 import com.unihyr.domain.PostProfile;
+import com.unihyr.domain.RatingParameter;
 import com.unihyr.domain.Registration;
 import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientRegistrationModel;
 import com.unihyr.model.PostModel;
 import com.unihyr.service.BillingService;
+import com.unihyr.service.GlobalRatingService;
 import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
 import com.unihyr.service.LocationService;
@@ -61,6 +64,7 @@ import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.ProfileService;
+import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
 
@@ -98,8 +102,11 @@ public class ClientController
 	private MailService mailService;
 	@Autowired
 	private BillingService billingService;
+	@Autowired
+	private GlobalRatingService globalRatingService;
+	@Autowired
+	private RatingParameterService ratingParameterService;
 	
-
 	@RequestMapping(value = "/clientdashboard", method = RequestMethod.GET)
 	public String clientDashboard(ModelMap map, Principal principal)
 	{
@@ -169,10 +176,11 @@ public class ClientController
 	
 
 	@RequestMapping(value = "/clientaddpost", method = RequestMethod.GET)
-	public String addPost(ModelMap map)
+	public String addPost(ModelMap map,Principal principal)
 	{
 		map.addAttribute("locList", locationService.getLocationList());
 		map.addAttribute("postForm", new PostModel());
+		map.addAttribute("registration", registrationService.getRegistationByUserId(principal.getName()));
 		return "addPost";
 	}
 
@@ -1188,6 +1196,7 @@ public class ClientController
 						post.setPublished(null);
 						post.setActive(false);
 						postService.updatePost(post);
+						closePost(post.getPostId());
 					}
 				}
 				
@@ -1338,15 +1347,15 @@ public class ClientController
 				if(!this.allowedImageExtensions.contains(imageextension)){
         			return "failed";
         		}
-				
-				File dl = new File(System.getProperty("catalina.base")+"/unihyr_uploads/"+principal.getName()+"/logo/"+filename);
-				String datafile=System.getProperty("catalina.base")+"/unihyr_uploads/"+principal.getName()+"/logo/"+filename;
+				filename = UUID.randomUUID().toString()+filename;
+				File dl = new File(GeneralConfig.UploadPath+"/"+filename);
+				String datafile=GeneralConfig.UploadPath+"/"+filename;
 				System.out.println("PATH="+datafile);
 				if(!dl.exists()){
 					System.out.println("in not file"+dl.getAbsolutePath());
 					dl.mkdirs();
 				}
-				filename= "/unihyr_uploads/"+principal.getName()+"/logo/"+filename;
+				filename= "/unihyr_uploads/"+filename;
 				mpf.transferTo(dl);
 				Registration registration = registrationService.getRegistationByUserId(principal.getName());
 				registration.setLogo(filename);
@@ -1362,5 +1371,169 @@ public class ClientController
 		return "failed";
 	}
 
+
 	
+	public String closePost(long postId)
+	{
+		List<PostConsultant> postConsultants = postConsultnatService.getInterestedConsultantByPost(postId);
+		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
+		Registration consultant = null;
+		Post post = null;
+		int counter = 0;
+		for (PostConsultant postConsultatnt : postConsultants)
+		{
+			consultant = postConsultatnt.getConsultant();
+			post = postConsultatnt.getPost();
+			Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
+					.getIndustries();
+			Iterator<Industry> inIterator = industry.iterator();
+			Industry in = null;
+			while (inIterator.hasNext())
+			{
+				in = (Industry) inIterator.next();
+			}
+			
+			counter = 0;
+			
+			long publishtime = post.getCreateDate().getTime();
+			long turnaround = 0;
+			long totalSubmitted = postProfileService.countProfileListByConsultantIdAndPostId(consultant.getUserid(),
+					post.getPostId());
+			for (RatingParameter ratingParameter : ratingParams)
+			{
+				switch (ratingParameter.getName())
+				{
+				case "turnaroundtime":
+				{
+					int count = 0;
+					List<PostProfile> postProfilesList = postProfileService
+							.getProfileListByConsultantIdAndPostIdInRangeAsc(consultant.getUserid(), post.getPostId(),
+									0, 3);
+					for (PostProfile postProfile2 : postProfilesList)
+					{
+						long profileTime = postProfile2.getProfile().getDate().getTime();
+						turnaround += profileTime - publishtime;
+						count++;
+					}
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(ratingParameter);
+					long turTime=0;
+					if (totalSubmitted == 0)
+					{
+						turTime = 0;
+					} else{
+						turTime=turnaround/count;
+					}
+					newGlobalRating.setRatingParamValue(turTime);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.addGlobalRating(newGlobalRating);
+					break;
+				}
+				case "shortlistRatio":
+				{
+					long totalShortlisted = postProfileService.countShortlistedProfileListByConsultantIdAndPostId(
+							consultant.getUserid(), post.getPostId());
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					while (inIterator.hasNext())
+					{
+						in = (Industry) inIterator.next();
+					}
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(ratingParameter);
+					long shrTime=0;
+					if (totalSubmitted == 0)
+					{
+						shrTime = 0;
+					} else
+					{
+					 shrTime=(totalShortlisted * 100 / totalSubmitted) ;
+					}
+					newGlobalRating.setRatingParamValue(shrTime);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.addGlobalRating(newGlobalRating);
+					break;
+				}
+				case "closureRate":
+				{
+					long totalRecruited = postProfileService.countRecruitedProfileListByConsultantIdAndPostId(
+							consultant.getUserid(), post.getPostId());
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					while (inIterator.hasNext())
+					{
+						in = (Industry) inIterator.next();
+					}
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(ratingParameter);
+					long clrTime=0;
+					if (totalSubmitted == 0)
+					{
+						clrTime = 0;
+					} else
+					{
+					clrTime=(totalRecruited * 100 / totalSubmitted) ;
+					}
+						
+					newGlobalRating.setRatingParamValue(clrTime);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.addGlobalRating(newGlobalRating);
+					break;
+				}
+				default:
+					break;
+				}
+			}
+		}
+		post = postService.getPost(postId);
+		Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
+				.getIndustries();
+		Iterator<Industry> inIterator = industry.iterator();
+		Industry in = null;
+		while (inIterator.hasNext())
+		{
+			in = (Industry) inIterator.next();
+		}
+		
+		
+		for (RatingParameter ratingParameter : ratingParams)
+		{
+			switch (ratingParameter.getName())
+			{
+			case "turnaroundtime":
+			{
+				GlobalRating newGlobalRating = new GlobalRating();
+				Date date = new Date();
+				java.sql.Date dt = new java.sql.Date(date.getTime());
+				newGlobalRating.setCreateDate(dt);
+				newGlobalRating.setIndustryId(in.getId());
+				newGlobalRating.setRatingParameter(ratingParameter);
+				newGlobalRating.setRatingParamValue(0);
+				break;
+			}
+			case "shortlistRatio":
+			{
+				
+				break;
+			}
+			case "closureRate":
+			{
+				
+				break;
+			}
+			default:
+				break;
+			}
+		}
+		
+		return null;
+	}
 }

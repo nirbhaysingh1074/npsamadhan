@@ -337,4 +337,16 @@
         <put-attribute name="title" value="UniHyr - profile list" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/cons_your_positionsinnerpage.jsp" />
     </definition>
+    
+    
+    
+    <definition name="test" extends="homeTemplate">
+        <put-attribute name="title" value="UniHyr - Test" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/test.jsp" />
+    </definition>
+    
+    
+    
+    
+    
 </tiles-definitions>

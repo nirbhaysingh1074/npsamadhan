@@ -79,4 +79,6 @@ public interface PostProfileDao
 	public List<PostProfile> getPostProfileByConsForCenter(String consid, int first, int max);
 	
 	public long countPostProfileByConsForCenter(String consid);
+
+	public long countProfileListByPostId(long postId);
 }

@@ -758,4 +758,20 @@ public class PostProfileDaoImpl implements PostProfileDao
 		
 		return count;
 	}
+
+	@Override
+	public long countProfileListByPostId(long postId)
+	{
+		long count = (Long) this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("profile", "profileAlias")
+				.createAlias("profileAlias.registration", "regAlias")
+				.add(Restrictions.isNull("profileAlias.deleteDate"))
+				.add(Restrictions.isNotNull("profileAlias.published"))
+				.createAlias("post", "postAlias")   
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.add(Restrictions.isNull("postAlias.deleteDate"))	
+				.add(Restrictions.isNotNull("recruited"))
+				.setProjection(Projections.rowCount()).uniqueResult();
+		return count;
+	}
 }
