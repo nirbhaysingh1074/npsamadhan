@@ -41,7 +41,6 @@ public class IndexController
 			System.out.println("Princile : " + request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString()));
 			
 		}
-		System.out.println("Hello to all : ");
         return "home";
     }
 	
@@ -55,7 +54,6 @@ public class IndexController
 	@RequestMapping(value = "/error", method = RequestMethod.GET)
     public String error(ModelMap map) 
 	{
-		System.out.println("Hello to all from login");
         return "error";
     }
 	

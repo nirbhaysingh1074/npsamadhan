@@ -851,7 +851,7 @@ jQuery(document).ready(function() {
 	
 // 	$(document.body).on('click', '.modal-content .btn-ok' ,function(){
 
-// 		alert("Hello to all");
+	
 // 	})
 	
 });

@@ -110,13 +110,13 @@ public class ConsultantController
 	public String uploadprofile(ModelMap map, HttpServletRequest request,Principal principal , @RequestParam long pid)
 	{
 		Post post = postService.getPost(pid);
-		
+
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.WEEK_OF_MONTH, -1);
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 		try
 		{
-			
+
 			Date rowDate = df.parse(df.format(cal.getTime()));
 			long quata =  postProfileService.countPostProfilesForPostByDate(post.getPostId(), principal.getName(), rowDate);
 			if(post != null && post.isActive() )
@@ -130,8 +130,7 @@ public class ConsultantController
 					map.addAttribute("quataExceed", true);
 				}
 				map.addAttribute("post", post);
-				System.out.println("Hello to all from uploadprofile");
-				
+
 				CandidateProfileModel model = new CandidateProfileModel();
 				model.setPost(post);
 				map.addAttribute("uploadProfileForm", model);
@@ -151,22 +150,22 @@ public class ConsultantController
 	{
 		boolean email_st = postProfileService.checkPostProfileAvailability(model.getPost().getPostId(), model.getEmail(), null);
 		boolean contact_st = postProfileService.checkPostProfileAvailability(model.getPost().getPostId(), null, model.getContact());
-		
+
 		MultipartFile resumefile = model.getResumeFile();
-        String resumefilename=resumefile.getOriginalFilename();
-        String resumeNewfilename=null;
-        
+		String resumefilename=resumefile.getOriginalFilename();
+		String resumeNewfilename=null;
+
 		boolean valid = true;
 		List<String> uploadMsg = new ArrayList<>();
-		
+
 		Post post = postService.getPost(model.getPost().getPostId());
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 		try
 		{
-			
+
 			Date rowDate = df.parse(df.format(new Date()));
 			long quata =  postProfileService.countPostProfilesForPostByDate(post.getPostId(), principal.getName(), rowDate);
-			
+
 			if(post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
 			{
 				map.addAttribute("quataExceed", false);
@@ -199,10 +198,10 @@ public class ConsultantController
 				uploadMsg.add("File size must not be greater than 1 Mb.");
 				valid = false;
 			}        			
-			
+
 		}
-		
-		
+
+
 		if (result.hasErrors() || email_st || contact_st || !valid)
 		{
 			if(email_st)
@@ -213,15 +212,15 @@ public class ConsultantController
 			{
 				map.addAttribute("profileExist_contact", "Profile with this contact already uploaded for this post !");
 			}
-			
+
 			map.addAttribute("post", post);
 			map.addAttribute("uploadMsg", uploadMsg);
 			return "uploadprofile";
 		} 
 		else
 		{
-			
-			
+
+
 			System.out.println("form submitted successfully");
 			CandidateProfile profile = new CandidateProfile();
 			profile.setName(model.getName());
@@ -244,7 +243,7 @@ public class ConsultantController
 			profile.setDate(dt);
 			profile.setPublished(dt);
 
-			
+
 			PostProfile pp = null;
 			if(post != null)
 			{
@@ -256,44 +255,44 @@ public class ConsultantController
 			{
 				return "redirect:consdashboard";
 			}
-			
-			
-	        
-	        
-	        try
-	        {
-        		if(!(resumefilename.equals("")))
-        		{
-        			resumeNewfilename=resumefilename.replace(" ", "-");
-        			
-        			
-        			
-        			
-        			resumeNewfilename = UUID.randomUUID().toString()+resumeNewfilename;
-        			profile.setResumePath(resumeNewfilename);
-        			File img = new File (GeneralConfig.UploadPath+resumeNewfilename);
-        			if(!img.exists())
-        			{
-        				img.mkdirs();
-        			}
-        			resumefile.transferTo(img);			
-        		}
-        		
-        		long prid = profileService.uploadProfile(profile);
-        		
-        		profile.setProfileId(prid);
-        		pp.setProfile(profile);
-        		long ppid = postProfileService.addPostProfile(pp);
-        		map.addAttribute("upload_success", true);
-        		return "redirect:consapplicantinfo?ppid="+ppid;
-        		
-	        }
-		    catch (IOException ie)
-			        {
+
+
+
+
+			try
+			{
+				if(!(resumefilename.equals("")))
+				{
+					resumeNewfilename=resumefilename.replace(" ", "-");
+
+
+
+
+					resumeNewfilename = UUID.randomUUID().toString()+resumeNewfilename;
+					profile.setResumePath(resumeNewfilename);
+					File img = new File (GeneralConfig.UploadPath+resumeNewfilename);
+					if(!img.exists())
+					{
+						img.mkdirs();
+					}
+					resumefile.transferTo(img);			
+				}
+
+				long prid = profileService.uploadProfile(profile);
+
+				profile.setProfileId(prid);
+				pp.setProfile(profile);
+				long ppid = postProfileService.addPostProfile(pp);
+				map.addAttribute("upload_success", true);
+				return "redirect:consapplicantinfo?ppid="+ppid;
+
+			}
+			catch (IOException ie)
+			{
 				ie.printStackTrace();
 			}
-			
-			
+
+
 		}
 		return "redirect:cons_your_positions";
 	}
@@ -326,9 +325,9 @@ public class ConsultantController
 					client = post.getClient().getAdmin();
 				}
 				map.addAttribute("postConsList", postConsultnatService.getInterestedPostForConsultantByClient(cons.getUserid(), client.getUserid(),"percentile"));
-				
+
 				map.addAttribute("selClient", client);
-				
+
 				map.addAttribute("profileList", postProfileService.getPostProfileByClientPostAndConsultant(client.getUserid(), cons.getUserid(), post.getPostId(), 0, GeneralConfig.rpp_cons,"submitted","submitted"));
 				map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(client.getUserid(), cons.getUserid(), post.getPostId(),"submitted"));
 				map.addAttribute("postSelected",post.getPostId());
@@ -336,11 +335,10 @@ public class ConsultantController
 				map.addAttribute("pn", 1);
 			}
 		}
-		System.out.println("Hello to all from uploadprofile");
 		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(cons.getUserid()));
-		
 
-		
+
+
 		return "cons_your_positions";
 	}
 
@@ -385,18 +383,18 @@ public class ConsultantController
 		}
 		return "cons_leftside_postlist";
 	}
-	
+
 	@RequestMapping(value = "/consnewposts", method = RequestMethod.GET)
 	public String consnewposts(ModelMap map, HttpServletRequest request,Principal principal)
 	{
 		List<Industry> indList = new ArrayList<Industry>();
-			Set<Industry> inds =  registrationService.getRegistationByUserId(principal.getName()).getIndustries();
-			Iterator<Industry> it = inds.iterator();
-			while(it.hasNext())
-			{
-				indList.add(it.next());
-			}
-		
+		Set<Industry> inds =  registrationService.getRegistationByUserId(principal.getName()).getIndustries();
+		Iterator<Industry> it = inds.iterator();
+		while(it.hasNext())
+		{
+			indList.add(it.next());
+		}
+
 		map.addAttribute("indList",indList);
 		return "consnewposts";
 	}
@@ -434,7 +432,7 @@ public class ConsultantController
 			{
 				reg = reg.getAdmin();
 			}
-			
+
 			map.addAttribute("totalActive", postService.countPostsFilteredForConsultant(reg.getUserid(), null,null, null));
 			map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(null, reg.getUserid()));
 			map.addAttribute("totalshortlist", postProfileService.countShortListedProfileByClientOrConsultant(null, reg.getUserid()));
@@ -453,20 +451,20 @@ public class ConsultantController
 		String db_post_status = request.getParameter("db_post_status");
 		String db_sel_client = request.getParameter("db_sel_client");
 		String db_sel_loc = request.getParameter("db_sel_loc");
-		
+
 		String sortParam = request.getParameter("sortParam");
-		
+
 		Registration consultant = registrationService.getRegistationByUserId(principal.getName());
 		if(consultant.getAdmin() != null)
 		{
 			consultant = consultant.getAdmin(); 
 		}
-		
-		
+
+
 		// get post list by consultant (by passing client id(optional) , status(optional) , location(optional), sorted by parameter start count and maximum rows)
 		map.addAttribute("postList", postService.getPostsFilteredForConsultant(consultant.getUserid(), db_sel_client,db_post_status, db_sel_loc, (pn - 1) * rpp, rpp,sortParam));
 		map.addAttribute("totalCount", postService.countPostsFilteredForConsultant(consultant.getUserid(), db_sel_client,db_post_status, db_sel_loc));
-		 
+
 		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(consultant.getUserid()));
 		map.addAttribute("locList", postService.getLocationsByConsultant(consultant.getUserid()));
 		if(db_sel_client != null && db_sel_client.length() > 0)
@@ -475,14 +473,14 @@ public class ConsultantController
 		}
 		map.addAttribute("db_post_status", db_post_status);
 		map.addAttribute("db_sel_loc", db_sel_loc);
-		
+
 		map.addAttribute("rpp", rpp);
 		map.addAttribute("pn", pn);
 		map.addAttribute("sortParam", sortParam);
 
 		return "consDashboardList";
 	}
-	
+
 	@RequestMapping(value = "/consultantaccount", method = RequestMethod.GET)
 	public String consultantaccount(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -491,19 +489,19 @@ public class ConsultantController
 		map.addAttribute("status", request.getParameter("status"));
 		return "consultantAccount";
 	}
-	
-	
+
+
 	@RequestMapping(value = "/consprofilecenter", method = RequestMethod.GET)
 	public String consProfileCenter(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
-		
+
 		return "consProfileCenter";
 	}
-	
+
 	@RequestMapping(value = "/consprofilecenterlist", method = RequestMethod.GET)
 	public String consProfileCenterList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
-		
+
 		String pageno = request.getParameter("pn");
 		int pn = 1;
 		try
@@ -513,17 +511,23 @@ public class ConsultantController
 		{
 			e.printStackTrace();
 		}
-		
+
 		map.addAttribute("ppList", postProfileService.getPostProfileByConsForCenter(principal.getName(), (pn-1)*GeneralConfig.rpp, GeneralConfig.rpp));
 		map.addAttribute("totalCount", postProfileService.countPostProfileByConsForCenter(principal.getName()));
 		map.addAttribute("pn", pn);
 		map.addAttribute("rpp", GeneralConfig.rpp);
 		return "consProfileCenterList";
 	}
-	
-	
-	
-	
+
+
+
+	/**
+	 * used to handle request to when user show interest on post
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/consBulkInterest", method = RequestMethod.GET)
 	public @ResponseBody String consBulkInterest(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -538,149 +542,149 @@ public class ConsultantController
 				System.out.println("value is " +pids);
 				for(String pid : ids)
 				{
-		Post post = postService.getPost(Long.parseLong(pid.trim()));
-		JSONObject obj = new JSONObject();
-		if(post != null)
-		{
-			PostConsultant pc = new PostConsultant();
+					Post post = postService.getPost(Long.parseLong(pid.trim()));
+					JSONObject obj = new JSONObject();
+					if(post != null)
+					{
+						PostConsultant pc = new PostConsultant();
 
-			long trTime1 = 0;
-			long srRatio1 = 0;
-			long crRatio1 = 0;
-			long trTime2 = 0;
-			long srRatio2 = 0;
-			long crRatio2 = 0;
-			int counter1=0;
-			int counter2=0;
-			Date date = new Date();
-			java.sql.Date dt = new java.sql.Date(date.getTime());
-			
-			pc.setCreateDate(dt);
-			pc.setPost(post);
-			Registration consultant=registrationService.getRegistationByUserId(principal.getName());
+						long trTime1 = 0;
+						long srRatio1 = 0;
+						long crRatio1 = 0;
+						long trTime2 = 0;
+						long srRatio2 = 0;
+						long crRatio2 = 0;
+						int counter1=0;
+						int counter2=0;
+						Date date = new Date();
+						java.sql.Date dt = new java.sql.Date(date.getTime());
 
-			Set<Industry> industry = consultant.getIndustries();
-			Iterator<Industry> inIterator = industry.iterator();
-			Industry in = null;
-			while (inIterator.hasNext())
-			{
-				in = (Industry) inIterator.next();
-			}
-			pc.setConsultant(consultant);
-			List<GlobalRating> rating=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(),consultant.getUserid(), 0, GeneralConfig.globalRatingMaxRows1);
-			counter1=rating.size()/GeneralConfig.NoOfRatingParams;
-			int N=counter1;
-			int i=0,j=0,k=0;
-			for (GlobalRating globalRating : rating)
-			{
-				RatingParameter param = globalRating.getRatingParameter();
-				switch (param.getName())
-				{
-				case "turnaroundtime":
-				{
-					trTime1 += globalRating.getRatingParamValue()*(N-i);
-					i++;
-					break;
-				}
-				case "shortlistRatio":
-				{
-					srRatio1 += globalRating.getRatingParamValue()*(N-j);
-					j++;
-					break;
-				}
-				case "closureRate":
-				{
-					crRatio1 += globalRating.getRatingParamValue()*(N-k);
-					k++;
-					break;
-				}
-				default:
-					break;
-				}
-			}
-			int div=(N*(N+1))/2;
-			
-			if(div > 0)
-			{
-				pc.setTurnAround(trTime1/div);
-				pc.setShortlistRatio(srRatio1/div);
-				pc.setClosureRatio(crRatio1/div);
-				
-			}
-			else
-			{
-				pc.setTurnAround(0);
-				pc.setShortlistRatio(0);
-				pc.setClosureRatio(0);
-				
-			}
-						
-			
-			post.getPostConsultants().add(pc);
-			post.setPostConsultants(post.getPostConsultants());
-			postService.updatePost(post);
+						pc.setCreateDate(dt);
+						pc.setPost(post);
+						Registration consultant=registrationService.getRegistationByUserId(principal.getName());
 
-			List<PostConsultant> pcList=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"turnAround");
-			int count=0;
-			for (PostConsultant postConsultant : pcList)
-			{
-				count++;
-				postConsultant.setPercentileTr(count*100/pcList.size());
-				postConsultnatService.updatePostConsultant(postConsultant);
-			}
-			
-			List<PostConsultant> srRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"shortlistRatio");
-			 count=0;
-			for (PostConsultant postConsultant : srRatio)
-			{
-				count++;
-				postConsultant.setPercentileSh(count*100/pcList.size());
-				postConsultnatService.updatePostConsultant(postConsultant);
-			}
-			
-			List<PostConsultant> clRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"closureRatio");
-			 count=0;
-				List<RatingParameter> ratingparam=ratingParamService.getRatingParameterList();
-			for (PostConsultant postConsultant : clRatio)
-			{
-				count++;
-				postConsultant.setPercentileCl(count*100/pcList.size());
-				postConsultnatService.updatePostConsultant(postConsultant);
-				postConsultant.setPercentile(((postConsultant.getPercentileTr()*ratingparam.get(0).getWeightage())/100)+
-						((postConsultant.getPercentileSh()*ratingparam.get(1).getWeightage())/100)+
-						((postConsultant.getPercentileCl()*ratingparam.get(2).getWeightage())/100));
+						Set<Industry> industry = consultant.getIndustries();
+						Iterator<Industry> inIterator = industry.iterator();
+						Industry in = null;
+						while (inIterator.hasNext())
+						{
+							in = (Industry) inIterator.next();
+						}
+						pc.setConsultant(consultant);
+						List<GlobalRating> rating=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(),consultant.getUserid(), 0, GeneralConfig.globalRatingMaxRows1);
+						counter1=rating.size()/GeneralConfig.NoOfRatingParams;
+						int N=counter1;
+						int i=0,j=0,k=0;
+						for (GlobalRating globalRating : rating)
+						{
+							RatingParameter param = globalRating.getRatingParameter();
+							switch (param.getName())
+							{
+							case "turnaroundtime":
+							{
+								trTime1 += globalRating.getRatingParamValue()*(N-i);
+								i++;
+								break;
+							}
+							case "shortlistRatio":
+							{
+								srRatio1 += globalRating.getRatingParamValue()*(N-j);
+								j++;
+								break;
+							}
+							case "industrycoverage":
+							{
+								crRatio1 += globalRating.getRatingParamValue()*(N-k);
+								k++;
+								break;
+							}
+							default:
+								break;
+							}
+						}
+						int div=(N*(N+1))/2;
 
-				postConsultnatService.updatePostConsultant(postConsultant);
+						if(div > 0)
+						{
+							pc.setTurnAround(trTime1/div);
+							pc.setShortlistRatio(srRatio1/div);
+							pc.setClosureRatio(crRatio1/div);
+
+						}
+						else
+						{
+							pc.setTurnAround(0);
+							pc.setShortlistRatio(0);
+							pc.setClosureRatio(0);
+
+						}
+
+
+						post.getPostConsultants().add(pc);
+						post.setPostConsultants(post.getPostConsultants());
+						postService.updatePost(post);
+
+						List<PostConsultant> pcList=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"turnAround");
+						int count=0;
+						for (PostConsultant postConsultant : pcList)
+						{
+							count++;
+							postConsultant.setPercentileTr(count*100/pcList.size());
+							postConsultnatService.updatePostConsultant(postConsultant);
+						}
+
+						List<PostConsultant> srRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"shortlistRatio");
+						count=0;
+						for (PostConsultant postConsultant : srRatio)
+						{
+							count++;
+							postConsultant.setPercentileSh(count*100/pcList.size());
+							postConsultnatService.updatePostConsultant(postConsultant);
+						}
+
+						List<PostConsultant> clRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"closureRatio");
+						count=0;
+						List<RatingParameter> ratingparam=ratingParamService.getRatingParameterList();
+						for (PostConsultant postConsultant : clRatio)
+						{
+							count++;
+							postConsultant.setPercentileCl(count*100/pcList.size());
+							postConsultnatService.updatePostConsultant(postConsultant);
+							postConsultant.setPercentile(((postConsultant.getPercentileTr()*ratingparam.get(0).getWeightage())/100)+
+									((postConsultant.getPercentileSh()*ratingparam.get(1).getWeightage())/100)+
+									((postConsultant.getPercentileCl()*ratingparam.get(2).getWeightage())/100));
+
+							postConsultnatService.updatePostConsultant(postConsultant);
+						}
+
+					}
+				}
+				object.put("status", "success");
+				return object.toJSONString();
 			}
-			
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
-				}
-		object.put("status", "success");
+
+
+		object.put("status", "failed");
 		return object.toJSONString();
 	}
-	catch(Exception e)
-	{
-		e.printStackTrace();
-	}
-}
 
 
-object.put("status", "failed");
-return object.toJSONString();
-	}
-	
-	
 	@RequestMapping(value = "/consapplicantinfo", method = RequestMethod.GET)
 	public String consApplicantInfo(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long ppid)
 	{
 		PostProfile postProfile = postProfileService.getPostProfile(ppid);
 		map.addAttribute("postProfile", postProfile);
-		
+
 		map.addAttribute("msgList", inboxService.getInboxMessages(ppid, 0, 10));
 		inboxService.setViewedByConsultant(ppid);
 		return "consApplicantInfo";
 	}
-	
+
 	@RequestMapping(value = "/consviewjd", method = RequestMethod.GET)
 	public String viewConsPostDetail(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -693,19 +697,19 @@ return object.toJSONString();
 				map.addAttribute("post", post);
 				return "viewConsPostDetail";
 			}
-			
+
 		}
 		return "redirect:consdashboard";
 	}
-	
-	
-	
-	
+
+
+
+
 	private Set<String> allowedImageExtensions;
 	@RequestMapping(value = "/consultant.uploadLogo", method = RequestMethod.POST)
-    public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req, Principal principal)throws ServletException
-    {   
-		
+	public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req, Principal principal)throws ServletException
+	{   
+
 		this.allowedImageExtensions = new HashSet<String>();
 		this.allowedImageExtensions.add("png");
 		this.allowedImageExtensions.add("jpg");
@@ -715,28 +719,28 @@ return object.toJSONString();
 		this.allowedImageExtensions.add("JPG");
 		this.allowedImageExtensions.add("JPEG");
 		this.allowedImageExtensions.add("GIF");
-		
+
 		MultipartFile mpf = null;
 		int flag=0;
 		Iterator<String> itr=request.getFileNames();
 		while(itr.hasNext()){
-		mpf=request.getFile(itr.next());
-		flag++;
-        boolean isMultipart=ServletFileUpload.isMultipartContent(request);
-        System.out.println("is file " + isMultipart + " file name " + mpf.getOriginalFilename());
+			mpf=request.getFile(itr.next());
+			flag++;
+			boolean isMultipart=ServletFileUpload.isMultipartContent(request);
+			System.out.println("is file " + isMultipart + " file name " + mpf.getOriginalFilename());
 		}
 		if(flag > 0 && mpf != null && mpf.getOriginalFilename() != null && mpf.getOriginalFilename() != "")
 		{
 			String filename=null;
-			
+
 			filename=mpf.getOriginalFilename().replace(" ", "-");
 			String imageextension=FilenameUtils.getExtension(filename);
 			try
 			{
 				if(!this.allowedImageExtensions.contains(imageextension)){
-        			return "failed";
-        		}
-				
+					return "failed";
+				}
+
 				File dl = new File(System.getProperty("catalina.base")+"/unihyr_uploads/"+principal.getName()+"/logo/"+filename);
 				String datafile=System.getProperty("catalina.base")+"/unihyr_uploads/"+principal.getName()+"/logo/"+filename;
 				System.out.println("PATH="+datafile);
@@ -753,13 +757,13 @@ return object.toJSONString();
 			}
 			catch(IOException e)
 			{
-				
+
 			}
 			return filename;
 		}
 		return "failed";
-    }
-	
+	}
+
 	@RequestMapping(value = "/conscheckapplicantbyemail", method = RequestMethod.GET)
 	public @ResponseBody String consCheckApplicantAvailabilityByEmail(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
 	{
@@ -786,7 +790,7 @@ return object.toJSONString();
 		obj.put("status", false);
 		return obj.toJSONString();
 	}
-	
+
 	@RequestMapping(value = "/sendInboxMsg", method = RequestMethod.GET)
 	public @ResponseBody String sendInboxMsg(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long ppid)
 	{
@@ -795,10 +799,10 @@ return object.toJSONString();
 		if(msg_text != null && msg_text.trim().length() > 0 )
 		{
 			Inbox msg = new Inbox();
-			
+
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
-			
+
 			PostProfile pp = postProfileService.getPostProfile(ppid);
 			if(pp != null)
 			{
@@ -813,7 +817,7 @@ return object.toJSONString();
 							+ " </p>"
 							+ "</div>";
 					obj.put("msg_text", cont);
-					
+
 				}
 				else if(request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString()) || request.isUserInRole(Roles.ROLE_EMP_USER.toString()))
 				{
@@ -827,13 +831,13 @@ return object.toJSONString();
 				long id = inboxService.addInboxMessage(msg);
 				obj.put("status", true);
 				return obj.toJSONString();
-				
+
 			}
 		}
 		obj.put("status", false);
 		return obj.toJSONString();
 	}
-	
+
 
 	@RequestMapping(value = "/consBulkClose", method = RequestMethod.GET)
 	public @ResponseBody String consBulkClose(ModelMap map, HttpServletRequest request, Principal principal)
@@ -852,9 +856,9 @@ return object.toJSONString();
 					{
 						if(post.getCloseRequestConsultant()!=null){
 							if(post.getCloseRequestConsultant().indexOf(principal.getName())<0)
-						post.setCloseRequestConsultant(post.getCloseRequestConsultant()+","+principal.getName());
-								
-								
+								post.setCloseRequestConsultant(post.getCloseRequestConsultant()+","+principal.getName());
+
+
 						}else{
 							post.setCloseRequestConsultant(principal.getName());	
 						}
@@ -886,48 +890,48 @@ return object.toJSONString();
 			long ppid = Long.parseLong(request.getParameter("ppid"));
 			String ppstatus  = request.getParameter("ppstatus"); 
 			PostProfile pp = postProfileService.getPostProfile(ppid);
-			
+
+			Post post=pp.getPost();
 			if(pp != null)
 			{
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
-				
+
 				if(ppstatus.equals("join_accept"))
 				{
 					pp.setJoinDate(dt);
 
 					BillingDetails billingDetailscl =billingService.getBillingDetailsById(pp.getPpid());
 					billingDetailscl.setJoiningDate(dt);
-					
+
 					long payDay=Long.parseLong(pp.getPost().getClient().getPaymentDays()+"");
 					billingDetailscl.setPaymentDueDateForAd(new java.sql.Date(
 							dt.getTime() + (payDay) * 24 * 60 * 60 * 1000));
-					
+
 					try{
-					billingDetailscl.setPaymentDueDateForCo(new java.sql.Date(
-							dt.getTime() + (payDay) * 24 * 60 * 60 * 1000
-									+ (Long.parseLong(pp.getProfile().getRegistration().getPaymentDays()+"")) * 24 * 60 * 60 * 1000));
+						billingDetailscl.setPaymentDueDateForCo(new java.sql.Date(
+								dt.getTime() + (payDay) * 24 * 60 * 60 * 1000
+								+ (Long.parseLong(pp.getProfile().getRegistration().getPaymentDays()+"")) * 24 * 60 * 60 * 1000));
 					}catch(Exception e){
 						e.printStackTrace();
 					}
 					billingService.updateBillingDetails(billingDetailscl);
-					Post post=pp.getPost();
 					try{
-					if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()+1))
-					{
-					post.setNoOfPostsFilled(post.getNoOfPosts());
-					postService.updatePost(post);	
-					closePost(post.getPostId());
-					}else{
-						post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
-						postService.updatePost(post);	
-							
-					}
+						if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()+1))
+						{
+							post.setNoOfPostsFilled(post.getNoOfPosts());
+							postService.updatePost(post);	
+							closePost(post.getPostId());
+						}else{
+							post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
+							postService.updatePost(post);	
+
+						}
 					}catch(Exception e){
-					post.setNoOfPosts(0);
-					postService.updatePost(post);	
+						post.setNoOfPosts(0);
+						postService.updatePost(post);	
 					}
-					closePostPre(post.getPostId());
+					closePostJoin(post.getPostId());
 					mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_accept");
 				}
@@ -936,6 +940,7 @@ return object.toJSONString();
 					String rej_reason = request.getParameter("rej_reason");
 					pp.setJoinDropDate(dt);
 					pp.setRejectReason(rej_reason);
+					closePostReject(post.getPostId());
 
 					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_reject");
@@ -944,20 +949,20 @@ return object.toJSONString();
 				{
 					obj.put("status", "failed");
 				}
-				
+
 				postProfileService.updatePostProfile(pp);
 				return obj.toJSONString();
-				
+
 			}
-			
-			
+
+
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 			// TODO: handle exception
 		}
 		obj.put("status", "failed");
-		
+
 		return obj.toJSONString();
 	}
 	@RequestMapping(value = "/consviewuser", method = RequestMethod.GET)
@@ -972,7 +977,7 @@ return object.toJSONString();
 		return "redirect:clientdashboard";
 
 	}
-	
+
 	@RequestMapping(value = "/consmessages", method = RequestMethod.GET)
 	public @ResponseBody String consmessages(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -989,13 +994,13 @@ return object.toJSONString();
 				jm.put("ptitle", m.getPostProfile().getPost().getTitle());
 				jm.put("message", m.getMessage());
 				jm.put("ppid", m.getPostProfile().getPpid());
-				
+
 				array.add(jm);
 			}
 			object.put("mList", array);
 			object.put("status", true);
 			return object.toJSONString();
-			
+
 		} 
 		catch (Exception e)
 		{
@@ -1005,10 +1010,10 @@ return object.toJSONString();
 		return object.toJSONString();
 
 	}
-	
-	
 
-	
+
+
+
 	public String closePost(long postId)
 	{
 		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
@@ -1028,9 +1033,9 @@ return object.toJSONString();
 			{
 				in = (Industry) inIterator.next();
 			}
-			
+
 			counter = 0;
-			
+
 			long publishtime = post.getCreateDate().getTime();
 			long turnaround = 0;
 			long totalSubmitted = postProfileService.countProfileListByConsultantIdAndPostId(consultant.getUserid(),
@@ -1090,7 +1095,7 @@ return object.toJSONString();
 						shrTime = 0;
 					} else
 					{
-					 shrTime=(totalShortlisted * 100 / totalSubmitted) ;
+						shrTime=(totalShortlisted * 100 / totalSubmitted) ;
 					}
 					newGlobalRating.setRatingParamValue(shrTime);
 					newGlobalRating.setRegistration(consultant);
@@ -1115,9 +1120,9 @@ return object.toJSONString();
 						clrTime = 0;
 					} else
 					{
-					clrTime=(totalSubmitted * 100 / totalSubmittedbyall) ;
+						clrTime=(totalSubmitted * 100 / totalSubmittedbyall) ;
 					}
-						
+
 					newGlobalRating.setRatingParamValue(clrTime);
 					newGlobalRating.setRegistration(consultant);
 					globalRatingService.addGlobalRating(newGlobalRating);
@@ -1128,16 +1133,12 @@ return object.toJSONString();
 				}
 			}
 		}
-		
-		
-		
-		
 		return null;
 	}
-	private String closePostPre(long postId){
+	private String closePostJoin(long postId){
 		Post post=postService.getPost(postId);
 		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
-		
+
 		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
 		Registration consultant = null;
 		int counter = 0;
@@ -1145,55 +1146,124 @@ return object.toJSONString();
 		{
 			consultant = postConsultatnt.getConsultant();
 			post = postConsultatnt.getPost();
-		
-		
-		Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
-				.getIndustries();
-		Iterator<Industry> inIterator = industry.iterator();
-		Industry in = null;
-		while (inIterator.hasNext())
-		{
-			in = (Industry) inIterator.next();
-		}
-		
-		
-		
-		
-		for (RatingParameter ratingParameter : ratingParams)
-		{
-			switch (ratingParameter.getName())
-			{
-			case "offerdrop":
-			{
-				GlobalRating newGlobalRating = new GlobalRating();
-				Date date = new Date();
-				java.sql.Date dt = new java.sql.Date(date.getTime());
-				newGlobalRating.setCreateDate(dt);
-				newGlobalRating.setIndustryId(in.getId());
-				newGlobalRating.setRatingParameter(ratingParameter);
-				newGlobalRating.setRatingParamValue(0);
-				newGlobalRating.setRegistration(consultant);
-				globalRatingService.addGlobalRating(newGlobalRating);
-				break;
-			}
-			case "closureRate":
-			{
 
+
+			Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
+					.getIndustries();
+			Iterator<Industry> inIterator = industry.iterator();
+			Industry in = null;
+			while (inIterator.hasNext())
+			{
+				in = (Industry) inIterator.next();
+			}
+			List<GlobalRating> gb=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(), consultant.getUserid(),0,GeneralConfig.NoOfRatingParams);
+			for (GlobalRating globalRating : gb)
+			{
+				switch (globalRating.getRatingParameter().getId())
+				{
+				case 3:
+				{
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(globalRating.getRatingParameter());
+					newGlobalRating.setRatingParamValue(globalRating.getRatingParamValue()+1);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.updateGlobalRating(newGlobalRating);
+					break;
+				}
+
+				default:
+					break;
+				}
+			}
+			if(gb.size()<GeneralConfig.NoOfRatingParams){
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
 				newGlobalRating.setCreateDate(dt);
 				newGlobalRating.setIndustryId(in.getId());
-				newGlobalRating.setRatingParameter(ratingParameter);
+				newGlobalRating.setRatingParameter(ratingParameterService.getRatingParameter(3));
+				newGlobalRating.setRatingParamValue(1);
+				newGlobalRating.setRegistration(consultant);
+				globalRatingService.addGlobalRating(newGlobalRating);
+				newGlobalRating.setCreateDate(dt);
+				newGlobalRating.setIndustryId(in.getId());
+				newGlobalRating.setRatingParameter(ratingParameterService.getRatingParameter(4));
 				newGlobalRating.setRatingParamValue(0);
 				newGlobalRating.setRegistration(consultant);
 				globalRatingService.addGlobalRating(newGlobalRating);
-				break;
+
 			}
-			default:
-				break;
+		}
+		return null;
+	}
+
+
+	private String closePostReject(long postId){
+		Post post=postService.getPost(postId);
+		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
+
+		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
+		Registration consultant = null;
+		int counter = 0;
+		for (PostConsultant postConsultatnt : postConsultants)
+		{
+			consultant = postConsultatnt.getConsultant();
+			post = postConsultatnt.getPost();
+
+
+			Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
+					.getIndustries();
+			Iterator<Industry> inIterator = industry.iterator();
+			Industry in = null;
+			while (inIterator.hasNext())
+			{
+				in = (Industry) inIterator.next();
 			}
-		}}
+			List<GlobalRating> gb=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(), consultant.getUserid(),0,GeneralConfig.NoOfRatingParams);
+			for (GlobalRating globalRating : gb)
+			{
+				switch (globalRating.getRatingParameter().getId())
+				{
+				case 4:
+				{
+					GlobalRating newGlobalRating = new GlobalRating();
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					newGlobalRating.setCreateDate(dt);
+					newGlobalRating.setIndustryId(in.getId());
+					newGlobalRating.setRatingParameter(globalRating.getRatingParameter());
+					newGlobalRating.setRatingParamValue(globalRating.getRatingParamValue()+1);
+					newGlobalRating.setRegistration(consultant);
+					globalRatingService.updateGlobalRating(newGlobalRating);
+					break;
+				}
+				default:
+					break;
+				}
+			}
+			if (gb.size() < GeneralConfig.NoOfRatingParams)
+			{
+				GlobalRating newGlobalRating = new GlobalRating();
+				Date date = new Date();
+				java.sql.Date dt = new java.sql.Date(date.getTime());
+				newGlobalRating.setCreateDate(dt);
+				newGlobalRating.setIndustryId(in.getId());
+				newGlobalRating.setRatingParameter(ratingParameterService.getRatingParameter(4));
+				newGlobalRating.setRatingParamValue(1);
+				newGlobalRating.setRegistration(consultant);
+				globalRatingService.addGlobalRating(newGlobalRating);
+				newGlobalRating.setCreateDate(dt);
+				newGlobalRating.setIndustryId(in.getId());
+				newGlobalRating.setRatingParameter(ratingParameterService.getRatingParameter(3));
+				newGlobalRating.setRatingParamValue(0);
+				newGlobalRating.setRegistration(consultant);
+				globalRatingService.addGlobalRating(newGlobalRating);
+			}
+		}
 		return null;
 	}
 }

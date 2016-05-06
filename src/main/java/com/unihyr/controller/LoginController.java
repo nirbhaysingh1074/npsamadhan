@@ -59,7 +59,6 @@ public class LoginController
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap map) 
 	{
-		System.out.println("Hello to all from login");
         return "login";
     }
 	
@@ -149,7 +148,6 @@ public class LoginController
 	{
 		map.addAttribute("industryList", industryService.getIndustryList());
 		map.addAttribute("locList", locationService.getLocationList());
-		System.out.println("Hello to all from registration");
 		map.addAttribute("regForm", new ClientRegistrationModel());
 		return "registration";
 	}

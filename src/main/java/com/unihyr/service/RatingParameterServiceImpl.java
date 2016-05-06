@@ -29,10 +29,14 @@ public class RatingParameterServiceImpl implements RatingParameterService
 		
 	}
 
+	/**
+	 * @param id used for identification of rating parameter
+	 * @author silvereye
+	 */
 	@Override
 	public RatingParameter getRatingParameter(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return ratingParameterDao.getRatingParameter(id);
 	}
 
 	@Override

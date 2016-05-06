@@ -105,7 +105,6 @@ public class CommonController
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		System.out.println("Hello to all");
 		return "test";
 	}
 }

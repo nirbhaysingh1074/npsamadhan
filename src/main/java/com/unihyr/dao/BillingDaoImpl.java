@@ -37,6 +37,7 @@ public class BillingDaoImpl implements BillingDao
 		try
 		{
 			sessionFactory.getCurrentSession().save(rating);
+			this.sessionFactory.getCurrentSession().flush();
 			return rating.getBillId();
 		} catch (Exception e)
 		{
@@ -52,6 +53,7 @@ public class BillingDaoImpl implements BillingDao
 		try
 		{
 			sessionFactory.getCurrentSession().update(rating);
+			this.sessionFactory.getCurrentSession().flush();
 			return rating.getBillId();
 		} catch (Exception e)
 		{
