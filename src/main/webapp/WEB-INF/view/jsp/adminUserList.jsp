@@ -11,7 +11,7 @@
 jQuery(document).ready(function() {
 	
 	$(document.body).on('change', '.user_list  #sel_all_user' ,function(){
-// 		alert("Hello to all");
+// 		
 		if($('#sel_all_user').attr('checked'))
 		{
 			$('.sel_user:checkbox').attr('checked','checked')

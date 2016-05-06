@@ -15,7 +15,7 @@
 <style type="text/css">
 table { border-collapse: collapse; }
 
-#header { height: 15px; width: 100%; margin: 20px 0; background: #222; text-align: center; color: white; font: bold 15px Helvetica, Sans-Serif; text-decoration: uppercase; letter-spacing: 20px; padding: 8px 0px; }
+#header { height: 15px; width: 100%; margin: 20px 0; background: #222; text-align: center; color: white; font: normal 15px Times New Roman; text-decoration: uppercase; letter-spacing: 20px; padding: 8px 0px; }
 
 #address { width: 250px; height: 150px; float: left; }
 #customer { overflow: hidden; }
@@ -29,7 +29,7 @@ table { border-collapse: collapse; }
 .edit #logohelp { display: block; }
 .edit #save-logo, .edit #cancel-logo { display: inline; }
 .edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo { display: none; }
-#customer-title { font-size: 20px; font-weight: bold; float: left; }
+#customer-title { font-size: 20px; font-weight: normal; float: left; }
 
 #meta { margin-top: 1px; width: 300px; float: right; }
 #meta td { text-align: right;  }
@@ -59,11 +59,23 @@ textarea:hover, textarea:focus, #items td.total-value textarea:hover, #items td.
   display: none;
 }
 .delete-wpr { position: relative; }
-.delete { display: block; color: #000; text-decoration: none; position: absolute; background: #EEEEEE; font-weight: bold; padding: 0px 3px; border: 1px solid; top: -6px; left: -22px; font-family: Verdana; font-size: 12px; } 
-
+.delete { display: block; color: #000; text-decoration: none; position: absolute; background: #EEEEEE; font-weight: normal; padding: 0px 3px; border: 1px solid; top: -6px; left: -22px; font-family: Times New Roman; font-size: 12px; } 
+.profile_status_button{    display: inline-block;
+    padding: 2px 2px;
+    text-transform: none;
+    background: #f8b910;
+    text-align: center;
+    color: #000;
+    font-size: 12px;
+    border-radius: 4px;
+    font-family: Arial,Helvetica,sans-serif;
+    line-height: normal;
+    cursor: pointer;
+    margin-top: 12px;
+    }
 </style>
 </head>
-<body   id="genpdf">
+<body  >
 	<%
 BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 	String clientId=(String)request.getAttribute("clientId");
@@ -71,19 +83,22 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 		out.println("No invoice");
 	}else{
 %>
-<div id="page-wrap">
-	<div class="mid_wrapper">
-		<div class="container">
-			<div class="new_post_info" style="margin-top: 10px">
-
-				<div class="filter">
-					<div class="col-md-5">
-							<a id="sdfg"	href="javascript:void(0)">Print</a>
-								<button onclick="createpdf()">Create Pdf</button>
+<div class="filter">
+					<div class="col-md-5" style="text-align: center;">
+							<button id="sdfg"  class="profile_status_button"	>Print</button>
+								<button id="create_pdf" class="profile_status_button">Save as Pdf</button>
 					</div>
 				</div>
+				<div id="asdf">
+<div id="page-wrap" style="width: 800px;margin: 0px auto;">
+	<div class="mid_wrapper">
+		<div class="container">
+		
+				
+			<div class="new_post_info" style="margin-top: 10px;border: 1px solid;">
+
 					<div class="positions_tab  bottom-margin"
-						style="border: 1px solid gray; font-size: 12px; margin: 0px auto; font-weight: normal; font-family: sans-serif;"
+						style=" font-size: 12px; margin: 0px auto; font-weight: normal; font-family: sans-serif;"
 						id="genpdf">
 						<div class="form_cont">
 							<div class="form_col">
@@ -138,9 +153,6 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td style="width: 40%;"></td>
 										<td style="width: 10%;"></td>
 									</tr>
-
-
-
 									<tr>
 										<td></td>
 										<td><%=bill.getClientName() %></td>
@@ -163,14 +175,15 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 								Double total=bill.getFee()+(GeneralConfig.TAX*bill.getFee())/100+(GeneralConfig.CESS*bill.getFee())/100;
 							%>
 								<table style="border: 0.5px solid; width: 90%; margin: auto;">
-									<tr style="border: 1px solid; height: 30px;">
+									<tr style="border-bottom: 1px solid #000; height: 30px;">
 
-										<th align="center" style="border: 1px solid; width: 81%">Description</th>
+										<th align="center" style="width: 81%;border-right: 1px solid #000;border-bottom:1px solid #000;">Description</th>
 										<th align="left"
-											style="width: 15%; border: 1px solid; width: 75%; text-align: right;">Amount
+											style="width: 15%;  width: 75%; text-align: right;padding-right: 10px;border-bottom:1px solid #000; ">Amount
 											(in Rs.)</th>
 
 									</tr>
+									
 									<tr>
 
 										<td style="height: 25px; padding-left: 10px;">Position :
@@ -202,10 +215,10 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated(new Double((GeneralConfig.CESS*bill.getFee())/100).intValue()+"") %></td>
 
 									</tr>
-									<tr style="border: 1px solid; height: 30px;">
+									<tr style="border-top: 1px solid #000; height: 30px;">
 
-										<th align="center" style="border: 1px solid">Total</th>
-										<th align="right" style="padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated(total.intValue()+"") %></th>
+										<th align="center" style="border-top:1px solid #000;">Total</th>
+										<th align="right" style="padding-right: 10px;border-left: 1px solid #000;border-top:1px solid #000;"><%=NumberUtils.convertNumberToCommoSeprated(total.intValue()+"") %></th>
 
 									</tr>
 
@@ -267,80 +280,30 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 
 				</div>
 		</div>
-	</div></div>
+	</div></div></div>
 	
 	<div id="content"></div>
 	<%} %>
 </body>
+
+	<!-- scripts -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jspdf.min.js"></script>
+	<script type="text/javascript" src="js/html2canvas.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+
 <script>
  $(function () {
     $('#sdfg').click(function () {
-    	window.print();
-
+    	  var printContents = document.getElementById('asdf').innerHTML;
+    	     var originalContents = document.body.innerHTML;
+    	     document.body.innerHTML = printContents;
+    	     window.print();
+    	     document.body.innerHTML = originalContents;
          return true;
     });}); 
     
     
     
 </script>
-
-
-
-
-
-
-<script src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
-
-
-<script type="text/javascript" src="js/jspdf/jspdf.js"></script>
-
-<script type="text/javascript" src="js/jspdf/acroform.js"></script>
-<script type="text/javascript" src="js/jspdf/addhtml.js"></script>
-<script type="text/javascript" src="js/jspdf/addimage.js"></script>
-<script type="text/javascript" src="js/jspdf/annotations.js"></script>
-<script type="text/javascript" src="js/jspdf/autoprint.js"></script>
-<script type="text/javascript" src="js/jspdf/canvas.js"></script>
-<script type="text/javascript" src="js/jspdf/cell.js"></script>
-<script type="text/javascript" src="js/jspdf/context2d.js"></script>
-<script type="text/javascript" src="js/jspdf/from_html.js"></script>
-<script type="text/javascript" src="js/jspdf/javascript.js"></script>
-<script type="text/javascript" src="js/jspdf/outline.js"></script>
-<script type="text/javascript" src="js/jspdf/png_support.js"></script>
-<script type="text/javascript" src="js/jspdf/prevent_scale_to_fit.js"></script>
-
-<script type="text/javascript" src="js/jspdf/split_text_to_size.js"></script>
-<script type="text/javascript" src="js/jspdf/standard_fonts_metrics.js"></script>
-<script type="text/javascript" src="js/jspdf/svg.js"></script>
-<script type="text/javascript" src="js/jspdf/total_pages.js"></script>
-
-<script type="text/javascript" src="js/jspdf/png.js"></script>
-<script type="text/javascript" src="js/jspdf/zlib.js"></script>
-
-
-
-<script type="text/javascript">
-	var doc = new jsPDF();          
-	var elementHandler = {
-	  /* '#ignorePDF': function (element, renderer) {
-	    return true;
-	  } */
-	};
-	doc.setFontSize(2);
-	function createpdf()
-	{
-		var source = window.document.getElementById("genpdf");
-		doc.fromHTML(
-		    source,
-		    15,
-		    15,
-		    {
-		      'width': 580,'font-size':11
-		    });
-		doc.output("dataurlnewwindow");
-	}
-	
-
-</script>
-
 </html>

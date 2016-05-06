@@ -100,7 +100,7 @@
 <script type="text/javascript">
 	function validateForm()
 	{
-// 		alert("hello to all");
+// 		
 		var client = $('#cleintId').val();
 		var post = $('#postId').val();
 		var name = $('#name').val();

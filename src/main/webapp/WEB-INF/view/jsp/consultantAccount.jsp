@@ -37,7 +37,7 @@
 	$(document.body).on('change', '#image_src' ,function(){
     	var defult_logo = $('#client_logo').attr("src"); 
 		$('#client_logo').attr("src", "images/loading.gif");
-//     	alert("hello to all");
+//     	
     	var image=document.getElementById("image_src").files[0];
 		var senddata=new FormData();
     	senddata.append("image", image);

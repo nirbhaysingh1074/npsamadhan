@@ -172,20 +172,21 @@ list-style: outside none none;
 
 <header id="header">
 	<div class="Headr_top ">
-		<div class="container ">
+		<div class="container">
 			<div class="logo">
 				<a href="home"><img src="images/logo.png" alt="img" border="0"></a>
 			</div>
 			<div class="home-nav" >
 				<ul style="margin-bottom: 0px; margin-top: 27px;">
-					<li><a>How It Works </a></li>
-					<li><a>Features</a></li>
-					<li><a>Customers</a></li>
-					<li><a>About</a></li>
+					<li><a style="color: #f8b910;font-weight: bold;">How It Works </a></li>
+					<li><a style="color: #f8b910;font-weight: bold;">Features</a></li>
+					<li><a style="color: #f8b910;font-weight: bold;">Customers</a></li>
+					<li><a style="color: #f8b910;font-weight: bold;">About</a></li>
 				</ul>	
 			</div>
 			<div class="Top_right Light13 Bold grey1 Link1">
-				<a href="login">Employer Sign In</a>    |   <a href="login">Hiring Partner Sign In</a>  <!-- |  
+				<a href="login" style="color: #f8b910;font-weight: bold;">Employer Sign In</a>    |  
+				 <a href="login" style="color: #f8b910;font-weight: bold;">Hiring Partner Sign In</a>  <!-- |  
 				<a href="clientregistration">Employer Sign Up</a>    |   <a href="consultantregistration">Hiring Partner Sign Up</a> -->
 			</div>
 		</div>
@@ -273,21 +274,23 @@ list-style: outside none none;
 
 	<div class="Scrlbr">
 		<div class="container">
-			<a href="" class="cont_btn">Contact Us</a> 
-			<p class="Fl m_r_20 White font21 opnsbld sign_title">New to Unihire? Sign Up</p> 
-			<a href="clientregistration" class="signup_btn">Employer Sign Up</a> <a href="consultantregistration" class="signup_btn">Hiring Partner Sign Up</a>
+			
+			<p class="Fl m_r_20 White font21 opnsbld sign_title" style="font-family: 'Times new Roman';">New to Unihire? Sign Up</p> 
+			<a href="clientregistration" class="signup_btn" style="font-family: 'Times new Roman';">Employer</a> 
+			<a href="consultantregistration" class="signup_btn" style="font-family: 'Times new Roman';">Hiring Partner </a>
 		</div>
 	</div>
 	<div class="Hwrk">
 		<div class="container">
-			<div class="title_rw"><h2>How does it all work?</h2></div>
+			<div class="title_rw">
+			<h2 style="font-family: 'Times new Roman';">How does it all work?</h2></div>
 			<div class="Video rw Align_cent"><img src="images/video_img.jpg" alt="img"></div>
 		</div>
 	</div>
 
 	<div class="feature_sec">
 		<div class="container">
-			<div class="title_rw"><h2>Featured Employers</h2></div>
+			<div class="title_rw"><h2 style="font-family: 'Times new Roman';">Featured Employers</h2></div>
 		
 			<div class="featserv rw">
 				<ul>

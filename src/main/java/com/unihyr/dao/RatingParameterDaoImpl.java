@@ -46,7 +46,7 @@ public class RatingParameterDaoImpl implements RatingParameterDao {
 	@Override
 	public RatingParameter getRatingParameter(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		return (RatingParameter) this.sessionFactory.getCurrentSession().get(RatingParameter.class, id);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class GeneralConfig
 	public static final double CESS = 0.5;
 	public static final String UploadPath = "/var/unihyr/data/";
 	public static double TAX = 14;
-	public static int NoOfRatingParams = 3;
+	public static int NoOfRatingParams = 5;
 	public static int rpp = 10;
 	public static int rpp_cons = 10;
 	public static int globalRatingMaxRows1=10*NoOfRatingParams;
@@ -34,8 +34,15 @@ public class GeneralConfig
 		filetype.add("pdf");
 	}
 	
+	/**
+	 * String variable to store pattern for passord validation.
+	 */
 	public static String passwordRegEx = "(?=.*\\d)(?=.*[a-z]).{6,20}";
 	
+	/** to validate possword having required pattern or not
+	 * @param password a String variable to pass password as an argument
+	 * @return return boolean value either password is valid or not.
+	 */
 	public static boolean checkPasswordValid(String password)
 	{
 		Pattern p = Pattern.compile(passwordRegEx);//. represents single character  
