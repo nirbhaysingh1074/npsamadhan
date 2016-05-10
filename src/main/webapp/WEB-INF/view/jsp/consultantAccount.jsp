@@ -118,7 +118,7 @@
 				<%
 			}
 			%>
-		      <div class="positions_tab" style="border: 1px solid gray;background: #fff5db none repeat scroll 0 0;">
+		      <div class="positions_tab" style="border: 1px solid gray;/* background: #fff5db none repeat scroll 0 0; */">
 		        <div class="form_cont">
 			        <div class="form_col">
 						<dl>

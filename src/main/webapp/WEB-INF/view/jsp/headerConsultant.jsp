@@ -123,7 +123,7 @@ $.ajax({
 					onClick="$('.toggle_menu').slideToggle();" class="toggle-icon"></a>
 				<ul class="toggle_menu">
 					<li class="${currentpage == 'consdashboard' ? 'active' : ''}"><a href="consdashboard">Home</a></li>
-					<li class="${currentpage == 'consnewposts' ? 'active' : ''}" class="active"><a href="consnewposts">New Post</a></li>
+					<li class="${currentpage == 'consnewposts' ? 'active' : ''}" class="active"><a href="consnewposts">Recently Posted</a></li>
 					<li class="${currentpage == 'cons_your_positions' ? 'active' : ''}"><a href="cons_your_positions">Manage Positions</a></li>
 					<li class="${currentpage == 'consBillingDetails' ? 'active' : ''}"><a href="consBillingDetails">Billing Details</a></li>
 					<li class="${currentpage == 'consprofilecenter' ? 'active' : ''}"><a href="consprofilecenter">Profiles Center</a></li>

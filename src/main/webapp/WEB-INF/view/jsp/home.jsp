@@ -178,15 +178,20 @@ list-style: outside none none;
 			</div>
 			<div class="home-nav" >
 				<ul style="margin-bottom: 0px; margin-top: 27px;">
-					<li><a style="color: #f8b910;font-weight: bold;">How It Works </a></li>
+					<li><a>How It Works </a></li>
+					<li><a>Features</a></li>
+					<li><a>Customers</a></li>
+					<li><a>About</a></li>
+					<!-- <li><a style="color: #f8b910;font-weight: bold;">How It Works </a></li>
 					<li><a style="color: #f8b910;font-weight: bold;">Features</a></li>
 					<li><a style="color: #f8b910;font-weight: bold;">Customers</a></li>
-					<li><a style="color: #f8b910;font-weight: bold;">About</a></li>
+					<li><a style="color: #f8b910;font-weight: bold;">About</a></li> -->
 				</ul>	
 			</div>
 			<div class="Top_right Light13 Bold grey1 Link1">
-				<a href="login" style="color: #f8b910;font-weight: bold;">Employer Sign In</a>    |  
-				 <a href="login" style="color: #f8b910;font-weight: bold;">Hiring Partner Sign In</a>  <!-- |  
+				<a href="login">Employer Sign In</a>    |   <a href="login">Hiring Partner Sign In</a>
+				<!-- <a href="login" style="color: #f8b910;font-weight: bold;">Employer Sign In</a>    |  
+				 <a href="login" style="color: #f8b910;font-weight: bold;">Hiring Partner Sign In</a>  --> <!-- |  
 				<a href="clientregistration">Employer Sign Up</a>    |   <a href="consultantregistration">Hiring Partner Sign Up</a> -->
 			</div>
 		</div>

@@ -198,120 +198,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	    <div class="form_cont">
           <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 	      <div class="block">
-	      <div class="block coment_fild" style="padding-top: 15px;margin-left:15px;
-	      border-radius:10px;background-color: #fcfcd2;width: 97%;margin-bottom: 22px;">
-	        
-	        <div class="form_col" >
-	        
-	          <dl style="width: 100%;">
-	          <dt  style="width: 100%;text-align: center;">
-	          <strong style="font-size: 16px;">
-	          Contract Info</strong> </dt>
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt  style="width: 50%;">
-	          <label>Billable CTC Slab1 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs1Min() %> to <%=registration.getCtcSlabs1Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent1() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab2 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs2Min() %> to <%=registration.getCtcSlabs2Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent2() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab3 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs3Min() %> to <%=registration.getCtcSlabs3Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent3() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab4 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs4Min() %> to <%=registration.getCtcSlabs4Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent4() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab5 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs5Min() %> to no limit (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent5() %>
-	          </dd>
-	          
-	          </dl>
-	        
-	        
-	        </div>
-	      </div>
+	     
 	        <div class="form_col">
 	          <%
 	          
@@ -460,42 +347,10 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              </div>
 	            </dd>
 	          </dl>
-	          <dl  style="clear: both">
-					<dt>
-						<label>Profile Quota</label>
-					</dt>
-					<dd>
-						<form:input path="profileParDay" class="number_only" />
-						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
-					</dd>
-			  </dl>
-	          <dl>
-					<dt>
-						<label>Upload JD</label>
-					</dt>
-					<dd>
-						<div class="file_up" style="float: left;">
-							<form:input path="uploadjd" disabled = "true"/>
-							<div class="fileUpload">
-							    <span>Browse</span>
-							    <input type="file" class="upload select_jd" name="uploadJdfile" />
-							</div>
-						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
-						    
-						</div>
-						<div style="float: left;">
-						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
-    border-radius: 0 5px 5px 0;
-    float: right;
-    height: 27px;
-    overflow: hidden;
-    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
-					</div>
-					</dd>
-				</dl>
 	          
 	          
-	          <dl>
+	          
+	          <dl style="clear: both;">
 	            <dt>
 	              <label><br>Normal Work Hours<span class='error'>*</span></label>
 	            </dt>
@@ -562,7 +417,39 @@ Registration registration=(Registration)request.getAttribute("registration");
 	            </dd>
 	          </dl>
 	          
-	       
+	          <dl>
+					<dt>
+						<label>Upload JD</label>
+					</dt>
+					<dd>
+						<div class="file_up" style="float: left;">
+							<form:input path="uploadjd" disabled = "true"/>
+							<div class="fileUpload">
+							    <span>Browse</span>
+							    <input type="file" class="upload select_jd" name="uploadJdfile" />
+							</div>
+						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
+						    
+						</div>
+						<div style="float: left;">
+						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
+    border-radius: 0 5px 5px 0;
+    float: right;
+    height: 27px;
+    overflow: hidden;
+    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
+					</div>
+					</dd>
+				</dl>
+	       <dl  style="display: none;">
+					<dt>
+						<label>Profile Quota</label>
+					</dt>
+					<dd>
+						<form:input path="profileParDay" class="number_only"  />
+						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
+					</dd>
+			  </dl>
 	        </div>
 	      </div>
 	      

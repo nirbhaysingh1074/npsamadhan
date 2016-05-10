@@ -460,7 +460,6 @@ public class ConsultantController
 			consultant = consultant.getAdmin(); 
 		}
 
-
 		// get post list by consultant (by passing client id(optional) , status(optional) , location(optional), sorted by parameter start count and maximum rows)
 		map.addAttribute("postList", postService.getPostsFilteredForConsultant(consultant.getUserid(), db_sel_client,db_post_status, db_sel_loc, (pn - 1) * rpp, rpp,sortParam));
 		map.addAttribute("totalCount", postService.countPostsFilteredForConsultant(consultant.getUserid(), db_sel_client,db_post_status, db_sel_loc));
@@ -519,8 +518,6 @@ public class ConsultantController
 		return "consProfileCenterList";
 	}
 
-
-
 	/**
 	 * used to handle request to when user show interest on post
 	 * @param map
@@ -547,7 +544,6 @@ public class ConsultantController
 					if(post != null)
 					{
 						PostConsultant pc = new PostConsultant();
-
 						long trTime1 = 0;
 						long srRatio1 = 0;
 						long crRatio1 = 0;
@@ -571,8 +567,8 @@ public class ConsultantController
 							in = (Industry) inIterator.next();
 						}
 						pc.setConsultant(consultant);
-						List<GlobalRating> rating=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(),consultant.getUserid(), 0, GeneralConfig.globalRatingMaxRows1);
-						counter1=rating.size()/GeneralConfig.NoOfRatingParams;
+						List<GlobalRating> rating=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(),consultant.getUserid(), 0, GeneralConfig.globalRatingMaxRows1+GeneralConfig.NoOfRatingStaticParams);
+						counter1=rating.size()/GeneralConfig.NoOfRatingDynamicParams;
 						int N=counter1;
 						int i=0,j=0,k=0;
 						for (GlobalRating globalRating : rating)
@@ -616,10 +612,7 @@ public class ConsultantController
 							pc.setTurnAround(0);
 							pc.setShortlistRatio(0);
 							pc.setClosureRatio(0);
-
 						}
-
-
 						post.getPostConsultants().add(pc);
 						post.setPostConsultants(post.getPostConsultants());
 						postService.updatePost(post);
@@ -641,6 +634,22 @@ public class ConsultantController
 							postConsultant.setPercentileSh(count*100/pcList.size());
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
+						List<PostConsultant> incoverage=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"industrycoverage");
+						count=0;
+						for (PostConsultant postConsultant : incoverage)
+						{
+							count++;
+							postConsultant.setPercentileInC(count*100/pcList.size());
+							postConsultnatService.updatePostConsultant(postConsultant);
+						}
+						List<PostConsultant> offerdrop=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"offerdrop");
+						count=0;
+						for (PostConsultant postConsultant : offerdrop)
+						{
+							count++;
+							postConsultant.setPercentileOd(count*100/pcList.size());
+							postConsultnatService.updatePostConsultant(postConsultant);
+						}
 
 						List<PostConsultant> clRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"closureRatio");
 						count=0;
@@ -652,7 +661,9 @@ public class ConsultantController
 							postConsultnatService.updatePostConsultant(postConsultant);
 							postConsultant.setPercentile(((postConsultant.getPercentileTr()*ratingparam.get(0).getWeightage())/100)+
 									((postConsultant.getPercentileSh()*ratingparam.get(1).getWeightage())/100)+
-									((postConsultant.getPercentileCl()*ratingparam.get(2).getWeightage())/100));
+									((postConsultant.getPercentileInC()*ratingparam.get(4).getWeightage())/100)+
+							((postConsultant.getPercentileOd()*ratingparam.get(3).getWeightage())/100)+
+							((postConsultant.getPercentileCl()*ratingparam.get(2).getWeightage())/100));
 
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
@@ -695,6 +706,7 @@ public class ConsultantController
 			if(post != null)
 			{
 				map.addAttribute("post", post);
+				map.addAttribute("registration", registrationService.getRegistationByUserId(principal.getName()));
 				return "viewConsPostDetail";
 			}
 
@@ -892,6 +904,7 @@ public class ConsultantController
 			PostProfile pp = postProfileService.getPostProfile(ppid);
 
 			Post post=pp.getPost();
+			Registration consultant=registrationService.getRegistationByUserId(principal.getName());
 			if(pp != null)
 			{
 				Date date = new Date();
@@ -917,21 +930,22 @@ public class ConsultantController
 					}
 					billingService.updateBillingDetails(billingDetailscl);
 					try{
-						if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()+1))
+						if(post.getNoOfPosts()==(post.getNoOfPostsFilled()+1))
 						{
 							post.setNoOfPostsFilled(post.getNoOfPosts());
 							postService.updatePost(post);	
 							closePost(post.getPostId());
-						}else{
+						}else if(post.getNoOfPosts()>(post.getNoOfPostsFilled()+1)){
 							post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
 							postService.updatePost(post);	
-
+							closePostJoin(post,consultant);
+						}else{
+							
 						}
 					}catch(Exception e){
 						post.setNoOfPosts(0);
 						postService.updatePost(post);	
 					}
-					closePostJoin(post.getPostId());
 					mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_accept");
 				}
@@ -940,8 +954,7 @@ public class ConsultantController
 					String rej_reason = request.getParameter("rej_reason");
 					pp.setJoinDropDate(dt);
 					pp.setRejectReason(rej_reason);
-					closePostReject(post.getPostId());
-
+					closePostReject(post,consultant);
 					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_reject");
 				}
@@ -949,13 +962,9 @@ public class ConsultantController
 				{
 					obj.put("status", "failed");
 				}
-
 				postProfileService.updatePostProfile(pp);
 				return obj.toJSONString();
-
 			}
-
-
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -1135,19 +1144,8 @@ public class ConsultantController
 		}
 		return null;
 	}
-	private String closePostJoin(long postId){
-		Post post=postService.getPost(postId);
-		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
-
-		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
-		Registration consultant = null;
-		int counter = 0;
-		for (PostConsultant postConsultatnt : postConsultants)
-		{
-			consultant = postConsultatnt.getConsultant();
-			post = postConsultatnt.getPost();
-
-
+	private String closePostJoin(Post post,Registration consultant){
+		
 			Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
 					.getIndustries();
 			Iterator<Industry> inIterator = industry.iterator();
@@ -1156,7 +1154,7 @@ public class ConsultantController
 			{
 				in = (Industry) inIterator.next();
 			}
-			List<GlobalRating> gb=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(), consultant.getUserid(),0,GeneralConfig.NoOfRatingParams);
+			List<GlobalRating> gb=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(), consultant.getUserid(),0,GeneralConfig.NoOfRatingStaticParams+GeneralConfig.NoOfRatingStaticParams);
 			for (GlobalRating globalRating : gb)
 			{
 				switch (globalRating.getRatingParameter().getId())
@@ -1179,7 +1177,7 @@ public class ConsultantController
 					break;
 				}
 			}
-			if(gb.size()<GeneralConfig.NoOfRatingParams){
+			if(gb.isEmpty()){
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -1197,23 +1195,12 @@ public class ConsultantController
 				globalRatingService.addGlobalRating(newGlobalRating);
 
 			}
-		}
+		
 		return null;
 	}
 
 
-	private String closePostReject(long postId){
-		Post post=postService.getPost(postId);
-		List<RatingParameter> ratingParams = ratingParameterService.getRatingParameterList();
-
-		List<PostConsultant> postConsultants = postConsultantService.getInterestedConsultantByPost(postId);
-		Registration consultant = null;
-		int counter = 0;
-		for (PostConsultant postConsultatnt : postConsultants)
-		{
-			consultant = postConsultatnt.getConsultant();
-			post = postConsultatnt.getPost();
-
+	private String closePostReject(Post post,Registration consultant){
 
 			Set<Industry> industry = registrationService.getRegistationByUserId(post.getClient().getUserid())
 					.getIndustries();
@@ -1223,7 +1210,7 @@ public class ConsultantController
 			{
 				in = (Industry) inIterator.next();
 			}
-			List<GlobalRating> gb=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(), consultant.getUserid(),0,GeneralConfig.NoOfRatingParams);
+			List<GlobalRating> gb=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(), consultant.getUserid(),0,GeneralConfig.NoOfRatingDynamicParams+GeneralConfig.NoOfRatingStaticParams);
 			for (GlobalRating globalRating : gb)
 			{
 				switch (globalRating.getRatingParameter().getId())
@@ -1245,7 +1232,7 @@ public class ConsultantController
 					break;
 				}
 			}
-			if (gb.size() < GeneralConfig.NoOfRatingParams)
+			if (gb.isEmpty())
 			{
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();
@@ -1263,7 +1250,7 @@ public class ConsultantController
 				newGlobalRating.setRegistration(consultant);
 				globalRatingService.addGlobalRating(newGlobalRating);
 			}
-		}
+		
 		return null;
 	}
 }

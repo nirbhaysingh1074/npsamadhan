@@ -51,6 +51,7 @@
 		var exp_max = $('#exp_max').val();
 		var ctc_min = $('#ctc_min').val();
 		var ctc_max = $('#ctc_max').val();
+		var editSummary = $('#editSummary').val();
 		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); 
 		var select_jd = $('.select_jd').val();
 		
@@ -81,6 +82,11 @@
 		if(role == "")
 		{
 			$('.role_error').html('Please enter post role')
+			valid = false;
+		}
+		if(editSummary == "")
+		{
+			$('.editSummary_error').html('Please enter edit summary');
 			valid = false;
 		}
 		if(designation == "")
@@ -336,41 +342,8 @@ jQuery(document).ready(function() {
 		              </div>
 		            </dd>
 		          </dl>
-		          <dl  style="clear: both">
-					<dt>
-						<label>Profile Quota</label>
-					</dt>
-					<dd>
-						<form:input path="profileParDay" class="number_only" />
-						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
-					</dd>
-		  		</dl>
-		          <dl >
-						<dt>
-							<label>Upload JD</label>
-						</dt>
-						<dd>
-						<div class="file_up" style="float: left;">
-							<form:input path="uploadjd" disabled = "true"/>
-							<div class="fileUpload">
-							    <span>Browse</span>
-							    <input type="file" class="upload select_jd" name="uploadJdfile" />
-							</div>
-						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
-						    
-						</div>
-						<div style="float: left;">
-						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
-    border-radius: 0 5px 5px 0;
-    float: right;
-    height: 27px;
-    overflow: hidden;
-    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
-					</div>
-					</dd>
-					</dl>
-		          
-		          <dl>
+		         
+	          <dl style="clear: both;">
 	            <dt>
 	              <label><br>Normal Work Hours<span class='error'>*</span></label>
 	            </dt>
@@ -422,9 +395,9 @@ jQuery(document).ready(function() {
 					<%
 	                   for(int i=1;i<=11;i++){ %>
 						
-	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
 	                  
-	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
 						<%} %>
 	                
 	                 
@@ -436,6 +409,40 @@ jQuery(document).ready(function() {
 	              </div>
 	            </dd>
 	          </dl>
+	          
+	          <dl>
+					<dt>
+						<label>Upload JD</label>
+					</dt>
+					<dd>
+						<div class="file_up" style="float: left;">
+							<form:input path="uploadjd" disabled = "true"/>
+							<div class="fileUpload">
+							    <span>Browse</span>
+							    <input type="file" class="upload select_jd" name="uploadJdfile" />
+							</div>
+						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
+						    
+						</div>
+						<div style="float: left;">
+						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
+    border-radius: 0 5px 5px 0;
+    float: right;
+    height: 27px;
+    overflow: hidden;
+    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
+					</div>
+					</dd>
+				</dl>
+	       <dl  style="display: none;">
+					<dt>
+						<label>Profile Quota</label>
+					</dt>
+					<dd>
+						<form:input path="profileParDay" class="number_only"  />
+						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
+					</dd>
+			  </dl>
 		          
 		          
 		          
@@ -453,9 +460,9 @@ jQuery(document).ready(function() {
 	             <span class='error'><form:errors path="comment"/></span>
 		      </div>
 		      <div class="block coment_fild" style="padding-top: 35px">
-		        <p>Edit Summary</p>
+		        <p>Edit Summary<span style="font-size: 10px;font-style: italic;">(Note: please mention the key specifications that have been modified in the updated Job Description)</span></p>
 		        <form:textarea path="editSummary" ></form:textarea>
-	             <span class='error'><form:errors path="editSummary"/></span>
+	             <span class='error editSummary_error'><form:errors path="editSummary"/></span>
 		      </div>
 		      <%
 		      Post post = (Post)request.getAttribute("post");

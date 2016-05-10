@@ -105,7 +105,7 @@
 			      <div class="filter">
 			        <div class="col-md-7 pagi_summary"><span><%= reg.getOrganizationName() %></span></div>
 			      </div>
-			      <div class="positions_tab" style="border: 1px solid gray;background: #fff5db none repeat scroll 0 0;">
+			      <div class="positions_tab" style="border: 1px solid gray;/* background: #fff5db none repeat scroll 0 0; */">
 			        <div class="form_cont">
 				        <div class="form_col">
 							<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">

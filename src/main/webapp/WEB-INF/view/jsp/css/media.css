@@ -160,10 +160,10 @@ p{ margin:0px; padding:0px; }
 .maxwdh img{ max-width:100%; margin-bottom:-4px;}
 
 
-#header{  width:100%; float:left; z-index: 9;position: relative; }
+#header{  width:100%; float:left;/*  z-index: 9;position: relative;  */}
 
 	
-.Headr_top{ width:100%; float:left; height:0px; background:#fff; border-bottom:#e5e5e5 1px solid; }
+.Headr_top{ width:100%; float:left; height:76px; background:#fff; border-bottom:#e5e5e5 1px solid; }
 .logo{ width:auto; float:left; margin-top:10px;}	
 .header_right{float: right;}
 .Top_right{ width:auto; float:right; margin-top:35px;}

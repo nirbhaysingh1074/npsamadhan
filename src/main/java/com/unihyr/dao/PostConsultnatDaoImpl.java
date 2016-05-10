@@ -56,9 +56,8 @@ public class PostConsultnatDaoImpl implements PostConsultnatDao
 	@Override
 	public void updatePostConsultant(PostConsultant postConsultant)
 	{
-
-			this.sessionFactory.getCurrentSession().update(postConsultant);
-			this.sessionFactory.getCurrentSession().flush();
+		this.sessionFactory.getCurrentSession().update(postConsultant);
+		this.sessionFactory.getCurrentSession().flush();
 		return;
 	}
 

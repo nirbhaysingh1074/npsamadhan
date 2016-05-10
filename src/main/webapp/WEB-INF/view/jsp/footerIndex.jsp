@@ -37,7 +37,7 @@
 	<div class="desk-content">
 		<div class="contant-body" >
 			<div class="content-field">
-				<label>Name</label>
+				<label>Your Name</label>
 				<input type="text" name="name" class="name">
 			</div>
 			<div class="content-field">

@@ -68,7 +68,7 @@
 	            		<%
 		            	}else{
 		            		%>
-		            			<li class="active post_close" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Close</a></li>
+<%-- 		            			<li class="active post_close" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Close</a></li> --%>
 		            		<%
 		            	}}
 			            
@@ -260,14 +260,14 @@
 								
 							</dd>
 						</dl>
-						<dl>
+					<%-- 	<dl>
 							<dt>
 								<label>Profile Quota</label>
 							</dt>
 							<dd>
 								<label><% if( post.getProfileParDay()> 0){%><%=post.getProfileParDay()%><%}else{%>NA<%} %></label>
 							</dd>
-						</dl>
+						</dl> --%>
 						<dl>
 							<dt>
 								<label>Additional Comments</label>
@@ -277,7 +277,7 @@
 								
 							</dd>
 						</dl>
-						<dl>
+						<%-- <dl>
 							<dt>
 								<label>Profile Quata</label>
 							</dt>
@@ -298,7 +298,7 @@
 								%>
 								
 							</dd>
-						</dl>
+						</dl> --%>
 						<%
 							if(post.getEditSummary() != null)
 							{
@@ -316,7 +316,7 @@
 							}
 						%>
 						
-						<%
+				<%-- 		<%
 							if(post.getUploadjd() != null)
 							{
 								%>
@@ -327,7 +327,7 @@
 									</dl>
 								<%
 							}
-						%>
+						%> --%>
 						
 						<div class="clearfix" style="padding: 15px">
 							<h3><b>Job Description</b></h3><br>
@@ -352,14 +352,11 @@
 							    int serverPort = request.getServerPort();
 							    
 							    
-// 					            String inPath="data/"+ pp.getProfile().getResumePath();
-// 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
-// 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
-					         	 
+			         	 
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
 					         	String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
-					        	//Conversion.convertPDF(inPath, outPath);
+					       
 					        	
 
 					        	java.io.File inputFile = new java.io.File(inPath); //

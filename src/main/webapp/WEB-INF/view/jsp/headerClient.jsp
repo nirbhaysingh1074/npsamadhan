@@ -159,7 +159,7 @@ jQuery(document).ready(function() {
 	   		<a href="javascript:void(0);" onClick="$('.toggle_menu').slideToggle();" class="toggle-icon"></a>
 	      <ul class="toggle_menu">
 	        <li class="${currentpage == 'clientdashboard' ? 'active' : ''}"><a href="clientdashboard">Home</a></li>
-	        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientaddpost">New Post</a></li>
+	        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientaddpost">Post a new Job</a></li>
 	        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Manage Positions </a></li>
 	        <li class="${currentpage == 'clientBillingDetails' ? 'active' : ''}"><a href="clientBillingDetails">Billing Details</a></li>
 	        <li class="${currentpage == 'clientprofilecenter' ? 'active' : ''}"><a href="clientprofilecenter">Profiles Center</a></li>
