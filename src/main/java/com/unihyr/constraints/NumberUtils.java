@@ -95,7 +95,8 @@ public class NumberUtils
 	 * @param num data type String, which will be converted into commoa seprated string
 	 * @return comma seprated string
 	 */
-	public static String convertNumberToCommoSeprated(String num){
+	public static String convertNumberToCommoSeprated(Double digits){
+		String num=Integer.toString((Double.valueOf(digits)).intValue());
 		char[] arr=num.toCharArray();
  		String word="";
  		int l=arr.length;

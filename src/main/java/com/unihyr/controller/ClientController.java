@@ -198,7 +198,7 @@ public class ClientController
 		{
 			String extension=FilenameUtils.getExtension(resumefilename);
 			System.out.println("file extenson="+extension);
-			if (!GeneralConfig.filetype.contains(extension))
+			if (!GeneralConfig.filetype.contains(extension.trim().toLowerCase()))
 			{
 				System.out.println("inside file extension check");
 				map.addAttribute("fileuploaderror","true");
@@ -422,7 +422,7 @@ public class ClientController
 		{
 			String extension=FilenameUtils.getExtension(resumefilename);
 			System.out.println("file extenson="+extension);
-			if (!GeneralConfig.filetype.contains(extension))
+			if (!GeneralConfig.filetype.contains(extension.trim().toLowerCase()))
 			{
 				System.out.println("inside file extension check");
 				map.addAttribute("fileuploaderror","true");
@@ -616,6 +616,9 @@ public class ClientController
 	{
 		String pid = request.getParameter("pid");
 		System.out.println("pid : " + pid);
+		List<PostConsultant> list1 = new ArrayList<PostConsultant>();
+		List<PostConsultant> list2 = new ArrayList<PostConsultant>();
+		int i =0;
 		if(pid != null)
 		{
 			Post post = postService.getPost(Long.parseLong(pid));
@@ -629,6 +632,36 @@ public class ClientController
 				map.addAttribute("pn", 1);
 				map.addAttribute("sel_post", post);
 				List<PostConsultant> consList = postConsultnatService.getInterestedConsultantByPost(post.getPostId());
+				for(PostConsultant pc : consList)
+				{
+					Post postt=pc.getPost();
+					List<PostProfile> postProfile=postProfileService.getPostProfileByPost(postt.getPostId());
+					boolean flag=false;
+			for (PostProfile postProfile2 : postProfile)
+			{
+				
+				 if(postProfile2.getProfile().getRegistration().getUserid().equals(pc.getConsultant().getUserid())){
+					 System.out.println();
+					 flag=true;
+					 break;
+				 }
+			}
+					if(!flag){
+						list1.add(pc);
+					
+					}else{
+						
+					list2.add(pc);
+					}
+					
+					i++;
+					
+					
+				}
+				
+
+				map.addAttribute("conslistHavingProfiles",list2);
+				map.addAttribute("conslistHavingNoProfiles",list1);
 				map.addAttribute("consList",consList);
 			}
 //			for empty table begin
@@ -1021,7 +1054,8 @@ public class ClientController
 			}
 		}
 		obj.put("consList", cons);
-		
+		//map.addAttribute("conslistHavingProfiles",list2);
+		//map.addAttribute("conslistHavingNoProfiles",list1);
 		return obj.toJSONString();
 	}
 
@@ -1344,7 +1378,7 @@ public class ClientController
 			String imageextension=FilenameUtils.getExtension(filename);
 			try
 			{
-				if(!this.allowedImageExtensions.contains(imageextension)){
+				if(!this.allowedImageExtensions.contains(imageextension.toLowerCase())){
         			return "failed";
         		}
 				filename = UUID.randomUUID().toString()+filename;

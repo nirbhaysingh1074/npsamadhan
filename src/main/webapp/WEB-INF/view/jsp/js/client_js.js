@@ -56,20 +56,16 @@ jQuery(document).ready(function() {
 			data : {'pid':pid},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				var obj = jQuery.parseJSON(data);
 				var consList = obj.consList;
 				$('#cons_list').html("");
 				$.each(consList , function(i, val) { 
-//				  alert(val.conid); 
 					if(val.submissionStatus!="")
 				  $('#cons_list').append("<li title='"+val.aboutcons+"' id='"+val.conid+"'><a>"+val.cname+" <br><span style='font-size:10px;'>("+val.submissionStatus+")</span> </a></li>");
 					else
-						  $('#cons_list').append("<li title='"+val.aboutcons+"' id='"+val.conid+"'><a>"+val.cname+" </a></li>");
+				  $('#cons_list').append("<li title='"+val.aboutcons+"' id='"+val.conid+"'><a>"+val.cname+" </a></li>");
 						
 				});
-//				loadclientposts('1');
-//				$('#candidate_profiles').html(data);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 		        alert(xhr.status);
@@ -79,8 +75,6 @@ jQuery(document).ready(function() {
 	});
 	
 	$(document.body).on('click', '#cons_list > li' ,function(){
-		
-		
 		$('#cons_list > li').removeClass("active");
 		var selected_post = $('#selected_post').val();
 		if(selected_post != "" && selected_post != "0")
@@ -101,15 +95,10 @@ jQuery(document).ready(function() {
 		loadclientdashboardposts("1");
 	});
 	
-	
-	
-	
-	
 	$(document.body).on('change', '.select_jd' ,function(){
 		$(this).parent().siblings("input").val($(this).val());
 		
 	});
-	
 	
 	$(document.body).on('click', '.profile_status > .accept_profile' ,function(){
 //		alert("Hello to all accept"+$(this).parent().attr("id"));
@@ -137,9 +126,7 @@ jQuery(document).ready(function() {
 							selected.parent().parent().find('td:eq(7)').html("<span>ShortListed</span>");
 							selected.html("<button class='recruit_profile profile_status_button' title='Click to offer'>Offer</button><button class='btn-open profile_status_button' data-type='reject_recruit' title='Click to decline'>Decline</button>");
 						}
-						
 						alertify.success("Profile shortlisted successfilly !");
-						
 					}
 					else
 					{
@@ -160,9 +147,7 @@ jQuery(document).ready(function() {
 		$('#rejectModal').hide();
 		var reject_type = $('.modal-body #reject_type').val();
 		var reject_for = $('.modal-body #reject_for').val();
-		
 		var rej_reason = "";
-		
 		var ppstatus = "";
 		if(reject_type == "reject_profile")
 		{
@@ -179,8 +164,6 @@ jQuery(document).ready(function() {
 			 ppstatus = "offer_reject";
 			 rej_reason = $('.sel_rej_offer').val();
 		}
-		
-		
 		var selected = $('.proile_row #'+reject_for);
 //		alert(" Hello to all js " + selected.html());
 		

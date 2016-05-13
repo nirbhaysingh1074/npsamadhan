@@ -222,7 +222,7 @@
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Revenues<span class="req">*</span></label>
+							<label>Revenue<span class="req">*</span></label>
 							<form:input path="revenue" cssClass="number_only" maxlength="10"   style="padding-right: 150px" />
 							<span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">  INR (Millions)</span>
 							<span class="error revenue_error">&nbsp;<form:errors path="revenue" /></span>

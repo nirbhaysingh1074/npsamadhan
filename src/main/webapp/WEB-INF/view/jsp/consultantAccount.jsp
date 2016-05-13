@@ -213,7 +213,7 @@
 						%>
 						<dl>
 							<dt>
-								<label>Revenues</label>
+								<label>Revenue</label>
 							</dt>
 							<dd>
 								<label><%= reg.getRevenue() %></label>

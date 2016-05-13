@@ -252,19 +252,19 @@
     </definition>
     
     <definition name="consdashboard" extends="consultTemplate">
-        <put-attribute name="title" value="UniHyr - Client Dashboard" />
+        <put-attribute name="title" value="UniHyr - Consultant Dashboard" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/consDashboard.jsp" />
         <put-attribute name="currentpage" value="consdashboard" cascade="true"/>
     </definition>
     
     <definition name="consnewposts" extends="consultTemplate">
-        <put-attribute name="title" value="UniHyr - New Posts" />
+        <put-attribute name="title" value="UniHyr - Recently Posted" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/consnewposts.jsp" />
         <put-attribute name="currentpage" value="consnewposts" cascade="true"/>
     </definition>
     
    	<definition name="consnewpostslist" extends="homeTemplate">
-        <put-attribute name="title" value="UniHyr - New Posts List" />
+        <put-attribute name="title" value="UniHyr - Recent Posts List" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/consnewpostslist.jsp" />
     </definition>
     <definition name="cons_your_positions" extends="consultTemplate">

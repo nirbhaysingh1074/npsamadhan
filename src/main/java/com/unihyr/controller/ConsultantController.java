@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -185,7 +186,7 @@ public class ConsultantController
 		{
 			String extension=FilenameUtils.getExtension(resumefilename);
 			System.out.println("file extenson="+extension);
-			if (!GeneralConfig.filetype.contains(extension))
+			if (!GeneralConfig.filetype.contains(extension.toLowerCase()))
 			{
 				System.out.println("inside file extension check");
 				map.addAttribute("fileuploaderror","true");
@@ -547,11 +548,10 @@ public class ConsultantController
 						long trTime1 = 0;
 						long srRatio1 = 0;
 						long crRatio1 = 0;
-						long trTime2 = 0;
-						long srRatio2 = 0;
-						long crRatio2 = 0;
+						long offerdrop = 0;
+						long closurerate= 0;
+						
 						int counter1=0;
-						int counter2=0;
 						Date date = new Date();
 						java.sql.Date dt = new java.sql.Date(date.getTime());
 
@@ -559,6 +559,15 @@ public class ConsultantController
 						pc.setPost(post);
 						Registration consultant=registrationService.getRegistationByUserId(principal.getName());
 
+						Date consRegDate=consultant.getRegdate();
+						
+						Calendar startCalendar = new GregorianCalendar();
+						startCalendar.setTime(consRegDate);
+						Calendar endCalendar = new GregorianCalendar();
+						endCalendar.setTime(date);
+
+						int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
+						int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
 						Set<Industry> industry = consultant.getIndustries();
 						Iterator<Industry> inIterator = industry.iterator();
 						Industry in = null;
@@ -594,6 +603,22 @@ public class ConsultantController
 								k++;
 								break;
 							}
+							case "offerdrop":
+							{
+								if(diffMonth<1)
+									offerdrop += globalRating.getRatingParamValue();
+								else
+								offerdrop += globalRating.getRatingParamValue()/diffMonth;
+								break;
+							}
+							case "closureRate":
+							{
+								if(diffMonth<1)
+									closurerate += globalRating.getRatingParamValue();
+								else
+								closurerate += globalRating.getRatingParamValue()/diffMonth;
+								break;
+							}
 							default:
 								break;
 							}
@@ -604,7 +629,9 @@ public class ConsultantController
 						{
 							pc.setTurnAround(trTime1/div);
 							pc.setShortlistRatio(srRatio1/div);
-							pc.setClosureRatio(crRatio1/div);
+							pc.setClosureRatio(closurerate);
+							pc.setOfferdrop(offerdrop);
+							pc.setIndustrycoverage(crRatio1/div);
 
 						}
 						else
@@ -612,6 +639,8 @@ public class ConsultantController
 							pc.setTurnAround(0);
 							pc.setShortlistRatio(0);
 							pc.setClosureRatio(0);
+							pc.setOfferdrop(0);
+							pc.setIndustrycoverage(0);
 						}
 						post.getPostConsultants().add(pc);
 						post.setPostConsultants(post.getPostConsultants());
@@ -642,9 +671,9 @@ public class ConsultantController
 							postConsultant.setPercentileInC(count*100/pcList.size());
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
-						List<PostConsultant> offerdrop=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"offerdrop");
+						List<PostConsultant> offerDrop=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"offerdrop");
 						count=0;
-						for (PostConsultant postConsultant : offerdrop)
+						for (PostConsultant postConsultant : offerDrop)
 						{
 							count++;
 							postConsultant.setPercentileOd(count*100/pcList.size());
@@ -662,9 +691,8 @@ public class ConsultantController
 							postConsultant.setPercentile(((postConsultant.getPercentileTr()*ratingparam.get(0).getWeightage())/100)+
 									((postConsultant.getPercentileSh()*ratingparam.get(1).getWeightage())/100)+
 									((postConsultant.getPercentileInC()*ratingparam.get(4).getWeightage())/100)+
-							((postConsultant.getPercentileOd()*ratingparam.get(3).getWeightage())/100)+
-							((postConsultant.getPercentileCl()*ratingparam.get(2).getWeightage())/100));
-
+									((postConsultant.getPercentileOd()*ratingparam.get(2).getWeightage())/100)+
+									((postConsultant.getPercentileCl()*ratingparam.get(3).getWeightage())/100));
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
 
@@ -934,6 +962,7 @@ public class ConsultantController
 						{
 							post.setNoOfPostsFilled(post.getNoOfPosts());
 							postService.updatePost(post);	
+							closePostJoin(post,consultant);
 							closePost(post.getPostId());
 						}else if(post.getNoOfPosts()>(post.getNoOfPostsFilled()+1)){
 							post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
@@ -1142,6 +1171,13 @@ public class ConsultantController
 				}
 			}
 		}
+		post.setActive(false);
+		Date date = new Date();
+		java.sql.Date dt = new java.sql.Date(date.getTime());
+		post.setCloseDate(dt);
+		postService.updatePost(post);
+		
+		
 		return null;
 	}
 	private String closePostJoin(Post post,Registration consultant){
@@ -1161,15 +1197,11 @@ public class ConsultantController
 				{
 				case 3:
 				{
-					GlobalRating newGlobalRating = new GlobalRating();
 					Date date = new Date();
 					java.sql.Date dt = new java.sql.Date(date.getTime());
-					newGlobalRating.setCreateDate(dt);
-					newGlobalRating.setIndustryId(in.getId());
-					newGlobalRating.setRatingParameter(globalRating.getRatingParameter());
-					newGlobalRating.setRatingParamValue(globalRating.getRatingParamValue()+1);
-					newGlobalRating.setRegistration(consultant);
-					globalRatingService.updateGlobalRating(newGlobalRating);
+					globalRating.setCreateDate(dt);
+					globalRating.setRatingParamValue(globalRating.getRatingParamValue()+1);
+					globalRatingService.updateGlobalRating(globalRating);
 					break;
 				}
 
@@ -1177,7 +1209,7 @@ public class ConsultantController
 					break;
 				}
 			}
-			if(gb.isEmpty()){
+			if(gb.size()<=GeneralConfig.NoOfRatingDynamicParams){
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -1217,22 +1249,19 @@ public class ConsultantController
 				{
 				case 4:
 				{
-					GlobalRating newGlobalRating = new GlobalRating();
 					Date date = new Date();
+
 					java.sql.Date dt = new java.sql.Date(date.getTime());
-					newGlobalRating.setCreateDate(dt);
-					newGlobalRating.setIndustryId(in.getId());
-					newGlobalRating.setRatingParameter(globalRating.getRatingParameter());
-					newGlobalRating.setRatingParamValue(globalRating.getRatingParamValue()+1);
-					newGlobalRating.setRegistration(consultant);
-					globalRatingService.updateGlobalRating(newGlobalRating);
+					globalRating.setCreateDate(dt);
+					globalRating.setRatingParamValue(globalRating.getRatingParamValue()+1);
+					globalRatingService.updateGlobalRating(globalRating);
 					break;
 				}
 				default:
 					break;
 				}
 			}
-			if (gb.isEmpty())
+			if (gb.size()<=GeneralConfig.NoOfRatingDynamicParams)
 			{
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();

@@ -197,32 +197,7 @@ jQuery(document).ready(function() {
           <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 		      <div class="block">
 		        <div class="form_col">
-		          <%
-					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
-					if(fileuploaderror != null && fileuploaderror.equals("true"))
-					{
-						%>
-						<%
-						List<String> uploadMsg = (List)request.getAttribute("uploadMsg");
-						if(uploadMsg != null && !uploadMsg.isEmpty())
-						{
-							for(String msg : uploadMsg)
-							{
-								%>
-									<dl>
-										<dd>
-											<label class="error">* <%=  msg%></label>
-										</dd>
-									</dl>
-								<%
-							}
-						}
-						%>
-						
-						<%
-						
-					}
-				%>
+		         
 		          <dl>
 		            <dt>
 		              <label>Title<span class='error'>*</span></label>
@@ -248,7 +223,7 @@ jQuery(document).ready(function() {
 		              <span class='error location_error'><form:errors path="location"/></span>
 		            </dd>
 		          </dl>
-		          <dl>
+		          <dl style="clear: both;">
 	            <dt>
 	              <label>Role Type<span class='error'>*</span></label>
 	            </dt>
@@ -288,7 +263,7 @@ jQuery(document).ready(function() {
 		              <span class='error designation_error'><form:errors path="designation"/></span>
 		            </dd>
 		          </dl>
-		          <dl>
+		          <dl style="clear: both;">
 		            <dt>
 		              <label>Experience<span class='error'>*</span></label>
 		            </dt>
@@ -343,7 +318,7 @@ jQuery(document).ready(function() {
 		            </dd>
 		          </dl>
 		         
-	          <dl style="clear: both;">
+	          <dl style="display: none;">
 	            <dt>
 	              <label><br>Normal Work Hours<span class='error'>*</span></label>
 	            </dt>
@@ -355,15 +330,11 @@ jQuery(document).ready(function() {
 	                   <%
 	                   NumberFormat formatter = new DecimalFormat("00");  
 	                   for(int i=00;i<=11;i++){
-	                	   
-	                	   %>
-						
+	                   %>
 	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
-	                  
 	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
-						<%} %>
-	                     <form:option value="12:00 PM">12:00 PM</form:option>
-	                  
+					   <%} %>
+	                   <form:option value="12:00 PM">12:00 PM</form:option>
 	                   <form:option value="12:30 PM">12:30 PM</form:option>
 					<%
 	                   for(int i=1;i<=11;i++){ %>
@@ -381,25 +352,25 @@ jQuery(document).ready(function() {
 	                <div class="col-md-4"> End Time
 	                  <form:select path="workHourEndHour">
 	                  
+	                   <form:option value='11:59 PM" %>'>11:59 PM</form:option>
 	                   <%
 	                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=11;i++){ %>
+	                   for(int i=11;i>=1;i--){ %>
 						
-	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
-						<%} %>
-	                     <form:option value="12:00 PM">12:00 PM</form:option>
-	                  
-	                   <form:option value="12:30 PM">12:30 PM</form:option>
-					<%
-	                   for(int i=1;i<=11;i++){ %>
-						
-	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
-	                  
 	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
 						<%} %>
-	                
+	                     <form:option value="12:30 PM">12:30 PM</form:option>
+	                  
+	                   <form:option value="12:00 PM">12:00 PM</form:option>
+					<%
+	                   for(int i=11;i>=0;i--){ %>
+						
+	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+						<%} %>
 	                 
 	                  </form:select>
 	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
@@ -409,7 +380,16 @@ jQuery(document).ready(function() {
 	              </div>
 	            </dd>
 	          </dl>
-	          
+	        
+	       <dl   style="clear: both;">
+					<dt>
+						<label>Profile Quota</label>
+					</dt>
+					<dd>
+						<form:input path="profileParDay" class="number_only"  />
+						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
+					</dd>
+			  </dl>
 	          <dl>
 					<dt>
 						<label>Upload JD</label>
@@ -434,17 +414,33 @@ jQuery(document).ready(function() {
 					</div>
 					</dd>
 				</dl>
-	       <dl  style="display: none;">
-					<dt>
-						<label>Profile Quota</label>
-					</dt>
-					<dd>
-						<form:input path="profileParDay" class="number_only"  />
-						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
-					</dd>
-			  </dl>
 		          
-		          
+		           <%
+					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
+					if(fileuploaderror != null && fileuploaderror.equals("true"))
+					{
+						%>
+						<%
+						List<String> uploadMsg = (List)request.getAttribute("uploadMsg");
+						if(uploadMsg != null && !uploadMsg.isEmpty())
+						{
+							for(String msg : uploadMsg)
+							{
+								%>
+									<dl style="clear: both;">
+										<dd>
+											<label class="error">* <%=  msg%></label>
+										</dd>
+									</dl>
+								<%
+							}
+						}
+						%>
+						
+						<%
+						
+					}
+				%>
 		          
 		        </div>
 		      </div>

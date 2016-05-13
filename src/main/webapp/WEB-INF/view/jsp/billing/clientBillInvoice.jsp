@@ -189,7 +189,7 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td style="height: 25px; padding-left: 10px;">Position :
 											<%=bill.getPosition() %><br>
 										</td>
-										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated(new Double(bill.getFee()).intValue()+"") %></td>
+										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated(bill.getFee()) %></td>
 
 									</tr>
 									<tr>
@@ -204,7 +204,7 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td style="height: 25px; padding-left: 10px;">Servic Tax
 											@ <%=GeneralConfig.TAX %>
 										</td>
-										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated(new Double((GeneralConfig.TAX*bill.getFee())/100).intValue()+"") %></td>
+										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated((GeneralConfig.TAX*bill.getFee())/100) %></td>
 
 									</tr>
 									<tr>
@@ -212,13 +212,13 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td style="height: 25px; padding-left: 10px;">Swatch
 											Bharat Cess @ <%=GeneralConfig.CESS %>
 										</td>
-										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated(new Double((GeneralConfig.CESS*bill.getFee())/100).intValue()+"") %></td>
+										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated((GeneralConfig.CESS*bill.getFee())/100) %></td>
 
 									</tr>
 									<tr style="border-top: 1px solid #000; height: 30px;">
 
 										<th align="center" style="border-top:1px solid #000;">Total</th>
-										<th align="right" style="padding-right: 10px;border-left: 1px solid #000;border-top:1px solid #000;"><%=NumberUtils.convertNumberToCommoSeprated(total.intValue()+"") %></th>
+										<th align="right" style="padding-right: 10px;border-left: 1px solid #000;border-top:1px solid #000;"><%=NumberUtils.convertNumberToCommoSeprated(total) %></th>
 
 									</tr>
 

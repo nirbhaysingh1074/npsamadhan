@@ -30,10 +30,10 @@ public class ConsultRegModel
 //	private String founderContact;
 	
 //	@NotEmpty(message="{NotEmpty.regForm.password}")
-	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
+//	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
 	private String password;
 	
-	@NotNull(message="{NotNull.regForm.repassword}")
+//	@NotNull(message="{NotNull.regForm.repassword}")
 	private String repassword;
 	
 	@NotBlank(message="{NotBlank.regForm.officeLocations}")

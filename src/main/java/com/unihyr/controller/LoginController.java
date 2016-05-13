@@ -2,6 +2,7 @@ package com.unihyr.controller;
 
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,9 +33,11 @@ import com.unihyr.model.ConsultRegModel;
 import com.unihyr.service.IndustryService;
 import com.unihyr.service.LocationService;
 import com.unihyr.service.LoginInfoService;
+import com.unihyr.service.MailService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
+
 /**
  * Controls all the request related to Authentication
  * @author Rohit Tiwari
@@ -55,94 +58,93 @@ public class LoginController
 	@Autowired
 	private LocationService locationService;
 
-	
+	@Autowired
+	private MailService mailService;
+
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(ModelMap map) 
+	public String login(ModelMap map)
 	{
-        return "login";
-    }
-	
-	
-	@RequestMapping(value = "/getLogedIn", method=RequestMethod.GET)
+		return "login";
+	}
+
+	@RequestMapping(value = "/getLogedIn", method = RequestMethod.GET)
 	public String getLogedIn(ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		if(principal != null)
+		if (principal != null)
 		{
 			System.out.println("Princile : " + principal.getName());
-			
+
 			Registration registration = registrationService.getRegistationByUserId(principal.getName());
-			HttpSession  session = request.getSession(true);
+			HttpSession session = request.getSession(true);
 			session.setAttribute("registration", registration);
-			
+
 			System.out.println("Princile : " + request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString()));
-			if(request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString()) || request.isUserInRole(Roles.ROLE_EMP_USER.toString()))
+			if (request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString())
+					|| request.isUserInRole(Roles.ROLE_EMP_USER.toString()))
 			{
 				return "redirect:clientdashboard";
-			}
-			else if(request.isUserInRole(Roles.ROLE_CON_MANAGER.toString()) || request.isUserInRole(Roles.ROLE_CON_USER.toString()))
+			} else if (request.isUserInRole(Roles.ROLE_CON_MANAGER.toString())
+					|| request.isUserInRole(Roles.ROLE_CON_USER.toString()))
 			{
 				return "redirect:consdashboard";
-			}
-			else if(request.isUserInRole(Roles.ROLE_ADMIN.toString()))
+			} else if (request.isUserInRole(Roles.ROLE_ADMIN.toString()))
 			{
 				return "redirect:admindashboard";
-			}
-			else
+			} else
 			{
 				return "redirect:error";
 			}
 		}
 		return "redirect:home";
 	}
-	
-	@RequestMapping(value = "/insertLogOut", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/insertLogOut", method = RequestMethod.GET)
 	public @ResponseBody String insertLogOut(ModelMap map, HttpServletRequest request)
 	{
 		System.out.println("from logout page");
 		return "logedOut";
 	}
-	@RequestMapping(value = "/logout", method=RequestMethod.GET)
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(ModelMap map, HttpServletRequest request)
 	{
 		System.out.println("from logout successfull page");
 		return "redirect:home";
 	}
-	
-	@RequestMapping(value = "/failtologin", method=RequestMethod.GET)
-	public String failtologin(ModelMap map){
+
+	@RequestMapping(value = "/failtologin", method = RequestMethod.GET)
+	public String failtologin(ModelMap map)
+	{
 		System.out.println("in failtologin");
-		String error="true";
-		return "redirect:/login?error="+error;
-		
+		String error = "true";
+		return "redirect:/login?error=" + error;
 	}
-	
-	
-	
-	
+
 	@RequestMapping(value = "/resetpassword", method = RequestMethod.GET)
 	public String resetPassword(ModelMap map, HttpServletRequest request)
 	{
 		String userid = request.getParameter("userid");
 		String resetToken = request.getParameter("resetToken");
-		if(userid != null && resetToken != null)
+		if (userid != null && resetToken != null)
 		{
-			LoginInfo  logininfo = loginInfoService.findUserById(userid);
-			if(logininfo != null && resetToken.equals(logininfo.getForgotpwdid()))
+			LoginInfo logininfo = loginInfoService.findUserById(userid);
+			if (logininfo != null && resetToken.equals(logininfo.getForgotpwdid()))
 			{
 				map.addAttribute("resetToken", resetToken);
-				
+
 			}
 		}
-		
+
 		return "resetPassword";
 	}
+
 	@RequestMapping(value = "/regSuccess", method = RequestMethod.GET)
 	public String regSuccess(ModelMap map)
 	{
-		
+
 		return "regSuccess";
 	}
-	
+
 	@RequestMapping(value = "/clientregistration", method = RequestMethod.GET)
 	public String registration(ModelMap map)
 	{
@@ -152,8 +154,6 @@ public class LoginController
 		return "registration";
 	}
 
-	
-	
 	@RequestMapping(value = "/clientregistration", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value = "regForm") @Valid ClientRegistrationModel register,
 			BindingResult result, @ModelAttribute(value = "reg") Registration reg, BindingResult regResult,
@@ -189,7 +189,7 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
-			
+
 			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
 			reg.setLog(login);
@@ -225,7 +225,7 @@ public class LoginController
 
 		System.out.println("userid in controller" + userid);
 		System.out.println("indusries : " + request.getParameterValues("industries"));
-		String []industries = request.getParameterValues("industries");
+		String[] industries = request.getParameterValues("industries");
 		boolean valid = true;
 		try
 		{
@@ -235,12 +235,12 @@ public class LoginController
 				valid = false;
 				map.addAttribute("uidex", "exist");
 			}
-			if(industries== null || industries.length < 1)
+			if (industries == null || industries.length < 1)
 			{
 				valid = false;
 				map.addAttribute("industry_req", "Please select atleast one industry");
 			}
-			
+
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -258,21 +258,31 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
-			
+
 			Set<Industry> indset = new HashSet<>();
 			try
 			{
-				for(String ind : industries)
+				for (String ind : industries)
 				{
 					Industry inds = industryService.getIndustry(Integer.parseInt(ind));
-					if(inds != null)
+					if (inds != null)
 					{
 						indset.add(inds);
 					}
 				}
-				
+
 				reg.setIndustries(indset);
 				login.setReg(reg);
+				char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
+				Random rnd = new Random();
+
+				StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
+				for (int i = 0; i < 5; i++)
+					sb.append(alphNum[rnd.nextInt(alphNum.length)]);
+
+				String id = sb.toString();
+				login.setPassword(id);
 				reg.setLog(login);
 				urole.setUserrole(Roles.ROLE_CON_MANAGER.toString());
 				Set<UserRole> roles = new HashSet<UserRole>();
@@ -281,30 +291,34 @@ public class LoginController
 				loginInfoService.addLoginInfo(login, null);
 				map.addAttribute("regSuccess", "true");
 				map.addAttribute("orgName", reg.getConsultName());
+				mailService.sendMail(register.getUserid(), "Sign Up info",
+						"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
+								+ id + "<br> After first login please change this password.");
 				return "redirect:/regSuccess";
-			}
-			catch(Exception e)
+			} catch (Exception e)
 			{
 				e.printStackTrace();
 				map.addAttribute("industryList", industryService.getIndustryList());
 				return "consultRegistration";
 			}
-			
+
 		}
 	}
 
 	@RequestMapping(value = "/changeUserPassword", method = RequestMethod.POST)
-	public String changeUserPassword(Principal principal ,ModelMap map , HttpServletRequest request, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String password, @RequestParam("rePassword") String rePassword)
+	public String changeUserPassword(Principal principal, ModelMap map, HttpServletRequest request,
+			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String password,
+			@RequestParam("rePassword") String rePassword)
 	{
-		if(password.equals(rePassword))
+		if (password.equals(rePassword))
 		{
-			if(loginInfoService.checkUser(principal.getName(), oldPassword))
+			if (loginInfoService.checkUser(principal.getName(), oldPassword))
 			{
 				boolean status = loginInfoService.updatePassword(principal.getName(), oldPassword, password);
-				if(status)
+				if (status)
 				{
 					map.addAttribute("status", "success");
-					
+
 					return "redirect:userAcccount";
 				}
 			}
@@ -314,60 +328,59 @@ public class LoginController
 		map.addAttribute("status", "notmatched");
 		return "redirect:userAcccount";
 	}
-	
-	
+
 	@RequestMapping(value = "/changeChildPassword", method = RequestMethod.POST)
-	public String changeChildPassword(Principal principal ,ModelMap map , HttpServletRequest request, @RequestParam("childId") String childId, @RequestParam("newPassword") String password, @RequestParam("rePassword") String rePassword)
+	public String changeChildPassword(Principal principal, ModelMap map, HttpServletRequest request,
+			@RequestParam("childId") String childId, @RequestParam("newPassword") String password,
+			@RequestParam("rePassword") String rePassword)
 	{
 		Registration child = registrationService.getRegistationByUserId(childId);
-		map.addAttribute("registration",child);
-		if(child != null && child.getAdmin() != null && child.getAdmin().getUserid().equals(principal.getName()))
+		map.addAttribute("registration", child);
+		if (child != null && child.getAdmin() != null && child.getAdmin().getUserid().equals(principal.getName()))
 		{
-			if(password != null && GeneralConfig.checkPasswordValid(password) && password.equals(rePassword))
+			if (password != null && GeneralConfig.checkPasswordValid(password) && password.equals(rePassword))
 			{
 				boolean status = loginInfoService.updatePassword(childId, null, password);
-				if(status)
+				if (status)
 				{
 					map.addAttribute("status", "success");
-					return "redirect:clientviewuser?uid="+childId;
+					return "redirect:clientviewuser?uid=" + childId;
 				}
 			}
 			map.addAttribute("status", "notmatched");
-			return "redirect:clientviewuser?uid="+childId;
-		
+			return "redirect:clientviewuser?uid=" + childId;
+
 		}
 		return "redirect:userAcccount";
-	
+
 	}
-	
+
 	@RequestMapping(value = "/userAcccount", method = RequestMethod.GET)
-	public String userAcccount(Principal principal ,ModelMap map, HttpServletRequest request )
+	public String userAcccount(Principal principal, ModelMap map, HttpServletRequest request)
 	{
 		map.addAttribute("status", request.getParameter("status"));
-		if(request.isUserInRole("ROLE_ADMIN"))
+		if (request.isUserInRole("ROLE_ADMIN"))
 		{
 			return "redirect:userAcccount";
-		}
-		else if(request.isUserInRole("ROLE_EMP_MANAGER") || request.isUserInRole("ROLE_EMP_USER"))
+		} else if (request.isUserInRole("ROLE_EMP_MANAGER") || request.isUserInRole("ROLE_EMP_USER"))
 		{
 			return "redirect:clientaccount";
-		}
-		else if(request.isUserInRole("ROLE_CON_MANAGER") || request.isUserInRole("ROLE_CON_USER"))
+		} else if (request.isUserInRole("ROLE_CON_MANAGER") || request.isUserInRole("ROLE_CON_USER"))
 		{
 			return "redirect:consultantaccount";
 		}
 		return "redirect:error";
 	}
-	
-	
+
 	@RequestMapping(value = "/checkUserExistance", method = RequestMethod.GET)
-	public @ResponseBody String checkUserExistance(Principal principal ,ModelMap map, HttpServletRequest request , @RequestParam String userid)
+	public @ResponseBody String checkUserExistance(Principal principal, ModelMap map, HttpServletRequest request,
+			@RequestParam String userid)
 	{
 		map.addAttribute("status", request.getParameter("status"));
 		JSONObject obj = new JSONObject();
-		
+
 		Registration reg = registrationService.getRegistationByUserId(userid);
-		if(reg!= null)
+		if (reg != null)
 		{
 			obj.put("uidexist", true);
 			return obj.toJSONString();

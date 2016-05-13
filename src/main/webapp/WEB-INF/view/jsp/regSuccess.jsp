@@ -25,7 +25,7 @@
 			<div class="login-form"  style="max-width: 700px">
 				<div class="login-header">
 					<a href="index"><img alt="" src="images/logo.png"></a>
-					<a href="home"><span class="close" title="Home Page">X</span></a>
+					<a href="home"><span class="close" title="Home Page">Home</span></a>
 				</div>
 				<div class="login-wrap bottom-padding">
 						<%

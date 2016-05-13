@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.NumberUtils"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
 <%@page import="com.artofsolving.jodconverter.DocumentConverter"%>
@@ -37,7 +38,7 @@
   	<div class="new_post_info" style="margin-top: 10px">
 	<%
 		Post post = (Post)request.getAttribute("post");
-// 		Registration registration=(Registration)request.getAttribute("registration");
+	Registration registration=(Registration)request.getAttribute("registration");
 		if(post != null)
 		{
 			%>
@@ -242,7 +243,54 @@
 								
 							</dd>
 						</dl>
-						<dl>
+						<dl><p style="font-weight: bold;">Contract Info</p>
+	        <table class="table no-margin" style="border: 1px solid gray;width:100%;">
+	       <thead>
+	        <tr style="text-align:left; ">
+	        <th>Slab no.</th>
+	        <th>Min Billable CTC (INR)</th>
+	        <th>Max Billable CTC (INR)</th>
+	        <th>Fee Percent (%)</th>
+	        </tr>
+	        </thead>
+	        <tbody>
+	        <tr >
+	        
+	        <td>1.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Max()) %></td>
+	        <td><%=registration.getFeePercent1() %></td>
+	        </tr>
+	        <tr >
+	        <td>2.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Max()) %></td>
+	        <td><%=registration.getFeePercent2() %></td>
+	        </tr>
+	        <tr >
+	        <td>3.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Max()) %></td>
+	        <td><%=registration.getFeePercent3() %></td>
+	        </tr>
+	        <tr >
+	        <td>4.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Max()) %></td>
+	        <td><%=registration.getFeePercent4() %></td>
+	        </tr>
+	        <tr >
+	        <td>5.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs5Min()) %></td>
+	        <td>No limit</td>
+	        <td><%=registration.getFeePercent5() %></td>
+	        </tr>
+	        </tbody>
+	        </table>
+						
+						</dl>
+						<dl></dl>
+						<dl style="clear: both;">
 							<dt>
 								<label>Comment</label>
 							</dt>
@@ -258,12 +306,12 @@
 						</div>
 						
 			        </div>
-			         <%-- <div class="block coment_fild" style="padding-top: 15px;margin-left:15px;
-	      border-radius:10px;background-color: #fcfcd2;width: 97%;margin-bottom: 22px;">
+			         <div class="block coment_fild" style="padding-top: 15px;">
 	        
 	        <div class="form_col" >
 	        
-	          <dl style="width: 100%;">
+	        
+	          <%-- <dl style="width: 100%;">
 	          <dt  style="width: 100%;text-align: center;">
 	          <strong style="font-size: 16px;">
 	          Contract Info</strong> </dt>
@@ -367,11 +415,11 @@
 	          <%=registration.getFeePercent5() %>
 	          </dd>
 	          
-	          </dl>
+	          </dl> --%>
 	        
 	        
 	        </div>
-	      </div> --%>
+	      </div> 
 		        </div>
 		        <div id="jobDescription">
 		        
@@ -379,7 +427,7 @@
 		      </div>
 		      
 		      
-							  <%
+							<%--   <%
 							 if(post.getUploadjd()!=null){
 
 					            String scheme = request.getScheme();
@@ -426,7 +474,7 @@
 		      
 		      
 		      
-			<%}%> 
+			<%}%>  --%>
 		      
 		      
 			<%

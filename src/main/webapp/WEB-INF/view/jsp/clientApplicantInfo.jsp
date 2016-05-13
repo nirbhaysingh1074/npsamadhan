@@ -509,7 +509,6 @@ jQuery(document).ready(function() {
 	
 // 	$(document.body).on('click', '.modal-content .btn-ok' ,function(){
 
-// 		
 // 	})
 	
 });
@@ -517,20 +516,14 @@ jQuery(document).ready(function() {
 </script>
 
 
- <%
- if(pp.getProfile().getResumePath()!=null){
+							 <%
+							 if(pp.getProfile().getResumePath()!=null){
 					            String scheme = request.getScheme();
 							    String serverName = request.getServerName();
 							    int serverPort = request.getServerPort();
-							    
-
-					         	 
 					            String inPath=GeneralConfig.UploadPath+ pp.getProfile().getResumePath();
 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
-					        
-					        	
-
 					        	java.io.File inputFile = new java.io.File(inPath); //
 					        	java.io.File outputFile = new java.io.File(outPath); //
 					        	  OpenOfficeConnection connection = new	  SocketOpenOfficeConnection("127.0.0.1",8100);
@@ -553,7 +546,7 @@ jQuery(document).ready(function() {
 					        			    x.setAttribute("width", "100%");
 					        				$('#tab-1').append(x);
 					        			</script>
-					        			<%} %>
+					        	<%} %>
 </div>
 </body>
 </html>

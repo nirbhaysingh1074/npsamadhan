@@ -74,7 +74,7 @@ jQuery(document).ready(function() {
 								<th>Location</th>
 								<th>Contact</th>
 								<th>Registered</th>
-								<th class="text-center">Action</th>
+								<th class="text-center">Status</th>
 								
 							</tr>
 						</thead>
@@ -109,12 +109,14 @@ jQuery(document).ready(function() {
 															if(reg.getLog().getIsactive().equals("true"))
 															{
 																%>
+																Active
 <!-- 																	<button class="btn btn-sm btn-danger btn_disable">Disable User</button> -->
 																<%
 															}
 															else
 															{
-																%>
+																
+																%>Inctive
 <!-- 																	<button class="btn btn-sm btn-success btn_enable">enable User</button> -->
 																<%
 															}

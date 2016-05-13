@@ -434,6 +434,7 @@
 		             		
 		             			if(userRole.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()) || userRole.getUserrole().equals(Roles.ROLE_CON_MANAGER.toString()))
 			             		{
+		             				if(loginInfo.getIsactive().equals("true")){
 			             			%>
 					             		<div class="form-group disable_user col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label"  >&nbsp;</label>
@@ -442,7 +443,7 @@
 					                      </div>
 					                    </div>
 			             			<%
-			             		}
+			             		}}
 			             		
 		             		%>
 		             		
