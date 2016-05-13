@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.NumberUtils"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
 <%@page import="com.artofsolving.jodconverter.DocumentConverter"%>
@@ -37,6 +38,7 @@
   	<div class="new_post_info" style="margin-top: 10px">
 	<%
 		Post post = (Post)request.getAttribute("post");
+	Registration registration=(Registration)request.getAttribute("registration");
 		if(post != null)
 		{
 			%>
@@ -56,12 +58,12 @@
 		              <a href="javascript:void(0)" >Post Closed</a>
 		           </li>
 		           <%}else{ %>
-		          <%--   <li class="active">
+	          		<%--   
+	          		<li class="active">
 		            <a href="javascript:void(0)" onclick="consCloseRequest('<%=post.getPostId() %>')" >Close Request</a>
-		            </li> --%>
+		            </li> 
+		            --%>
 		             <%} 
-		             
-
 		   			Registration reg = (Registration)request.getSession().getAttribute("registration");
         			Iterator<PostConsultant> it = post.getPostConsultants().iterator();
          			
@@ -78,18 +80,11 @@
          			if(pocl != null)
          			{
          				%>
-         				
 		            <li class="active">
 		           		 <a href="cons_your_positions?pid=<%=post.getPostId() %>" >Applied Candidates</a>
 		            </li>
-         				
          			<%}else{
-		             
 		             %>
-		             
-		             
-		             
-		             
 		            <li class="active">
 		           		 <a href="javascript:void(0)" onclick="consShowInterest('<%=post.getPostId() %>')" >Add to active positions</a>
 		            </li>
@@ -248,7 +243,54 @@
 								
 							</dd>
 						</dl>
-						<dl>
+						<dl><p style="font-weight: bold;">Contract Info</p>
+	        <table class="table no-margin" style="border: 1px solid gray;width:100%;">
+	       <thead>
+	        <tr style="text-align:left; ">
+	        <th>Slab no.</th>
+	        <th>Min Billable CTC (INR)</th>
+	        <th>Max Billable CTC (INR)</th>
+	        <th>Fee Percent (%)</th>
+	        </tr>
+	        </thead>
+	        <tbody>
+	        <tr >
+	        
+	        <td>1.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Max()) %></td>
+	        <td><%=registration.getFeePercent1() %></td>
+	        </tr>
+	        <tr >
+	        <td>2.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Max()) %></td>
+	        <td><%=registration.getFeePercent2() %></td>
+	        </tr>
+	        <tr >
+	        <td>3.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Max()) %></td>
+	        <td><%=registration.getFeePercent3() %></td>
+	        </tr>
+	        <tr >
+	        <td>4.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Min()) %></td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Max()) %></td>
+	        <td><%=registration.getFeePercent4() %></td>
+	        </tr>
+	        <tr >
+	        <td>5.</td>
+	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs5Min()) %></td>
+	        <td>No limit</td>
+	        <td><%=registration.getFeePercent5() %></td>
+	        </tr>
+	        </tbody>
+	        </table>
+						
+						</dl>
+						<dl></dl>
+						<dl style="clear: both;">
 							<dt>
 								<label>Comment</label>
 							</dt>
@@ -264,6 +306,120 @@
 						</div>
 						
 			        </div>
+			         <div class="block coment_fild" style="padding-top: 15px;">
+	        
+	        <div class="form_col" >
+	        
+	        
+	          <%-- <dl style="width: 100%;">
+	          <dt  style="width: 100%;text-align: center;">
+	          <strong style="font-size: 16px;">
+	          Contract Info</strong> </dt>
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt  style="width: 50%;">
+	          <label>Billable CTC Slab1 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs1Min() %> to <%=registration.getCtcSlabs1Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent1() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab2 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs2Min() %> to <%=registration.getCtcSlabs2Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent2() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab3 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs3Min() %> to <%=registration.getCtcSlabs3Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent3() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab4 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs4Min() %> to <%=registration.getCtcSlabs4Max() %> (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent4() %>
+	          </dd>
+	          
+	          </dl>
+	          <dl style="width: 30%;">
+	          <dt style="width: 50%;">
+	          <label>Billable CTC Slab5 : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getCtcSlabs5Min() %> to no limit (INR)
+	          </dd>
+	          </dl>
+	          <dl style="width: 20%;">
+	          
+	          <dt style="width: 50%;">
+	          <label>Fee Percent : </label>
+	          
+	          </dt>
+	          <dd style="width: 50%;">
+	          <%=registration.getFeePercent5() %>
+	          </dd>
+	          
+	          </dl> --%>
+	        
+	        
+	        </div>
+	      </div> 
 		        </div>
 		        <div id="jobDescription">
 		        
@@ -271,7 +427,7 @@
 		      </div>
 		      
 		      
-							  <%
+							<%--   <%
 							 if(post.getUploadjd()!=null){
 
 					            String scheme = request.getScheme();
@@ -279,14 +435,10 @@
 							    int serverPort = request.getServerPort();
 							    
 							    
-// 					            String inPath="data/"+ pp.getProfile().getResumePath();
-// 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
-// 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					         	 
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
 					         	String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
-					        	//Conversion.convertPDF(inPath, outPath);
 					        	
 
 					        	java.io.File inputFile = new java.io.File(inPath); //
@@ -295,11 +447,10 @@
 					        	  try {
 					        		connection.connect();
 					        	} catch (ConnectException e) {
-					        		// TODO Auto-generated catch block
 					        		e.printStackTrace();
-					        	} // convert 
+					        	} 
 					        	  DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
-					        	  converter.convert(inputFile, outputFile); // close
+					        	  converter.convert(inputFile, outputFile); 
 					        	  connection.disconnect(); 
 
 					        		String pathh=outputFile.getName();
@@ -323,7 +474,7 @@
 		      
 		      
 		      
-			<%}%> 
+			<%}%>  --%>
 		      
 		      
 			<%

@@ -15,15 +15,17 @@ public class GeneralConfig
 {
 	public static final double CESS = 0.5;
 	public static final String UploadPath = "/var/unihyr/data/";
+	//public static final String UploadPath = "D:/var/unihyr/data/";
 	public static double TAX = 14;
-	public static int NoOfRatingParams = 5;
+	public static int NoOfRatingStaticParams = 2;
+	public static int NoOfRatingDynamicParams = 3;
 	public static int rpp = 10;
 	public static int rpp_cons = 10;
-	public static int globalRatingMaxRows1=10*NoOfRatingParams;
+	public static int globalRatingMaxRows1=10*NoOfRatingDynamicParams;
 	public static int globalRatingWeight1=50;
 	public static int globalRatingMaxRows2=21;
 	public static int globalRatingWeight2=50;
-	public static String admin_email = "amar@silvereye.co";
+	public static String admin_email = "unihyr@gmail.com";
 	public static int filesize=1024000;
 	public static List<String> filetype = new ArrayList<>();
 	

@@ -44,7 +44,6 @@ public class DateFormats
         c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         System.out.println("Current week = " + Calendar.DAY_OF_WEEK);
 
-
         System.out.println("Start Date = " + c.getTime());
 		
 		return c.getTime();

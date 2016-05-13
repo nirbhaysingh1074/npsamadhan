@@ -35,9 +35,15 @@ public class PostConsultant
 	
 	@Column(nullable = false)
 	private double shortlistRatio;
-	
+
 	@Column(nullable = false)
 	private double closureRatio;
+	
+	@Column(nullable = false)
+	private double industrycoverage;
+	
+	@Column(nullable = false)
+	private double offerdrop;
 	
 	@Column(nullable = false)
 	private double percentileTr;
@@ -49,11 +55,57 @@ public class PostConsultant
 	private double percentileCl;
 	
 	@Column(nullable = false)
+	private double percentileInC;
+	
+	@Column(nullable = false)
+	private double percentileOd;
+	
+	@Column(nullable = false)
 	private double percentile;
 	
 	private Date createDate;
 
 	
+	public double getIndustrycoverage()
+	{
+		return industrycoverage;
+	}
+
+	public void setIndustrycoverage(double industrycoverage)
+	{
+		this.industrycoverage = industrycoverage;
+	}
+
+	public double getOfferdrop()
+	{
+		return offerdrop;
+	}
+
+	public void setOfferdrop(double offerdrop)
+	{
+		this.offerdrop = offerdrop;
+	}
+
+	public double getPercentileInC()
+	{
+		return percentileInC;
+	}
+
+	public void setPercentileInC(double percentileInC)
+	{
+		this.percentileInC = percentileInC;
+	}
+
+	public double getPercentileOd()
+	{
+		return percentileOd;
+	}
+
+	public void setPercentileOd(double percentileOd)
+	{
+		this.percentileOd = percentileOd;
+	}
+
 	public double getPercentileTr()
 	{
 		return percentileTr;

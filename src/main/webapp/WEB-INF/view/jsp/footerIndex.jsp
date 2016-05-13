@@ -37,12 +37,16 @@
 	<div class="desk-content">
 		<div class="contant-body" >
 			<div class="content-field">
-				<label>Name</label>
-				<input type="text" name="name" class="name">
+				<label>Your Name</label>
+				<input type="text" name="name" class="name" />
 			</div>
 			<div class="content-field">
 				<label>Email</label>
-				<input type="email" name="email" class="email">
+				<input type="email" name="email" class="email" />
+			</div>
+			<div class="content-field">
+				<label>Subject</label>
+				<input type="text" name="subject" class="subject" />
 			</div>
 			<div class="content-field">
 				<label>Message</label>

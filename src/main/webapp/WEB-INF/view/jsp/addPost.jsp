@@ -102,7 +102,7 @@
 		}
 		if(exp_max == ""  || isNaN(exp_max) || exp_min >= exp_max)
 		{
-			$('.exp_max_error').html('Min cannot be greater than Max')
+			$('.exp_max_error').html('Min cannot be greater than or equal to Max')
 			valid = false;
 		}
 		if(ctc_min == ""  || isNaN(ctc_min))
@@ -112,7 +112,7 @@
 		}
 		if(ctc_max == ""  || isNaN(ctc_max) || ctc_min >= ctc_max)
 		{
-			$('.ctc_max_error').html('Min cannot be greater than Max')
+			$('.ctc_max_error').html('Min cannot be greater than or equal to Max')
 			valid = false;
 		}
 		if(select_jd == "" && additionDetail == "")
@@ -198,148 +198,9 @@ Registration registration=(Registration)request.getAttribute("registration");
 	    <div class="form_cont">
           <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 	      <div class="block">
-	      <div class="block coment_fild" style="padding-top: 15px;margin-left:15px;
-	      border-radius:10px;background-color: #fcfcd2;width: 97%;margin-bottom: 22px;">
-	        
-	        <div class="form_col" >
-	        
-	          <dl style="width: 100%;">
-	          <dt  style="width: 100%;text-align: center;">
-	          <strong style="font-size: 16px;">
-	          Contract Info</strong> </dt>
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt  style="width: 50%;">
-	          <label>Billable CTC Slab1 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs1Min() %> to <%=registration.getCtcSlabs1Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent1() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab2 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs2Min() %> to <%=registration.getCtcSlabs2Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent2() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab3 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs3Min() %> to <%=registration.getCtcSlabs3Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent3() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab4 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs4Min() %> to <%=registration.getCtcSlabs4Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent4() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab5 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs5Min() %> to no limit (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent5() %>
-	          </dd>
-	          
-	          </dl>
-	        
-	        
-	        </div>
-	      </div>
+	     
 	        <div class="form_col">
-	          <%
 	          
-					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
-					if(fileuploaderror != null && fileuploaderror.equals("true"))
-					{
-						%>
-						<%
-						List<String> uploadMsg = (List)request.getAttribute("uploadMsg");
-						if(uploadMsg != null && !uploadMsg.isEmpty())
-						{
-							for(String msg : uploadMsg)
-							{
-								%>
-									<dl>
-										<dd>
-											<label class="error"> * <%=  msg%></label>
-										</dd>
-									</dl>
-								<%
-							}
-						}
-						%>
-						
-						<%
-						
-					}
-				%>
 	          <dl>
 	            <dt>
 	              <label>Title<span class='error'>*</span></label>
@@ -365,7 +226,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              <span class='error location_error'><form:errors path="location"/></span>
 	            </dd>
 	          </dl>
-	          <dl>
+	          <dl style="clear: both;">
 	            <dt>
 	              <label>Role Type<span class='error'>*</span></label>
 	            </dt>
@@ -406,7 +267,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              <span class='error designation_error'><form:errors path="designation"/></span>
 	            </dd>
 	          </dl>
-	          <dl>
+	          <dl style="clear: both;">
 	            <dt>
 	              <label>Experience<span class='error'>*</span></label>
 	            </dt>
@@ -460,12 +321,78 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              </div>
 	            </dd>
 	          </dl>
-	          <dl  style="clear: both">
+	          
+	          
+	          
+	          <dl style="display: none;">
+	            <dt>
+	              <label><br>Normal Work Hours<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <div class="row">
+	                <div class="col-md-4">Start Time
+	                  <form:select path="workHourStartHour">
+	                  
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=11;i++){
+	                   %>
+	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
+					   <%} %>
+	                   <form:option value="12:00 PM">12:00 PM</form:option>
+	                   <form:option value="12:30 PM">12:30 PM</form:option>
+					<%
+	                   for(int i=1;i<=11;i++){ %>
+						
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
+						<%} %>
+	                
+	                 
+	                  </form:select>
+	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
+	                </div>
+	         
+	                <div class="col-md-4"> End Time
+	                  <form:select path="workHourEndHour">
+	                  
+	                   <form:option value='11:59 PM" %>'>11:59 PM</form:option>
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=11;i>=1;i--){ %>
+						
+	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
+						<%} %>
+	                     <form:option value="12:30 PM">12:30 PM</form:option>
+	                  
+	                   <form:option value="12:00 PM">12:00 PM</form:option>
+					<%
+	                   for(int i=11;i>=0;i--){ %>
+						
+	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+						<%} %>
+	                 
+	                  </form:select>
+	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
+	                </div>
+	             
+	                
+	              </div>
+	            </dd>
+	          </dl>
+	          
+	       <dl   style="clear: both;">
 					<dt>
 						<label>Profile Quota</label>
 					</dt>
 					<dd>
-						<form:input path="profileParDay" class="number_only" />
+						<form:input path="profileParDay" class="number_only"  />
 						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
 					</dd>
 			  </dl>
@@ -493,76 +420,39 @@ Registration registration=(Registration)request.getAttribute("registration");
 					</div>
 					</dd>
 				</dl>
+				<dl style="clear:both;">
+					<dd>
+						<input type="button" id="startRecording" value="Start" /> 
+						<input type="button" id="stopRecording" value="Stop" /> 
+						<span id="recordingStatus"></span> 
+						<input type="hidden" id="fileUidKey" />
+					</dd>
+				</dl>
+				<%
 	          
-	          
-	          <dl>
-	            <dt>
-	              <label><br>Normal Work Hours<span class='error'>*</span></label>
-	            </dt>
-	            <dd>
-	              <div class="row">
-	                <div class="col-md-4">Start Time
-	                  <form:select path="workHourStartHour">
-	                  
-	                   <%
-	                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=11;i++){
-	                	   
-	                	   %>
+					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
+					if(fileuploaderror != null && fileuploaderror.equals("true"))
+					{
+						List<String> uploadMsg = (List)request.getAttribute("uploadMsg");
+						if(uploadMsg != null && !uploadMsg.isEmpty())
+						{
+							for(String msg : uploadMsg)
+							{
+								%>
+									<dl style="clear: both;">
+										<dd>
+											<label class="error"> * <%=  msg%></label>
+										</dd>
+									</dl>
+								<%
+							}
+						}
+						%>
 						
-	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
-						<%} %>
-	                     <form:option value="12:00 PM">12:00 PM</form:option>
-	                  
-	                   <form:option value="12:30 PM">12:30 PM</form:option>
-					<%
-	                   for(int i=1;i<=11;i++){ %>
+						<%
 						
-	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
-						<%} %>
-	                
-	                 
-	                  </form:select>
-	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
-	                </div>
-	         
-	                <div class="col-md-4"> End Time
-	                  <form:select path="workHourEndHour">
-	                  
-	                   <%
-	                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=11;i++){ %>
-						
-	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
-						<%} %>
-	                     <form:option value="12:00 PM">12:00 PM</form:option>
-	                  
-	                   <form:option value="12:30 PM">12:30 PM</form:option>
-					<%
-	                   for(int i=1;i<=11;i++){ %>
-						
-	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
-						<%} %>
-	                
-	                 
-	                  </form:select>
-	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
-	                </div>
-	             
-	                
-	              </div>
-	            </dd>
-	          </dl>
-	          
-	       
+					}
+				%>
 	        </div>
 	      </div>
 	      

@@ -13,6 +13,9 @@ public class ClientUserModel
 	@NotBlank(message="{NotBlank.cuForm.name}")
 	private String name;
 	
+	@NotNull(message="")
+	private String mobileno;
+	
 	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
 	private String password;
 	

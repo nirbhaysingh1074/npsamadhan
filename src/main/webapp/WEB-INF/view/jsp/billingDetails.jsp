@@ -118,8 +118,8 @@ Yet to Join
 <%} %>
 </td>
 <td>
-<%=NumberUtils.convertNumberToCommoSeprated((new Double(bill.getTotalCTC()).intValue())+"") %></td>
-<td><%=NumberUtils.convertNumberToCommoSeprated(new Double(bill.getBillableCTC()).intValue()+"") %></td>
+<%=NumberUtils.convertNumberToCommoSeprated(bill.getTotalCTC()) %></td>
+<td><%=NumberUtils.convertNumberToCommoSeprated(bill.getBillableCTC()) %></td>
 <td>
 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 <%=bill.getFeePercentForClient() %>
@@ -129,9 +129,9 @@ Yet to Join
 </sec:authorize>
 
 </td>
-<td><%=NumberUtils.convertNumberToCommoSeprated(new Double(bill.getFee()).intValue()+"") %></td>
+<td><%=NumberUtils.convertNumberToCommoSeprated(bill.getFee()) %></td>
 <td><%=bill.getTax()%></td>
-<td><%=NumberUtils.convertNumberToCommoSeprated(new Double(bill.getTotalAmount()).intValue()+"") %></td>
+<td><%=NumberUtils.convertNumberToCommoSeprated(bill.getTotalAmount()) %></td>
 <td>
 <%if(bill.getPaymentDueDateForAd()!=null){ %>
 <%=DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForAd()) %>

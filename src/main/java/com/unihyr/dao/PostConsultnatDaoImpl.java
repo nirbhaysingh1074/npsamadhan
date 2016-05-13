@@ -56,9 +56,8 @@ public class PostConsultnatDaoImpl implements PostConsultnatDao
 	@Override
 	public void updatePostConsultant(PostConsultant postConsultant)
 	{
-
-			this.sessionFactory.getCurrentSession().update(postConsultant);
-			this.sessionFactory.getCurrentSession().flush();
+		this.sessionFactory.getCurrentSession().update(postConsultant);
+		this.sessionFactory.getCurrentSession().flush();
 		return;
 	}
 
@@ -68,7 +67,7 @@ public class PostConsultnatDaoImpl implements PostConsultnatDao
 		List<PostConsultant> list=new  ArrayList<PostConsultant>();
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostConsultant.class);
 		criteria.add(Restrictions.eq("post.postId", postId));
-		if(ratingParam.indexOf("turnAround")>=0)
+		if(ratingParam.indexOf("turnAround")>=0||ratingParam.indexOf("offerdrop")>=0)
 			criteria.addOrder(Order.desc(ratingParam));
 			else
 		criteria.addOrder(Order.asc(ratingParam));

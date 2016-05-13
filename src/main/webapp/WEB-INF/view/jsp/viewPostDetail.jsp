@@ -68,7 +68,7 @@
 	            		<%
 		            	}else{
 		            		%>
-		            			<li class="active post_close" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Close</a></li>
+<%-- 		            			<li class="active post_close" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Close</a></li> --%>
 		            		<%
 		            	}}
 			            
@@ -260,14 +260,14 @@
 								
 							</dd>
 						</dl>
-						<dl>
+					<%-- 	<dl>
 							<dt>
 								<label>Profile Quota</label>
 							</dt>
 							<dd>
 								<label><% if( post.getProfileParDay()> 0){%><%=post.getProfileParDay()%><%}else{%>NA<%} %></label>
 							</dd>
-						</dl>
+						</dl> --%>
 						<dl>
 							<dt>
 								<label>Additional Comments</label>
@@ -277,7 +277,7 @@
 								
 							</dd>
 						</dl>
-						<dl>
+						 <dl>
 							<dt>
 								<label>Profile Quata</label>
 							</dt>
@@ -298,7 +298,7 @@
 								%>
 								
 							</dd>
-						</dl>
+						</dl> 
 						<%
 							if(post.getEditSummary() != null)
 							{
@@ -315,8 +315,7 @@
 								<%
 							}
 						%>
-						
-						<%
+				<%-- 		<%
 							if(post.getUploadjd() != null)
 							{
 								%>
@@ -327,41 +326,24 @@
 									</dl>
 								<%
 							}
-						%>
-						
+						%> --%>
 						<div class="clearfix" style="padding: 15px">
 							<h3><b>Job Description</b></h3><br>
 							<p><%= post.getAdditionDetail() %></p>
 						</div>
-						
 			        </div>
 		        </div>
 		        <div id="jobDescription">
-		        
 		        </div>
-		        
-		        
-		        
 		      </div>
-		     
 							  <%
 							 if(post.getUploadjd()!=null){
-
 					            String scheme = request.getScheme();
 							    String serverName = request.getServerName();
 							    int serverPort = request.getServerPort();
-							    
-							    
-// 					            String inPath="data/"+ pp.getProfile().getResumePath();
-// 					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
-// 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
-					         	 
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
 					         	String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
-					        	//Conversion.convertPDF(inPath, outPath);
-					        	
-
 					        	java.io.File inputFile = new java.io.File(inPath); //
 					        	java.io.File outputFile = new java.io.File(outPath); //
 					        	  OpenOfficeConnection connection = new	  SocketOpenOfficeConnection("127.0.0.1",8100);
@@ -371,17 +353,11 @@
 					        		// TODO Auto-generated catch block
 					        		e.printStackTrace();
 					        	} // convert 
-					        	  DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
-					        	  converter.convert(inputFile, outputFile); // close
-					        	  connection.disconnect(); 
-
+					        	  	DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
+					        	  	converter.convert(inputFile, outputFile); // close
+					        	  	connection.disconnect(); 
 					        		String pathh=outputFile.getName();
-
-					        	
 					        	%>
-
-
-					        			
 					        			<script type="text/javascript">
 					        			 	var x = document.createElement("EMBED");
 					        			 	//path=path.replace(/\//g, "////");
@@ -390,16 +366,8 @@
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);
 					        			</script>
-					        			
-		      
-		      
-		      
-		      
-		      
 			<%}%> 
-		<%}
-		
-	%> 
+		<%}%> 
 	</div>
 </div>
 </div>

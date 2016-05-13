@@ -384,7 +384,7 @@
 							
 							<dl>
 								<dt>
-									<label>Current CTC<span class="req">*</span></label>
+									<label>Current CTC (Annual)<span class="req">*</span></label>
 								</dt>
 								<dd>
 									<form:input path="currentCTC" cssClass="number_only" maxlength="5"/>
@@ -394,7 +394,7 @@
 							</dl>
 							<dl>
 								<dt>
-									<label>Expected CTC<span class="req">*</span></label>
+									<label>Expected CTC (Annual)<span class="req">*</span></label>
 								</dt>
 								<dd>
 									<form:input path="expectedCTC" cssClass="number_only" maxlength="5"/>

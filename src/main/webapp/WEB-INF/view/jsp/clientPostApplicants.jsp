@@ -69,7 +69,9 @@
 </script>
 </head>
 <%
-	List<PostConsultant> consList = (List)request.getAttribute("consList");
+// List<PostConsultant> consList = (List)request.getAttribute("consList");
+List<PostConsultant> conslistHavingProfiles = (List)request.getAttribute("conslistHavingProfiles");
+List<PostConsultant> conslistHavingNoProfiles = (List)request.getAttribute("conslistHavingNoProfiles");
 	List<PostProfile> ppList = (List)request.getAttribute("ppList");
 	Post post=(Post) request.getAttribute("sel_post");
 %>
@@ -146,12 +148,23 @@
           <h2 style="background: #4e4e4e none repeat scroll 0 0; border-radius: 5px 5px 0 0;color: #fff;margin-top: 5px">Hiring Partners</h2>
           <ul id="cons_list">
             <%
-            	if(consList != null && !consList.isEmpty())
+            	if(conslistHavingProfiles != null && !conslistHavingProfiles.isEmpty())
             	{
-            		for(PostConsultant pp : consList)
+            		for(PostConsultant pp : conslistHavingProfiles)
             		{
             			%>
 				            <li id="<%= pp.getConsultant().getUserid()%>"><a><%= pp.getConsultant().getConsultName() %></a></li>
+            			<%		
+            		}
+            		
+            	}
+        	if(conslistHavingNoProfiles != null && !conslistHavingNoProfiles.isEmpty())
+        	{
+            		for(PostConsultant pp : conslistHavingNoProfiles)
+            		{
+            			%>
+				            <li id="<%= pp.getConsultant().getUserid()%>"><a><%= pp.getConsultant().getConsultName() %>
+				            <br><span style='font-size:10px;'>(No Profiles Submitted)</span></a></li>
             			<%		
             		}
             	}

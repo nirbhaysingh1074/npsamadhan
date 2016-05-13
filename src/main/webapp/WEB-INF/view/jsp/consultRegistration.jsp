@@ -98,17 +98,17 @@ $(document).ready(function() {
 				valid = false;
 			}
 			
-			if(password == "")
-			{
-				$('.password_error').html("please enter a valid password")
-				valid = false;
-			}
+// 			if(password == "")
+// 			{
+// 				$('.password_error').html("please enter a valid password")
+// 				valid = false;
+// 			}
 			
-			if(repassword == "" || password != repassword)
-			{
-				$('.repassword_error').html("Password do not match. Please re-enter both passwords")
-				valid = false;
-			}
+// 			if(repassword == "" || password != repassword)
+// 			{
+// 				$('.repassword_error').html("Password do not match. Please re-enter both passwords")
+// 				valid = false;
+// 			}
 			
 			if(revenue == "" || revenue == "0")
 			{
@@ -245,7 +245,7 @@ $(document).ready(function() {
 									path="userid" /> <%=usermsg%></span>
 						</div>
 					</div>
-					<div class="clearfix"></div>
+					<%-- <div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div>
 							<label>Password<span class="req">*</span></label>
@@ -263,11 +263,11 @@ $(document).ready(function() {
 							<span class="error repassword_error">&nbsp;<form:errors
 									path="repassword" /></span>
 						</div>
-					</div>
+					</div> --%>
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div>
-							<label>Revenues<span class="req">*</span></label>
+							<label>Revenue<span class="req">*</span></label>
 							<form:input path="revenue" cssClass="number_only" maxlength="10"
 								style="padding-right: 150px" />
 							<span

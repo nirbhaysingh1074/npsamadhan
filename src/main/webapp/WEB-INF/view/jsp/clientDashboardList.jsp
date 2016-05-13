@@ -119,6 +119,8 @@
 		       				<th align="left">Location</th>
 		       				<th width="10%">Posted Date</th>
 		       				<th >No of Partners</th> 
+		       				<th >Total Posts</th> 
+		       				<th >Filled Posts</th> 
 		       				<th width="10%">Received</th>
 		       				<th width="10%">Shortlisted</th>
 		       				
@@ -227,7 +229,8 @@
 						       				<td style="text-align: center;"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
 
 						       				<td style="text-align: center;"><%= post.getPostConsultants().size() %></td>
-						       				
+						       				<td style="text-align: center;"><%= post.getNoOfPosts() %></td>
+						       				<td style="text-align: center;"><%= post.getNoOfPostsFilled() %></td>
 						       				<td style="text-align: center;"><%= post.getPostProfile().size() %></td>
 						       				
 						       				

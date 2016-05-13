@@ -12,6 +12,7 @@
 <link href="css/media.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
+	<link rel="stylesheet" href="css/font.css" media="screen"   />
 <link rel="stylesheet" href="css/alertify.core.css" />
 <link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -20,6 +21,7 @@
 <script type="text/javascript" src="js/jquery.IE.js"></script>
 <script type="text/javascript" src="js/client_js.js"></script>
 <script type="text/javascript" src="js/common_js.js"></script>
+<script type="text/javascript" src="js/jd_record.js"></script>
 <script src="js/alertify.min.js"></script>
 <link rel="stylesheet" href="css/model.popup.css" />
 
@@ -82,7 +84,6 @@ jQuery(document).ready(function() {
 					$('.notification .noti_inner').append("<a href='clientapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
 							"<span class='post-title'>"+val.ptitle+"</span>.</div></a>");
-					
 				});
 			}
 			else
@@ -101,14 +102,9 @@ jQuery(document).ready(function() {
 </head>
 <body class="loading" style="background-image: url('images/bg-image.png')" >
 <tilesx:useAttribute name="currentpage"/>
-
-
-
-
 <header>
 <%
 	Registration reg = (Registration)request.getSession().getAttribute("registration");
-	
 %>
 <div class="container">
    <div class="header">
@@ -149,7 +145,6 @@ jQuery(document).ready(function() {
 						<span class="noti-cons">Uni Consultant</span> send a message on  
 						<span class="post-title">post title</span>.
 					</div> -->
-					
 				</div>
 			</div>
 		</div>
@@ -159,7 +154,7 @@ jQuery(document).ready(function() {
 	   		<a href="javascript:void(0);" onClick="$('.toggle_menu').slideToggle();" class="toggle-icon"></a>
 	      <ul class="toggle_menu">
 	        <li class="${currentpage == 'clientdashboard' ? 'active' : ''}"><a href="clientdashboard">Home</a></li>
-	        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientaddpost">New Post</a></li>
+	        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientaddpost">Post a new Job</a></li>
 	        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Manage Positions </a></li>
 	        <li class="${currentpage == 'clientBillingDetails' ? 'active' : ''}"><a href="clientBillingDetails">Billing Details</a></li>
 	        <li class="${currentpage == 'clientprofilecenter' ? 'active' : ''}"><a href="clientprofilecenter">Profiles Center</a></li>
@@ -167,6 +162,5 @@ jQuery(document).ready(function() {
 	  </nav>
 </div>
 </header>
-
 </body>
 </html>

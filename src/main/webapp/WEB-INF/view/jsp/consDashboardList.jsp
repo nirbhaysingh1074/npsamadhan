@@ -114,9 +114,9 @@
 		        <table class="table no-margin" style="border: 1px solid gray;">
 		        	<thead>
 		        		<tr>
-		        			<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+		        			<%-- <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 		       				<th align="left" width="25px"><input id="sel_all" type="checkbox"></th>
-		       				</sec:authorize>
+		       				</sec:authorize> --%>
 		       				<th align="left">Position</th>
 		       				<th  width="110px"  align="left">
 			       				<div style="float: left;">
@@ -205,9 +205,9 @@
 	       							
 	       								%>
 						       			<tr>
-						       				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+						       				<%-- <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 						        			<td><input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>"></td>
-						        			</sec:authorize>
+						        			</sec:authorize> --%>
 						       				<td>
 						       					<%
 						       						if(post.getPublished() != null && post.getDeleteDate() == null)

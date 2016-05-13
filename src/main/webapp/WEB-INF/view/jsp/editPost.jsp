@@ -51,6 +51,7 @@
 		var exp_max = $('#exp_max').val();
 		var ctc_min = $('#ctc_min').val();
 		var ctc_max = $('#ctc_max').val();
+		var editSummary = $('#editSummary').val();
 		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); 
 		var select_jd = $('.select_jd').val();
 		
@@ -81,6 +82,11 @@
 		if(role == "")
 		{
 			$('.role_error').html('Please enter post role')
+			valid = false;
+		}
+		if(editSummary == "")
+		{
+			$('.editSummary_error').html('Please enter edit summary');
 			valid = false;
 		}
 		if(designation == "")
@@ -191,32 +197,7 @@ jQuery(document).ready(function() {
           <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 		      <div class="block">
 		        <div class="form_col">
-		          <%
-					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
-					if(fileuploaderror != null && fileuploaderror.equals("true"))
-					{
-						%>
-						<%
-						List<String> uploadMsg = (List)request.getAttribute("uploadMsg");
-						if(uploadMsg != null && !uploadMsg.isEmpty())
-						{
-							for(String msg : uploadMsg)
-							{
-								%>
-									<dl>
-										<dd>
-											<label class="error">* <%=  msg%></label>
-										</dd>
-									</dl>
-								<%
-							}
-						}
-						%>
-						
-						<%
-						
-					}
-				%>
+		         
 		          <dl>
 		            <dt>
 		              <label>Title<span class='error'>*</span></label>
@@ -242,7 +223,7 @@ jQuery(document).ready(function() {
 		              <span class='error location_error'><form:errors path="location"/></span>
 		            </dd>
 		          </dl>
-		          <dl>
+		          <dl style="clear: both;">
 	            <dt>
 	              <label>Role Type<span class='error'>*</span></label>
 	            </dt>
@@ -282,7 +263,7 @@ jQuery(document).ready(function() {
 		              <span class='error designation_error'><form:errors path="designation"/></span>
 		            </dd>
 		          </dl>
-		          <dl>
+		          <dl style="clear: both;">
 		            <dt>
 		              <label>Experience<span class='error'>*</span></label>
 		            </dt>
@@ -336,20 +317,84 @@ jQuery(document).ready(function() {
 		              </div>
 		            </dd>
 		          </dl>
-		          <dl  style="clear: both">
+		         
+	          <dl style="display: none;">
+	            <dt>
+	              <label><br>Normal Work Hours<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <div class="row">
+	                <div class="col-md-4">Start Time
+	                  <form:select path="workHourStartHour">
+	                  
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=00;i<=11;i++){
+	                   %>
+	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
+					   <%} %>
+	                   <form:option value="12:00 PM">12:00 PM</form:option>
+	                   <form:option value="12:30 PM">12:30 PM</form:option>
+					<%
+	                   for(int i=1;i<=11;i++){ %>
+						
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
+						<%} %>
+	                
+	                 
+	                  </form:select>
+	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
+	                </div>
+	         
+	                <div class="col-md-4"> End Time
+	                  <form:select path="workHourEndHour">
+	                  
+	                   <form:option value='11:59 PM" %>'>11:59 PM</form:option>
+	                   <%
+	                   NumberFormat formatter = new DecimalFormat("00");  
+	                   for(int i=11;i>=1;i--){ %>
+						
+	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
+						<%} %>
+	                     <form:option value="12:30 PM">12:30 PM</form:option>
+	                  
+	                   <form:option value="12:00 PM">12:00 PM</form:option>
+					<%
+	                   for(int i=11;i>=0;i--){ %>
+						
+	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+	                  
+	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
+						<%} %>
+	                 
+	                  </form:select>
+	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
+	                </div>
+	             
+	                
+	              </div>
+	            </dd>
+	          </dl>
+	        
+	       <dl   style="clear: both;">
 					<dt>
 						<label>Profile Quota</label>
 					</dt>
 					<dd>
-						<form:input path="profileParDay" class="number_only" />
+						<form:input path="profileParDay" class="number_only"  />
 						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
 					</dd>
-		  		</dl>
-		          <dl >
-						<dt>
-							<label>Upload JD</label>
-						</dt>
-						<dd>
+			  </dl>
+	          <dl>
+					<dt>
+						<label>Upload JD</label>
+					</dt>
+					<dd>
 						<div class="file_up" style="float: left;">
 							<form:input path="uploadjd" disabled = "true"/>
 							<div class="fileUpload">
@@ -368,76 +413,34 @@ jQuery(document).ready(function() {
     position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
 					</div>
 					</dd>
-					</dl>
+				</dl>
 		          
-		          <dl>
-	            <dt>
-	              <label><br>Normal Work Hours<span class='error'>*</span></label>
-	            </dt>
-	            <dd>
-	              <div class="row">
-	                <div class="col-md-4">Start Time
-	                  <form:select path="workHourStartHour">
-	                  
-	                   <%
-	                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=11;i++){
-	                	   
-	                	   %>
+		           <%
+					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
+					if(fileuploaderror != null && fileuploaderror.equals("true"))
+					{
+						%>
+						<%
+						List<String> uploadMsg = (List)request.getAttribute("uploadMsg");
+						if(uploadMsg != null && !uploadMsg.isEmpty())
+						{
+							for(String msg : uploadMsg)
+							{
+								%>
+									<dl style="clear: both;">
+										<dd>
+											<label class="error">* <%=  msg%></label>
+										</dd>
+									</dl>
+								<%
+							}
+						}
+						%>
 						
-	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
-						<%} %>
-	                     <form:option value="12:00 PM">12:00 PM</form:option>
-	                  
-	                   <form:option value="12:30 PM">12:30 PM</form:option>
-					<%
-	                   for(int i=1;i<=11;i++){ %>
+						<%
 						
-	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 PM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 PM</form:option>
-						<%} %>
-	                
-	                 
-	                  </form:select>
-	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
-	                </div>
-	         
-	                <div class="col-md-4"> End Time
-	                  <form:select path="workHourEndHour">
-	                  
-	                   <%
-	                   NumberFormat formatter = new DecimalFormat("00");  
-	                   for(int i=00;i<=11;i++){ %>
-						
-	                   <form:option value='<%=formatter.format(i)+":00 AM" %>'><%=formatter.format(i) %>:00 AM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 AM" %>'><%=formatter.format(i) %>:30 AM</form:option>
-						<%} %>
-	                     <form:option value="12:00 PM">12:00 PM</form:option>
-	                  
-	                   <form:option value="12:30 PM">12:30 PM</form:option>
-					<%
-	                   for(int i=1;i<=11;i++){ %>
-						
-	                   <form:option value='<%=formatter.format(i)+":00 PM" %>'><%=formatter.format(i) %>:00 AM</form:option>
-	                  
-	                   <form:option value='<%=formatter.format(i)+":30 PM" %>'><%=formatter.format(i) %>:30 AM</form:option>
-						<%} %>
-	                
-	                 
-	                  </form:select>
-	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
-	                </div>
-	             
-	                
-	              </div>
-	            </dd>
-	          </dl>
-		          
-		          
+					}
+				%>
 		          
 		        </div>
 		      </div>
@@ -453,9 +456,9 @@ jQuery(document).ready(function() {
 	             <span class='error'><form:errors path="comment"/></span>
 		      </div>
 		      <div class="block coment_fild" style="padding-top: 35px">
-		        <p>Edit Summary</p>
+		        <p>Edit Summary<span style="font-size: 10px;font-style: italic;">(Note: please mention the key specifications that have been modified in the updated Job Description)</span></p>
 		        <form:textarea path="editSummary" ></form:textarea>
-	             <span class='error'><form:errors path="editSummary"/></span>
+	             <span class='error editSummary_error'><form:errors path="editSummary"/></span>
 		      </div>
 		      <%
 		      Post post = (Post)request.getAttribute("post");

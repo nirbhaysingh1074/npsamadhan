@@ -26,11 +26,13 @@ public class CommonController
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String msg = request.getParameter("msg");
+
+		String subject = request.getParameter("subject");
 		
 		JSONObject obj = new JSONObject();
 		if(name != null && name.length() > 0 && email != null && email.length() > 0 && msg != null && msg.length() > 0)
 		{
-			String subject = "Help Desk: "+name+" - "+email;
+			subject = "Help Desk: "+subject;
 			
 			String content = "<table cellspacing='0' cellpadding='8' border='0' style='width: 100%; font-family: Arial, Sans-serif;  background-color: #fff' summary=''>"
 					+ "<tbody><tr>"
@@ -82,6 +84,7 @@ public class CommonController
 					+ "</table>";
 			
 			boolean st = mailService.sendMail(GeneralConfig.admin_email, subject, content);
+			mailService.sendMail(email, subject, "Thanks for contacting us. We will revert you back soon.");
 			System.out.println("sending mail......");
 			if(st)
 			{
