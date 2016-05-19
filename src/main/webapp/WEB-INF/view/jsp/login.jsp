@@ -18,7 +18,7 @@
 		}
 	</style>
 </head>
-<body style="background-image: url('images/bg-image.png')">
+<body style="background: #EDEDED;"> <!-- style="background-image: url('images/bg-image.png')" --> 
 	<section>
 		<div class="container" style="background: inherit;">
 			<div class="login-form">

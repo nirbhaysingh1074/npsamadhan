@@ -52,6 +52,7 @@ public class PostDaoImpl implements PostDao
 				.add(Restrictions.eq("postId", postId)).addOrder(Order.desc("createDate"))
 				.setFetchMode("postProfile", FetchMode.JOIN)
 				.setFetchMode("postConsultants", FetchMode.JOIN)
+				.setFetchMode("industry", FetchMode.JOIN)
 				.list();
 		if(list != null && !list.isEmpty())
 		{

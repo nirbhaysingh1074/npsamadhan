@@ -2,6 +2,7 @@ package com.unihyr.controller;
 
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import com.unihyr.domain.Registration;
 import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientUserModel;
 import com.unihyr.service.LoginInfoService;
+import com.unihyr.service.MailService;
 import com.unihyr.service.RegistrationService;
 /**
  * Controls all the request create update delete general users of consultant
@@ -35,6 +37,8 @@ public class ConsultantUserController
 	private RegistrationService registrationService;
 	@Autowired
 	private LoginInfoService loginInfoService;
+	@Autowired
+	private MailService mailService;
 	
 	
 	
@@ -92,6 +96,17 @@ public class ConsultantUserController
 			
 			login.setReg(reg);
 			login.setIsactive("true");
+			char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
+			Random rnd = new Random();
+
+			StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
+			for (int i = 0; i < 5; i++)
+				sb.append(alphNum[rnd.nextInt(alphNum.length)]);
+
+			String id = sb.toString();
+			login.setPassword(id);
+			
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_CON_USER.toString());
 			Set<UserRole> roles = new HashSet<UserRole>();
@@ -101,6 +116,11 @@ public class ConsultantUserController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
+			mailService.sendMail(model.getUserid(), "Sign Up info",
+					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
+							+ id + "<br> After first login please change this password.");
+		
+			
 			return "redirect:consultantaccount";
 		}
 	}

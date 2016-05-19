@@ -60,7 +60,7 @@ textarea:hover, textarea:focus, #items td.total-value textarea:hover, #items td.
 }
 .delete-wpr { position: relative; }
 .delete { display: block; color: #000; text-decoration: none; position: absolute; background: #EEEEEE; font-weight: normal; padding: 0px 3px; border: 1px solid; top: -6px; left: -22px; font-family: Times New Roman; font-size: 12px; } 
-.profile_status_button{    display: inline-block;
+.profile_status_buttonGen{    display: inline-block;
     padding: 2px 2px;
     text-transform: none;
     background: #f8b910;
@@ -85,8 +85,8 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 %>
 <div class="filter">
 					<div class="col-md-5" style="text-align: center;">
-							<button id="sdfg"  class="profile_status_button"	>Print</button>
-								<button id="create_pdf" class="profile_status_button">Save as Pdf</button>
+							<button id="sdfg"  class="profile_status_buttonGen"	>Print</button>
+								<button id="create_pdf" class="profile_status_buttonGen">Save as Pdf</button>
 					</div>
 				</div>
 				<div id="asdf">

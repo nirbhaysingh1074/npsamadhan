@@ -20,6 +20,7 @@
     
     <script src="js/admin/jQuery-2.1.4.min.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/common_js.js"></script>
 <script src="js/alertify.min.js"></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">

@@ -85,6 +85,7 @@ jQuery(document).ready(function() {
 								{
 									for(Registration reg : regList)
 									{
+										if(reg.getConsultName()!=null||reg.getOrganizationName()!=null){
 										%>
 											<tr id="<%= reg.getUserid() %>">
 												
@@ -128,7 +129,7 @@ jQuery(document).ready(function() {
 												
 											</tr>
 										<%
-									}
+									}}
 								}
 							
 							%>

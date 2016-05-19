@@ -481,7 +481,7 @@ Post post=null;
 															%>
 																<td class="text-center">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<button  class="join_accept profile_status_button" title="Click to accept offer" >Join</button> 
+																		<button  class="join_accept profile_status_button" title="Click to accept offer" 	onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')" >Join</button> 
 																		<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
 																	</p>
 																</td>
@@ -857,3 +857,62 @@ jQuery(document).ready(function() {
 });
 
 </script>
+
+
+
+	<div id="offerModal" class="modal">
+
+		<!-- Modal content -->
+		<div class="modal-content" style="width: 50%">
+			<span class="close">x</span>
+			<div>
+				<div class="modal-body">
+					<p>Please fill all details</p>
+					<br>
+					<input	type="hidden" id="postIdForAccept" />
+					 <!-- <label>Total CTC (INR): </label><span
+						style="color: green; font-weight: bold;" id="totalCTCinWords"></span>
+					<br>
+					<input type="text" id="totalCTC"
+						onchange="getAmountInWords(this.value,'totalCTCinWords')" /> <input
+						type="hidden" id="postIdForAccept" /> <br> <span
+						id="errorTotalCTC" style="display: none; color: red;"></span> <label>Billable
+						CTC (INR): </label> <span style="color: green; font-weight: bold;"
+						id="billableCTCinWords"></span> <br> <input type="text"
+						id="billableCTC"
+						onchange="getAmountInWords(this.value,'billableCTCinWords')" /> <br>
+					<span id="errorBillableCTC" style="display: none; color: red;"></span> -->
+					<label>Joining Date : </label> <br>
+					<input type="text" id="datepicker" /> <span id="errorJoiningDate"
+						style="display: none; color: red;"></span>
+				</div>
+				<div class="model-footer">
+					<button class="btn btn-cancel">Cancel</button>
+					<button class="btn btn-ok" id="offerjoinedpopup">Ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	jQuery(document).ready(function() {
+
+	$(document.body).on('click', '.profile_status > .join_accept', function() {
+		$('#offerModal').show();
+	});
+	});
+	</script>
+	
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			$(function() {
+				$("#datepicker").datepicker({
+					dateFormat : 'yy-mm-dd'
+				});
+			});
+		});
+	</script>

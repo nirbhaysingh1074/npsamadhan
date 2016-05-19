@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ import com.unihyr.service.GlobalRatingService;
 import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
 import com.unihyr.service.LoginInfoService;
+import com.unihyr.service.MailService;
 import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
@@ -54,31 +56,55 @@ import com.unihyr.service.UserRoleService;
 @Controller
 public class AdminPanelController
 {
+	/**
+	 * industry service to invoke industry related functions
+	 */
 	@Autowired
 	private IndustryService industryService;
+	/**
+	 * service to invoke Job Post related functions
+	 */
 	@Autowired
 	private PostService postService;
+	/**
+	 * user registration service to invoke user registration related functions
+	 */
 	@Autowired
 	private RegistrationService registrationService;
+	/**
+	 * login info service to invoke user login related functions
+	 */
 	@Autowired
 	private LoginInfoService loginInfoService;
+	/**
+	 * service to invoke user role related functions
+	 */
 	@Autowired
 	private UserRoleService userRoleService;
+	/**
+	 * service to invoke candidate profile related functions
+	 */
 	@Autowired
 	private ProfileService profileService;
+	/**
+	 * service to invoke Post Profile together related functions
+	 */
 	@Autowired
 	private PostProfileService postProfileService;
 
-	@Autowired
-	private RatingCalculationService ratingCalculationService;
-	@Autowired
-	private GlobalRatingService globalRatingService;
-	
+	/**
+	 * service to invoke messaging related functions
+	 */
 	@Autowired private 	InboxService inboxService;
+	/**
+	 * service to invoke Mail related functions
+	 */
+	@Autowired private 	MailService mailService;
 	
-	
-	
-	
+	/**
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value = "/admindashboard", method = RequestMethod.GET)
 	public String admindashboard(ModelMap map)
 	{
@@ -89,14 +115,25 @@ public class AdminPanelController
 		return "admindashboard";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardPostList", method = RequestMethod.GET)
 	public String adminDashboardPostList(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		map.addAttribute("postList", postService.getPosts(0, 10));
-//		map.addAttribute("ppList", postProfileService.getAllPostProfile(0, 10));
 		return "adminDashboardPostList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/acceptPostCloseRequest", method = RequestMethod.GET)
 	@ResponseBody
 	public String acceptPostCloseRequest(ModelMap map, HttpServletRequest request, Principal principal)
@@ -116,24 +153,48 @@ public class AdminPanelController
 			return "wrong post";
 		}
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/rejectPostCloseRequest", method = RequestMethod.GET)
 	public String rejectPostCloseRequest(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		System.out.println("No changes only mail to requestor !!!");
 		return "adminDashboardPostList";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardProfileList", method = RequestMethod.GET)
 	public String adminDashboardProfileList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
 		map.addAttribute("ppList", postProfileService.getAllPostProfile(0, 10));
 		return "adminDashboardPostList";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardClientList", method = RequestMethod.GET)
 	public String adminDashboardClientList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
 		map.addAttribute("empList", registrationService.getClientList(0, 10));
 		return "adminDashboardPostList";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardConsultantList", method = RequestMethod.GET)
 	public String adminDashboardConsultantList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -141,6 +202,12 @@ public class AdminPanelController
 		return "adminDashboardPostList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserlist", method = RequestMethod.GET)
 	public String adminUserList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -148,6 +215,12 @@ public class AdminPanelController
 		return "adminUserList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminpostlist", method = RequestMethod.GET)
 	public String adminPostList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -168,6 +241,12 @@ public class AdminPanelController
 	}
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminprofilelist", method = RequestMethod.GET)
 	public String adminProfileList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -176,6 +255,13 @@ public class AdminPanelController
 		return "adminProfileList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserderail", method = RequestMethod.GET)
 	public String adminUserDerail(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
 	{
@@ -190,6 +276,13 @@ public class AdminPanelController
 		}
 		return "redirect:admindashboard";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserchild", method = RequestMethod.GET)
 	public String adminUserChild(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
 	{
@@ -205,6 +298,22 @@ public class AdminPanelController
 		return "redirect:admindashboard";
 	}
 	
+	/**
+	 * @param model
+	 * @param result
+	 * @param reg
+	 * @param regResult
+	 * @param login
+	 * @param loginResult
+	 * @param urole
+	 * @param userroleResult
+	 * @param userid
+	 * @param parentid
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserchild", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value = "childForm") @Valid ClientUserModel model,
 			BindingResult result, @ModelAttribute(value = "reg") Registration reg, BindingResult regResult,
@@ -219,7 +328,7 @@ public class AdminPanelController
 		{
 			parent = registrationService.getRegistationByUserId(parentid);
 			role = userRoleService.getRoleByUserId(parentid);
-			if(parent != null && role != null && (role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()) || role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString())) )
+			if(parent != null && role != null && (role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()) || role.getUserrole().equals(Roles.ROLE_CON_MANAGER.toString())) )
 			{
 				map.addAttribute("parentAdmin", parent);
 				map.addAttribute("userRole", role);
@@ -262,6 +371,17 @@ public class AdminPanelController
 			
 			login.setReg(reg);
 			login.setIsactive("true");
+			char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
+			Random rnd = new Random();
+
+			StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
+			for (int i = 0; i < 5; i++)
+				sb.append(alphNum[rnd.nextInt(alphNum.length)]);
+
+			String id = sb.toString();
+			login.setPassword(id);
+			
 			reg.setLog(login);
 			if(role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()))
 			{
@@ -279,11 +399,22 @@ public class AdminPanelController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
+			mailService.sendMail(reg.getUserid(), "Sign Up info",
+					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
+							+ id + "<br> After first login please change this password.");
+		
+			
 			return "redirect:/adminuserchild?userid="+userid;
 		}
 	}
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminviewjd", method = RequestMethod.GET)
 	public String adminViewJd(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -303,6 +434,13 @@ public class AdminPanelController
 	
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param ppid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminviewprofile", method = RequestMethod.GET)
 	public String adminViewProfile(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long ppid)
 	{
@@ -457,8 +595,6 @@ public class AdminPanelController
 				info.setIsactive("true");
 				loginInfoService.updateLoginInfo(info);
 			}
-			
-
 			map.addAttribute("regList", registrationService.getRegistrations(0, 1000));
 			return "adminUserList";
 		}

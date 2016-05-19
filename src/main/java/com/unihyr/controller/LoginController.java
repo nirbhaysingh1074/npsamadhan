@@ -192,6 +192,16 @@ public class LoginController
 
 			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
+			char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+
+			Random rnd = new Random();
+
+			StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
+			for (int i = 0; i < 5; i++)
+				sb.append(alphNum[rnd.nextInt(alphNum.length)]);
+
+			String id = sb.toString();
+			login.setPassword(id);
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_EMP_MANAGER.toString());
 			Set<UserRole> roles = new HashSet<UserRole>();
@@ -200,6 +210,11 @@ public class LoginController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("orgName", reg.getOrganizationName());
+			mailService.sendMail(register.getUserid(), "Sign Up info",
+					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
+							+ id + "<br> After first login please change this password.");
+		
+			
 			return "redirect:/regSuccess";
 		}
 	}

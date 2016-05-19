@@ -27,7 +27,7 @@
 					consultants.add(pp.getProfile().getRegistration());
 				}
 			}
-			long totalCount = (Long)request.getAttribute("totalCount");
+			long totalCount = (Integer)request.getAttribute("totalCount");
 			int pn = (Integer) request.getAttribute("pn");
 			int rpp = (Integer) request.getAttribute("rpp");
 			int tp = 0;
@@ -377,7 +377,7 @@
 																<td class="text-center">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
 																		
-																		<button class="recruit_profile profile_status_button" title="Click to offer">Offer</button>
+																		<button class="recruit_profile profile_status_button" title="Click to offer">Send Offer</button>
 																		<button class="btn-open profile_status_button" data-type="reject_recruit" title="Click to decline">Decline</button>
 																		
 																	</p>

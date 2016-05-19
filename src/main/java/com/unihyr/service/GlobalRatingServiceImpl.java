@@ -39,15 +39,15 @@ public class GlobalRatingServiceImpl implements GlobalRatingService
 	public List<GlobalRating> getGlobalRatingList()
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return globalRatingDao.getGlobalRatingList();
 	}
 
 	@Override
 	public  List<GlobalRating>  getGlobalRatingListByIndustryAndConsultant(int industryId,
-			String consultantId)
+			String consultantId,int ratingId)
 	{
 		// TODO Auto-generated method stub
-		return globalRatingDao.getGlobalRatingListByIndustryAndConsultant(industryId, consultantId);
+		return globalRatingDao.getGlobalRatingListByIndustryAndConsultant(industryId, consultantId,ratingId);
 	}
 
 	@Override

@@ -20,24 +20,27 @@ jQuery(document).ready(function() {
 		
 	});
 	
-	$(document.body).on('click', '.profile_status > .join_accept' ,function(){
-//		alert("Hello to all accept"+$(this).parent().attr("id"));
-		var selected = $(this).parent();
-		var ppid = $(this).parent().attr("id");
-		var data_view = $(this).parent().attr("data-view");
+	$(document.body).on('click', '#offerjoinedpopup' ,function(){
+
+		var ppid =$('#postIdForAccept').val();
+		var joiningDate=$('#datepicker').val();
+		//var selected = $(this).parent();
+		//var ppid = $(this).parent().attr("id");
+	//	var data_view = $(this).parent().attr("data-view");
 //		return false;
-		alertify.confirm("Are you sure to join ?", function (e, str) {
+		alertify.confirm("Are you sure you want to join ?", function (e, str) {
 		if (e) {
 			
 //			alert("offer_accept");
 			$.ajax({
 				type : "GET",
 				url : "consacceptoffer",
-				data : {'ppid':ppid,'ppstatus':'join_accept'},
+				data : {'ppid':ppid,'ppstatus':'join_accept','joiningDate':joiningDate},
 				contentType : "application/json",
 				success : function(data) {
 					var obj = jQuery.parseJSON(data);
-					if(obj.status == "join_accept")
+					
+			/*		if(obj.status == "join_accept")
 					{
 						if(data_view != "table")
 						{
@@ -47,15 +50,15 @@ jQuery(document).ready(function() {
 						{
 							selected.parent().parent().find('td:eq(7)').html("<span>Joined</span>");
 							selected.html("");
-						}
-						alertify.success("Profile Joined Successfilly !");
+						}*/
+					//	alertify.success("Profile Joined Successfilly !");
+					location.href="";	
 						
-						
-					}
+					/*}
 					else
 					{
 						alertify.error("Oops something wrong !");
-					}
+					}*/
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
@@ -107,7 +110,7 @@ jQuery(document).ready(function() {
 							selected.parent().parent().find('td:eq(7)').html("<span>Offer Droped</span>");
 							selected.html("")
 						}
-						alertify.success("Profile join droped Successfilly !");
+					//	alertify.success("Profile join droped Successfilly !");
 						
 						
 					}
@@ -145,7 +148,7 @@ jQuery(document).ready(function() {
 						row.removeClass("post_interest");
 						row.html("<img src='images/int-icon.png' alt='interested'>");
 						row.prop('title','You have added this post to activ postions.');
-						alertify.success("Add interest for post "+obj.jobCode);
+				//		alertify.success("Add interest for post "+obj.jobCode);
 						location.href="";
 					}
 					
@@ -177,7 +180,7 @@ jQuery(document).ready(function() {
 			 return false;
 		 }
 
-		 	alertify.confirm("Are you want to add  this post to your active postions?", function (e, str) {
+		 	alertify.confirm("Are you want you want to add  this post to your active postions?", function (e, str) {
 				if (e) 
 				{
 					$.ajax({
@@ -190,7 +193,7 @@ jQuery(document).ready(function() {
 							if(obj.status == "success")
 							{
 
-							alertify.success("Hi, Submitted Interest Successfully !");
+					//		alertify.success("Hi, Submitted Interest Successfully !");
 							location.href="";
 							}
 						},
@@ -231,7 +234,7 @@ jQuery(document).ready(function() {
 //						alert(data);
 						if(obj.status == "success")
 						{
-							alertify.success("Hi, posts close request send successfully !");
+				//			alertify.success("Hi, posts close request send successfully !");
 							
 						}
 						else

@@ -6,18 +6,30 @@
 <title>Uni Hyr</title>
 <style type="text/css">
 
-.help-desk{position: fixed; bottom: 0; right: 10px;}
+.help-desk{    position: fixed;
+    top: 20%;
+    right: -28px;
+    -ms-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    transform: rotate(270deg);}
 .help-desk .desk-header{
 	padding: 10px 20px; 
 	color: #000; 
 	background-color: #F8B910;
-	
 	cursor: pointer;
 }
 .content-field{margin-top: 10px;}
 .help-desk .desk-content{display: none;background-color: #CCCCCC;padding: 10px 20px;width: 325px;}
 .help-desk .active {display: block;}
-
+.desk-content{
+-ms-transform: rotate(7deg);
+    -webkit-transform: rotate(7deg);
+    transform: rotate(90deg);
+    border: 1px solid #f8b910;
+}
+.contant-body{
+padding-right: 45px;
+}
 </style>
 </head>
 <body class="loading">
@@ -35,7 +47,7 @@
 <div class="help-desk">
 	<div class="desk-header ">Help Desk</div>
 	<div class="desk-content">
-		<div class="contant-body" >
+		<div class="contant-body"  >
 			<div class="content-field">
 				<label>Your Name</label>
 				<input type="text" name="name" class="name" />
@@ -70,7 +82,9 @@ $(".toggle-icon").click(function(){
 </script>
 <script type="text/javascript">
 $(".help-desk .desk-header").click(function(event){
-	  $(".help-desk .desk-content").toggleClass("active");
+	$(".help-desk .desk-content").toggleClass("active");
+	
+	  
 	  event.stopPropagation();
 });
 

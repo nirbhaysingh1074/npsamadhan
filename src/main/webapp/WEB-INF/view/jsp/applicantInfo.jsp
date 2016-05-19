@@ -221,7 +221,7 @@ unviewed=0;
 													<div class="block btn_row no-margin" style="text-align: left;">
 														<div id="<%= pp.getPpid() %>" class="profile_status">
 															<p>Profile Status : Shortlisted - In Progress</p>
-															<button  class="offer_accept profile_status_button" title="Click to send offer">Offer</button> 
+															<button  class="offer_accept profile_status_button" title="Click to send offer">Send Offer</button> 
 															<button class="btn-open profile_status_button" data-type="reject_recruit" title="Click to decline">Decline</button>
 														</div>
 													</div>
@@ -285,7 +285,7 @@ unviewed=0;
 			            	<div class="tp_title" style="background: #f8b910;height: 2px;">
 			             
 			            </div>
-			             <div class="inbox_col bar_in" id="inbox_msg" style="height: 120px;overflow-y: auto;overflow-x:hidden" >
+			             <div class="bar_in"  style="height: 120px;overflow-y: auto;overflow-x:hidden" >
 							<%=pp.getProfile().getScreeningNote() %>  
 							
 							

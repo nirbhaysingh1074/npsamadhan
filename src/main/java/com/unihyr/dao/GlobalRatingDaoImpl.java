@@ -65,20 +65,22 @@ public class GlobalRatingDaoImpl implements GlobalRatingDao
 	{
 		// TODO Auto-generated method stub
 
-		String sql = "SELECT * FROM globalrating WHERE industryId=2 and consultantId='amar@silvereye.co'";
-		return sessionFactory.getCurrentSession().createCriteria(GlobalRating.class).list();
+		return (List<GlobalRating>)sessionFactory.getCurrentSession().createCriteria(GlobalRating.class).list();
 	}
 
 	@Override
-	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId, String consultantId)
+	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId, String consultantId,int ratingId)
 	{
-		String sql = "SELECT * FROM globalrating WHERE industryId=:industryId and consultantId=:consultantId";
+		String sql = "SELECT * FROM globalrating WHERE industryId=:industryId and consultantId=:consultantId and ratingParamId=:ratingId";
 		Session session = this.sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(GlobalRating.class);
 		Criterion crt = Restrictions.eq("industryId", industryId);
 		Criterion crt1 = Restrictions.eq("consultantId", consultantId);
+		Criterion crt2 = Restrictions.eq("ratingId", ratingId);
 		LogicalExpression lg = Restrictions.and(crt, crt1);
+		LogicalExpression lg1 = Restrictions.and(crt1, crt2);
 		cr.add(lg);
+		cr.add(lg1);
 		cr.addOrder(Order.desc("createDate"));
 		return (List<GlobalRating>) cr.list();
 	}

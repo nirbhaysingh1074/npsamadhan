@@ -194,7 +194,7 @@ a.control_next {
 					</ul>
 				</div>
 				<div class="Top_right Light13 Bold grey1 Link1">
-					<a href="login">LOGIN</a>
+					<a href="login">Sign In</a>
 					<!--      <a href="login">Hiring Partner Sign In</a> -->
 					<!-- <a href="login" style="color: #f8b910;font-weight: bold;">Employer Sign In</a>    |  
 				 <a href="login" style="color: #f8b910;font-weight: bold;">Hiring Partner Sign In</a>  -->
@@ -307,10 +307,10 @@ a.control_next {
 			<div class="container" style="margin: 0px auto;">
 
 				<p class="Fl m_r_20 White font21 opnsbld sign_title">New to
-					UniHyr? Sign Up</p>
+					Unihire? Sign Up</p>
 				<a href="clientregistration" class="signup_btn">Employer</a> <a
-					href="consultantregistration" class="signup_btn">Hiring Partner
-				</a>
+					href="consultantregistration" class="signup_btn">Hiring
+					Partner </a>
 			</div>
 		</div>
 		<!-- <div class="Hwrk">
@@ -320,49 +320,7 @@ a.control_next {
 			<div class="Video rw Align_cent"><img src="images/video_img.jpg" alt="img"></div>
 		</div>
 	</div> -->
-<div class="feature_sec">
-			<div class="container">
-				<div class="title_rw">
-					<h2>How it works</h2>
-				</div>
 
-				<div class="howflow rw">
-					<ul>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i5.png"
-								alt="img"></a>
-							<h4>Post your Job</h4>
-							<p>Employers provide a detailed description of the
-								requirements that would be made visble to the hiring partenrs on
-								the platform</p> </li>
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i1.png"
-								alt="img"></a>
-							<h4>Receive Profiles</h4>
-							<p>Based on ratings multiple hirng partners would conduct
-								search and submit profiles on the platform</p> </li>
-
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i2.png"
-								alt="img"></a>
-							<h4>Shortlist & Interview</h4>
-							<p>View profiles submitted by top partners based on their
-								ratings</p> </li>
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i4.png"
-								alt="img"></a>
-							<h4>Offer</h4>
-							<p>Profiles would move through various stages on the platform
-								from Shortlisted > Offered > Joined</p> </li>
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i3.png"
-								alt="img"></a>
-							<h4>Track Billing</h4>
-							<p>On joining, automatic invoice generation and payment
-								tracking as per the terms</p> </li>
-					</ul>
-				</div>
-			</div>
-		</div>
 		<div class="feature_sec">
 			<div class="container">
 				<div class="title_rw">
@@ -483,7 +441,6 @@ a.control_next {
 				</div>
 			</div>
 		</div>
-		
 		<!-- <div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2 >Featured Employers</h2></div>
@@ -536,24 +493,22 @@ a.control_next {
 			<div class="container">
 				<div class="col_1">
 					<h3>About Us</h3>
-					<p style="font-size: 12px;" class="Lineheight1">Hiring
-						continues to be one of the single biggest challenge impacting
-						growth of the modern day businesses. UniHyr is an innovative
-						solution that brings together several potential employers and a
-						large number of hiring partners on a single platform so that they
-						can work together to meet the talent acquisition goals effectively
-						in a breathtakingly quick time. The unique partner rating system
-						ensures that the partner compete on transparent terms and the
-						competition benefits the employer as they get high quality and
-						relevant profiles.</p>
+					<p class="Lineheight1">
+						Vestibulum iaculis lacinia est. Proin dictum elementum velit.
+						Fusce euismod consequat ante. Lorem ipsum dolor sit amet,
+						consectetuer adipiscing elit. Pellentesque sed dolor. <br />
+						<br />Vestibulum iaculis lacinia est. Proin dictum elementum
+						velit. Fusce euismod consequat ante. Lorem ipsum dolor sit amet,
+						consectetuer adipiscing elit.
+					</p>
 
 				</div>
 
-				<!-- <div class="col_2">
+				<div class="col_2">
 					<h3>News</h3>
 
 					<div class="news rw">
-						<ul style="font-size: 12px;">
+						<ul>
 							<li>
 								<div class="thumbnl">
 									<img src="images/img4.jpg" alt="img">
@@ -586,32 +541,32 @@ a.control_next {
 							</li>
 						</ul>
 					</div>
-				</div> -->
+				</div>
 				<div class="col_3">
 					<h3>Reach Us</h3>
-					<div class="rw m_b_10 Light12 grey2" style="font-size: 11px;">
-						<!-- <div class="adrs_b_1 Lineheight1">
-							Unit 5/62 -64 West Ave<br /> Edinburgh Parks SA 5111<br /> PO
-							Box 3023<br /> Elizabeth East SA 5112
-						</div> -->
+					<div class="rw m_b_10 Light12 grey2">
+						<div class="adrs_b_1 Lineheight1">
+							Unit 5/62 -64 West Ave<br /> Edinburgh Parks SA 5111<br /> PO Box
+							3023<br /> Elizabeth East SA 5112
+						</div>
 
-						<div class="adrs_b_2" style="float: left;">
+						<div class="adrs_b_2">
 							<p>
-								<img src="images/ic_3.jpg" alt="img"> 92 8283 3477
+								<img src="images/ic_3.jpg" alt="img"> (08) 8283 3477
 							</p>
 							<p>
-								<img src="images/ic_4.jpg" alt="img"> 011 283 3577
+								<img src="images/ic_4.jpg" alt="img"> (08) 8283 3577
 							</p>
 							<p>
-								<img src="images/ic_5.jpg" alt="img"> unihyr@unihyr.com
+								<img src="images/ic_5.jpg" alt="img"> mail@company.com
 							</p>
-							
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="footer_botm Align_cent Light12 grey3">
-			<div class="container" style="background-color: #1f1e1e;">
+			<div class="container">
 				<a href="">Terms of Use</a> | <a href="">Privacy Policy</a> | <a
 					href="">Sitemap</a> | <a href="">Work with Us</a>
 			</div>

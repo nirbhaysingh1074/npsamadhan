@@ -13,9 +13,11 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -69,6 +71,7 @@ import com.unihyr.service.PostService;
 import com.unihyr.service.ProfileService;
 import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
+import com.unihyr.util.TableToExcel;
 /**
  * Controls all the request of UniHyr Consultant which includes add/edit post, manage 
  * postions and perform actions on submitted profiles for particular post
@@ -529,7 +532,7 @@ public class ConsultantController
 	@RequestMapping(value = "/consBulkInterest", method = RequestMethod.GET)
 	public @ResponseBody String consBulkInterest(ModelMap map, HttpServletRequest request, Principal principal)
 	{
-
+		Post post=null;
 		JSONObject object = new JSONObject();
 		String pids = request.getParameter("pids");
 		if(pids != null && pids.length() > 0)
@@ -540,7 +543,7 @@ public class ConsultantController
 				System.out.println("value is " +pids);
 				for(String pid : ids)
 				{
-					Post post = postService.getPost(Long.parseLong(pid.trim()));
+					 post = postService.getPost(Long.parseLong(pid.trim()));
 					JSONObject obj = new JSONObject();
 					if(post != null)
 					{
@@ -558,6 +561,7 @@ public class ConsultantController
 						pc.setCreateDate(dt);
 						pc.setPost(post);
 						Registration consultant=registrationService.getRegistationByUserId(principal.getName());
+						Registration client=registrationService.getRegistationByUserId(post.getClient().getUserid());
 
 						Date consRegDate=consultant.getRegdate();
 						
@@ -568,13 +572,14 @@ public class ConsultantController
 
 						int diffYear = endCalendar.get(Calendar.YEAR) - startCalendar.get(Calendar.YEAR);
 						int diffMonth = diffYear * 12 + endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
-						Set<Industry> industry = consultant.getIndustries();
+						Set<Industry> industry = client.getIndustries();
 						Iterator<Industry> inIterator = industry.iterator();
 						Industry in = null;
 						while (inIterator.hasNext())
 						{
 							in = (Industry) inIterator.next();
 						}
+						
 						pc.setConsultant(consultant);
 						List<GlobalRating> rating=globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(),consultant.getUserid(), 0, GeneralConfig.globalRatingMaxRows1+GeneralConfig.NoOfRatingStaticParams);
 						counter1=rating.size()/GeneralConfig.NoOfRatingDynamicParams;
@@ -647,57 +652,149 @@ public class ConsultantController
 						postService.updatePost(post);
 
 						List<PostConsultant> pcList=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"turnAround");
-						int count=0;
-						for (PostConsultant postConsultant : pcList)
+						int count=0,ii=0;
+						Map<PostConsultant, Integer> pccList=new LinkedHashMap<PostConsultant,Integer>();
+						double val=0;
+						
+						for (int pcl=pcList.size()-1;pcl>=0;pcl--)
+						{ 
+							PostConsultant postConsultant=pcList.get(pcl);
+							if(postConsultant.getTurnAround()>val)
+							{
+								count=ii;
+								pccList.put(postConsultant, ii);
+								val=postConsultant.getTurnAround();
+							}else {
+								pccList.put(postConsultant, count);
+							}
+							ii++;
+						}
+					
+						for (Map.Entry<PostConsultant, Integer> entry : pccList.entrySet())
 						{
-							count++;
-							postConsultant.setPercentileTr(count*100/pcList.size());
+							PostConsultant postConsultant = (PostConsultant)entry.getKey();
+							count=entry.getValue();
+							postConsultant.setPercentileTr((pcList.size()-count-1)*100/pcList.size());
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
 
 						List<PostConsultant> srRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"shortlistRatio");
 						count=0;
+						ii=0;
+						 pccList=new LinkedHashMap<PostConsultant,Integer>();
+						 val=0;
 						for (PostConsultant postConsultant : srRatio)
 						{
-							count++;
-							postConsultant.setPercentileSh(count*100/pcList.size());
+							if(postConsultant.getShortlistRatio()>val)
+							{
+								count=ii;
+								pccList.put(postConsultant, ii);
+								val=postConsultant.getShortlistRatio();
+							}else{
+								pccList.put(postConsultant, count);
+											
+							}
+							ii++;
+						}
+					
+						for (Map.Entry<PostConsultant, Integer> entry : pccList.entrySet())
+						{
+							PostConsultant postConsultant = (PostConsultant)entry.getKey();
+							count=entry.getValue();
+							postConsultant.setPercentileSh(count*100/srRatio.size());
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
 						List<PostConsultant> incoverage=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"industrycoverage");
 						count=0;
+						ii=0;
+						 pccList=new LinkedHashMap<PostConsultant,Integer>();
+						 val=0;
 						for (PostConsultant postConsultant : incoverage)
 						{
-							count++;
-							postConsultant.setPercentileInC(count*100/pcList.size());
+							if(postConsultant.getIndustrycoverage()>val)
+							{
+								count=ii;
+								pccList.put(postConsultant, ii);
+								val=postConsultant.getIndustrycoverage();
+							}else{
+								pccList.put(postConsultant, count);
+											
+							}
+							ii++;
+						}
+					
+						for (Map.Entry<PostConsultant, Integer> entry : pccList.entrySet())
+						{
+							PostConsultant postConsultant = (PostConsultant)entry.getKey();
+							count=entry.getValue();
+							postConsultant.setPercentileInC(count*100/incoverage.size());
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
-						List<PostConsultant> offerDrop=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"offerdrop");
+						List<PostConsultant> clRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"closureRatio");
 						count=0;
-						for (PostConsultant postConsultant : offerDrop)
+						ii=0;
+						 pccList=new LinkedHashMap<PostConsultant,Integer>();
+						 val=0;
+						for (PostConsultant postConsultant : clRatio)
 						{
-							count++;
-							postConsultant.setPercentileOd(count*100/pcList.size());
+							if(postConsultant.getClosureRatio()>val)
+							{
+								count=ii;
+								pccList.put(postConsultant, ii);
+								val=postConsultant.getClosureRatio();
+							}else{
+								pccList.put(postConsultant, count);
+											
+							}
+							ii++;
+						}
+					
+						for (Map.Entry<PostConsultant, Integer> entry : pccList.entrySet())
+						{
+							PostConsultant postConsultant = (PostConsultant)entry.getKey();
+							count=entry.getValue();
+							postConsultant.setPercentileCl(count*100/clRatio.size());
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
 
-						List<PostConsultant> clRatio=postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"closureRatio");
+						List<PostConsultant> offerDrop =postConsultnatService.getInterestedPostByConsIdandPostId(principal.getName(), post.getPostId(),"offerdrop");
 						count=0;
-						List<RatingParameter> ratingparam=ratingParamService.getRatingParameterList();
-						for (PostConsultant postConsultant : clRatio)
+						ii=0;
+						 pccList=new LinkedHashMap<PostConsultant,Integer>();
+						 val=0;
+						 for (int pcl=offerDrop.size()-1;pcl>=0;pcl--)
+							{ 
+							PostConsultant postConsultant=offerDrop.get(pcl);
+							if(postConsultant.getOfferdrop()>val)
+							{
+								count=ii;
+								pccList.put(postConsultant, ii);
+								val=postConsultant.getOfferdrop();
+							}else{
+								pccList.put(postConsultant, count);
+											
+							}
+							ii++;
+						}
+						
+						
+						for (Map.Entry<PostConsultant, Integer> entry : pccList.entrySet())
 						{
-							count++;
-							postConsultant.setPercentileCl(count*100/pcList.size());
+							PostConsultant postConsultant = (PostConsultant)entry.getKey();
+							count=entry.getValue();
+							postConsultant.setPercentileOd((pcList.size()-count-1)*100/offerDrop.size());
 							postConsultnatService.updatePostConsultant(postConsultant);
-							postConsultant.setPercentile(((postConsultant.getPercentileTr()*ratingparam.get(0).getWeightage())/100)+
-									((postConsultant.getPercentileSh()*ratingparam.get(1).getWeightage())/100)+
-									((postConsultant.getPercentileInC()*ratingparam.get(4).getWeightage())/100)+
-									((postConsultant.getPercentileOd()*ratingparam.get(2).getWeightage())/100)+
-									((postConsultant.getPercentileCl()*ratingparam.get(3).getWeightage())/100));
+							postConsultant.setPercentile(((postConsultant.getPercentileTr()*ratingParamService.getRatingParameter(1).getWeightage())/100)+
+									((postConsultant.getPercentileSh()*ratingParamService.getRatingParameter(2).getWeightage())/100)+
+									((postConsultant.getPercentileInC()*ratingParamService.getRatingParameter(5).getWeightage())/100)+
+									((postConsultant.getPercentileOd()*ratingParamService.getRatingParameter(4).getWeightage())/100)+
+									((postConsultant.getPercentileCl()*ratingParamService.getRatingParameter(3).getWeightage())/100));
 							postConsultnatService.updatePostConsultant(postConsultant);
 						}
 
 					}
 				}
+				TableToExcel.generateExcelwhenread(postConsultantService.getInterestedConsultantByPost(post.getPostId()));
 				object.put("status", "success");
 				return object.toJSONString();
 			}
@@ -935,13 +1032,15 @@ public class ConsultantController
 			Registration consultant=registrationService.getRegistationByUserId(principal.getName());
 			if(pp != null)
 			{
-				Date date = new Date();
-				java.sql.Date dt = new java.sql.Date(date.getTime());
+				//Date date = new Date();
+				//java.sql.Date dt = new java.sql.Date(date.getTime());
 
 				if(ppstatus.equals("join_accept"))
 				{
-					pp.setJoinDate(dt);
-
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+					Date date1 = formatter.parse((String)request.getParameter("joiningDate"));
+					pp.setJoinDate(new java.sql.Date(date1.getTime()));
+					java.sql.Date dt = new java.sql.Date(date1.getTime());
 					BillingDetails billingDetailscl =billingService.getBillingDetailsById(pp.getPpid());
 					billingDetailscl.setJoiningDate(dt);
 
@@ -972,14 +1071,17 @@ public class ConsultantController
 							
 						}
 					}catch(Exception e){
-						post.setNoOfPosts(0);
-						postService.updatePost(post);	
+						//post.setNoOfPosts(0);
+						//postService.updatePost(post);	
 					}
 					mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					mailService.sendMail(pp.getPost().getClient().getUserid(), "Bill Invoice verfication", "bill details");
 					obj.put("status", "join_accept");
 				}
 				else if(ppstatus.equals("join_reject"))
 				{
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
 					String rej_reason = request.getParameter("rej_reason");
 					pp.setJoinDropDate(dt);
 					pp.setRejectReason(rej_reason);
@@ -1209,7 +1311,7 @@ public class ConsultantController
 					break;
 				}
 			}
-			if(gb.size()<=GeneralConfig.NoOfRatingDynamicParams){
+			if(gb.size()<GeneralConfig.NoOfRatingStaticParams){
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -1228,6 +1330,8 @@ public class ConsultantController
 
 			}
 		
+			TableToExcel.generateExcel(globalRatingService.getGlobalRatingList());
+			
 		return null;
 	}
 
@@ -1261,7 +1365,7 @@ public class ConsultantController
 					break;
 				}
 			}
-			if (gb.size()<=GeneralConfig.NoOfRatingDynamicParams)
+			if (gb.size()<GeneralConfig.NoOfRatingStaticParams)
 			{
 				GlobalRating newGlobalRating = new GlobalRating();
 				Date date = new Date();

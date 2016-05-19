@@ -34,8 +34,8 @@
 			
 			var org = $('#organizationName').val();
 			var userid = $('#userid').val();
-			var password = $('#password').val();
-			var repassword = $('#repassword').val();
+			/* var password = $('#password').val();
+			var repassword = $('#repassword').val(); */
 			var revenue = $('#revenue').val();
 			var industry = $('#industry').val();
 			var noofpeoples = $('#noofpeoples').val();
@@ -61,7 +61,7 @@
 				valid = false;
 			}
 			
-			if(password == "")
+			/* if(password == "")
 			{
 				$('.password_error').html("please enter a valid password");
 				valid = false;
@@ -71,7 +71,7 @@
 			{
 				$('.repassword_error').html("Password do not match. Please re-enter both passwords");
 				valid = false;
-			}
+			} */
 			
 			if(revenue == "")
 			{
@@ -203,7 +203,7 @@
 							<span class="error userid_error">&nbsp;<form:errors path="userid" /> <%= usermsg %></span>
 						</div>
 					</div>
-					<div class="clearfix"></div>
+				<%-- 	<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Password <span class="req">*</span></label>
@@ -218,7 +218,7 @@
 							<form:password path="repassword"   />
 							<span class="error repassword_error">&nbsp;<form:errors path="repassword" /></span>
 						</div>
-					</div>
+					</div> --%>
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>

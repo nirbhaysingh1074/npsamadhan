@@ -14,9 +14,9 @@
 	{
 		var name = $('#name').val();
 		var userid = $('#userid').val();
-		var password = $('#password').val();
+		/* var password = $('#password').val();
 		var repassword = $('#repassword').val();
-		
+		 */
 		var valid = true;
 		$('.error').html('&nbsp;');
 		
@@ -31,7 +31,7 @@
 			valid = false;
 		}
 		
-		if(password == "")
+		/* if(password == "")
 		{
 			$('.password_error').html("please enter a valid password");
 			valid = false;
@@ -41,7 +41,7 @@
 		{
 			$('.repassword_error').html("Password do not match. Please re-enter both passwords");
 			valid = false;
-		}
+		} */
 		
 		if(!valid)
 		{
@@ -67,7 +67,7 @@
 	    	<h1 style="color: #000;">New User</h1>
 	    </div>
 	    <div class="form_cont" style="margin-top: 50px;">
-          <form:form method="POST" action="clientnewuser" commandName="cuForm"  onsubmit=" return validateForm()">
+          <form:form method="POST" action="consnewuser" commandName="cuForm"  onsubmit=" return validateForm()">
 	      <div class="block">
 	        <div class="form_col">
 	          <dl>
@@ -76,7 +76,7 @@
 	            </dt>
 	            <dd>
 	              <form:input path="name"  />
-	              <span class='error name_error'><form:errors path="name" /></span>
+	              <span class='error name_error'> ${uidex }<form:errors path="name" /></span>
 	            </dd>
 	          </dl>
 	          <dl>
@@ -88,7 +88,17 @@
 	              <span class='error userid_error'><form:errors path="userid" /></span>
 	            </dd>
 	          </dl>
+	          
 	          <dl>
+	            <dt>
+	              <label>Mobile no<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <form:input path="mobileno"   cssClass="number_only" maxlength="10" minlength="10"  />
+	              <span class='error mobileno_error'><form:errors path="mobileno" /></span>
+	            </dd>
+	          </dl>
+	          <%-- <dl>
 	            <dt>
 	              <label>Password<span class='error'>*</span></label>
 	            </dt>
@@ -105,7 +115,7 @@
 	              <form:password path="repassword"  />
 	              <span class='error repassword_error'><form:errors path="repassword" /></span>
 	            </dd>
-	          </dl>
+	          </dl> --%>
 	          
 	        </div>
 	      </div>

@@ -12,7 +12,7 @@
 <link href="css/media.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 <link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
-	<link rel="stylesheet" href="css/font.css" media="screen"   />
+	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 <link rel="stylesheet" href="css/alertify.core.css" />
 <link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>

@@ -241,7 +241,7 @@
 								                  	<a href="viewPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
 							                  	</div>
 						       					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-						       					<a target="_blank" href="clienteditpost?pid=<%= post.getPostId()%>"><button class="profile_status_button" pid="<%= post.getPostId()%>" title="Click to edit this post">Edit</button></a>
+						       					<a target="_blank" href="clienteditpost?pid=<%= post.getPostId()%>"><button class="profile_status_buttonGen" pid="<%= post.getPostId()%>" title="Click to edit this post">Edit</button></a>
 						       					</sec:authorize>
 						       				</td>
 						        		</tr>

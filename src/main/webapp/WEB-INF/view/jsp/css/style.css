@@ -49,8 +49,9 @@ body {
 
 .opnsbld{} .opnslight{}
 
-.Link1 a{     display: inline-block;
-padding: 2px 12px;
+.Link1 a{     
+display: inline-block;
+padding: 2px 43px;
 text-transform: none;
 background: #f8b910;
 text-align: center;

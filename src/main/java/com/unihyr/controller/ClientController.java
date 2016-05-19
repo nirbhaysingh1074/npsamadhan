@@ -14,12 +14,10 @@ import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
-import org.hibernate.Session;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,10 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import com.google.gson.JsonSerializationContext;
 import com.unihyr.constraints.GeneralConfig;
-import com.unihyr.constraints.Roles;
 import com.unihyr.domain.BillingDetails;
 import com.unihyr.domain.CandidateProfile;
 import com.unihyr.domain.GlobalRating;
@@ -68,7 +62,6 @@ import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
 
-import scala.sys.process.processInternal;
 /**
  * Controls all the request of UniHyr Client which includes add/edit post, manage 
  * postions and perform actions on submitted profiles for particular post
@@ -86,10 +79,7 @@ public class ClientController
 	private RegistrationService registrationService;
 	@Autowired
 	private LoginInfoService loginInfoService;
-	@Autowired
-	private UserRoleService userRoleService;
-	@Autowired
-	private ProfileService profileService;
+
 	@Autowired
 	private PostProfileService postProfileService;
 	@Autowired
@@ -107,6 +97,11 @@ public class ClientController
 	@Autowired
 	private RatingParameterService ratingParameterService;
 	
+	/**
+	 * @param map
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientdashboard", method = RequestMethod.GET)
 	public String clientDashboard(ModelMap map, Principal principal)
 	{
@@ -130,6 +125,12 @@ public class ClientController
 		return "redirect:login";
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientDashboardList", method = RequestMethod.GET)
 	public String clientDashboardList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -175,6 +176,11 @@ public class ClientController
 
 	
 
+	/**
+	 * @param map
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientaddpost", method = RequestMethod.GET)
 	public String addPost(ModelMap map,Principal principal)
 	{
@@ -184,6 +190,14 @@ public class ClientController
 		return "addPost";
 	}
 
+	/**
+	 * @param model
+	 * @param result
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientaddpost", method = RequestMethod.POST)
 	public String client_addPost(@ModelAttribute(value = "postForm") @Valid PostModel model, BindingResult result,
 			ModelMap map, HttpServletRequest request, Principal principal)
@@ -376,6 +390,11 @@ public class ClientController
 		return "redirect:clientdashboard";
 	}
 
+	/**
+	 * @param map
+	 * @param pid
+	 * @return
+	 */
 	@RequestMapping(value = "/clienteditpost", method = RequestMethod.GET)
 	public String editPost(ModelMap map, @RequestParam long pid)
 	{
@@ -409,6 +428,14 @@ public class ClientController
 		return "redirect:clientyourpost";
 	}
 
+	/**
+	 * @param model
+	 * @param result
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clienteditpost", method = RequestMethod.POST)
 	public String client_editPost(@ModelAttribute(value = "postForm") @Valid PostModel model, BindingResult result,
 			ModelMap map, HttpServletRequest request, Principal principal)
@@ -590,12 +617,23 @@ public class ClientController
 		return "redirect:clientdashboard";
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/clientyourpost", method = RequestMethod.GET)
 	public String yourPost(ModelMap map, HttpServletRequest request)
 	{
 		return "yourPosts";
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/loadclientposts", method = RequestMethod.GET)
 	public String loadclientposts(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -607,26 +645,41 @@ public class ClientController
 		map.addAttribute("rpp", rpp);
 		map.addAttribute("pn", pn);
 		map.addAttribute("sortParam", sortParam);
-
 		return "clientPost";
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientpostapplicants", method = RequestMethod.GET)
 	public String clientpostapplicants(ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		String pid = request.getParameter("pid");
-		System.out.println("pid : " + pid);
-		List<PostConsultant> list1 = new ArrayList<PostConsultant>();
-		List<PostConsultant> list2 = new ArrayList<PostConsultant>();
+		
+		String pidd = request.getParameter("pid");
+		System.out.println("pid : " + pidd);
+		List<PostProfile> list1 = new ArrayList<PostProfile>();
+		List<PostProfile> list2 = new ArrayList<PostProfile>();
 		int i =0;
-		if(pid != null)
+		if(pidd != null)
 		{
-			Post post = postService.getPost(Long.parseLong(pid));
+			Post post = postService.getPost(Long.parseLong(pidd));
+		/*int rpp = GeneralConfig.rpp;
+		int pn = Integer.parseInt(request.getParameter("pn"));*/
+		int pid = Integer.parseInt(request.getParameter("pid"));
+		/*String conid = request.getParameter("conid");*/
+		String filterby = request.getParameter("sortParam");
+		if(filterby == null)
+		{
+			filterby = "submitted";
+		}
 			if(post != null)
 			{
-//				map.addAttribute("ppList", postProfileService.getPostProfileByPost(post.getPostId(),0, GeneralConfig.rpp,"submitted","submitted"));
-//				map.addAttribute("totalCount", postProfileService.countPostProfileByPost(post.getPostId(),"submitted"));
-//				map.addAttribute("ppList",new ArrayList<PostProfile>());
+				map.addAttribute("ppList", postProfileService.getPostProfileByPost(post.getPostId(),0, GeneralConfig.rpp,"submitted","submitted"));
+				map.addAttribute("totalCount", postProfileService.countPostProfileByPost(post.getPostId(),"submitted"));
+				map.addAttribute("ppList",new ArrayList<PostProfile>());
 				map.addAttribute("totalCount", 0L);
 				map.addAttribute("rpp", GeneralConfig.rpp);
 				map.addAttribute("pn", 1);
@@ -635,34 +688,30 @@ public class ClientController
 				for(PostConsultant pc : consList)
 				{
 					Post postt=pc.getPost();
-					List<PostProfile> postProfile=postProfileService.getPostProfileByPost(postt.getPostId());
+					List<PostProfile> postProfile=postProfileService.getPostProfileByClientPostAndConsultant(principal.getName(), pc.getConsultant().getUserid(), pid ,0, 1000,"submitted",filterby);
 					boolean flag=false;
-			for (PostProfile postProfile2 : postProfile)
-			{
-				
-				 if(postProfile2.getProfile().getRegistration().getUserid().equals(pc.getConsultant().getUserid())){
-					 System.out.println();
-					 flag=true;
-					 break;
-				 }
-			}
-					if(!flag){
-						list1.add(pc);
 					
-					}else{
-						
-					list2.add(pc);
+					
+					for (PostProfile postProfile2 : postProfile)
+					{
+						list1.add(postProfile2);
+					 /*if(postProfile2.getProfile().getRegistration().getUserid().equals(pc.getConsultant().getUserid())){
+						 System.out.println();
+						 flag=true;
+						 break;
+					 }*/
 					}
 					
 					i++;
-					
-					
 				}
+				map.addAttribute("ppList", list1);
+				map.addAttribute("totalCount",list1.size());
+			
 				
-
-				map.addAttribute("conslistHavingProfiles",list2);
+				
+				/*map.addAttribute("conslistHavingProfiles",list2);
 				map.addAttribute("conslistHavingNoProfiles",list1);
-				map.addAttribute("consList",consList);
+				map.addAttribute("consList",consList);*/
 			}
 //			for empty table begin
 			else
@@ -689,10 +738,16 @@ public class ClientController
 		map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null));
 		map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(reg.getUserid(), null));
 
-		
+	
 		return "clientPostApplicants";
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/postapplicantlist", method = RequestMethod.GET)
 	public String postApplicantList(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -734,6 +789,12 @@ public class ClientController
 		return "postApplicantList";
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientprofilecenter", method = RequestMethod.GET)
 	public String clientProfileCenter(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -742,6 +803,12 @@ public class ClientController
 	
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientProfileCenterList", method = RequestMethod.GET)
 	public String clientProfileCenterList(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -764,6 +831,12 @@ public class ClientController
 	}
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientacceptreject", method = RequestMethod.GET)
 	public @ResponseBody String clientacceptreject(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -848,6 +921,14 @@ public class ClientController
 		return obj.toJSONString();
 	}
 	
+	/**
+	 * @param pp
+	 * @param userid
+	 * @param joiningDate
+	 * @param totalCTC
+	 * @param billableCTC
+	 * @return
+	 */
 	public static List<BillingDetails> fillBillingDetails(PostProfile pp,String userid, String joiningDate , double totalCTC, double billableCTC)
 	{
 		List<BillingDetails> bills = new ArrayList<BillingDetails>();
@@ -975,6 +1056,12 @@ public class ClientController
 		return bills;
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/postConsultantList", method = RequestMethod.GET)
 	public @ResponseBody String postConsultantList(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -1059,6 +1146,13 @@ public class ClientController
 		return obj.toJSONString();
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param childId
+	 * @return
+	 */
 	@RequestMapping(value = "/clientDisableUser", method = RequestMethod.GET)
 	public String clientDisableUser(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam String childId)
 	{
@@ -1073,6 +1167,13 @@ public class ClientController
 		return "redirect:clientaccount";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param childId
+	 * @return
+	 */
 	@RequestMapping(value = "/clientEnableUser", method = RequestMethod.GET)
 	public String clientEnableUser(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam String childId)
 	{
@@ -1088,6 +1189,12 @@ public class ClientController
 	}
 	
 		
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/viewPostDetail", method = RequestMethod.GET)
 	public String viewPostDetail(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -1105,6 +1212,12 @@ public class ClientController
 		return "error";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientaccount", method = RequestMethod.GET)
 	public String clientAccount(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -1114,6 +1227,13 @@ public class ClientController
 		return "clientAccount";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param ppid
+	 * @return
+	 */
 	@RequestMapping(value = "/clientapplicantinfo", method = RequestMethod.GET)
 	public String clientApplicantInfo(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long ppid)
 	{
@@ -1126,6 +1246,13 @@ public class ClientController
 		return "clientApplicantInfo";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param pid
+	 * @return
+	 */
 	@RequestMapping(value = "/clientunpublishpost", method = RequestMethod.GET)
 	public @ResponseBody String clientunpublishpost(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
 	{
@@ -1142,6 +1269,12 @@ public class ClientController
 		return object.toJSONString();
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientBulkActive", method = RequestMethod.GET)
 	public @ResponseBody String clientBulkActive(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -1175,6 +1308,12 @@ public class ClientController
 		object.put("status", "failed");
 		return object.toJSONString();
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientBulkInactive", method = RequestMethod.GET)
 	public @ResponseBody String clientBulkInactive(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -1209,6 +1348,12 @@ public class ClientController
 		return object.toJSONString();
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientBulkDelete", method = RequestMethod.GET)
 	public @ResponseBody String clientBulkdelete(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -1247,6 +1392,12 @@ public class ClientController
 		object.put("status", "failed");
 		return object.toJSONString();
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientBulkClose", method = RequestMethod.GET)
 	public @ResponseBody String clientBulkClose(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -1277,6 +1428,13 @@ public class ClientController
 		return object.toJSONString();
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param pid
+	 * @return
+	 */
 	@RequestMapping(value = "/clientpublishpost", method = RequestMethod.GET)
 	public @ResponseBody String clientpublishpost(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long pid)
 	{
@@ -1296,6 +1454,13 @@ public class ClientController
 		return object.toJSONString();
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param consid
+	 * @return
+	 */
 	@RequestMapping(value = "/clientviewconsultant", method = RequestMethod.GET)
 	public String clientViewConsultant(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam String consid)
 	{
@@ -1311,6 +1476,12 @@ public class ClientController
 	
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/clientmessages", method = RequestMethod.GET)
 	public @ResponseBody String clientmessages(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -1347,6 +1518,13 @@ public class ClientController
 	
 	
 	private Set<String> allowedImageExtensions;
+	/**
+	 * @param request
+	 * @param req
+	 * @param principal
+	 * @return
+	 * @throws ServletException
+	 */
 	@RequestMapping(value = "/client.uploadLogo", method = RequestMethod.POST)
     public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req, Principal principal)throws ServletException
     {   
@@ -1407,6 +1585,10 @@ public class ClientController
 
 
 	
+	/**
+	 * @param postId
+	 * @return
+	 */
 	public String closePost(long postId)
 	{
 		List<PostConsultant> postConsultants = postConsultnatService.getInterestedConsultantByPost(postId);

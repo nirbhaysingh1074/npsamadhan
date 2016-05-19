@@ -13,7 +13,7 @@ public interface GlobalRatingService
 
 	public List<GlobalRating> getGlobalRatingList();
 
-	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId,String consultantId);
+	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId,String consultantId, int ratingId);
 
 	long updateGlobalRating(GlobalRating rating);
 

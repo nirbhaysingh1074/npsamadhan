@@ -24,11 +24,11 @@ public class RegistrationForm
 	@Email(message="{Email.indexForm.email}")
 	private String userid;
 	
-	@NotEmpty(message="{NotEmpty.indexForm.password}")
-	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.indexForm.password}")
+	//@NotEmpty(message="{NotEmpty.indexForm.password}")
+	//@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.indexForm.password}")
 	private String password;
 	
-	@NotNull(message="{NotNull.indexForm.repassword}")
+	//@NotNull(message="{NotNull.indexForm.repassword}")
 	private String repassword;
 	
 	public String getFname() {

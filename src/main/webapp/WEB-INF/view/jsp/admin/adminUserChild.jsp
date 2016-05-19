@@ -18,8 +18,8 @@
 	{
 		var name = $('#name').val();
 		var userid = $('#userid').val();
-		var password = $('#password').val();
-		var repassword = $('#repassword').val();
+		/* var password = $('#password').val();
+		var repassword = $('#repassword').val(); */
 		
 		var valid = true;
 		$('.error').html('&nbsp;');
@@ -35,7 +35,7 @@
 			valid = false;
 		}
 		
-		if(password == "")
+		/* if(password == "")
 		{
 			$('.password_error').html("please enter a valid password");
 			valid = false;
@@ -45,7 +45,7 @@
 		{
 			$('.repassword_error').html("Password do not match. Please re-enter both passwords");
 			valid = false;
-		}
+		} */
 		
 		if(!valid)
 		{
@@ -140,6 +140,13 @@
 					                      </div>
 					                    </div>
 					                    <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Mobile No.</label>
+					                      <div class="col-sm-8">
+					                        <form:input path="mobileno" class="form-control" cssClass="number_only" maxlength="10" minlength="10"  />
+					                        <span class="error text-red mobileno_error"><form:errors path="mobileno"></form:errors></span>
+					                      </div>
+					                    </div>
+					                    <%-- <div class="form-group col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label" for="inputEmail3">Password</label>
 					                      <div class="col-sm-8">
 					                        <form:input path="password" class="form-control" />
@@ -152,7 +159,7 @@
 					                        <form:input path="repassword" class="form-control" />
 					                        <span class="error text-red repassword_error"><form:errors path="repassword"></form:errors></span>
 					                      </div>
-					                    </div>
+					                    </div> --%>
 					                    <div class="form-group col-sm-12">
 					                    	<button type="submit" class="btn btn-primary pull-right" style="margin-right: 45px;">Submit</button>
 					                    </div>
