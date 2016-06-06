@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.constraints.Roles;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Registration;
@@ -84,15 +85,8 @@ public class ClientUserController
 			
 			login.setReg(reg);
 			login.setIsactive("true");
-			char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
-			Random rnd = new Random();
-
-			StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
-			for (int i = 0; i < 5; i++)
-				sb.append(alphNum[rnd.nextInt(alphNum.length)]);
-
-			String id = sb.toString();
+			String id=GeneralConfig.generatePassword();
 			login.setPassword(id);
 			
 			

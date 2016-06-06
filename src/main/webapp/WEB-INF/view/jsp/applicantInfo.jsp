@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.CandidateProfile"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="java.net.ConnectException"%>
 <%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
@@ -114,94 +115,53 @@ unviewed=0;
 			        <div class="col-md-4">
 			          <div class="left_bar" style="margin-bottom: 10px;">
 			            <div class="tp_title" >
-			              <h2 style="font-weight: bold;"><%=pp.getProfile().getName()  %></h2>
-			            </div>
-			            <div class="tp_title" style="background: #f8b910;height: 2px;">
-			             
-			            </div>
-			            <div class="bar_in">
-			              <div class="tp_row" style="padding-bottom: 0px;">
-				                <p><%=pp.getProfile().getEmail()  %></p>
-				                <p>+91 <%= pp.getProfile().getContact() %></p>
-				                <p><%= pp.getProfile().getCurrentRole() %> , <%= pp.getProfile().getCurrentOrganization() %></p>
-				                <p>Submitted : <%= DateFormats.getTimeValue(pp.getSubmitted()) %></p>
-				                <p>Position : <%= pp.getPost().getTitle() %></p>
-					            <p>Partner : <%= pp.getProfile().getRegistration().getConsultName() %></p>  
-					            <%-- <p><a href="data/<%= pp.getProfile().getResumePath()%>">Download CV</a>
-					            </p> --%>
-					              	<%
-					            		boolean rejected =false;
+			              <span style="font-weight: bold;font-size: 15px;"><%=pp.getProfile().getName()  %></span>
+			              <span style="float:right;font-weight: bold;">
+			              	<%
 					              		
 						              	if(pp.getJoinDropDate() != null)
 					              		{
 					              			%>
-					              				<p>Reject Reason : <%=pp.getRejectReason() %></p>
-					              				<div class="block btn_row no-margin" style="text-align: left;">
-					              					<a class="btn check_btn"> Offer Drop </a>
-				              					</div>
+					              				 Offer Drop 
 				              				<%
 					              		}
 						              	else if(pp.getJoinDate() != null)
 					              		{
 					              			%>
-					              				<p >
-					              					Profile Status : Joined
-				              					</p>
+					              					 Joined
 				              				<%
 					              		}
 						              	else if(pp.getOfferDropDate() != null)
 					              		{
 					              			%>
-					              				<p>Reject Reason : <%=pp.getRejectReason() %></p>
-					              				<p >
-					              					Profile Status : Offer Decline
-				              					</p>
+					              					 Offer Decline
 				              				<%
 					              		}
 						              	else if(pp.getOfferDate() != null)
 					              		{ 
 					              			%>
 					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
-						              				<p >
-					              					Profile Status : Offered
-				              						</p>
+					              					 Offered
 					              				</sec:authorize>
 					              				<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-					              					<div class="block btn_row no-margin" style="text-align: left;">
-														<div id="<%= pp.getPpid() %>" class="profile_status">
-															<p>Profile Status : Offered</p>
-															<button  class="join_accept profile_status_button" title="Click to accept offer" >Join</button> 
-															<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
-														</div>
-													</div>
+					              					Offered
 					              				</sec:authorize>
 				              				<%
 					              		}
 						              	else if(pp.getDeclinedDate() != null)
 					              		{
 					              			%>
-					              				<p>Reject Reason : <%=pp.getRejectReason() %></p>
-					              				<p >
-					              					Profile Status : Declined
-				              					</p>
-					              				
+					              					 Declined
 				              				<%
 					              		}
 					              		else if(pp.getRecruited() != null)
 					              		{
 					              			%>
 					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
-													<div class="block btn_row no-margin" style="text-align: left;">
-														<div id="<%= pp.getPpid() %>" class="profile_status">
-															<p>Profile Status : Recruited</p>
-															<button  class="offer_accept profile_status_button" title="Click to send offer">Offer Accept</button> 
-															<button class="btn-open profile_status_button" data-type="offer_reject" title="Click to reject offer">Reject</button>
-														</div>
-													</div>
+														 Recruited
 												</sec:authorize>
 												<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-													<p >
-					              					Profile Status : Offer Accepted </p>
+					              					 Offer Accepted 
 												</sec:authorize>
 					              				
 				              				<%
@@ -209,9 +169,7 @@ unviewed=0;
 					              		else if(pp.getRejected() != null)
 						              	{
 						              		%>
-						              			<p>Reject Reason : <%=pp.getRejectReason() %></p>
-						              			<p >
-					              					Profile Status : CV Rejected</p>
+					              					 CV Rejected
 						              		<%	
 						              	}
 					              		else if(pp.getAccepted() != null)
@@ -219,16 +177,11 @@ unviewed=0;
 					              			%>
 					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
 													<div class="block btn_row no-margin" style="text-align: left;">
-														<div id="<%= pp.getPpid() %>" class="profile_status">
-															<p>Profile Status : Shortlisted - In Progress</p>
-															<button  class="offer_accept profile_status_button" title="Click to send offer">Send Offer</button> 
-															<button class="btn-open profile_status_button" data-type="reject_recruit" title="Click to decline">Decline</button>
-														</div>
+														 Shortlisted - In Progress
 													</div>
 												</sec:authorize>
 												<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-													<p >
-					              					Profile Status : Shortlisted - In Process</p>
+					              					 Shortlisted - In Process
 												</sec:authorize>
 				              				<%
 					              		}
@@ -242,14 +195,154 @@ unviewed=0;
 										                	if(pp.getPost().getCloseDate()!=null )
 										                	{
 											                	%>
-												                	<br>
-												                	<h4>Post Status:   Closed</h4>
+												                	Post Status:   Closed
 											                	<%
 										                	}
 										                	else
 										                	{
 										                		%>
-										                			<p>Profile Status : Pending</p>
+										                			 Pending
+												                		<%
+												     	   	}
+								                		%>
+									                </div>
+									              </div>
+								                </sec:authorize>
+								                <sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
+					              					 Pending
+										        </sec:authorize>
+					              			<%
+					              		}
+					              		
+					              	%>
+					   
+			              
+			              
+			              </span>
+			            </div>
+			            <div class="tp_title" style="background: #f8b910;height: 1px;">
+			             
+			            </div>
+			            <div class="bar_in">
+			              <div class="tp_row" style="padding-bottom: 0px;">
+			              <%CandidateProfile  profile=pp.getProfile(); %>
+				                <p><h3 style="font-weight: bold;">(Position : <%= pp.getPost().getTitle() %>)</h3></p>
+				                
+				                <table  class="table no-margin appinfotable"  >
+				                <tr>
+				                <td>Email</td><td><p><%=profile.getEmail()  %></p></td>
+				                </tr>
+				                <tr>
+				                <td>Contact</td><td><p>+91 <%= profile.getContact() %></p>
+				                </td>
+				                </tr>
+				                <tr>
+				                <td>Current Role</td><td> <p><%= profile.getCurrentRole() %></p></td>
+				                </tr>
+				                <tr>
+				                <td>Current Organization</td><td><%= profile.getCurrentOrganization() %></p></td>
+				                </tr>
+				                <tr>
+				                <td>Current Location</td><td> <p>  <%= profile.getCurrentLocation() %></p> </td>
+				                </tr>
+				                <tr>
+				                <td>Current CTC</td><td> <p><%= profile.getCurrentCTC() %> Lakh  </p> </td>
+				                </tr>
+				                <tr>
+				                <td>Expected CTC</td><td> <p> <%= profile.getExpectedCTC() %> </p> </td>
+				                </tr>
+				                <tr>
+				                <td>CTC Related Comments</td><td> <p><%= profile.getCtcComments() %>  </p> </td>
+				                </tr>
+				                <tr>
+				                <td>Notice Period</td><td> <p> <%= profile.getNoticePeriod() %> days </p> </td>
+				                </tr>
+				                <tr>
+				                <td>Willing to Relocate</td><td> <p> <%= profile.getWillingToRelocate() %> </p> </td>
+				                </tr>
+				                <tr>
+				                <td>Submitted on</td><td> <p><%= DateFormats.getTimeValue(pp.getSubmitted()) %>  </p> </td>
+				                </tr>
+				                <tr>
+				                <td>Partner</td><td> <p><%= profile.getRegistration().getConsultName() %>  </p> </td>
+				                </tr>
+				                <%
+				                if(pp.getJoinDropDate() != null||pp.getOfferDropDate() != null||pp.getDeclinedDate() != null||pp.getRejected() != null)
+			              		{
+			              			%>
+			              	<tr>
+				                <td>Reject Reason :</td><td> <p> <%=pp.getRejectReason() %></p>
+		              			 </td>
+				                </tr>
+				              	<%
+			              		}
+				                %>
+				                 
+				                </table>
+				                
+					            <%-- <p><a href="data/<%= pp.getProfile().getResumePath()%>">Download CV</a>
+					            </p> --%>
+					              	<%
+					            		boolean rejected =false;
+					              		
+						              	
+						              	 if(pp.getOfferDate() != null)
+					              		{ 
+					              			%>
+					              			
+					              				<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
+					              					<div class="block btn_row no-margin" style="text-align: left;">
+														<div id="<%= pp.getPpid() %>" class="profile_status">
+															<button  class="join_accept profile_status_button" title="Click to accept offer" >Join</button> 
+															<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
+														</div>
+													</div>
+					              				</sec:authorize>
+				              				<%
+					              		}
+						              	else if(pp.getRecruited() != null)
+					              		{
+					              			%>
+					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
+													<div class="block btn_row no-margin" style="text-align: left;">
+														<div id="<%= pp.getPpid() %>" class="profile_status">
+															<button  class="offer_accept profile_status_button" title="Click to send offer">Offer Accept</button> 
+															<button class="btn-open profile_status_button" data-type="offer_reject" title="Click to reject offer">Reject</button>
+														</div>
+													</div>
+												</sec:authorize>
+					              				
+				              				<%
+					              		}
+					              		else if(pp.getAccepted() != null)
+					              		{
+					              			%>
+					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
+													<div class="block btn_row no-margin" style="text-align: left;">
+														<div id="<%= pp.getPpid() %>" class="profile_status">
+															<button  class="offer_accept profile_status_button" title="Click to send offer">Send Offer</button> 
+															<button class="btn-open profile_status_button" data-type="reject_recruit" title="Click to decline">Decline</button>
+														</div>
+													</div>
+												</sec:authorize>
+												
+				              				<%
+					              		}
+					              		else
+					              		{
+					              			%>
+					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
+									              <div class="unch_check btn_row no-margin" style="text-align: left;">
+									                <div id="<%= pp.getPpid() %>" class="profile_status">
+									                	<%
+										                	if(pp.getPost().getCloseDate()!=null )
+										                	{
+											                	%>
+											                	<%
+										                	}
+										                	else
+										                	{
+										                		%>
 												                	<button class="accept_profile profile_status_button" title="Click to shortlist profile" style="float: left;">Shortlist </button>
 												                	<button class="btn-open profile_status_button" data-type="reject_profile" title="Click to reject profile">Reject</button>
 												     	   		<%
@@ -258,10 +351,7 @@ unviewed=0;
 									                </div>
 									              </div>
 								                </sec:authorize>
-								                <sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-								                	<p >
-					              					Profile Status : Pending</p> 
-										        </sec:authorize>
+								                
 					              			<%
 					              		}
 					              		
@@ -282,7 +372,7 @@ unviewed=0;
 			          	 <div class="tp_title" >
 			              <h3 style="padding: 10px;">Notes</h3>
 			            </div> 
-			            	<div class="tp_title" style="background: #f8b910;height: 2px;">
+			            	<div class="tp_title" style="background: #f8b910;height: 1px;">
 			             
 			            </div>
 			             <div class="bar_in"  style="height: 120px;overflow-y: auto;overflow-x:hidden" >
@@ -353,7 +443,7 @@ unviewed=0;
 			          	</div>
 <!-- 			          chat ends -->
 			        </div>
-			        <div class="col-md-8">
+			        <div class="col-md-8" style="border-left: 1px solid #f1b910;">
 			          <div class="md_bar">
 			           <!--  <div class="tab_nav">
 			              <ul class="tabs-menu" >
@@ -515,14 +605,18 @@ jQuery(document).ready(function() {
 
 </script>
 
-
+<%-- 
 							 <%
 							 if(pp.getProfile().getResumePath()!=null){
+								 
 					            String scheme = request.getScheme();
 							    String serverName = request.getServerName();
 							    int serverPort = request.getServerPort();
 					            String inPath=GeneralConfig.UploadPath+ pp.getProfile().getResumePath();
-					         	String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
+					            String pathh="";
+					            if(!inPath.toLowerCase().contains(".pdf"))
+					         {
+					            String otp=pp.getProfile().getResumePath().substring(0,pp.getProfile().getResumePath().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					        	java.io.File inputFile = new java.io.File(inPath); //
 					        	java.io.File outputFile = new java.io.File(outPath); //
@@ -536,7 +630,10 @@ jQuery(document).ready(function() {
 					        	  DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
 					        	  converter.convert(inputFile, outputFile); // close
 					        	  connection.disconnect(); 
-					        	  String pathh=outputFile.getName();
+					        	pathh=outputFile.getName();
+					         }else{
+					        	 pathh=pp.getProfile().getResumePath();
+					         }
 					        	%>
 					        			<script type="text/javascript">
 					        			 	var x = document.createElement("EMBED");
@@ -547,6 +644,6 @@ jQuery(document).ready(function() {
 					        				$('#tab-1').append(x);
 					        			</script>
 					        	<%} %>
-</div>
+ --%></div>
 </body>
 </html>

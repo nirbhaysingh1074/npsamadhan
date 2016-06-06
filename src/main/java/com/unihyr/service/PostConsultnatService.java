@@ -21,7 +21,7 @@ public interface PostConsultnatService
 	 * @param postId
 	 * @return
 	 */
-	public List<PostConsultant> getInterestedConsultantByPost(long postId);
+	public List<PostConsultant> getInterestedConsultantByPost(long postId,String sortOrder);
 	/**
 	 * @param postId
 	 * @param sortParam

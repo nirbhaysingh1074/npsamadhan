@@ -1,5 +1,6 @@
 package com.unihyr.controller;
 
+import java.net.Authenticator.RequestorType;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -74,9 +75,28 @@ public class BillingController
 		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
 		request.setAttribute("bill",bill);
 		request.setAttribute("clientId",principal.getName());
+		new ConsultantController().createBillInvoice(bill, principal.getName());
 		return "clientBillInvoice";
 	}
-	
-	
 
+	@RequestMapping(value="/clientVerifyBillingDetails",method=RequestMethod.GET)
+	public String clientVerifyBillingDetails(ModelMap map,HttpServletRequest request,Principal principal)
+	{
+		String id=(String)request.getParameter("billId");
+		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
+		bill.setVerificationStatus(true);
+		billingService.updateBillingDetails(bill);
+		List<BillingDetails> bills = billingService.getBillingDetailsByClientList(principal.getName(),"createDate");
+		request.setAttribute("bills",bills);
+		return "clientBillingDetails";
+	}
+	@RequestMapping(value="/verifyBillingDetails",method=RequestMethod.GET)
+	public String verifyBillingDetails(ModelMap map,HttpServletRequest request,Principal principal)
+	{
+		String id=(String)request.getParameter("billId");
+		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
+		bill.setVerificationStatus(true);
+		billingService.updateBillingDetails(bill);
+		return "invoiceVerification";
+	}
 }

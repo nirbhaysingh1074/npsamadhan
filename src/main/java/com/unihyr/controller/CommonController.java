@@ -13,19 +13,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unihyr.constraints.GeneralConfig;
+import com.unihyr.domain.Registration;
 import com.unihyr.service.MailService;
+import com.unihyr.service.RegistrationService;
 
 @Controller
 public class CommonController
 {
 	@Autowired	private MailService mailService;
+	@Autowired
+	private RegistrationService registrationService;
 	
 	@RequestMapping(value = "/helpDeskMessage", method = RequestMethod.GET)
 	public @ResponseBody String clientMailRejectProfile(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String msg = request.getParameter("msg");
+		String email = principal.getName();
+		String msg = request.getParameter("message");
 
 		String subject = request.getParameter("subject");
 		
@@ -74,7 +78,7 @@ public class CommonController
 					+ "<p></p>"
 					+ "<p>Best Regards,</p>"
 					+ "<p></p>"
-					+ "<p><img src ='http://localhost:8081/unihyr/images/logo.png' width='63'> </p>"
+					+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"/images/logo.png' width='63'> </p>"
 					+ "<p><strong>Admin Team</strong></p><p></p>"
 					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 					+ "</div>"
@@ -110,5 +114,16 @@ public class CommonController
 	{
 		return "test";
 	}
+	@RequestMapping(value = "/setFirstTimeFalse", method = RequestMethod.GET)
+	@ResponseBody
+	public String setFirstTimeFalse(ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		String reg=request.getParameter("regid");
+	Registration regis=	registrationService.getRegistationByUserId(reg);
+		regis.setFirstTime(true);
+		registrationService.update(regis);
+		return "success";
+	}
+	
 }
 	

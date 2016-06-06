@@ -25,10 +25,8 @@ public class UploadProfileTest {
 		profile.setName("profile1");
 		profile.setEmail("pro@mail.com");
 		profile.setContact("2154775");
-		profile.setCurrentCTC("100");
-		profile.setExpectedCTC("");
 		profile.setCurrentOrganization("");
-		profile.setNoticePeriod("");
+		profile.setNoticePeriod(0);
 		profile.setCurrentRole("");
 		profile.setWillingToRelocate("");
 		profile.setResumePath("");

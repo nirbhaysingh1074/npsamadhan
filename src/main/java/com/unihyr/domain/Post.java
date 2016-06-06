@@ -106,11 +106,23 @@ public class Post implements Serializable
 	private String workHourStartMin;
 	@Column
 	private String workHourEndMin;
+	@Column
+	private String updateInfo;
 	
 	@Column
 	@Lob
 	private String editSummary;
 	
+
+	public String getUpdateInfo()
+	{
+		return updateInfo;
+	}
+
+	public void setUpdateInfo(String updateInfo)
+	{
+		this.updateInfo = updateInfo;
+	}
 
 	public int getNoOfPostsFilled()
 	{

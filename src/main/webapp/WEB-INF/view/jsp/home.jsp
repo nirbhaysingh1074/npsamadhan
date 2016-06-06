@@ -7,9 +7,9 @@
 
 <title>UniHyr</title>
 
+	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 <link rel="stylesheet" href="css/media.css" media="screen" />
 <link rel="stylesheet" href="css/style.css" media="screen" />
-<link rel="stylesheet" href="css/fonts.css" media="screen" />
 
 <script src="js/jquery.min.js"></script>
 <style>
@@ -175,7 +175,9 @@ a.control_next {
 </head>
 <body>
 
-	<header id="header">
+	<header id="header" style="
+    position: fixed;
+    z-index: 9;">
 		<div class="Headr_top ">
 			<div class="container">
 				<div class="logo">
@@ -183,10 +185,10 @@ a.control_next {
 				</div>
 				<div class="home-nav">
 					<ul style="margin-bottom: 0px; margin-top: 27px;">
-						<li><a>How It Works </a></li>
-						<li><a>Features</a></li>
-						<li><a>Customers</a></li>
-						<li><a>About</a></li>
+						<li onclick="$('html, body').animate({ scrollTop: 590 }, 'slow');" ><a >How It Works </a></li>
+						<li onclick="$('html, body').animate({ scrollTop: 920 }, 'slow');" ><a>Why UniHyr</a></li>
+<!-- 						<li onclick="$('html, body').animate({ scrollTop: 1000 }, 'slow');" ><a>Whats In It for</a></li> -->
+						<li onclick="$('html, body').animate({ scrollTop: 1940 }, 'slow');" ><a>About</a></li>
 						<!-- <li><a style="color: #f8b910;font-weight: bold;">How It Works </a></li>
 					<li><a style="color: #f8b910;font-weight: bold;">Features</a></li>
 					<li><a style="color: #f8b910;font-weight: bold;">Customers</a></li>
@@ -194,7 +196,7 @@ a.control_next {
 					</ul>
 				</div>
 				<div class="Top_right Light13 Bold grey1 Link1">
-					<a href="login">LOGIN</a>
+					<a href="login" style="background: #000 !important;">LOGIN</a>
 					<!--      <a href="login">Hiring Partner Sign In</a> -->
 					<!-- <a href="login" style="color: #f8b910;font-weight: bold;">Employer Sign In</a>    |  
 				 <a href="login" style="color: #f8b910;font-weight: bold;">Hiring Partner Sign In</a>  -->
@@ -204,7 +206,7 @@ a.control_next {
 			</div>
 		</div>
 	</header>
-	<section class="Middle">
+	<section class="Middle" style="margin-top: 76px;">
 		<!-- <div class="Slider">
 		<div class="prev"><a href=""><img src="images/arw1.png" border="0" alt="img"></a></div> 
 		<div class="next"><a href=""><img src="images/arw2.png" border="0" alt="img"></a></div>
@@ -364,6 +366,80 @@ a.control_next {
 			</div>
 		</div>
 		<div class="feature_sec">
+		<div class="container">
+			<div class="title_rw"><h2 >Why UniHyr</h2></div>
+		
+			<div class="featserv rw">
+				<ul>
+					<li style="width: 42%;">
+						<img style="height: 200px;"  src="images/whyuni1.jpg" alt="img">
+					</li> 
+				<li style="width: 10%;"><img style="margin-top:60px;height:50px;" src="images/arrow1.png" /></li>
+					<li style="width: 42%;float: right;">
+						<img style="height: 200px;"   src="images/whyuni2.jpg" alt="img">
+					
+						</li> 
+				
+				</ul>
+			</div>
+			
+		
+		</div>
+	</div> 
+	
+		<div class="feature_sec" style="margin-top: -40px;">
+		<div class="container">
+			
+			<div class="featserv rw">
+				
+				<ul style="font-size: 13px;line-height: 22px;">
+					<li style="width: 42%;float: left;">
+					<ul style="text-align: left;list-style-type: disc;">
+			<li>
+					
+					
+Multiple consultants leading to multiplicity of contracts and touch points that are difficult to manage</li>
+<li>
+
+Employers get limited to a select few who may or may not be the best consultants for the skill they want to hire for</li>
+<li>
+
+Inefficient interaction over emails  leading to duplicity of work and time spent in non-value adding activities
+</li>
+<li>
+No rigorous mechanism of driving quality from the consultants
+</li>
+</ul>
+					
+						</li> 
+				<li style="width: 10%;"></li>
+					<li style="width: 42%;float: right;">
+						<ul style="text-align: left;list-style-type: disc;line-height: 22px;">
+		<li>	
+Single window to post new requirements and manage profiles received from consultants</li>
+<li>
+Incredibly wider access to a wider partner network to accelerate quality hiring</li>
+<li>
+Easy to use interface for both employers and partners where they can exchange profiles, messages and track status
+</li>
+<li>
+
+Smart features like duplicity check, profile limits, bill tracking etc.
+</li>
+<li>
+Analytics driven rating system of consultants
+</li>
+</ul>
+						</li> 
+				
+				</ul>
+				
+			</div>
+		
+		
+		</div>
+	</div> 
+		<div class="feature_sec">
 			<div class="container">
 				<div class="title_rw">
 					<h2>WHAT'S IN IT FOR...</h2>
@@ -405,7 +481,7 @@ a.control_next {
 													with UniHyr outlining simple, transparent, and universal
 													terms and conditions</p></li>
 										</ul></li>
-									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
+									<li><h4>FREE TO USE AND PAY ONLY ON OUTCOME</h4>
 										<ul>
 											<li><p>No signing up or usage charges. Payment to be
 													made only on the hiring outcome</p></li>
@@ -451,7 +527,7 @@ a.control_next {
 													outlining simple, transparent, and universal terms and
 													conditions</p></li>
 										</ul></li>
-									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
+									<li><h4>FREE TO USE AND PAY ONLY ON OUTCOME</h4>
 										<ul>
 											<li><p>No signing up or usage charges. Payment to be
 													made only on the hiring outcome</p></li>
@@ -459,13 +535,6 @@ a.control_next {
 													candidates</p></li>
 											<li><p>Zero collection hassles</p></li>
 										</ul></li>
-
-
-
-
-
-
-
 								</ol>
 							</div> <!-- 						<a href="" class="readmore">Read More</a> -->
 						</li>
@@ -484,7 +553,27 @@ a.control_next {
 			</div>
 		</div>
 		
-		<!-- <div class="feature_sec">
+		
+<div class="feature_sec">
+		<div class="container">
+			<div class="title_rw"><h2 >About Us</h2></div>
+		
+			<div class="featserv rw" style="text-align: left;">
+				
+				<p style="font-size: 12px;padding: 20px;" class="Lineheight1">Hiring
+						continues to be one of the single biggest challenge impacting
+						growth of the modern day businesses. UniHyr is an innovative
+						solution that brings together several potential employers and a
+						large number of hiring partners on a single platform so that they
+						can work together to meet the talent acquisition goals effectively
+						in a breathtakingly quick time. The unique partner rating system
+						ensures that the partner compete on transparent terms and the
+						competition benefits the employer as they get high quality and
+						relevant profiles.</p>	
+			</div>
+		</div>
+	</div> 
+<!-- <div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2 >Featured Employers</h2></div>
 		
@@ -517,8 +606,8 @@ a.control_next {
 				</ul>
 			</div>
 		</div>
-	</div> -->
-
+	</div> 
+ -->
 		<!-- <div class="Comnt">
 		<div class="container">
 			<div class="title_rw"><h2>Success Stories</h2></div>
@@ -535,21 +624,12 @@ a.control_next {
 		<div class="footer_top Light12 grey2">
 			<div class="container">
 				<div class="col_1">
-					<h3>About Us</h3>
-					<p style="font-size: 12px;" class="Lineheight1">Hiring
-						continues to be one of the single biggest challenge impacting
-						growth of the modern day businesses. UniHyr is an innovative
-						solution that brings together several potential employers and a
-						large number of hiring partners on a single platform so that they
-						can work together to meet the talent acquisition goals effectively
-						in a breathtakingly quick time. The unique partner rating system
-						ensures that the partner compete on transparent terms and the
-						competition benefits the employer as they get high quality and
-						relevant profiles.</p>
+					<h3></h3>
+					
 
 				</div>
-
-				<!-- <div class="col_2">
+<!--
+				 <div class="col_2">
 					<h3>News</h3>
 
 					<div class="news rw">
@@ -603,7 +683,7 @@ a.control_next {
 								<img src="images/ic_4.jpg" alt="img"> 011 283 3577
 							</p>
 							<p>
-								<img src="images/ic_5.jpg" alt="img"> unihyr@unihyr.com
+								<img src="images/ic_5.jpg" alt="img"> unihyr@gmail.com
 							</p>
 							
 					</div>
@@ -617,11 +697,22 @@ a.control_next {
 			</div>
 		</div>
 	</footer>
-
+	<div
+		style=" cursor: pointer;
+		position:fixed;bottom:10px;right: 10px;z-index:100;"
+		id="movetotop">
+<img style="height: 40px;" alt="Top" src="images/movetotop.png">
+</div>
 
 	<script type="text/javascript" src="js/script.js"></script>
 
+<script type="text/javascript">
+$("#movetotop").click(function() {
+	  $("html, body").animate({ scrollTop: 0 }, "slow");
+	  return false;
+	});
 
+</script>
 
 
 </body>

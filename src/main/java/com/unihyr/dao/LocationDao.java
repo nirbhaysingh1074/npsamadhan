@@ -15,5 +15,7 @@ public interface LocationDao
 	public List<Location> getLocationList();
 	
 	public List<Location> getLocationList(int first, int max);
+
+	public List<Location> getLocationByName(String location);
 	
 }

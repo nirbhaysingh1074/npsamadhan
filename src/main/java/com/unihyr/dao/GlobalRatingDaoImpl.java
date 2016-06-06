@@ -9,6 +9,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -69,20 +71,27 @@ public class GlobalRatingDaoImpl implements GlobalRatingDao
 	}
 
 	@Override
-	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId, String consultantId,int ratingId)
+	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultant(int industryId, String consultantId)
 	{
-		String sql = "SELECT * FROM globalrating WHERE industryId=:industryId and consultantId=:consultantId and ratingParamId=:ratingId";
+		String sql = "SELECT * FROM globalrating WHERE industryId=:industryId and consultantId=:consultantId";
 		Session session = this.sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(GlobalRating.class);
 		Criterion crt = Restrictions.eq("industryId", industryId);
-		Criterion crt1 = Restrictions.eq("consultantId", consultantId);
-		Criterion crt2 = Restrictions.eq("ratingId", ratingId);
+		Criterion crt1 = Restrictions.eq("registration.userid", consultantId);
 		LogicalExpression lg = Restrictions.and(crt, crt1);
-		LogicalExpression lg1 = Restrictions.and(crt1, crt2);
 		cr.add(lg);
-		cr.add(lg1);
 		cr.addOrder(Order.desc("createDate"));
 		return (List<GlobalRating>) cr.list();
+	}
+	@Override
+	public List<String> getGlobalRatingListByIndustry(int industryId)
+	{
+		Session session = this.sessionFactory.getCurrentSession();
+		Criteria cr = session.createCriteria(GlobalRating.class);
+		cr.setProjection(Projections.distinct(Projections.property("registration.userid")));
+		cr.add(Restrictions.eq("industryId", industryId));
+		cr.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (List<String>) cr.list();
 	}
 
 	@Override

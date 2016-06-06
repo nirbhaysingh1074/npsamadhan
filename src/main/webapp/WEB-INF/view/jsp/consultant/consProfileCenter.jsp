@@ -18,7 +18,7 @@
 // 		alert("hello " + $('#cons_db_post_status').val());
 		$.ajax({
 			type : "GET",
-			url : "clientProfileCenterList",
+			url : "consprofilecenterlist",
 			data : {'pn':pn},
 			contentType : "application/json",
 			success : function(data) {

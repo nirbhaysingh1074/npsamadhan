@@ -97,7 +97,7 @@
 										{
 											%>
 											<tr>
-												<td><a href="clientapplicantinfo?ppid=<%= pp.getPpid()%>"><%=pp.getProfile().getName()%></a></td>
+												<td><a href="consapplicantinfo?ppid=<%= pp.getPpid()%>"><%=pp.getProfile().getName()%></a></td>
 												<td><a href="viewPostDetail?pid=<%= pp.getPost().getPostId()%>"><%=pp.getPost().getTitle()%></a></td>
 												<td><%=pp.getProfile().getContact()%></td>
 												<td><%=pp.getProfile().getEmail()%></td>

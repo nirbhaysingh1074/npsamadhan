@@ -427,7 +427,7 @@
 		      </div>
 		      
 		      
-							<%--   <%
+							   <%
 							 if(post.getUploadjd()!=null){
 
 					            String scheme = request.getScheme();
@@ -437,7 +437,11 @@
 							    
 					         	 
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
-					         	String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
+					            String pathh="";
+					            if(!inPath.toLowerCase().contains(".pdf"))
+					         {
+					            
+					            String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					        	
 
@@ -453,9 +457,11 @@
 					        	  converter.convert(inputFile, outputFile); 
 					        	  connection.disconnect(); 
 
-					        		String pathh=outputFile.getName();
+					        		 pathh=outputFile.getName();
 
-					        	
+					         }else{
+					        	 pathh=post.getUploadjd();
+					         }
 					        	%>
 
 
@@ -474,7 +480,7 @@
 		      
 		      
 		      
-			<%}%>  --%>
+			<%}%>  
 		      
 		      
 			<%

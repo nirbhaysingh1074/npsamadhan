@@ -12,10 +12,12 @@ public interface GlobalRatingDao {
 	public long addGlobalRating(GlobalRating rating);
 	public List<GlobalRating> getGlobalRatingList();
 
-	public  List<GlobalRating>  getGlobalRatingListByIndustryAndConsultant(int industryId,String consultantId, int ratingId);
+	public  List<GlobalRating>  getGlobalRatingListByIndustryAndConsultant(int industryId,String consultantId);
 
 	long updateGlobalRating(GlobalRating rating);
 
 	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultantRange(int industryId, String consultantId,
 			int first,int max);
+
+	List<String> getGlobalRatingListByIndustry(int industryId);
 }

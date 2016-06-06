@@ -71,6 +71,7 @@ jQuery(document).ready(function() {
 								<th width="30px"><input type="checkbox" id="sel_all_user" class="no-margin "></th>
 								<th>User Type</th>
 								<th>Email</th>
+								<th>Company Name</th>
 								<th>Location</th>
 								<th>Contact</th>
 								<th>Registered</th>
@@ -99,6 +100,11 @@ jQuery(document).ready(function() {
 												</td>
 												<td><a target="_blank" href="adminuserderail?userid=<%= reg.getUserid()%>"><%= reg.getUserid() %></a></td>
 												<td>
+												<%if(reg.getConsultName()!=null){ %>
+												<%=reg.getConsultName() %>
+												<%}else{ %>
+												<%=reg.getOrganizationName() %>
+												<%} %><td>
 													<%= reg.getOfficeLocations()%>
 												</td>
 												<td><%= reg.getContact() %></td>

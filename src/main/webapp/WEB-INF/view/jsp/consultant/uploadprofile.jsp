@@ -405,7 +405,7 @@
 							
 							<dl>
 								<dt>
-									<label>CTC Related Comments<span class="req">*</span></label>
+									<label>CTC Related Comments<!-- <span class="req">*</span> --></label>
 								</dt>
 								<dd>
 									<form:textarea path="ctcComments" ></form:textarea>

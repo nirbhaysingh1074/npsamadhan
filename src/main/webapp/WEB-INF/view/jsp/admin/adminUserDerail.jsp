@@ -434,7 +434,7 @@
 		             		
 		             			if(userRole.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()) || userRole.getUserrole().equals(Roles.ROLE_CON_MANAGER.toString()))
 			             		{
-		             				if(loginInfo.getIsactive().equals("true")){
+		             				if(loginInfo.getIsactive().equals("true")&&false){
 			             			%>
 					             		<div class="form-group disable_user col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label"  >&nbsp;</label>
@@ -634,6 +634,19 @@
 			                     <input type="text" id="emptyField" name="emptyField" class="form-control">
 			                     
 			                     <%} %>
+			                     
+			                      </div>
+			                    </div>
+			                    <div class="clearfix"></div>
+			                    <div class="form-group col-sm-12">
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Users Quota</label>
+			                      <div class="col-sm-8">
+			                      
+			                       
+			                     
+			                        <input type="text" id="userQuota" name="userQuota" class="form-control" value="<%=userDetail.getUsersRequired()%>">
+			                     
+			                    
 			                     
 			                      </div>
 			                    </div>

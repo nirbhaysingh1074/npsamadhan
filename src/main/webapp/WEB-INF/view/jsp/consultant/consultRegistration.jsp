@@ -14,11 +14,11 @@
 
 <title>UniHyr</title>
 
+<link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 <link rel="stylesheet" href="css/media.css" media="screen" />
 <link rel="stylesheet" href="css/style.css" media="screen" />
 <link rel="stylesheet" href="css/font-awesome.css" media="screen" />
 <link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
-<link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 <style type="text/css">
 input[type="text"], input[type="password"], input[type="tel"], input[type="search"],
 	input[type="email"], textarea, select {
@@ -204,22 +204,63 @@ $(document).ready(function() {
 		      }
 	    }) ;
 	}
-	</script>
+	
+
+	function checkConsultantNameExistance()
+	{
+		$('.cons_error').html("&nbsp;");
+		var organizationName = $('#consultName').val();
+		if(organizationName=="")
+		{
+			$('.cons_error').html("Please enter consultant name.");
+			$('#consultName').focus();
+			return false;
+		}
+		$.ajax({
+			type : "GET",
+			url : "checkUserNameExistance",
+			data : {'userName':organizationName},
+			contentType : "application/json",
+			success : function(data) {
+				var obj = jQuery.parseJSON(data);
+				if(obj.uNameexist)
+				{
+					$('.cons_error').html("This consultant name already registered.");
+					$('#consultName').focus();
+				}
+				
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.status);
+		      }
+	    }) ;
+	}
+	</script> 
 
 </head>
-<body style="background-image: url('images/bg-image.png')">
+<body style="background: #EDEDED;">
+<!-- <body style="background-image: url('images/bg-image.png')"> -->
 	<%
 		String uidex = (String) request.getAttribute("uidex");
 		String usermsg = "";
 		if (uidex != null && uidex.equals("exist")) {
 			usermsg = "user aleady registered !";
 		}
+		
+		String uNamedex = (String)request.getAttribute("uNamedex");
+		String orgmsg = ""; 
+
+		System.out.println(uNamedex);
+		if(uNamedex != null && uNamedex.equals("exist"))
+		{
+			orgmsg = "Consultant name aleady registered !";
+		}
 	%>
 
 
 	<section>
 		<div class="container reg_page" style="margin: 50px auto;">
-			<a href="home"><span class="close" title="Home Page">X</span></a>
+			<a href="home"><span class="close" title="Home Page"><img style="    height: 40px;" src="images/close.png" /></span></a>
 			<div class="reg-form">
 				<form:form method="POST" action="consultantregistration"
 					commandName="regForm">
@@ -231,9 +272,9 @@ $(document).ready(function() {
 					<div class="reg-wrap">
 						<div>
 							<label>Consultant Name<span class="req">*</span></label>
-							<form:input path="consultName" />
+							<form:input path="consultName" onchange="checkConsultantNameExistance()" />
 							<span class="error cons_error">&nbsp;<form:errors
-									path="consultName" /></span>
+									path="consultName" /><%=orgmsg %></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
@@ -399,6 +440,14 @@ $(document).ready(function() {
 							<label>About Company</label>
 							<form:textarea path="about"  rows="4"/>
 							<span class="error about_error">&nbsp;<form:errors path="about" /></span>
+						</div>
+					</div>
+					
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Your Name<span class="req">*</span></label>
+							<form:input path="name" />
+							<span class="error name_error">&nbsp;<form:errors path="name" /></span>
 						</div>
 					</div>
 					<div class="clearfix"></div>

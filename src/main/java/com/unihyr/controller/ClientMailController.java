@@ -59,7 +59,7 @@ public class ClientMailController
 						{
 							uids = "";
 							
-							List<PostConsultant> pcList = postConsultnatService.getInterestedConsultantByPost(Long.parseLong(pid));
+							List<PostConsultant> pcList = postConsultnatService.getInterestedConsultantByPost(Long.parseLong(pid),"desc");
 							if(pcList != null && !pcList.isEmpty())
 							{
 								for(PostConsultant pc : pcList)
@@ -112,7 +112,7 @@ public class ClientMailController
 										+ "<p></p>"
 										+ "<p>Best Regards,</p>"
 										+ "<p></p>"
-										+ "<p><img src ='http://localhost:8081/unihyr/images/logo.png' width='63'> </p>"
+										+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"images/logo.png' width='63'> </p>"
 										+ "<p><strong>Admin Team</strong></p><p></p>"
 										+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 										+ "</div>"
@@ -163,7 +163,7 @@ public class ClientMailController
 					{
 						uids = "";
 						
-						List<PostConsultant> pcList = postConsultnatService.getInterestedConsultantByPost(Long.parseLong(pid));
+						List<PostConsultant> pcList = postConsultnatService.getInterestedConsultantByPost(Long.parseLong(pid),"desc");
 						if(pcList != null && !pcList.isEmpty())
 						{
 							for(PostConsultant pc : pcList)
@@ -217,7 +217,7 @@ public class ClientMailController
 									+ "<p></p>"
 									+ "<p>Best Regards,</p>"
 									+ "<p></p>"
-									+ "<p><img src ='http://localhost:8081/unihyr/images/logo.png' width='63'> </p>"
+									+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"images/logo.png' width='63'> </p>"
 									+ "<p><strong>Admin Team</strong></p><p></p>"
 									+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 									+ "</div>"
@@ -300,7 +300,7 @@ public class ClientMailController
 							+ "<p></p>"
 							+ "<p>Best Regards,</p>"
 							+ "<p></p>"
-							+ "<p><img src ='http://localhost:8081/unihyr/images/logo.png' width='63'> </p>"
+							+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"images/logo.png' width='63'> </p>"
 							+ "<p><strong>Admin Team</strong></p><p></p>"
 							+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 							+ "</div>"
@@ -384,7 +384,7 @@ public class ClientMailController
 							+ "<p></p>"
 							+ "<p>Best Regards,</p>"
 							+ "<p></p>"
-							+ "<p><img src ='http://localhost:8081/unihyr/images/logo.png' width='63'> </p>"
+							+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"images/logo.png' width='63'> </p>"
 							+ "<p><strong>Admin Team</strong></p><p></p>"
 							+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 							+ "</div>"
@@ -525,7 +525,7 @@ public class ClientMailController
 							+ "<p></p>"
 							+ "<p>Best Regards,</p>"
 							+ "<p></p>"
-							+ "<p><img src ='http://localhost:8081/unihyr/images/logo.png' width='63'> </p>"
+							+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"images/logo.png' width='63'> </p>"
 							+ "<p><strong>Admin Team</strong></p><p></p>"
 							+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 							+ "</div>"

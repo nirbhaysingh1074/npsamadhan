@@ -11,6 +11,11 @@
         <put-attribute name="body" value="" />
         <put-attribute name="footer" value="/WEB-INF/view/jsp/footerIndex.jsp" />
     </definition> 
+    <definition name="consultTemplateWithoutNavigation" template="/WEB-INF/tilestemplate/jsp/consultTemplate.jsp">
+        <put-attribute name="header" value="/WEB-INF/view/jsp/consultant/headerConsultantWithoutNavigation.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/view/jsp/footerIndex.jsp" />
+    </definition> 
     
     <definition name="consBillingDetails" extends="consultTemplate">
         <put-attribute name="title" value="UniHyr - Consultant Billing Details" />
@@ -49,12 +54,12 @@
         <put-attribute name="body" value="/WEB-INF/view/jsp/consultant/consultantAccount.jsp" />
         <put-attribute name="currentpage" value="uploadprofile" cascade="true"/>
     </definition>
-    <definition name="consApplicantInfo" extends="consultTemplate">
+    <definition name="consApplicantInfo" extends="consultTemplateWithoutNavigation">
         <put-attribute name="title" value="UniHyr - Applicant info " />
         <put-attribute name="body" value="/WEB-INF/view/jsp/applicantInfo.jsp" />
         <put-attribute name="currentpage" value="uploadprofile" cascade="true"/>
     </definition>
-    <definition name="viewConsPostDetail" extends="consultTemplate">
+    <definition name="viewConsPostDetail" extends="consultTemplateWithoutNavigation">
         <put-attribute name="title" value="UniHyr - Post Description" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/consultant/viewConsPostDetail.jsp" />
         <put-attribute name="currentpage" value="uploadprofile" cascade="true"/>

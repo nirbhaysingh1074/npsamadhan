@@ -325,10 +325,15 @@
 						    	{
 						    		%>
 						    			<dl>
-											<dd>
-												<h3 class="success">Password changed successfully !</h3>	
-											</dd>
-										</dl>
+										<dd>
+										<script type="text/javascript">
+										alert("Password changed successfully, Please login again.");
+
+										location.href='logout';
+										</script>
+<!-- 											<h3 class="success">Password changed successfully !</h3>	 -->
+										</dd>
+									</dl>
 						    		<%
 						    	}
 						    	else if(status != null && status.equals("wrongoldpassword"))
@@ -399,13 +404,42 @@
 					    <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 					        <div class="form_col">
 					        	<div class="filter bottom-margin" style="border-radius:0">
-							        <div class="col-md-7 pagi_summary"><span>Co-Users</span></div>
-							        <div class="col-md-5 pagi_summary ">
-									    <div class="text-right">
-									    	<a href="clientnewuser" style="color: #fff;">Add New User</a>
-									    </div>
-							        </div>
-							    </div>
+						        <div class="col-md-7 pagi_summary"><span>Co-Users : 
+						         <%
+						         int usersMade=0;
+								    	List<Registration> co_users = (List)request.getAttribute("co-users");
+								    	if(co_users != null && ! co_users.isEmpty())
+								    	{
+								    	out.println(co_users.size());
+								    	usersMade=co_users.size();
+								    	}else{
+								    		out.println(0);
+								    		usersMade=0;
+								    	}
+								    	%>
+						        
+						        </span>
+						        <span>
+						        &nbsp;&nbsp;&nbsp;No of Users Allowed : <%=reg.getUsersRequired() %>
+						        </span>
+						        </div>
+						        <div class="col-md-5 pagi_summary ">
+								     <div class="text-right">
+								    	<%
+								    	if(reg.getUsersRequired()>usersMade){
+								    	%>
+								    	<a href="consnewuser" style="color: #fff;">
+								    	
+								    	Add New User
+								    	
+								    	</a><%}else{ %>
+								    	<span style="color: #fff; float: right;">  user quota filled</span>
+								    	<%} %>
+								    </div>
+								    
+								    
+						        </div>
+						    </div>
 							    <table class="table">
 							    	<thead>
 							    		<tr>
@@ -416,7 +450,6 @@
 						    		</thead>
 						    		<tbody>
 									    <%
-									    	List<Registration> co_users = (List)request.getAttribute("co-users");
 									    	if(co_users != null && ! co_users.isEmpty())
 									    	{
 									    		for(Registration user : co_users)

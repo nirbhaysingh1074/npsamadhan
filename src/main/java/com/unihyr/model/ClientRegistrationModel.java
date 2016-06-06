@@ -48,6 +48,8 @@ public class ClientRegistrationModel
 	@NumberFormat(style=Style.NUMBER)
 	private String contact;
 	
+	private String name;
+	
 	
 	private Industry industry ;
 	
@@ -58,6 +60,16 @@ public class ClientRegistrationModel
 	
 	private String officeAddress;
 	
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
 	public String getUserid() {
 		return userid;
 	}

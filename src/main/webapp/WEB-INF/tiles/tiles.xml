@@ -41,6 +41,14 @@
         <put-attribute name="title" value="UniHyr - Registration successful" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/regSuccess.jsp" />
     </definition>
+    <definition name="invoiceVerification" extends="homeTemplate">
+        <put-attribute name="title" value="UniHyr - Invoice Verification" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/invoiceVerification.jsp" />
+    </definition>
+    <definition name="profileClosures" extends="homeTemplate">
+        <put-attribute name="title" value="UniHyr - Profile Closure" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/profileClosures.jsp" />
+    </definition>
     
     
     

@@ -23,7 +23,7 @@
 
 <style type="text/css">
 .report_sum {
-	padding: 5px 0;
+	padding: 2px 0;
 }
 </style>
 <style type="text/css">
@@ -36,29 +36,61 @@
 	{
 		var pid = $('#selected_post').val();
 		
-		var sel_con = $('#cons_list > li').hasClass("active");
 		var conid = "";
-		if(sel_con)
-		{
-			conid = $('#cons_list  .active').attr("id");
-		}
+// 		var sel_con = $('#cons_list > li').hasClass("active");
+// 		if(sel_con)
+// 		{
+// 			conid = $('#cons_list  .active').attr("id");
+// 		}
 		
-		if(sel_con == "")
-		{
-			alertify.error("Please select consultant first !");
-			return false;
-		}
+// 		if(sel_con == "")
+// 		{
+// 			alertify.error("Please select consultant first !");
+// 			return false;
+// 		}
+
+		var filterBy=$('#filterBy').val();
+		if(typeof filterBy != 'undefined'){}
+		else
+			filterBy='submitted';
+
 		
 		var sortParam=$('#sortParam').val();
+		var sortOrder="asc";
+		
 		if(typeof sortParam != 'undefined'){}
 		else
-			sortParam='published';
+			sortParam='rating';
+       
+		var excludeType = "";
+		$('#filterDiv').css('display','block');
+		$('#filterDivIncRej').css('display','none');
+
+        $.each($("input[name='excludeType']:checked"), function(){            
+
+        	excludeType=$(this).val();
+    		$('#filterDiv').css('display','none');
+    		$('#filterDivIncRej').css('display','block');
+    		filterBy=$('#filterByRej').val();
+    		if(typeof filterBy != 'undefined' ||filterBy!=""){}
+    		else
+    			filterBy='submitted';
+			
+        });
+      //  alert(filterBy);
+        
+        
+        sortOrder =  $("input[name='sortOrder']:checked").val();           
+        	
+       
+		//alert(sortOrder);
 		
-		
+        
+        
 		$.ajax({
 			type : "GET",
 			url : "postapplicantlist",
-			data : {'pn':pn,'pid':pid,'conid':conid,'sortParam':sortParam},
+			data : {'pn':pn,'pid':pid,'sortParam':sortParam,'excludeType':excludeType,'filterBy':filterBy,'sortOrder':sortOrder},
 			contentType : "application/json",
 			success : function(data) {
 //				alert(data);
@@ -80,8 +112,9 @@
 	List<PostConsultant> conslistHavingNoProfiles = (List) request.getAttribute("conslistHavingNoProfiles"); */
 	List<PostProfile> ppList = (List) request.getAttribute("ppList");
 	Post post = (Post) request.getAttribute("sel_post");
+	
 %>
-<body class="loading">
+<body class="loading" <% if(ppList == null){%>onload="loadclientposts('1')"  <%} %>>
 	<div class="mid_wrapper">
 		<div class="container">
 			<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
@@ -142,6 +175,119 @@
         </div>
     </div>
     </sec:authorize> --%>
+    <%
+
+	int pn=1;
+    if(post!=null) {
+    
+    	Set<Integer> cons = new HashSet(); 
+		Set<Long> shortListed = new HashSet();
+		Iterator<PostProfile> it = post.getPostProfile().iterator();
+		int countRead=0;
+		while(it.hasNext())
+		{
+			PostProfile pp = it.next();
+			if(pp.getAccepted() != null)
+			{
+				shortListed.add(pp.getPpid());
+			}
+			if(pp.getViewStatus()==null||(!pp.getViewStatus())){
+				countRead++;
+			}
+		}
+    	if(request.getAttribute("pn")!=null){
+		pn = (Integer) request.getAttribute("pn");
+    	}
+    %>
+    
+    
+    
+    	 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+    <div style="padding-bottom: 0" class="rightside_in new_table">
+        <div class="bottom-padding manageposthead" >
+	        <div class="bottom-padding">
+	        	
+	                	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Post ID
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getJobCode() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		No of Positions
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getNoOfPosts() %>
+		        	</div>
+	        	</div>
+	        	
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Profile Received
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getPostProfile().size() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Posted Date
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=DateFormats.getTimeValue(post.getPublished()) %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Closed
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getNoOfPostsFilled() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Unread Profiles
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=countRead %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Location
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getLocation() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		No of Partners
+		        	</div>
+		        	<div class="col-md-7">
+		        		${totalpartner }
+		        	</div>
+	        	</div>
+	        	
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Shortlisted
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=shortListed.size() %>
+		        	</div>
+	        	</div>
+	        	
+	        	
+	        </div>
+        </div>
+    </div>
+    </sec:authorize> 
+    <%} %>
 			<div class="new_post_info">
 				<%-- <div class="left_side">
         <div class="left_menu">
@@ -178,7 +324,7 @@
 					<div class="profiles_col">
 
 
-						<div class="block consulting" style="padding: 10px 20px 0px 12px">
+						<div class="block consulting" style="padding: 9px 15px 1px 15px">
 							<div style="float: left;margin-right: 30px;">
 								<select id="selected_post" style="margin-bottom: 7px">
 									<option value="0">Select Post</option>
@@ -211,7 +357,54 @@
 									class="btn file_btn view_consultant  btn_disabled"
 									style="display: none;"><strong>About Consultant</strong></a>
 							</div>
-
+					<div  class="sort_by" style="float: right;margin-left: 20px;">
+									<span>Sort by</span> <select id="sortParam"    onchange="loadclientposts('1')">
+										<option value="rating">Consultant Rating</option>
+										<option value="noticePeriod">Notice Period</option>
+										<option value="currentCTC">Current Annual Salary</option>
+										<!-- 			            <option value="accepted">Shortlisted</option> -->
+									</select>
+	</div>
+					<div  class="sort_by" style="float: right;margin-left: 20px;">
+								
+									<label><input type="radio" name="sortOrder" id="sortOrder" value="asc" onchange="loadclientposts('1')"/>Asc</label>
+									<label><input type="radio" name="sortOrder" id="sortOrder" value="desc"  onchange="loadclientposts('1')" checked="checked"   />Desc</label>
+								</div>		
+  				<div class="sort_by"  id="filterDiv" > <span>Filter by Status</span>
+		          <select id="filterBy"  onchange="loadclientposts('1')">
+		            <option value="submitted">Submitted</option>
+		            <option value="pending">Pending</option>
+		            
+		            <option value="accepted">Shortlisted</option>
+		            
+		            <option value="recruited">Offer Sent</option>
+		            
+		            <option value="offerDate">Offer Accepted</option>
+		            
+		            <option value="joinDate">Joined</option>
+		          </select>
+		        </div>
+  				<div class="sort_by" id="filterDivIncRej" style="display: none;"> <span>Filter by Status</span>
+		          <select id="filterByRej"  onchange="loadclientposts('1')">
+		            <option value="submitted" selected="selected">Submitted</option>
+		            <option value="pending">Pending</option>
+		            
+		            <option value="accepted">Shortlisted</option>
+		            <option value="rejected">CV Rejected</option>
+		            
+		            <option value="recruited">Offer Sent</option>
+		            <option value="declinedDate" >Interview Reject</option>
+		            
+		            <option value="offerDate">Offer Accepted</option>
+		            <option value="offerDropDate">Offer Declined</option>
+		            
+		            <option value="joinDate">Joined</option>
+		            <option value="joinDropDate">Dropped</option>
+		          </select>
+		        </div>
+		        <div style="float: right;margin-right: 20px;padding-top:6px;">
+							<label><input onchange="loadclientposts('1');" type="checkbox" name="excludeType"   value="rejected"/> Include Rejected</label>
+							</div>
 						</div>
 						<div id="candidate_profiles" class="rightside_in new_table "
 							style="display: <%if (ppList == null) {%>none<%}%>">
@@ -225,7 +418,7 @@
 										}
 									}
 									int totalCount =  ((Integer)request.getAttribute("totalCount"));
-									int pn = (Integer) request.getAttribute("pn");
+									//int pn = (Integer) request.getAttribute("pn");
 									int rpp = (Integer) request.getAttribute("rpp");
 									int tp = 0;
 									String cc = "";
@@ -293,11 +486,11 @@
 									<th align="left">Phone</th>
 									<th align="left">Current Role</th>
 									<th align="left">Organization</th>
-									<th align="left">Curent Salary</th>
-									<th align="left">Notice Period</th>
+									<th >Current Annual CTC (In Lacs)</th>
+									<th >Notice Period (In Days)</th>
 									<th align="left">Submitted</th>
 									<th align="left">Status</th>
-									<th style="width: 260px;">Action</th>
+									<th style="width: 155px;" align="left">Action</th>
 									<th></th>
 								</tr>
 
@@ -305,56 +498,65 @@
 								<%
 									if (ppList != null && !ppList.isEmpty()) {
 											for (PostProfile pp : ppList) {
-								%>
-								<tr class="proile_row">
+												%>
+								<tr class="proile_row" >
+												
 									<td><%=pp.getProfile().getRegistration().getConsultName() %></td>
 									
-									<td><a href="clientapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a></td>
+									<td>
+									<%if(pp.getViewStatus()!=null&&pp.getViewStatus()){
+										 %>
+									<a style="color: #1a0dab" href="clientapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a>
+									<%}else{ %>
+									<a href="clientapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a>
+									
+									<%} %>
+									</td>
 									<td><%=pp.getProfile().getContact()%></td>
 									<td><%=pp.getProfile().getCurrentRole()%></td>
 									<td><%=pp.getProfile().getCurrentOrganization()%></td>
-									<td><%=pp.getProfile().getCurrentCTC()%></td>
-									<td><%=pp.getProfile().getNoticePeriod()%></td>
+									<td align="center"><%=pp.getProfile().getCurrentCTC()%></td>
+									<td align="center"><%=pp.getProfile().getNoticePeriod()%></td>
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 
 									<%
 										if (pp.getJoinDropDate() != null) {
 									%>
-									<td><span>Join Dropped</span></td>
-									<td class="text-center"><span>None Required</span></td>
+									<td><span>Dropped</span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getJoinDate() != null) {
 									%>
 									<td><span>Joined</span></td>
-									<td class="text-center"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getOfferDropDate() != null) {
 									%>
 									<td><span>Offer Declined</span></td>
-									<td class="text-center"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getOfferDate() != null) {
 									%>
 									<td><span>Offered</span></td>
-									<td class="text-center"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getDeclinedDate() != null) {
 									%>
-									<td><span>Declined</span></td>
-									<td class="text-center"><span>None Required</span></td>
+									<td><span>Interview Reject</span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getRecruited() != null) {
 									%>
-									<td><span>Offer </span></td>
-									<td class="text-center">
+									<td><span>Offer Sent </span></td>
+									<td class="text-center" style="text-align: left;">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
-											<button class="btn-offer-open profile_status_button"
+											<a  style="float: left;cursor: pointer;"  class="btn-offer-open "
 												data-type="offer_accept" title="Click to accept offer"
 												onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')">Offer
-												Accept</button>
-											<button class="btn-open profile_status_button"
-												data-type="offer_reject" title="Click to reject offer">Reject</button>
+												Accept </a><span style="float: left;margin-right: 2px;margin-left: 2px;">|</span>
+											<a  style="float: left;cursor: pointer;"  class="btn-open "
+												data-type="offer_reject" title="Click to reject offer">Reject</a>
 										</p>
 									</td>
 									<%
@@ -363,7 +565,7 @@
 													else if (pp.getRejected() != null) {
 									%>
 									<td><span>CV Rejected</span></td>
-									<td class="text-center"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getAccepted() != null) {
 									%>
@@ -372,10 +574,11 @@
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
 
-											<button class="recruit_profile profile_status_button"
-												title="Click to offer">Send Offer</button>
-											<button class="btn-open profile_status_button"
-												data-type="reject_recruit" title="Click to decline">Decline</button>
+											<a style="float: left;cursor: pointer;" class="recruit_profile "
+												title="Click to offer">Send Offer</a><span style="float: left;margin-right: 2px;margin-left: 2px;">|</span>
+											
+											<a style="float: left;cursor: pointer;" class="btn-open "
+												data-type="reject_recruit" title="Click to decline">Decline</a>
 
 										</p>
 									</td>
@@ -386,10 +589,11 @@
 									<td class="text-center">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
-											<button class="accept_profile profile_status_button"
-												title="Click to shortlist profile">Shortlist</button>
-											<button class="btn-open profile_status_button"
-												data-type="reject_profile" title="Click to reject profile">Reject</button>
+											<a style="float: left;cursor: pointer;" class="accept_profile "
+												title="Click to shortlist profile">Shortlist</a><span style="float: left;margin-right: 2px;margin-left: 2px;">|</span>
+											
+											<a style="float: left;cursor: pointer;"  class="btn-open "
+												data-type="reject_profile" title="Click to reject profile">Reject</a>
 										</p>
 									</td>
 									<%
@@ -454,13 +658,8 @@
 										%>
 									</ul>
 								</div>
-								<div class="sort_by">
-									<span>Filter by</span> <select id="sortParam">
-										<option value="submitted">Submitted</option>
-										<!-- 			            <option value="accepted">Shortlisted</option> -->
-									</select>
-								</div>
-								<%
+								
+						<%-- 		<%
 									String sortParam = (String) request.getAttribute("sortParam");
 								%>
 								<script type="text/javascript">
@@ -469,7 +668,7 @@
         $("#sortParam option[value='<%=sortParam%>']").attr('selected', 'selected');
 								<%}%>
 									
-								</script>
+								</script> --%>
 							</div>
 
 							<%
@@ -546,12 +745,12 @@
 
 									</ul>
 								</div>
-								<div class="sort_by">
+							<!-- 	<div class="sort_by">
 									<span>Filter by</span> <select id="sortParam">
 										<option value="submitted">Submitted</option>
-										<!-- 		            <option value="accepted">Shortlisted</option> -->
+												            <option value="accepted">Shortlisted</option>
 									</select>
-								</div>
+								</div> -->
 								<script type="text/javascript">
 									
 								</script>
@@ -575,21 +774,23 @@
 			<div>
 				<div class="modal-body">
 					<p>Please fill all details</p>
-					<br> <label>Total CTC (INR): </label><span
-						style="color: green; font-weight: bold;" id="totalCTCinWords"></span>
+					<br> <label>Total CTC (INR): </label>
+						<span style="color: green; font-weight: bold;" id="totalCTCinWords"></span>
+					<br> 
+						<input type="text" id="totalCTC" onchange="getAmountInWords(this.value,'totalCTCinWords')" /> 
+						<input type="hidden" id="postIdForAccept" /> 
+					<br> 
+						<span id="errorTotalCTC" style="display: none; color: red;"></span> 
+						<label>Billable	CTC (INR): </label> 
+						<span style="color: green; font-weight: bold;" id="billableCTCinWords"></span> 
+						<br> 
+						<input type="text" id="billableCTC"	onchange="getAmountInWords(this.value,'billableCTCinWords')" /> 
 					<br>
-					<input type="text" id="totalCTC"
-						onchange="getAmountInWords(this.value,'totalCTCinWords')" /> <input
-						type="hidden" id="postIdForAccept" /> <br> <span
-						id="errorTotalCTC" style="display: none; color: red;"></span> <label>Billable
-						CTC (INR): </label> <span style="color: green; font-weight: bold;"
-						id="billableCTCinWords"></span> <br> <input type="text"
-						id="billableCTC"
-						onchange="getAmountInWords(this.value,'billableCTCinWords')" /> <br>
-					<span id="errorBillableCTC" style="display: none; color: red;"></span>
-					<label>Joining Date : </label> <br>
-					<input type="text" id="datepicker" /> <span id="errorJoiningDate"
-						style="display: none; color: red;"></span>
+						<span id="errorBillableCTC" style="display: none; color: red;"></span>
+						<label>Joining Date : </label> 
+					<br> 
+						<input type="text"	id="datepicker" /> 
+						<span id="errorJoiningDate"	style="display: none; color: red;"></span>
 				</div>
 				<div class="model-footer">
 					<button class="btn btn-cancel">Cancel</button>
@@ -661,16 +862,19 @@
 
 				$('.modal-content select').hide();
 				if (reject_type == "reject_profile") {
+					$('.sel_rej_profiel').val('');
 					$('.sel_rej_profiel').show();
 					$('#rejectModal').show();
 				}
 				if (reject_type == "reject_recruit") {
 
+					$('.sel_rej_recruit').val('');
 					$('.sel_rej_recruit').show();
 					$('#rejectModal').show();
 				}
 				if (reject_type == "offer_reject") {
 
+					$('.sel_rej_offer').val('');
 					$('.sel_rej_offer').show();
 					$('#rejectModal').show();
 				}
@@ -679,7 +883,17 @@
 			})
 
 			$(document.body).on('click', '.btn-offer-open', function() {
+				$('#totalCTCinWords').html('');
+				$('#billableCTCinWords').html('');
+				$('#errorTotalCTC').html('');
+				$('#billableCTCinWords').html('');
+				$('#errorJoiningDate').html('');
+				$('#totalCTC').val('');
+				$('#billableCTC').val('');
+				$('#datepicker').val('');
+				$('#errorBillableCTC').html('');
 				$('#offerModal').show();
+				
 			});
 
 		});

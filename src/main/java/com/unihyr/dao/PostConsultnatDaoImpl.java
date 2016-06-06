@@ -37,10 +37,14 @@ public class PostConsultnatDaoImpl implements PostConsultnatDao
 	}
 	
 	@Override
-	public List<PostConsultant> getInterestedConsultantByPost(long postId)
+	public List<PostConsultant> getInterestedConsultantByPost(long postId,String sortOrder)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostConsultant.class);
+		if(sortOrder.indexOf("desc")>=0)
 		criteria.addOrder(Order.desc("percentile"));
+		else
+		criteria.addOrder(Order.asc("percentile"));
+			
 		criteria.add(Restrictions.eq("post.postId", postId));
 		return criteria.list();
 	}

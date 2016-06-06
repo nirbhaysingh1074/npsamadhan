@@ -11,11 +11,11 @@
 	
 	<title>UniHyr</title>
 	
+	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 	<link rel="stylesheet" href="css/media.css" media="screen" />
     <link rel="stylesheet" href="css/style.css" media="screen" />
 	<link rel="stylesheet" href="css/font-awesome.css" media="screen"   />
 	<link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
-	<link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 	<style type="text/css">
 		input[type="text"], input[type="number"], input[type="password"], input[type="tel"], input[type="search"], input[type="email"], textarea, select 
 		{
@@ -46,6 +46,7 @@
 			var nooflocation = $('#hoAddress').val();
 			var about = $('#about').val();
 			var officeAddress = $("#officeAddress").val();
+			var name = $("#name").val();
 // 			alert(officeLocations);
 			
 			$('.error').html('&nbsp;');
@@ -106,10 +107,16 @@
 				$('.hoAddress_error').html("Please enter a valid no of locations");
 				valid = false;
 			}
-			
+
 			if(officeAddress == "")
 			{
 				$('.officeAddress_error').html("Please enter office address");
+				valid = false;
+			}
+
+			if(name== "")
+			{
+				$('.name_error').html("Please enter your name");
 				valid = false;
 			}
 			
@@ -162,26 +169,64 @@
 		      }
 	    }) ;
 	}
+	function checkConsultantNameExistance()
+	{
+		$('.org_error').html("&nbsp;");
+		var organizationName = $('#organizationName').val();
+		if(organizationName=="")
+		{
+			$('.org_error').html("Please enter organization name.");
+			$('#organizationName').focus();
+			return false;
+		}
+		$.ajax({
+			type : "GET",
+			url : "checkUserNameExistance",
+			data : {'userName':organizationName},
+			contentType : "application/json",
+			success : function(data) {
+				var obj = jQuery.parseJSON(data);
+				if(obj.uNameexist)
+				{
+					$('.org_error').html("This organization name already registered.");
+					$('#org_error').focus();
+				}
+				
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+		        alert(xhr.status);
+		      }
+	    }) ;
+	}
 	</script>
 	<style type="text/css">
 	.req{color: red;}
 	</style>
 </head>
-<body style="background-image: url('images/bg-image.png')">
+<body style="background: #EDEDED;">
 	<%
-		String uidex = (String)request.getAttribute("uidex");
-		String usermsg = ""; 
-		if(uidex != null && uidex.equals("exist"))
-		{
-			usermsg = "user aleady registered !";
-		}
+	String uidex = (String)request.getAttribute("uidex");
+	String usermsg = ""; 
+	
+	if(uidex != null && uidex.equals("exist"))
+	{
+		usermsg = "user aleady registered !";
+	}
+	String uNamedex = (String)request.getAttribute("uNamedex");
+	String orgmsg = ""; 
+
+	System.out.println(uNamedex);
+	if(uNamedex != null && uNamedex.equals("exist"))
+	{
+		orgmsg = "Organization name aleady registered !";
+	}
 	
 	%>
 
 
 	<section>
 		<div class="container reg_page" style="margin: 50px auto;">
-			<a href="home"><span class="close" title="Home Page">X</span></a>
+			<a href="home"><span class="close" title="Home Page"><img style="    height: 40px;" src="images/close.png" /></span></a>
 			<div class="reg-form">
 				<form:form method="POST" action="clientregistration" commandName="regForm">
 					<div class="reg-header bottom-padding" >
@@ -192,14 +237,14 @@
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Organization Name<span class="req">*</span></label>
-							<form:input path="organizationName" />
-							<span class="error org_error">&nbsp;<form:errors path="organizationName" /></span>
+							<form:input path="organizationName"   onchange="checkConsultantNameExistance()"/>
+							<span class="error org_error">&nbsp;<form:errors path="organizationName" /> <%= orgmsg %></span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Email id<span class="req">*</span></label>
-							<form:input path="userid" type="email"  onchange="checkUserExistance()"/>
+							<form:input path="userid" type="email"  onchange="checkUserExistance()" />
 							<span class="error userid_error">&nbsp;<form:errors path="userid" /> <%= usermsg %></span>
 						</div>
 					</div>
@@ -331,6 +376,13 @@
 						</div>
 					</div>
 					
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Your Name<span class="req">*</span></label>
+							<form:input path="name" />
+							<span class="error name_error">&nbsp;<form:errors path="name" /></span>
+						</div>
+					</div>
 					<div class="clearfix"></div>
 					<div class="login-footer bottom-padding clearfix">
 						<div class="form_submt bottom-padding10" class='clearfix'>

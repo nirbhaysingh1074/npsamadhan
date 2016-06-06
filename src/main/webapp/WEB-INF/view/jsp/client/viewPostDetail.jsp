@@ -342,7 +342,11 @@
 							    String serverName = request.getServerName();
 							    int serverPort = request.getServerPort();
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
-					         	String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
+					            String pathh="";
+					            if(!inPath.toLowerCase().contains(".pdf"))
+					         {
+					            
+					            String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					        	java.io.File inputFile = new java.io.File(inPath); //
 					        	java.io.File outputFile = new java.io.File(outPath); //
@@ -356,7 +360,10 @@
 					        	  	DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
 					        	  	converter.convert(inputFile, outputFile); // close
 					        	  	connection.disconnect(); 
-					        		String pathh=outputFile.getName();
+					        		pathh=outputFile.getName();
+							 }else{
+					        	 pathh=post.getUploadjd();
+					         }
 					        	%>
 					        			<script type="text/javascript">
 					        			 	var x = document.createElement("EMBED");

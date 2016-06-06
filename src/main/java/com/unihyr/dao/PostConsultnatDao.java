@@ -10,7 +10,7 @@ public interface PostConsultnatDao
 	public List<PostConsultant> getInterestedPostForConsultantByClient(String consultantId, String clientId, String sortParam);
 
 
-	public List<PostConsultant> getInterestedConsultantByPost(long postId);
+	public List<PostConsultant> getInterestedConsultantByPost(long postId,String sortOrder);
 
 
 	List<PostConsultant> getInterestedConsultantSortedByPost(long postId, String sortParam, String order);

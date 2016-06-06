@@ -2,6 +2,7 @@ package com.unihyr.controller;
 
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -102,6 +103,9 @@ public class LoginController
 	public @ResponseBody String insertLogOut(ModelMap map, HttpServletRequest request)
 	{
 		System.out.println("from logout page");
+		HttpSession hs=request.getSession(false);
+		if(hs!=null)
+		request.getSession().invalidate();
 		return "logedOut";
 	}
 
@@ -109,6 +113,9 @@ public class LoginController
 	public String logout(ModelMap map, HttpServletRequest request)
 	{
 		System.out.println("from logout successfull page");
+		HttpSession hs=request.getSession(false);
+		if(hs!=null)
+		request.getSession().invalidate();
 		return "redirect:home";
 	}
 
@@ -166,6 +173,7 @@ public class LoginController
 		try
 		{
 			Registration user = registrationService.getRegistationByUserId(userid);
+			Registration username = registrationService.getRegistrationsByName(reg.getOrganizationName());
 			if (user != null)
 			{
 				map.addAttribute("industryList", industryService.getIndustryList());
@@ -173,6 +181,14 @@ public class LoginController
 				map.addAttribute("uidex", "exist");
 				return "registration";
 			}
+			if(username!=null){
+				map.addAttribute("industryList", industryService.getIndustryList());
+				map.addAttribute("locList", locationService.getLocationList());
+				map.addAttribute("uNamedex", "exist");
+				return "registration";
+				
+			}
+			
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -192,15 +208,8 @@ public class LoginController
 
 			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
-			char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
-			Random rnd = new Random();
-
-			StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
-			for (int i = 0; i < 5; i++)
-				sb.append(alphNum[rnd.nextInt(alphNum.length)]);
-
-			String id = sb.toString();
+			String id=GeneralConfig.generatePassword();
 			login.setPassword(id);
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_EMP_MANAGER.toString());
@@ -236,7 +245,7 @@ public class LoginController
 			@ModelAttribute(value = "login") LoginInfo login, BindingResult loginResult,
 			@ModelAttribute(value = "urole") UserRole urole, BindingResult userroleResult,
 			@RequestParam("userid") String userid, ModelMap map, HttpServletRequest request)
-	{
+			{
 
 		System.out.println("userid in controller" + userid);
 		System.out.println("indusries : " + request.getParameterValues("industries"));
@@ -245,6 +254,7 @@ public class LoginController
 		try
 		{
 			Registration user = registrationService.getRegistationByUserId(userid);
+			Registration username = registrationService.getRegistrationsByName(reg.getConsultName());
 			if (user != null)
 			{
 				valid = false;
@@ -255,7 +265,10 @@ public class LoginController
 				valid = false;
 				map.addAttribute("industry_req", "Please select atleast one industry");
 			}
-
+			if(username!=null){
+				valid = false;
+				map.addAttribute("uNamedex", "exist");
+			}
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -288,15 +301,7 @@ public class LoginController
 
 				reg.setIndustries(indset);
 				login.setReg(reg);
-				char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-
-				Random rnd = new Random();
-
-				StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
-				for (int i = 0; i < 5; i++)
-					sb.append(alphNum[rnd.nextInt(alphNum.length)]);
-
-				String id = sb.toString();
+				String id=GeneralConfig.generatePassword();
 				login.setPassword(id);
 				reg.setLog(login);
 				urole.setUserrole(Roles.ROLE_CON_MANAGER.toString());
@@ -401,6 +406,23 @@ public class LoginController
 			return obj.toJSONString();
 		}
 		obj.put("uidexist", false);
+		return obj.toJSONString();
+	}
+	
+	@RequestMapping(value = "/checkUserNameExistance", method = RequestMethod.GET)
+	public @ResponseBody String checkUserNameExistance(Principal principal, ModelMap map, HttpServletRequest request,
+			@RequestParam String userName)
+		{
+		map.addAttribute("status", request.getParameter("status"));
+		JSONObject obj = new JSONObject();
+
+		Registration reg = registrationService.getRegistrationsByName(userName);
+		if (reg != null)
+		{
+			obj.put("uNameexist", true);
+			return obj.toJSONString();
+		}
+		obj.put("uNameexist", false);
 		return obj.toJSONString();
 	}
 }

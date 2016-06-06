@@ -43,9 +43,13 @@ public class LocationController
 	@RequestMapping(value = "/adminaddlocation", method = RequestMethod.POST)
 	public String adminAddLocation(@ModelAttribute(value = "locForm") Location location, BindingResult result,	ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		if(result.hasErrors() || location.getLocation().trim().length() <1)
+		if(result.hasErrors() || location.getLocation().trim().length() <1||!locationService.getLocationByName(location.getLocation().trim()).isEmpty())
 		{
 			map.addAttribute("loc_error", "Please enter location name");
+			if(!locationService.getLocationByName(location.getLocation().trim()).isEmpty())
+			map.addAttribute("loc_error", "Location is already exist !");
+			
+			
 			return "adminAddLocation";
 		}
 		else
@@ -77,10 +81,14 @@ public class LocationController
 	@RequestMapping(value = "/admineditlocation", method = RequestMethod.POST)
 	public String admin_editlocation(@ModelAttribute(value = "locForm") Location location, BindingResult result,	ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		if(result.hasErrors() || location.getLocation().trim().length() <1)
+		if(result.hasErrors() || location.getLocation().trim().length() <1||!locationService.getLocationByName(location.getLocation().trim()).isEmpty())
 		{
 			map.addAttribute("loc_error", "Please enter location name");
-			return "adminEditLocation";
+			if(!locationService.getLocationByName(location.getLocation().trim()).isEmpty())
+			map.addAttribute("loc_error", "Location is already exist !");
+			
+			
+			return "adminAddLocation";
 		}
 		else
 		{

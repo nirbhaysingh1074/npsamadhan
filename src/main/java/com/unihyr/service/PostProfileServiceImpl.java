@@ -53,15 +53,15 @@ public class PostProfileServiceImpl implements PostProfileService
 	}
 	
 	@Override
-	public List<PostProfile> getPostProfileByPost(long postId, int first, int max,String sortParam,String filterBy)
+	public List<PostProfile> getPostProfileByPost(long postId, int first, int max,String sortParam,String filterBy,String excludeType,String sortOrder)
 	{
-		return this.postProfileDao.getPostProfileByPost(postId, first, max,sortParam, filterBy);
+		return this.postProfileDao.getPostProfileByPost(postId, first, max,sortParam, filterBy,excludeType,sortOrder);
 	}
 	
 	@Override
-	public long countPostProfileByPost(long postId,String filterBy)
+	public long countPostProfileByPost(long postId,String filterBy,String excludeType)
 	{
-		return this.postProfileDao.countPostProfileByPost(postId,filterBy);
+		return this.postProfileDao.countPostProfileByPost(postId,filterBy,excludeType);
 	}
 	
 	@Override
@@ -76,9 +76,9 @@ public class PostProfileServiceImpl implements PostProfileService
 		return this.postProfileDao.countPostProfileByClientAndConsultant(clientId, consultantId,sortParam);
 	}
 	@Override
-	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max,String sortParam,String filterBy)
+	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max,String sortParam,String filterBy,String excludeType)
 	{
-		return this.postProfileDao.getPostProfileByClientPostAndConsultant(clientId, consultantId, postId, first, max,sortParam,filterBy);
+		return this.postProfileDao.getPostProfileByClientPostAndConsultant(clientId, consultantId, postId, first, max,sortParam,filterBy,excludeType);
 	}
 	
 	@Override
@@ -215,5 +215,17 @@ public class PostProfileServiceImpl implements PostProfileService
 	{
 		return this.postProfileDao.countProfileListByPostId(postId);
 	}
+
+	@Override
+	public List<PostProfile> getPostProfileOfferedByPost(long postId)
+	{
+		return this.postProfileDao.getPostProfileOfferedByPost(postId);
+	}
+
+	@Override
+	public long countShortlistedProfileListPostId(long postId, String status)
+	{
+		return this.postProfileDao.countShortlistedProfileListPostId(postId,status);
+		}
 	
 }

@@ -115,14 +115,14 @@
 		       				<th width="5%">Published</th>
 		       				<th align="left"  width="5%">Status</th>
 		       				<th align="left">Job Id</th>
-		       				<th align="left">Position</th>
+		       				<th align="left" style="width: 14%;">Role</th>
+		       				<th width="110px"  >No of Positions</th> 
+		       				
 		       				<th align="left">Location</th>
 		       				<th width="10%">Posted Date</th>
 		       				<th >No of Partners</th> 
-		       				<th >Total Posts</th> 
-		       				<th >Filled Posts</th> 
 		       				<th width="10%">Received</th>
-		       				<th width="10%">Shortlisted</th>
+		       				<th  style="width:6%;">Shortlisted</th>
 		       				
 		       				<th  width="10%">Action</th>
 		       			</tr>
@@ -138,12 +138,16 @@
 	       							Set<Integer> cons = new HashSet(); 
 	       							Set<Long> shortListed = new HashSet();
 	       							Iterator<PostProfile> it = post.getPostProfile().iterator();
+	       							int countRead=0;
 	       							while(it.hasNext())
 	       							{
 	       								PostProfile pp = it.next();
 	       								if(pp.getAccepted() != null)
 	       								{
 	       									shortListed.add(pp.getPpid());
+	       								}
+	       								if(pp.getViewStatus()==null||(!pp.getViewStatus())){
+	       									countRead++;
 	       								}
 	       							}
 	       							%>
@@ -225,13 +229,15 @@
 						       						}
 						       					%>
 					       					</td>
+						       				<td style="text-align: center;cursor: pointer;" onclick="getClosedCandidates(<%=post.getPostId()%>)"><%= post.getNoOfPosts() %> (<%=post.getNoOfPostsFilled() %> closed)</td>
+						       				
 						       				<td><%= post.getLocation() %></td>
 						       				<td style="text-align: center;"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
 
 						       				<td style="text-align: center;"><%= post.getPostConsultants().size() %></td>
-						       				<td style="text-align: center;"><%= post.getNoOfPosts() %></td>
-						       				<td style="text-align: center;"><%= post.getNoOfPostsFilled() %></td>
-						       				<td style="text-align: center;"><%= post.getPostProfile().size() %></td>
+						       				
+<%-- 						       				<td style="text-align: center;"><%= post.getNoOfPostsFilled() %></td> --%>
+						       				<td style="text-align: center;"><%= post.getPostProfile().size() %> (<%=countRead %> new)</td>
 						       				
 						       				
 						       				<td style="text-align: center;"><%= shortListed.size() %></td>

@@ -78,8 +78,8 @@
 	       				<th align="left">Job Id</th>
 	       				<th align="left">Posted Date</th>
 	       				<th align="left">Location</th>
-	       				<th align="left">Exp. Range</th>
-	       				<th align="left">Comp. Range</th>
+	       				<th align="left">Exp. Range (in Yr.)</th>
+	       				<th align="left">Comp. Range (in Lacs)</th>
 	       				<!-- <th>View JD</th> -->
 	       			</tr>
        			</thead>
@@ -127,8 +127,8 @@
 		             					<td style="font-size: 10px;"><%= post.getJobCode() %></td>
 		             					<td><%= DateFormats.ddMMMMyyyy.format(post.getPublished()) %></td>
 		             					<td><%= post.getLocation()%></td>
-		             					<td><%= post.getExp_min()%> to <%= post.getExp_max()  %> Yr </td>
-		             					<td><%= post.getCtc_min()%> to <%= post.getCtc_max()  %> Lacs </td>
+		             					<td><%= post.getExp_min()%> to <%= post.getExp_max()  %>  </td>
+		             					<td><%= post.getCtc_min()%> to <%= post.getCtc_max()  %>  </td>
 		             					<%--  <td class="text-center">
 		             						<div class="pre_check" style="float: none;padding: 0;">
 						                		<a id="<%= post.getPostId() %>" class="view_post " title="Click to view post detail">

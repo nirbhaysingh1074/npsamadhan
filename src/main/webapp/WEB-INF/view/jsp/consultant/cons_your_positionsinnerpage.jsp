@@ -1,3 +1,5 @@
+<%@page import="java.util.Set"%>
+<%@page import="java.util.HashSet"%>
 <%@page import="com.unihyr.domain.Inbox"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
@@ -8,7 +10,7 @@
 <%@page import="java.util.List"%>
 <%
 	List<PostProfile> profileList = (List<PostProfile>) request.getAttribute("profileList");
-
+	Post post=(Post)request.getAttribute("selectedPost");
 	long totalCount = (Long) request.getAttribute("totalCount");
 	int pn = (Integer) request.getAttribute("pn");
 	int rpp = (Integer) request.getAttribute("rpp");
@@ -28,7 +30,113 @@
 		}
 	}
 %>
-
+    <%if(post!=null) {
+    
+    	Set<Integer> cons = new HashSet(); 
+		Set<Long> shortListed = new HashSet();
+		Iterator<PostProfile> it = post.getPostProfile().iterator();
+		int countRead=0;
+		while(it.hasNext())
+		{
+			PostProfile pp = it.next();
+			if(pp.getAccepted() != null)
+			{
+				shortListed.add(pp.getPpid());
+			}
+			if(pp.getViewStatus()==null||(!pp.getViewStatus())){
+				countRead++;
+			}
+		}
+    
+    %>
+    
+    
+    
+    	 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+    <div style="padding-bottom: 0" class="rightside_in new_table">
+        <div class="bottom-padding" style=" border: 2px solid gray; border-radius: 5px; margin-bottom: 10px;  padding: 10px;">
+	        <div class="bottom-padding">
+	        	
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Post ID
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getJobCode() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Total Opening 
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getNoOfPosts() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Total no of Shortlisted
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=shortListed.size() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Posted Date
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=DateFormats.getTimeValue(post.getPublished()) %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Openings Left
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getNoOfPosts()-post.getNoOfPostsFilled() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Unread Profiles
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=countRead %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Location
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getLocation() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Total Profile Recieved
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getPostProfile().size() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		No of Partners
+		        	</div>
+		        	<div class="col-md-7">
+		        		${totalpartner }
+		        	</div>
+	        	</div>
+	        	
+	        </div>
+        </div>
+    </div>
+    </sec:authorize> 
+    <%} %>
+	
+	
 <div class="filter">
 	<div class="col-md-7 pagi_summary">
 		<span>Showing <%=cc%> of <%=totalCount%></span>
@@ -134,7 +242,7 @@
 													if(pp.getJoinDropDate() != null)
 													{
 														%>
-						                  					<td>
+						                  					<td style="text-align: left;">
 																<span>Join Dropped</span>
 															</td>
 															
@@ -142,7 +250,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -152,7 +260,7 @@
 														{
 															%>
 							                  					
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -162,7 +270,7 @@
 													else if(pp.getJoinDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Joined</span>
 															</td>
 															
@@ -170,7 +278,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -181,7 +289,7 @@
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -191,7 +299,7 @@
 													else if(pp.getOfferDropDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Offer Declined</span>
 															</td>
 															
@@ -199,7 +307,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -209,7 +317,7 @@
 														{
 															%>
 							                  					
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -219,14 +327,14 @@
 													else if(pp.getOfferDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Offered</span>
 															</td>
 														<%
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -235,10 +343,10 @@
 														else
 														{
 															%>
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<button  class="join_accept profile_status_button" title="Click to accept offer" >Join</button> 
-																		<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
+																		<a style="cursor: pointer;"  class="join_accept" title="Click to accept offer" >Join</a> 
+																		<a style="cursor: pointer;" class="btn-open" data-type="join_reject"  title="Click to reject offer" >Offer Drop</a>
 																	</p>
 																</td>
 															<%
@@ -248,7 +356,7 @@
 													else if(pp.getDeclinedDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Declined</span>
 															</td>
 															
@@ -256,7 +364,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -267,7 +375,7 @@
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -277,7 +385,7 @@
 													else if(pp.getRecruited() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Offer</span>
 															</td>
 															
@@ -285,7 +393,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -296,7 +404,7 @@
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -307,7 +415,7 @@
 													else if(pp.getRejected() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>CV Rejected</span>
 															</td>
 															
@@ -315,7 +423,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -326,7 +434,7 @@
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -336,7 +444,7 @@
 													else if(pp.getAccepted() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>ShortListed</span>
 															</td>
 															
@@ -344,7 +452,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -355,7 +463,7 @@
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -365,7 +473,7 @@
 													else
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Pending</span>
 															</td>
 																
@@ -373,7 +481,7 @@
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -384,7 +492,7 @@
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%

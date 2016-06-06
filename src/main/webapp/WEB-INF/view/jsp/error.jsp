@@ -6,11 +6,11 @@
 	
 	<title>UniHyr </title>
 	
+	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 	<link rel="stylesheet" href="css/media.css" media="screen" />
     <link rel="stylesheet" href="css/style.css" media="screen" />
 	<link rel="stylesheet" href="css/font-awesome.css" media="screen"   />
 	<link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
-	<link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 	<style type="text/css">
 		input[type="text"], input[type="password"], input[type="tel"], input[type="search"], input[type="email"], textarea, select 
 		{

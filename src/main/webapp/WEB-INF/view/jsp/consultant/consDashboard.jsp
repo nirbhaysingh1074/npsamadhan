@@ -177,7 +177,7 @@ jQuery(document).ready(function() {
 				        </div>
 			        </div>
 			    </sec:authorize> --%>
-		        <br><br>
+		       
 		        <div class="block consulting" style="padding: 0 8px;">
 		          <div  style="float: left;">
 	<!-- 	          <input type="hidden" value="all" id="cons_db_post_status"/> -->

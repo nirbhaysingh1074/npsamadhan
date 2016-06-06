@@ -16,8 +16,7 @@
     <link rel="stylesheet" href="css/admin/AdminLTE.min.css">
     <link rel="stylesheet" href="css/admin/skin-blue.min.css">
     <link rel="stylesheet" href="css/alertify.core.css" />
-<link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
-    
+	<link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
     <script src="js/admin/jQuery-2.1.4.min.js"></script>
     <script src="js/admin.js"></script>
     <script src="js/common_js.js"></script>
@@ -25,10 +24,8 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
-
       <!-- Main Header -->
       <header class="main-header">
-
         <!-- Logo -->
         <a href="admindashboard" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -36,7 +33,6 @@
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg"><img alt="Unihyr" src="images/logo-md.png"> </span>
         </a>
-
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
           <!-- Sidebar toggle button-->

@@ -215,7 +215,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              <label>Location<span class='error'>*</span> </label>
 	            </dt>
 	            <dd>
-	              <form:select path="location">
+	              <form:select path="location"  multiple="multiple">
 	              	<form:option value="">Select Location</form:option>
 	            		<c:forEach var="item" items="${locList}">
 						   <form:option value="${item.location}">${item.location}</form:option>
@@ -358,7 +358,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	                <div class="col-md-4"> End Time
 	                  <form:select path="workHourEndHour">
 	                  
-	                   <form:option value='11:59 PM" %>'>11:59 PM</form:option>
+	                   <form:option value='11:59 PM'>11:59 PM</form:option>
 	                   <%
 	                   NumberFormat formatter = new DecimalFormat("00");  
 	                   for(int i=11;i>=1;i--){ %>
@@ -420,14 +420,14 @@ Registration registration=(Registration)request.getAttribute("registration");
 					</div>
 					</dd>
 				</dl>
-				<dl style="clear:both;">
+			<!-- 	<dl style="clear:both;">
 					<dd>
 						<input type="button" id="startRecording" value="Start" /> 
 						<input type="button" id="stopRecording" value="Stop" /> 
 						<span id="recordingStatus"></span> 
 						<input type="hidden" id="fileUidKey" />
 					</dd>
-				</dl>
+				</dl> -->
 				<%
 	          
 					String fileuploaderror = (String)request.getAttribute("fileuploaderror");

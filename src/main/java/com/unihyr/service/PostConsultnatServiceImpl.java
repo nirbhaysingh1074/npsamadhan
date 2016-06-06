@@ -22,10 +22,10 @@ public class PostConsultnatServiceImpl implements PostConsultnatService
 	}
 
 	@Override
-	public List<PostConsultant> getInterestedConsultantByPost(long postId)
+	public List<PostConsultant> getInterestedConsultantByPost(long postId,String sortOrder)
 	{
 		// TODO Auto-generated method stub
-		return this.postConsultnatDao.getInterestedConsultantByPost(postId);
+		return this.postConsultnatDao.getInterestedConsultantByPost(postId,sortOrder);
 		}
 	@Override
 	public List<PostConsultant> getInterestedConsultantSortedByPost(long postId, String sortParam, String order)

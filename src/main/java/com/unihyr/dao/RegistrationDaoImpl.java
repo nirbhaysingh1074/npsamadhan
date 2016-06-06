@@ -29,207 +29,212 @@ import com.unihyr.domain.Registration;
 @SuppressWarnings("unchecked")
 public class RegistrationDaoImpl implements RegistrationDao
 {
-	@Autowired private SessionFactory sessionFactory;
-	
+	@Autowired
+	private SessionFactory sessionFactory;
+
 	@Override
 	public Registration getRegistationByUserId(String userid)
 	{
 		List<Registration> logList = this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
-				.add(Restrictions.eq("userid", userid))
-				.setFetchMode("industries", FetchMode.JOIN)
-				.setFetchMode("log", FetchMode.JOIN)
-				.setFetchMode("log.roles", FetchMode.JOIN)
-				.setFetchMode("subuser", FetchMode.JOIN)
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-				.list();
-		if(!logList.isEmpty())
+				.add(Restrictions.eq("userid", userid)).setFetchMode("industries", FetchMode.JOIN)
+				.setFetchMode("log", FetchMode.JOIN).setFetchMode("log.roles", FetchMode.JOIN)
+				.setFetchMode("subuser", FetchMode.JOIN).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+		if (!logList.isEmpty())
 		{
 			return logList.get(0);
 		}
 		return null;
 	}
-	
+
 	@Override
 	public int countUsers()
 	{
-		Long c = (Long)this.sessionFactory.getCurrentSession().createCriteria(Registration.class).setProjection(Projections.rowCount()).uniqueResult();
+		Long c = (Long) this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
+				.setProjection(Projections.rowCount()).uniqueResult();
 		return c.intValue();
 	}
-	
+
 	@Override
 	public List<Registration> getRegistrations(int first, int max)
 	{
-		return this.sessionFactory.getCurrentSession().createCriteria(Registration.class).addOrder(Order.desc("lid")).setFirstResult(first).setMaxResults(max)
-				.setFetchMode("log", FetchMode.JOIN)
-				
+		return this.sessionFactory.getCurrentSession().createCriteria(Registration.class).addOrder(Order.desc("lid"))
+				.setFirstResult(first).setMaxResults(max).setFetchMode("log", FetchMode.JOIN)
+
 				.list();
 	}
-	
+
+	@Override
+	public Registration getRegistrationsByName(String userName)
+	{
+		Criteria cr=this.sessionFactory.getCurrentSession().createCriteria(Registration.class);
+		Criterion r1=Restrictions.eq("consultName", userName);
+		Criterion r2=Restrictions.eq("organizationName", userName);
+			cr.add(Restrictions.or(r1,r2));
+			List<Registration> logList=cr.list();
+			if (!logList.isEmpty())
+			{
+				return logList.get(0);
+			}
+			return null;
+	}
+
 	@Override
 	public void update(Registration registration)
 	{
 		this.sessionFactory.getCurrentSession().update(registration);
 		this.sessionFactory.getCurrentSession().flush();
-		
+
 	}
-	
+
 	@Override
 	public List<Registration> getConsultantsByClient(String clientId)
 	{
 		String hql = "select DISTINCT reg.* from registration reg INNER JOIN candidateprofile cp ON reg.userid = cp.consultantId AND cp.profileId in(SELECT pp.profileId FROM postprofile pp LEFT JOIN post po ON pp.postId = po.postId AND po.clientId LIKE :clientId)";
-		SQLQuery query=this.sessionFactory.getCurrentSession().createSQLQuery(hql);          
-		query.setParameter("clientId",clientId);
+		SQLQuery query = this.sessionFactory.getCurrentSession().createSQLQuery(hql);
+		query.setParameter("clientId", clientId);
 		query.addEntity(Registration.class);
-		List<Registration> list = (List<Registration>)query.list();
+		List<Registration> list = (List<Registration>) query.list();
 		return list;
 	}
-	
+
 	@Override
 	public List<Registration> getConsultantsByPost(long postId)
 	{
-		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
-				.createAlias("postConsultants", "pcAlias")
-				.createAlias("pcAlias.post", "postAlias")
-				.add(Restrictions.eq("postAlias.postId", postId))
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-				
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
+				.createAlias("postConsultants", "pcAlias").createAlias("pcAlias.post", "postAlias")
+				.add(Restrictions.eq("postAlias.postId", postId)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+
 				.setFetchMode("postConsultants", FetchMode.JOIN);
 		return criteria.list();
-				
-		
+
 	}
-	
+
 	@Override
 	public List<Registration> getClientsByIndustyForConsultant(String consultantId)
 	{
-		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(PostConsultant.class)
-				.createAlias("post", "postAlias")
-				.createAlias("postAlias.client", "clientAlias")
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostConsultant.class)
+				.createAlias("post", "postAlias").createAlias("postAlias.client", "clientAlias")
 				.createAlias("consultant", "conAlias")
-				.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("clientAlias.lid")))))
-				.add(Restrictions.isNull("clientAlias.admin"))
-				.add(Restrictions.eq("conAlias.userid", consultantId))
+				.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id())
+						.add(Projections.property("clientAlias.lid")))))
+				.add(Restrictions.isNull("clientAlias.admin")).add(Restrictions.eq("conAlias.userid", consultantId))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-				
+
 		List<Integer[]> idList = criteria.list();
 		if (idList.size() > 0)
 		{
-			
+
 			criteria = this.sessionFactory.getCurrentSession().createCriteria(Registration.class);
 			criteria.add(Restrictions.in("lid", idList));
-		}
-		else
+		} else
 		{
-		//no results, so let's ommit the second query to the DB
-	         return new ArrayList<Registration>();
-        }
+			// no results, so let's ommit the second query to the DB
+			return new ArrayList<Registration>();
+		}
 
 		return criteria.list();
-		
+
 	}
-	
+
 	@Override
 	public long countConsultantList()
 	{
-		String sql = "select count(*) from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1" ;
-		
-		BigInteger bi = (BigInteger)this.sessionFactory.getCurrentSession().createSQLQuery(sql).setString("role1", Roles.ROLE_CON_USER.toString()).setString("role", Roles.ROLE_CON_MANAGER.toString()).uniqueResult();
-		
+		String sql = "select count(*) from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1";
+
+		BigInteger bi = (BigInteger) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.setString("role1", Roles.ROLE_CON_USER.toString()).setString("role", Roles.ROLE_CON_MANAGER.toString())
+				.uniqueResult();
+
 		return bi.longValue();
 	}
-	
+
 	@Override
 	public long countClientsList()
 	{
-		
-		String sql = "select count(*) from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1" ;
-		
-		BigInteger bi = (BigInteger)this.sessionFactory.getCurrentSession().createSQLQuery(sql).setString("role1", Roles.ROLE_EMP_USER.toString()).setString("role", Roles.ROLE_EMP_MANAGER.toString()).uniqueResult();
-		
+
+		String sql = "select count(*) from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role or ur.userrole =:role1";
+
+		BigInteger bi = (BigInteger) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.setString("role1", Roles.ROLE_EMP_USER.toString()).setString("role", Roles.ROLE_EMP_MANAGER.toString())
+				.uniqueResult();
+
 		return bi.longValue();
-		
-		
+
 	}
 
 	public List<Registration> getClientList(int first, int max)
 	{
-		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role" ;
-		
-		return  (List<Registration>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).addEntity(Registration.class).setString("role", Roles.ROLE_EMP_MANAGER.toString()).list();
-		
-		
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role";
+
+		return (List<Registration>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.addEntity(Registration.class).setString("role", Roles.ROLE_EMP_MANAGER.toString()).list();
+
 	}
-	
+
 	public List<Registration> getConsultantList(int first, int max)
 	{
-		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role" ;
-		
-		return  (List<Registration>)this.sessionFactory.getCurrentSession().createSQLQuery(sql).addEntity(Registration.class).setString("role", Roles.ROLE_CON_MANAGER.toString()).list();
-		
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:role";
+
+		return (List<Registration>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.addEntity(Registration.class).setString("role", Roles.ROLE_CON_MANAGER.toString()).list();
+
 	}
-	
+
 	public List<Registration> getCoUsersByUserid(String userid)
 	{
-		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
-				.add(Restrictions.eq("admin.userid", userid))
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
+				.add(Restrictions.eq("admin.userid", userid)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
 	}
-	
+
 	public List<Registration> getConsultantsByClientIndustry(String clientId)
 	{
 		List<Integer> indList = new ArrayList<>();
-		
+
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Registration.class);
-				 
-//		crt.add(Restrictions.eq("userid", consultantId));
-		
+
+		// crt.add(Restrictions.eq("userid", consultantId));
+
 		Criterion cn1 = Restrictions.eq("userid", clientId);
 		Criterion cn2 = Restrictions.eq("admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
-			 
+
 		List<Registration> reg = criteria.list();
-				
-		if(reg != null && !reg.isEmpty())
+
+		if (reg != null && !reg.isEmpty())
 		{
 			Set<Industry> inds = reg.get(0).getIndustries();
 			Iterator<Industry> it = inds.iterator();
-			while(it.hasNext())
+			while (it.hasNext())
 			{
 				indList.add(it.next().getId());
 			}
 		}
-		
+
 		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid INNER JOIN user_industry ui on reg.lid = ui.lid where ur.userrole =:role and ui.id IN :indList";
-		return  (List<Registration>)this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+		return (List<Registration>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.addEntity(Registration.class).setString("role", Roles.ROLE_CON_MANAGER.toString())
-				.setParameterList("indList", indList)
-				.list();
-		
-		
+				.setParameterList("indList", indList).list();
+
 	}
-	
+
 	public List<Registration> getClientAndConsultantAdminList(int first, int max)
 	{
-		String sql = "select reg.lid from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:clientrole or ur.userrole =:consrole" ;
-		List<Integer> lids = (List<Integer>)this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+		String sql = "select reg.lid from registration reg INNER JOIN userrole ur on reg.userid= ur.userid where ur.userrole =:clientrole or ur.userrole =:consrole";
+		List<Integer> lids = (List<Integer>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
 				.setString("clientrole", Roles.ROLE_EMP_MANAGER.toString())
-				.setString("consrole", Roles.ROLE_CON_MANAGER.toString())
-				.setFirstResult(first)
-				.setMaxResults(max)
+				.setString("consrole", Roles.ROLE_CON_MANAGER.toString()).setFirstResult(first).setMaxResults(max)
 				.list();
-		
-		
+
 		return this.sessionFactory.getCurrentSession().createCriteria(Registration.class)
-				.add(Restrictions.in("lid", lids))
-				.addOrder(Order.desc("lid"))
-				.setFetchMode("log", FetchMode.JOIN)
+				.add(Restrictions.in("lid", lids)).addOrder(Order.desc("lid")).setFetchMode("log", FetchMode.JOIN)
 				.list();
-		
-//		return  (List<Registration>)this.sessionFactory.getCurrentSession().createSQLQuery(sql)
-//				.addEntity(Registration.class)
-//				.setFetchMode("log", FetchMode.JOIN)
-//				.list();
+
+		// return
+		// (List<Registration>)this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+		// .addEntity(Registration.class)
+		// .setFetchMode("log", FetchMode.JOIN)
+		// .list();
 	}
-	
+
 }

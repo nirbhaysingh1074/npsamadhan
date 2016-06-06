@@ -142,7 +142,15 @@
 		    return false;
 		} 
 	}
-
+function checkUpdateInfo(){
+	var updateInfo=$('#updateInfo').val();
+	if(updateInfo.trim()==""){
+		$('.updateInfo_error').html('Please enter update info');
+		return false;
+	}
+	return true;
+	
+}
 </script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
@@ -193,11 +201,57 @@ jQuery(document).ready(function() {
 
 	<div class="mid_wrapper">
 	  <div class="container">
-	    <div class="form_cont">
+	  
+	   <div style="width: 100%;padding: 20px;" >
+	   <%
+	   Post post=(Post)request.getAttribute("post");
+	   %>
+	   <h2>Post : <%=post.getTitle() %></h2><br><br>
+									<label onclick="$('#divedit').css('display','none');$('#divupddateinfo').css('display','block');" style="vertical-align: middle;">
+									 <input style="vertical-align: middle;" type="radio" name="updateType"  />&nbsp;&nbsp;Quick
+										update to associated partners
+									</label >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									OR
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									 <label onclick="$('#divedit').css('display','block');$('#divupddateinfo').css('display','none');" style="margin-left: 20px; ">
+									<input style="vertical-align: middle;" type="radio" name="updateType" />&nbsp;&nbsp;Edit JD</label>
+				<br><br>
+							
+				</div>
+	    <div class="form_cont" id="divupddateinfo" style="display: none;">
+	   
+	    <form action="clientUpdatePost" onsubmit="return checkUpdateInfo()">
+	    <div style="width: 100%;">
+		        
+				<!-- 	<div class="tp_title" style="background: #f8b910;height: 2px;width: 100%;">
+			             
+			            </div>	 -->
+		        <div style="width: 100%;margin-top: 10px;padding: 20px;" >
+									<label>Update Info<span class='error'>*</span></label> <input
+										type="hidden" name="postId"
+										value="<%=request.getParameter("pid")%>" />
+									<textarea required rows="3" cols="100" id="updateInfo" name="updateInfo"></textarea>
+									<span class='error updateInfo_error'></span> <br><br>
+									<input type="submit" id="updateInfoButton" class="btn yelo_btn" value="Send Update" />
+						</div>
+					</div>
+	    </form>
+	    
+	    </div>
+	    
+				
+	    <div class="form_cont"  id="divedit" style="display:none;">
+	    	<!-- <div class="tp_title" style="background: #f8b910;height: 2px;width: 100%">
+			             
+			            </div>
+	     -->
           <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 		      <div class="block">
+		       <div style="margin-left: 20px;text-align: center;margin-top: 10px;" > 
+		       <h3>Edit JD</h3>
+	   <br><br></div>
 		        <div class="form_col">
-		         
+		       
 		          <dl>
 		            <dt>
 		              <label>Title<span class='error'>*</span></label>
@@ -213,7 +267,7 @@ jQuery(document).ready(function() {
 		              <label>Location<span class='error'>*</span> </label>
 		            </dt>
 		            <dd>
-						<form:select path="location">
+						<form:select path="location" multiple="multiple">
 		              		<form:option value="">Select Location</form:option>
 		            		<c:forEach var="item" items="${locList}">
 							   <form:option value="${item.location}" selected= "${item.location == postForm.location ? 'selected' : ''}" >${item.location}</form:option>
@@ -352,7 +406,7 @@ jQuery(document).ready(function() {
 	                <div class="col-md-4"> End Time
 	                  <form:select path="workHourEndHour">
 	                  
-	                   <form:option value='11:59 PM" %>'>11:59 PM</form:option>
+	                   <form:option value='11:59 PM'>11:59 PM</form:option>
 	                   <%
 	                   NumberFormat formatter = new DecimalFormat("00");  
 	                   for(int i=11;i>=1;i--){ %>
@@ -461,12 +515,11 @@ jQuery(document).ready(function() {
 	             <span class='error editSummary_error'><form:errors path="editSummary"/></span>
 		      </div>
 		      <%
-		      Post post = (Post)request.getAttribute("post");
 		      if(post != null )
 		      %>
 		      <div class="block form_submt alin_cnt">
 <!-- 		        <input type="submit" name="btn_response" value="Publish" class="btn yelo_btn"> -->
-		        <input type="submit" name="btn_response" value="Confirm Edit" class="btn yelo_btn">
+		        <input type="submit" name="btn_response" id="editInfoButton" value="Confirm Edit" class="btn yelo_btn">
 		      </div>
 	      </form:form>
 	    </div>

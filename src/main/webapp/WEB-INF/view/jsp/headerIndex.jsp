@@ -4,8 +4,8 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uni Hyr</title>
+	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 <link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
-<link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.IE.js"></script>
 </head>

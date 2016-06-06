@@ -7,9 +7,9 @@
 
 <title>UniHyr</title>
 
+	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 <link rel="stylesheet" href="css/media.css" media="screen" />
 <link rel="stylesheet" href="css/style.css" media="screen" />
-<link rel="stylesheet" href="css/fonts.css" media="screen" />
 
 <script src="js/jquery.min.js"></script>
 <style>

@@ -28,10 +28,11 @@ jQuery(document).ready(function() {
 		//var ppid = $(this).parent().attr("id");
 	//	var data_view = $(this).parent().attr("data-view");
 //		return false;
-		alertify.confirm("Are you sure you want to join ?", function (e, str) {
-		if (e) {
+		/*alertify.confirm("Are you sure you want to join ?", function (e, str) {
+		if (e) {*/
 			
 //			alert("offer_accept");
+		pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "consacceptoffer",
@@ -53,20 +54,20 @@ jQuery(document).ready(function() {
 						}*/
 					//	alertify.success("Profile Joined Successfilly !");
 					location.href="";	
-						
 					/*}
 					else
 					{
 						alertify.error("Oops something wrong !");
 					}*/
+				pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
+					pleaseDontWait();
 				}
-			}) ;
-		
-		}
-		});
+			});
+		/*}
+		});*/
 	});
 	
 	$(document.body).on('click', '#rejectModal .btn-ok' ,function(){
@@ -90,6 +91,7 @@ jQuery(document).ready(function() {
 		
 		var data_view = selected.attr("data-view");
 //			alert("offer_accept");
+		pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "consacceptoffer",
@@ -118,9 +120,11 @@ jQuery(document).ready(function() {
 					{
 						alertify.error("Oops something wrong !");
 					}
+					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
+					pleaseDontWait();
 				}
 			}) ;
 		
@@ -180,7 +184,7 @@ jQuery(document).ready(function() {
 			 return false;
 		 }
 
-		 	alertify.confirm("Are you want you want to add  this post to your active postions?", function (e, str) {
+		 	alertify.confirm("By adding these positions to your active list, you agree to terms of condientiality of the client", function (e, str) {
 				if (e) 
 				{
 					$.ajax({

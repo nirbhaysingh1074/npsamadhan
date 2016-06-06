@@ -125,7 +125,7 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td style="width: 25%"></td>
 
 										<td>Date Of Invoice:</td>
-										<td><%=DateFormats.getTimeValue(bill.getJoiningDate())%></td>
+										<td><%=DateFormats.ddMMMMyyyy.format(bill.getJoiningDate())%></td>
 									</tr>
 									<tr>
 										<td></td>

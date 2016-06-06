@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.constraints.numbertowordindian"%>
 <%@page import="com.unihyr.constraints.NumberUtils"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
@@ -79,7 +80,7 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td colspan="2"></td>
 
 										<td>Date Of Invoice:</td>
-										<td><%=bill.getJoiningDate()%></td>
+										<td><%=DateFormats.ddMMMMyyyy.format(bill.getJoiningDate())%></td>
 									</tr>
 									<tr>
 										<td></td>

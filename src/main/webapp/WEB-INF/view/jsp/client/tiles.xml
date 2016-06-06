@@ -10,12 +10,18 @@
         <put-attribute name="footer" value="/WEB-INF/view/jsp/footerIndex.jsp" />
     </definition> 
     
+	<definition name="clientTemplateWithoutNavigation" template="/WEB-INF/tilestemplate/jsp/clientTemplate.jsp">
+        <put-attribute name="header" value="/WEB-INF/view/jsp/client/headerClientWithoutNavigation.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/view/jsp/footerIndex.jsp" />
+    </definition> 
+    
     <definition name="addPost" extends="clientTemplate">
         <put-attribute name="title" value="UniHyr - Add New Post" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/client/addPost.jsp" />
         <put-attribute name="currentpage" value="yourpost" cascade="true"/>
     </definition>
-    <definition name="editPost" extends="clientTemplate">
+    <definition name="editPost" extends="clientTemplateWithoutNavigation">
         <put-attribute name="title" value="UniHyr - Update Post" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/client/editPost.jsp" />
         <put-attribute name="currentpage" value="editpost" cascade="true"/>
@@ -55,7 +61,7 @@
         <put-attribute name="body" value="/WEB-INF/view/jsp/client/clientAccount.jsp" />
         <put-attribute name="currentpage" value="clientaccount" cascade="true"/>
     </definition>
-    <definition name="clientApplicantInfo" extends="clientTemplate">
+    <definition name="clientApplicantInfo" extends="clientTemplateWithoutNavigation">
         <put-attribute name="title" value="UniHyr - Applicant Info" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/applicantInfo.jsp" />
         <put-attribute name="currentpage" value="applicantinfo" cascade="true"/>
@@ -95,7 +101,7 @@
         <put-attribute name="title" value="client posts" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/client/postList.jsp" />
     </definition>
-    <definition name="viewPostDetail" extends="clientTemplate">
+    <definition name="viewPostDetail" extends="clientTemplateWithoutNavigation">
         <put-attribute name="title" value="UniHyr - View Post Detail" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/client/viewPostDetail.jsp" />
         <put-attribute name="currentpage" value="clientaccount" cascade="true"/>

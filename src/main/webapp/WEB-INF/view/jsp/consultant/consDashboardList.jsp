@@ -117,7 +117,9 @@
 		        			<%-- <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 		       				<th align="left" width="25px"><input id="sel_all" type="checkbox"></th>
 		       				</sec:authorize> --%>
-		       				<th align="left">Position</th>
+		       				<th align="left" style="width: 17%;">Role</th>
+		       				
+		       				<th width="110px"  >No of Positions</th> 
 		       				<th  width="110px"  align="left">
 			       				<div style="float: left;">
 						            <select id="cons_db_post_status" style="background: #e3e3e3;font-weight: bold;border: 0px;">
@@ -132,12 +134,12 @@
 									</select>
 						          </div>
 		       				</th>
-		       				<th width="200px" align="left">
+		       				<th align="left">
 		       				<%
 // 								List<Registration> clientList = (List)request.getAttribute("clientList");
        							%>
 		       				
-					        	<select id="cons_db_sel_client" style="width: auto;height: 30px;background: #e3e3e3;font-weight: bold;border: 0px;">
+					        	<select id="cons_db_sel_client" style="width: 80px;height: 30px;background: #e3e3e3;font-weight: bold;border: 0px;">
 					        		<option value="">Client</option>
 					        		<%
 										for (Registration client : clientList) 
@@ -158,8 +160,8 @@
 									%>
 					        	</select>
 		       				</th>
-		       				<th width="110px" align="left">
-			       				<select id="cons_db_sel_loc" style="width: 90px;height: 30px;background: #e3e3e3;font-weight: bold;border: 0px;">
+		       				<th  align="left">
+			       				<select id="cons_db_sel_loc" style="width: 100px;height: 30px;background: #e3e3e3;font-weight: bold;border: 0px;">
 			       					<option value="">Location</option>
 				       				<%
 				       					String db_sel_loc = (String)request.getAttribute("db_sel_loc");
@@ -224,6 +226,10 @@
 						       						}
 						       					%>
 					       					</td>
+					       					<td  align="center" <%-- style="cursor: pointer;"  onclick="getClosedCandidates(<%=post.getPostId()%>)" --%>>
+						       				<%= post.getNoOfPosts() %> (<%=post.getNoOfPosts()- post.getNoOfPostsFilled() %> left)
+
+						       				</td>
 						        			<td style="padding-left: 20px;">
 						        			<%
 						        			if(post.getCloseDate()!=null){
@@ -315,6 +321,9 @@
 						       					%>
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prsub %></a>
 					       					</td>
+					       					    					
+						       				
+					   
 						       				<td  align="center" title="No. of profiles shortlisted">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prpending %></a>
 						       				</td>

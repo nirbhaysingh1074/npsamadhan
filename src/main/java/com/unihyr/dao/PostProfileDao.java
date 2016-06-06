@@ -21,15 +21,15 @@ public interface PostProfileDao
 	
 	public long countPostProfileByClient(String clientId);
 	
-	public List<PostProfile> getPostProfileByPost(long postId, int first, int max, String sortParam, String filterBy);
+	public List<PostProfile> getPostProfileByPost(long postId, int first, int max, String sortParam, String filterBy, String excludeType,String sortOrder);
 	
-	public long countPostProfileByPost(long postId, String filterBy);
+	public long countPostProfileByPost(long postId, String filterBy,String excludeType);
 	
 	public List<PostProfile> getPostProfileByClientAndConsultant(String clientId, String consultantId, int first, int max, String sortParam, String filterBy);
 	
 	public long countPostProfileByClientAndConsultant(String clientId, String consultantId, String sortParam);
 	
-	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max, String sortParam, String filterBy);
+	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max, String sortParam, String filterBy, String excludeType);
 	
 	public long countPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, String filterBy);
 	
@@ -81,4 +81,8 @@ public interface PostProfileDao
 	public long countPostProfileByConsForCenter(String consid);
 
 	public long countProfileListByPostId(long postId);
+
+	public List<PostProfile> getPostProfileOfferedByPost(long postId);
+
+	long countShortlistedProfileListPostId(long postId,String status);
 }

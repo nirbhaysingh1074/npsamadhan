@@ -1,3 +1,5 @@
+<%@page import="java.util.HashSet"%>
+<%@page import="java.util.Set"%>
 <%@page import="com.unihyr.domain.Inbox"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
@@ -56,7 +58,7 @@ function fillProfiles(pageNo)
 </script>
 <script src="js/model.popup.js"></script>
 <style type="text/css">
-.report_sum{padding: 5px 0;}
+.report_sum{padding: 2px 0;}
 </style>
 
 
@@ -69,7 +71,7 @@ function fillProfiles(pageNo)
 <%
 Registration sel_client = (Registration)request.getAttribute("selClient");
 List<PostConsultant> postConsList = (List)request.getAttribute("postConsList");
-Post post=null;
+Post post=(Post)request.getAttribute("selectedPost");
 %>
 	<div class="container">
 		
@@ -124,7 +126,116 @@ Post post=null;
 		        </div>
 	        </div>
 	    </sec:authorize> --%>
-		<div class="new_post_info">
+	<%--     <%if(post!=null) {
+    
+    	Set<Integer> cons = new HashSet(); 
+		Set<Long> shortListed = new HashSet();
+		Iterator<PostProfile> it = post.getPostProfile().iterator();
+		int countRead=0;
+		while(it.hasNext())
+		{
+			PostProfile pp = it.next();
+			if(pp.getAccepted() != null)
+			{
+				shortListed.add(pp.getPpid());
+			}
+			if(pp.getViewStatus()==null||(!pp.getViewStatus())){
+				countRead++;
+			}
+		}
+    
+    %>
+    
+    
+    
+    	 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+    <div style="padding-bottom: 0" class="rightside_in new_table">
+        <div class="bottom-padding manageposthead" >
+	        <div class="bottom-padding">
+	        	
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Post ID
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getJobCode() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		No of Positions 
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getNoOfPosts() %>
+		        	</div>
+	        	</div>
+	        	
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Profile Received
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getPostProfile().size() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Posted Date
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=DateFormats.getTimeValue(post.getPublished()) %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Closed
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getNoOfPostsFilled() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Unread Profiles
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=countRead %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Location
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=post.getLocation() %>
+		        	</div>
+	        	</div>
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		No of Partners
+		        	</div>
+		        	<div class="col-md-7">
+		        		${totalpartner }
+		        	</div>
+	        	</div>
+	        	
+	        	<div class="col-md-4 report_sum" >
+		        	<div class="col-md-5">
+		        		Shortlisted
+		        	</div>
+		        	<div class="col-md-7">
+		        		<%=shortListed.size() %>
+		        	</div>
+	        	</div>
+	        	
+	        </div>
+        </div>
+    </div>
+    </sec:authorize> 
+    <%} %>
+	 --%>
+	    
+		<div class="new_post_info" style="padding: 0 15px;">
 			<div class="left_side">
 				<div class="left_menu">
 					<select id="selectionOfClient" >
@@ -191,7 +302,7 @@ Post post=null;
 			</div>
 			<div class="right_side">
 				<div class="profiles_col">
-					<div class="rightside_in new_table" id="positions_info">
+					<div class="rightside_in new_table" id="positions_info" style="padding-right: 0px;">
 						<div class="block consulting">
 							<div class="pull-left">
 								<%
@@ -228,7 +339,7 @@ Post post=null;
 								
 								
 							</div>
-							<div id="view_jd" class="view_id pre_check" style="float: none;margin-left: -9px;">
+							<div id="view_jd" class="view_id pre_check" style="float: left;margin-left: -9px;">
 			                 	<%
 								if(postConsList != null && !postConsList.isEmpty())
 								{
@@ -243,7 +354,13 @@ Post post=null;
 									<%
 								}
 								%>
-			                 	
+			                 </div>
+							<div class="" style="float: left;width: 65%;color: red;margin-left: 7px;line-height: 26px;">
+		                 	
+		                 	<%if(post!=null&&post.getUpdateInfo()!=null){
+		                 		%>
+		                 <marquee width="100%"><%=post.getUpdateInfo() %></marquee>
+		                 	<%} %>
 			                 </div>
 							
 						</div>
@@ -327,11 +444,11 @@ Post post=null;
 											<th align="left">Phone</th>
 											<th align="left">Current Role</th>
 											<th align="left">Organization</th>
-											<th align="left">Curent Salary (In Lacs)</th>
-											<th align="left">Notice Period (In Days)</th>
+											<th >Current Annual CTC (In Lacs)</th>
+											<th >Notice Period (In Days)</th>
 											<th align="left">Submitted</th>
 											<th align="left">Status</th>
-											<th style="width: 120px;">Action</th>
+											<th style="width: 120px;" align="left">Action</th>
 											<th></th>
 										</tr>
 									
@@ -370,15 +487,15 @@ Post post=null;
 						<td><%=pp.getProfile().getContact()%></td>
 						<td><%=pp.getProfile().getCurrentRole()%></td>
 						<td><%=pp.getProfile().getCurrentOrganization()%></td>
-						<td><%=pp.getProfile().getCurrentCTC()%></td>
-						<td><%=pp.getProfile().getNoticePeriod()%></td>
-						<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
+						<td align="center"><%=pp.getProfile().getCurrentCTC()%></td>
+									<td align="center"><%=pp.getProfile().getNoticePeriod()%></td>
+									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 						
 	                  							<%
 													if(pp.getJoinDropDate() != null)
 													{
 														%>
-						                  					<td>
+						                  					<td style="text-align: left;">
 																<span>Join Dropped</span>
 															</td>
 															
@@ -386,7 +503,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -396,7 +513,7 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -406,7 +523,7 @@ Post post=null;
 													else if(pp.getJoinDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Joined</span>
 															</td>
 															
@@ -414,7 +531,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -425,7 +542,7 @@ Post post=null;
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -435,7 +552,7 @@ Post post=null;
 													else if(pp.getOfferDropDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Offer Declined</span>
 															</td>
 															
@@ -443,7 +560,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -453,7 +570,7 @@ Post post=null;
 														{
 															%>
 							                  					
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -463,10 +580,10 @@ Post post=null;
 													else if(pp.getOfferDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Offered</span>
 															</td>
-														<%
+													<%-- 	<%
 														if( !pp.getPost().isActive())
 														{
 															%>
@@ -478,21 +595,21 @@ Post post=null;
 														}
 														else
 														{
-															%>
-																<td class="text-center">
+															%> --%>
+																<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<button  class="join_accept profile_status_button" title="Click to accept offer" 	onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')" >Join</button> 
-																		<button class="btn-open profile_status_button" data-type="join_reject"  title="Click to reject offer" >Offer Drop</button>
+																		<a style="cursor: pointer;" class="join_accept" title="Click to accept offer" 	onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')" >Join</a> 
+																		 | <a style="cursor:pointer;" class="btn-open" data-type="join_reject"  title="Click to reject offer" >Offer Drop</a>
 																	</p>
 																</td>
 															<%
 															
-														}
+														//}
 													}
 													else if(pp.getDeclinedDate() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Declined</span>
 															</td>
 															
@@ -500,7 +617,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -511,7 +628,7 @@ Post post=null;
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -521,7 +638,7 @@ Post post=null;
 													else if(pp.getRecruited() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Offer</span>
 															</td>
 															
@@ -529,7 +646,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -540,7 +657,7 @@ Post post=null;
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -551,7 +668,7 @@ Post post=null;
 													else if(pp.getRejected() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>CV Rejected</span>
 															</td>
 															
@@ -559,7 +676,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -570,7 +687,7 @@ Post post=null;
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -580,7 +697,7 @@ Post post=null;
 													else if(pp.getAccepted() != null)
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>ShortListed</span>
 															</td>
 															
@@ -588,7 +705,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -599,7 +716,7 @@ Post post=null;
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -609,7 +726,7 @@ Post post=null;
 													else
 													{
 														%>
-															<td>
+															<td style="text-align: left;">
 																<span>Pending</span>
 															</td>
 																
@@ -617,7 +734,7 @@ Post post=null;
 														if( !pp.getPost().isActive())
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -628,7 +745,7 @@ Post post=null;
 															%>
 							                  					
 																
-																<td class="text-center">
+																<td class="text-center" style="text-align: left;">
 															<span>	none required</span>
 																</td>
 															<%
@@ -864,7 +981,7 @@ jQuery(document).ready(function() {
 
 		<!-- Modal content -->
 		<div class="modal-content" style="width: 50%">
-			<span class="close">x</span>
+			<span class="close" onclick="$('#offerModal').css('display','none');">x</span>
 			<div>
 				<div class="modal-body">
 					<p>Please fill all details</p>
@@ -887,7 +1004,7 @@ jQuery(document).ready(function() {
 						style="display: none; color: red;"></span>
 				</div>
 				<div class="model-footer">
-					<button class="btn btn-cancel">Cancel</button>
+					<button class="btn btn-cancel" onclick="$('#offerModal').css('display','none');">Cancel</button>
 					<button class="btn btn-ok" id="offerjoinedpopup">Ok</button>
 				</div>
 			</div>
@@ -897,6 +1014,8 @@ jQuery(document).ready(function() {
 	jQuery(document).ready(function() {
 
 	$(document.body).on('click', '.profile_status > .join_accept', function() {
+		$('#datepicker').val('');
+		$('#errorJoiningDate').html('');
 		$('#offerModal').show();
 	});
 	});

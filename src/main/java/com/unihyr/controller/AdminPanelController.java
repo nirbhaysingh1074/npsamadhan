@@ -371,15 +371,8 @@ public class AdminPanelController
 			
 			login.setReg(reg);
 			login.setIsactive("true");
-			char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
-			Random rnd = new Random();
-
-			StringBuilder sb = new StringBuilder((100000 + rnd.nextInt(900000)) + "-");
-			for (int i = 0; i < 5; i++)
-				sb.append(alphNum[rnd.nextInt(alphNum.length)]);
-
-			String id = sb.toString();
+			String id=GeneralConfig.generatePassword();
 			login.setPassword(id);
 			
 			reg.setLog(login);
@@ -587,6 +580,7 @@ public class AdminPanelController
 			registration.setCtcSlabs4Max(Double.parseDouble(request.getParameter("ctcSlabs4Max")));
 			registration.setCtcSlabs5Min(Double.parseDouble(request.getParameter("ctcSlabs5Min")));
 			registration.setPaymentDays(Integer.parseInt(request.getParameter("paymentDays")));
+			registration.setUsersRequired(Integer.parseInt(request.getParameter("userQuota")));
 			registration.setEmptyField(request.getParameter("emptyField"));
 			registrationService.update(registration);
 			LoginInfo info = loginInfoService.findUserById(uid);

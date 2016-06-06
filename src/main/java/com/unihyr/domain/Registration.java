@@ -54,6 +54,8 @@ public class Registration implements Serializable
 	private LoginInfo log;
 	
 	
+	private Boolean firstTime;
+	
 //	------------------ common Data --------------
 	
 	
@@ -124,6 +126,24 @@ public class Registration implements Serializable
 	
 //	------------------ Consultant Data -------------- 	
 	
+	@Column
+	public Boolean getFirstTime()
+	{
+		return firstTime;
+	}
+
+
+	public void setFirstTime(Boolean firstTime)
+	{
+		this.firstTime = firstTime;
+	}
+
+
+	public void setCtcSlabs1Min(double ctcSlabs1Min)
+	{
+		this.ctcSlabs1Min = ctcSlabs1Min;
+	}
+
 
 	public void setFeePercent5(double feePercent5)
 	{
@@ -181,10 +201,7 @@ public class Registration implements Serializable
 		return feePercent5;
 	}
 
-	public void setCtcSlabs1Min(double feePercent5)
-	{
-		this.feePercent5 = feePercent5;
-	}
+
 
 	@Column
 	public double getCtcSlabs1Min()
@@ -192,11 +209,7 @@ public class Registration implements Serializable
 		return ctcSlabs1Min;
 	}
 
-	public void CtcSlabs1Min(double ctcSlabs1Min)
-	{
-		this.ctcSlabs1Min = ctcSlabs1Min;
-	}
-
+	
 	@Column
 	public double getCtcSlabs1Max()
 	{

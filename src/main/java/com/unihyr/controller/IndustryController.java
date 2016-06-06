@@ -39,9 +39,11 @@ public class IndustryController
 	@RequestMapping(value = "/adminnewindustry", method = RequestMethod.POST)
 	public String admin_newindustry(@ModelAttribute(value = "indForm") Industry industry, BindingResult result,	ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		if(result.hasErrors() || industry.getIndustry().trim().length() <1)
+		if(result.hasErrors() || industry.getIndustry().trim().length() <1||!industryService.getIndustryByName(industry.getIndustry().trim()).isEmpty())
 		{
 			map.addAttribute("ind_error", "Please enter industry name");
+			if(!industryService.getIndustryByName(industry.getIndustry().trim()).isEmpty())
+				map.addAttribute("ind_error", "Industry already exist !");
 			return "adminNewIndustry";
 		}
 		else
@@ -80,10 +82,12 @@ public class IndustryController
 	@RequestMapping(value = "/admineditindustry", method = RequestMethod.POST)
 	public String admin_editindustry(@ModelAttribute(value = "indForm") Industry industry, BindingResult result,	ModelMap map, HttpServletRequest request, Principal principal)
 	{
-		if(result.hasErrors() || industry.getIndustry().trim().length() <1)
+		if(result.hasErrors() || industry.getIndustry().trim().length() <1||!industryService.getIndustryByName(industry.getIndustry().trim()).isEmpty())
 		{
 			map.addAttribute("ind_error", "Please enter industry name");
-			return "editIndustry";
+			if(!industryService.getIndustryByName(industry.getIndustry().trim()).isEmpty())
+				map.addAttribute("ind_error", "Industry already exist !");
+			return "adminNewIndustry";
 		}
 		else
 		{

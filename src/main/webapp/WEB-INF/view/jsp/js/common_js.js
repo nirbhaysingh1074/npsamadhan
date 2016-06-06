@@ -116,3 +116,19 @@ jQuery(document).ready(function() {
 	});
 	
 });
+
+function setFirstTimeFalse(regid){
+	$.ajax({
+		type : "GET",
+		url : "setFirstTimeFalse",
+		data : {'regid':regid},
+		contentType : "application/json",
+		success : function(data) {
+			
+			
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+			alert(xhr.status);
+		}
+	}) ;
+}

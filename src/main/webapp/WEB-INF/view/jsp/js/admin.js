@@ -298,3 +298,31 @@ function checkComplexity(password)
 	var strongRegex = new RegExp("^(?=.{6,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
 	return strongRegex.test(password)
 }
+function validateLocationForm(){
+	var location = $('#location').val();
+	$.ajax({
+		type : "GET",
+		url : "adminCheckLocationDup",
+		data : {'location':location},
+		contentType : "application/json",
+		success : function(data) {
+			var obj = jQuery.parseJSON(data);
+			if(obj.status)
+			{
+				alertify.success("Post verified successfully!");
+				location.reload();
+			}
+			else
+			{
+				alertify.error("Oops, Something wrong !");
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	        alert(xhr.status);
+	      }
+    }) ;	
+	
+	
+	
+	
+}

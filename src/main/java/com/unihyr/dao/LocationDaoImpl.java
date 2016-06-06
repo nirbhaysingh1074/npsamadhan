@@ -62,6 +62,14 @@ public class LocationDaoImpl implements LocationDao
 				.setMaxResults(max)
 				.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Location> getLocationByName(String location)
+	{
+		return this.sessionFactory.getCurrentSession().createCriteria(Location.class)
+				.add(Restrictions.eq("location", location).ignoreCase()).list();
+	}
 	
 
 }

@@ -62,6 +62,19 @@ public class PostProfile
 	@Column
 	private String rejectReason;
 	
+	@Column
+	private Boolean viewStatus;
+	
+
+	public Boolean getViewStatus()
+	{
+		return viewStatus;
+	}
+
+	public void setViewStatus(Boolean viewStatus)
+	{
+		this.viewStatus = viewStatus;
+	}
 
 	public long getPpid()
 	{

@@ -59,9 +59,10 @@ public interface PostProfileService
 	 * @param max
 	 * @param sortParam
 	 * @param filterBy
+	 * @param excludeType 
 	 * @return
 	 */
-	public List<PostProfile> getPostProfileByPost(long postId, int first, int max, String sortParam, String filterBy);
+	public List<PostProfile> getPostProfileByPost(long postId, int first, int max, String sortParam, String filterBy, String excludeType,String sortOrder);
 	
 	/**
 	 * 
@@ -76,7 +77,7 @@ public interface PostProfileService
 	 * @param sortParam
 	 * @return
 	 */
-	public long countPostProfileByPost(long postId, String sortParam);
+	public long countPostProfileByPost(long postId, String sortParam,String excludeType);
 	
 	/**
 	 * 
@@ -108,9 +109,10 @@ public interface PostProfileService
 	 * @param max
 	 * @param sortParam
 	 * @param filterBy
+	 * @param excludeType 
 	 * @return
 	 */
-	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max, String sortParam, String filterBy);
+	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max, String sortParam, String filterBy, String excludeType);
 	
 	/**
 	 * 
@@ -285,4 +287,8 @@ public interface PostProfileService
 	 * @return
 	 */
 	public long countProfileListByPostId(long postId);
+
+	public List<PostProfile> getPostProfileOfferedByPost(long postId);
+	long countShortlistedProfileListPostId(long postId,String status);
+
 }
