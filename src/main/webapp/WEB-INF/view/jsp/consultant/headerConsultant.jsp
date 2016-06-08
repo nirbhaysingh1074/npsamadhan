@@ -6,6 +6,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras"
 	prefix="tilesx"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uni Hyr</title>
@@ -217,7 +218,7 @@ function getNotifications(){
 	        <div class="notification">
 			<div class="noti-icon more_product" onclick="getMessages()">
 				<div class="icon "  >
-					<img style="" src="images/mailbox.png">
+					<img  class="messageIcon"  src="images/mailbox.png">
 					
 					<span id="messageCount" class="notificationCount" ></span>
 				</div>
@@ -249,8 +250,11 @@ function getNotifications(){
 					<li class="${currentpage == 'consdashboard' ? 'active' : ''}"><a href="consdashboard">Home</a></li>
 					<li class="${currentpage == 'consnewposts' ? 'active' : ''}" class="active"><a href="consnewposts">Recently Posted</a></li>
 					<li class="${currentpage == 'cons_your_positions' ? 'active' : ''}"><a href="cons_your_positions">Manage Positions</a></li>
+				
+				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 					<li class="${currentpage == 'consBillingDetails' ? 'active' : ''}"><a href="consBillingDetails">Billing Details</a></li>
 					<li class="${currentpage == 'consprofilecenter' ? 'active' : ''}"><a href="consprofilecenter">Profiles Center</a></li>
+				</sec:authorize>
 				</ul>
 		</nav>
 	</div>

@@ -9,6 +9,7 @@
 <%@page import="java.util.List"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -95,14 +96,29 @@
 											if(reg.getLog().getIsactive().equals("true"))
 											{
 												%>
-													<a href="clientDisableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Disable User</a>
+												<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+												
+													<a href="clientDisableUser?userid=<%= reg.getUserid() %>" class="btn yelo_btn">Disable User</a>
+													
+													</sec:authorize>
+													<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+													<a href="consDisableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Disable User</a>
+													
+													</sec:authorize>
 												<%
 											}
 											else
 											{
-												%>
-													<a href="clientEnableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Enable User</a>
-												<%
+												%><sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+													<a href="clinetEnableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Enable User</a>
+												
+													</sec:authorize>
+													<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+													<a href="consEnableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Enable User</a>
+													
+													</sec:authorize>
+													
+													<%
 											}
 										}
 									%>

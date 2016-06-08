@@ -397,7 +397,7 @@
 								    		{
 								    			%>
 									    			<tr>
-									    				<td><%= user.getName() %></td>
+									    				<td><a href="consviewuser?uid=<%= user.getUserid()%>"><%= user.getName() %></a></td>
 									    				<td><%= user.getUserid() %></td>
 									    				<td class="text-center"><%= DateFormats.getTimeValue(user.getRegdate()) %></td>
 									    			</tr>

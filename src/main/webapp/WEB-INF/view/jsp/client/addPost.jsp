@@ -428,6 +428,23 @@ Registration registration=(Registration)request.getAttribute("registration");
 						<input type="hidden" id="fileUidKey" />
 					</dd>
 				</dl> -->
+				
+				<dl style="clear:both;">
+				<dt>
+						<label>Select Slabs</label>
+					</dt>
+					<dd> 
+						<form:select path="feePercent">
+						 <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent2() %>'><%=registration.getSlab2() %>(<%=registration.getFeePercent2() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent3() %>'><%=registration.getSlab3() %>(<%=registration.getFeePercent3() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent4() %>'><%=registration.getSlab4() %>(<%=registration.getFeePercent4() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
+						</form:select>
+					<span class='error feePercent_error'><form:errors path="feePercent"/></span>
+	     </dd>
+				</dl>
+				
 				<%
 	          
 					String fileuploaderror = (String)request.getAttribute("fileuploaderror");

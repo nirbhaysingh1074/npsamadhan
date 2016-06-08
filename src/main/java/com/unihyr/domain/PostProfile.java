@@ -61,10 +61,23 @@ public class PostProfile
 	
 	@Column
 	private String rejectReason;
+	@Column
+	private String actionPerformerId;
 	
 	@Column
 	private Boolean viewStatus;
 	
+
+	
+	public String getActionPerformerId()
+	{
+		return actionPerformerId;
+	}
+
+	public void setActionPerformerId(String actionPerformerId)
+	{
+		this.actionPerformerId = actionPerformerId;
+	}
 
 	public Boolean getViewStatus()
 	{

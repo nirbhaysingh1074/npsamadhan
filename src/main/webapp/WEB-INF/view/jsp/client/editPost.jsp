@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Registration"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="com.unihyr.domain.Post"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -200,11 +202,12 @@ jQuery(document).ready(function() {
 <body class="loading">
 
 	<div class="mid_wrapper">
+	  <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	  <div class="container">
-	  
 	   <div style="width: 100%;padding: 20px;" >
 	   <%
 	   Post post=(Post)request.getAttribute("post");
+	   Registration registration=post.getClient();
 	   %>
 	   <h2>Post : <%=post.getTitle() %></h2><br><br>
 									<label onclick="$('#divedit').css('display','none');$('#divupddateinfo').css('display','block');" style="vertical-align: middle;">
@@ -468,7 +471,21 @@ jQuery(document).ready(function() {
 					</div>
 					</dd>
 				</dl>
-		          
+		          <dl style="clear:both;">
+				<dt>
+						<label>Select Slabs</label>
+					</dt>
+					<dd> 
+						<form:select path="feePercent">
+						 <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent2() %>'><%=registration.getSlab2() %>(<%=registration.getFeePercent2() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent3() %>'><%=registration.getSlab3() %>(<%=registration.getFeePercent3() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent4() %>'><%=registration.getSlab4() %>(<%=registration.getFeePercent4() %>)</form:option>
+						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
+						</form:select>
+					<span class='error feePercent_error'><form:errors path="feePercent"/></span>
+	     </dd>
+				</dl>
 		           <%
 					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
 					if(fileuploaderror != null && fileuploaderror.equals("true"))
@@ -523,7 +540,11 @@ jQuery(document).ready(function() {
 		      </div>
 	      </form:form>
 	    </div>
-	  </div>
+	  </div></sec:authorize>
+	  
+	  <sec:authorize access="hasRole('ROLE_EMP_USER')">
+	 <div class="container">  You don't have permission to edit this post.</div>
+	  </sec:authorize>
 	</div>
 <script src="ckeditor/ckeditor.js"></script>
 <script>

@@ -35,7 +35,7 @@
 <body class="loading">
 <div class="mid_wrapper">
   <div class="container" >
-  	<div class="new_post_info" style="margin-top: 10px">
+  	<div class="new_post_info" style="margin-top: 10px;padding: 0 14px;">
 	<%
 		Post post = (Post)request.getAttribute("post");
 	Registration registration=(Registration)request.getAttribute("registration");
@@ -248,8 +248,8 @@
 	       <thead>
 	        <tr style="text-align:left; ">
 	        <th>Slab no.</th>
-	        <th>Min Billable CTC (INR)</th>
-	        <th>Max Billable CTC (INR)</th>
+	        <th>Slab detail</th>
+<!-- 	        <th>Max Billable CTC (INR)</th> -->
 	        <th>Fee Percent (%)</th>
 	        </tr>
 	        </thead>
@@ -257,32 +257,32 @@
 	        <tr >
 	        
 	        <td>1.</td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Min()) %></td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Max()) %></td>
+	        <td><%=registration.getSlab1() %></td>
+<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Max()) %></td> --%>
 	        <td><%=registration.getFeePercent1() %></td>
 	        </tr>
 	        <tr >
 	        <td>2.</td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Min()) %></td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Max()) %></td>
+	        <td><%=registration.getSlab2() %></td>
+<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Max()) %></td> --%>
 	        <td><%=registration.getFeePercent2() %></td>
 	        </tr>
 	        <tr >
 	        <td>3.</td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Min()) %></td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Max()) %></td>
+	        <td><%=registration.getSlab3() %></td>
+<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Max()) %></td> --%>
 	        <td><%=registration.getFeePercent3() %></td>
 	        </tr>
 	        <tr >
 	        <td>4.</td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Min()) %></td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Max()) %></td>
+	        <td><%=registration.getSlab4() %></td>
+<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Max()) %></td> --%>
 	        <td><%=registration.getFeePercent4() %></td>
 	        </tr>
 	        <tr >
 	        <td>5.</td>
-	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs5Min()) %></td>
-	        <td>No limit</td>
+	        <td><%=registration.getSlab5() %></td>
+<!-- 	        <td>No limit</td> -->
 	        <td><%=registration.getFeePercent5() %></td>
 	        </tr>
 	        </tbody>
@@ -426,7 +426,7 @@
 		        </div>
 		      </div>
 		      
-		      
+		      <%-- 
 							   <%
 							 if(post.getUploadjd()!=null){
 
@@ -480,7 +480,7 @@
 		      
 		      
 		      
-			<%}%>  
+			<%}%>   --%>
 		      
 		      
 			<%

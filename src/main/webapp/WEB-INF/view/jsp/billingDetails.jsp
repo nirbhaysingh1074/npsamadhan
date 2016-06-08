@@ -131,10 +131,10 @@ Yet to Join
 <td><%=NumberUtils.convertNumberToCommoSeprated(bill.getBillableCTC()) %></td>
 <td>
 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
-<%=bill.getFeePercentForClient() %>
+<%=bill.getFeePercentToAdmin() %>
 </sec:authorize>
 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-<%=bill.getFeePercentToAdmin() %>
+<%=bill.getFeePercentForClient() %>
 </sec:authorize>
 
 </td>

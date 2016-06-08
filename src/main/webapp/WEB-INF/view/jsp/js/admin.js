@@ -247,7 +247,7 @@ function contractSignUp(){
 	var paymentDays = $('.user_account  #paymentDays').val();
 	var emptyField = $('.user_account  #emptyField').val();
 	
-	var ctcSlabs1Min = $('#ctcSlabs1Min').val();
+/*	var ctcSlabs1Min = $('#ctcSlabs1Min').val();
 	var ctcSlabs1Max = $('#ctcSlabs1Max').val();
 	var ctcSlabs2Min = $('#ctcSlabs2Min').val();
 	var ctcSlabs2Max = $('#ctcSlabs2Max').val();
@@ -255,15 +255,18 @@ function contractSignUp(){
 	var ctcSlabs3Max = $('#ctcSlabs3Max').val();
 	var ctcSlabs4Min = $('#ctcSlabs4Min').val();
 	var ctcSlabs4Max = $('#ctcSlabs4Max').val();
-	var ctcSlabs5Min = $('#ctcSlabs5Min').val();
-	
+	var ctcSlabs5Min = $('#ctcSlabs5Min').val();*/
+
 	var feePercent1 = $('#feePercent1').val();
 	var feePercent2 = $('#feePercent2').val();
 	var feePercent3 = $('#feePercent3').val();
 	var feePercent4 = $('#feePercent4').val();
 	var feePercent5 = $('#feePercent5').val();
-	
-	
+	var slab1 = $('#slab1').val();
+	var slab2 = $('#slab2').val();
+	var slab3 = $('#slab3').val();
+	var slab4 = $('#slab4').val();
+	var slab5 = $('#slab5').val();
 	
 
 							if (feePercent1 == ""  ||(!$.isNumeric(feePercent1)) || 
@@ -271,15 +274,11 @@ function contractSignUp(){
 								feePercent3 == ""  ||(!$.isNumeric(feePercent3)) || 
 								feePercent4 == ""  ||(!$.isNumeric(feePercent4)) || 
 								feePercent5 == ""  ||(!$.isNumeric(feePercent5)) ||
-								ctcSlabs1Min == ""  ||(!$.isNumeric(ctcSlabs1Min)) ||
-								ctcSlabs1Max == ""  ||(!$.isNumeric(ctcSlabs1Max)) ||
-								ctcSlabs2Min == ""  ||(!$.isNumeric(ctcSlabs2Min)) ||
-								ctcSlabs2Max == ""  ||(!$.isNumeric(ctcSlabs2Max)) ||
-								ctcSlabs3Min == ""  ||(!$.isNumeric(ctcSlabs3Min)) ||
-								ctcSlabs3Max == ""  ||(!$.isNumeric(ctcSlabs3Max)) ||
-								ctcSlabs4Min == ""  ||(!$.isNumeric(ctcSlabs4Min)) ||
-								ctcSlabs4Max == ""  ||(!$.isNumeric(ctcSlabs4Max)) ||
-								ctcSlabs5Min == ""  ||(!$.isNumeric(ctcSlabs5Min)) ||
+								slab1 == ""  ||
+								slab2 == ""  ||
+								slab3 == ""  ||
+								slab4 == ""  ||
+								slab5== ""  ||
 							    paymentDays == ""  ||(!$.isNumeric(paymentDays)) ) {
 		
 			alertify.error("Please fill all fields correctly !!");

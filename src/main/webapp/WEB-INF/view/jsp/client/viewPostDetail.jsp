@@ -32,7 +32,7 @@
 <body class="loading">
 <div class="mid_wrapper">
   <div class="container" >
-  	<div class="new_post_info" style="margin-top: 10px">
+  	<div class="new_post_info" style="margin-top: 10px;padding: 0 14px;">
 	<%
 		Post post = (Post)request.getAttribute("post");
 		if(post != null)
@@ -336,7 +336,7 @@
 		        <div id="jobDescription">
 		        </div>
 		      </div>
-							  <%
+							<%--   <%
 							 if(post.getUploadjd()!=null){
 					            String scheme = request.getScheme();
 							    String serverName = request.getServerName();
@@ -373,7 +373,7 @@
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);
 					        			</script>
-			<%}%> 
+			<%}%>  --%>
 		<%}%> 
 	</div>
 </div>

@@ -76,7 +76,7 @@
 	            </dt>
 	            <dd>
 	              <form:input path="name"  />
-	              <span class='error name_error'> ${uidex }<form:errors path="name" /></span>
+	              <span class='error name_error'> <form:errors path="name" /></span>
 	            </dd>
 	          </dl>
 	          <dl>
@@ -85,7 +85,7 @@
 	            </dt>
 	            <dd>
 	              <form:input path="userid"  />
-	              <span class='error userid_error'><form:errors path="userid" /></span>
+	              <span class='error userid_error'>${uidex }<form:errors path="userid" /></span>
 	            </dd>
 	          </dl>
 	          

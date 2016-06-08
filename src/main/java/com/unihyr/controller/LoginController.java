@@ -209,8 +209,6 @@ public class LoginController
 			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
 
-			String id=GeneralConfig.generatePassword();
-			login.setPassword(id);
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_EMP_MANAGER.toString());
 			Set<UserRole> roles = new HashSet<UserRole>();
@@ -219,10 +217,6 @@ public class LoginController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("orgName", reg.getOrganizationName());
-			mailService.sendMail(register.getUserid(), "Sign Up info",
-					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
-							+ id + "<br> After first login please change this password.");
-		
 			
 			return "redirect:/regSuccess";
 		}
@@ -302,7 +296,8 @@ public class LoginController
 				reg.setIndustries(indset);
 				login.setReg(reg);
 				String id=GeneralConfig.generatePassword();
-				login.setPassword(id);
+
+				loginInfoService.updatePassword(login.getUserid(), null, id);
 				reg.setLog(login);
 				urole.setUserrole(Roles.ROLE_CON_MANAGER.toString());
 				Set<UserRole> roles = new HashSet<UserRole>();
@@ -311,9 +306,9 @@ public class LoginController
 				loginInfoService.addLoginInfo(login, null);
 				map.addAttribute("regSuccess", "true");
 				map.addAttribute("orgName", reg.getConsultName());
-				mailService.sendMail(register.getUserid(), "Sign Up info",
+			/*	mailService.sendMail(register.getUserid(), "Sign Up info",
 						"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
-								+ id + "<br> After first login please change this password.");
+								+ id + "<br> After first login please change this password.");*/
 				return "redirect:/regSuccess";
 			} catch (Exception e)
 			{
@@ -355,6 +350,12 @@ public class LoginController
 			@RequestParam("rePassword") String rePassword)
 	{
 		Registration child = registrationService.getRegistationByUserId(childId);
+		Registration reg=child.getAdmin();
+		if(reg.getOrganizationName()!=null){
+			
+		}else{
+			
+		}
 		map.addAttribute("registration", child);
 		if (child != null && child.getAdmin() != null && child.getAdmin().getUserid().equals(principal.getName()))
 		{
@@ -364,11 +365,23 @@ public class LoginController
 				if (status)
 				{
 					map.addAttribute("status", "success");
+					if(reg.getOrganizationName()!=null){
+						
 					return "redirect:clientviewuser?uid=" + childId;
+					}else{
+
+						return "redirect:consviewuser?uid=" + childId;
+					}
 				}
 			}
 			map.addAttribute("status", "notmatched");
-			return "redirect:clientviewuser?uid=" + childId;
+			if(reg.getOrganizationName()!=null){
+				
+				return "redirect:clientviewuser?uid=" + childId;
+				}else{
+
+					return "redirect:consviewuser?uid=" + childId;
+				}
 
 		}
 		return "redirect:userAcccount";

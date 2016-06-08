@@ -66,8 +66,18 @@ public class PostModel
 	private int profileParDay;
 	
 	private MultipartFile uploadJdfile;
-	
-	
+
+	private double feePercent;
+
+	public double getFeePercent()
+	{
+		return feePercent;
+	}
+
+	public void setFeePercent(double feePercent)
+	{
+		this.feePercent = feePercent;
+	}
 
 	public String getWorkHourStartHour()
 	{

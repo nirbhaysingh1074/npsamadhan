@@ -113,6 +113,9 @@
 		       				<th align="left" width="2%"><input id="sel_all" type="checkbox"></th>
 		       				</sec:authorize>
 		       				<th width="5%">Published</th>
+		       				<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+		       				<th>Published By</th>
+		       				</sec:authorize> --%>
 		       				<th align="left"  width="5%">Status</th>
 		       				<th align="left">Job Id</th>
 		       				<th align="left" style="width: 14%;">Role</th>
@@ -177,6 +180,16 @@
 							                  		}
 							                  	%>
 				       						</td>
+				       						<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+		       				<%if(post.getPosterId()!=null){ %>
+		       				<td><%=post.getPosterId() %></td>
+		       				<%}else {%>
+		     				<td><%=post.getClient().getUserid() %></td>
+		     				<%} %>
+		       				
+		       				</sec:authorize> --%>
+				       						
+				       						
 						       				<td class='act_status'>
 		       									<%
 		       									if(post.getCloseDate()!=null){

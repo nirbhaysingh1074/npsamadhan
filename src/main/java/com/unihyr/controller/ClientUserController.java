@@ -62,7 +62,7 @@ public class ClientUserController
 			Registration user = registrationService.getRegistationByUserId(userid);
 			if (user != null)
 			{
-				map.addAttribute("uidex", "exist");
+				map.addAttribute("uidex", "user already exist");
 				 valid = false; 
 			}
 		} catch (Exception e)
@@ -87,7 +87,8 @@ public class ClientUserController
 			login.setIsactive("true");
 
 			String id=GeneralConfig.generatePassword();
-			login.setPassword(id);
+
+			loginInfoService.updatePassword(login.getUserid(), null, id);
 			
 			
 			
@@ -96,13 +97,46 @@ public class ClientUserController
 			Set<UserRole> roles = new HashSet<UserRole>();
 			roles.add(urole);
 			login.setRoles(roles);
+			login.setIsactive("true");
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
-			mailService.sendMail(model.getUserid(), "Sign Up info",
+			
+			String companyName="";
+			if(parent.getConsultName()!=null){
+				companyName=parent.getConsultName();
+			}else{
+				companyName=parent.getOrganizationName();
+			}
+			
+
+			String mailContent="Dear "+reg.getName()+" ("+companyName+"),<br><br><br>"+
+ 
+"Congratulations, you have successfully registered to UniHyr. <br>"+
+ 
+"We are delighted to have you on-board our UniHyr family.<br>"+
+ 
+"Please find below your user credentials. Please login and change password for security reasons. For any assistance, please feel free to reach out to us at help@unihyr.com<br><br>"+
+ 
+"Username - "+reg.getUserid()+"<br>"+
+"Password - "+id+"<br><br><br>"+
+ 
+"Regards,<br>"+
+"UniHyr Admin Team";
+			
+			
+			
+			
+			mailService.sendMail(reg.getUserid(), "UniHyr - Registeration Successful",
+					mailContent);
+			
+			
+			
+			
+			/*mailService.sendMail(model.getUserid(), "Sign Up info",
 					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
 							+ id + "<br> After first login please change this password.");
-		
+		*/
 			return "redirect:/clientaccount";
 		}
 	}

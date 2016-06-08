@@ -85,7 +85,7 @@
 	            </dt>
 	            <dd>
 	              <form:input path="userid"  />
-	              <span class='error userid_error'><form:errors path="userid" /></span>
+	              <span class='error userid_error'><form:errors path="userid" />${uidex}</span>
 	            </dd>
 	          </dl>
 	          <dl>

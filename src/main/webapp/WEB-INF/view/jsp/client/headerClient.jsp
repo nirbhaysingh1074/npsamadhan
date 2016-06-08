@@ -5,6 +5,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles-extras"
 	prefix="tilesx"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uni Hyr</title>
@@ -244,7 +245,7 @@ function getNotifications(){
 		<div class="notification">
 			<div class="noti-icon more_product" onclick="getMessages()">
 				<div class="icon "  >
-					<img style="" src="images/mailbox.png">
+					<img class="messageIcon" src="images/mailbox.png">
 					
 					<span id="messageCount" class="notificationCount" ></span>
 				</div>
@@ -274,8 +275,10 @@ function getNotifications(){
 	        <li class="${currentpage == 'clientdashboard' ? 'active' : ''}"><a href="clientdashboard">Home</a></li>
 	        <li class="${currentpage == 'yourpost' ? 'active' : ''}"><a href="clientaddpost">Post a new Job</a></li>
 	        <li class="${currentpage == 'clientapplicants' ? 'active' : ''}"><a href="clientpostapplicants">Manage Positions </a></li>
+	      <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	        <li class="${currentpage == 'clientBillingDetails' ? 'active' : ''}"><a href="clientBillingDetails">Billing Details</a></li>
 	        <li class="${currentpage == 'clientprofilecenter' ? 'active' : ''}"><a href="clientprofilecenter">Profiles Center</a></li>
+	    </sec:authorize>
 	      </ul>
 	  </nav>
 </div>

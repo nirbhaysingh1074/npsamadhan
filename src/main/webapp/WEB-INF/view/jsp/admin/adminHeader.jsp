@@ -48,16 +48,16 @@
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <!-- The user image in the navbar-->
-                  <img src="images/amar1.jpg" class="user-image" alt="User Image">
+<!--                   <img src="images/logo.jpg" class="user-image" alt="User Image"> -->
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">UniHyr Admin</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
                   <li class="user-header">
-                    <img src="images/amar1.jpg" class="img-circle" alt="User Image">
+                    <img src="images/logo.jpg" class="img-circle" alt="User Image">
                     <p>
-                      Amar Lal Bharti - Web Developer
+                      Unihyr Admin
                       <small>Member since Nov. 2012</small>
                     </p>
                   </li>

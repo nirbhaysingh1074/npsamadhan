@@ -48,7 +48,7 @@
 // 			alertify.error("Please select consultant first !");
 // 			return false;
 // 		}
-
+pleaseWait();
 		var filterBy=$('#filterBy').val();
 		if(typeof filterBy != 'undefined'){}
 		else
@@ -97,7 +97,7 @@
 				$('#candidate_profiles').html(data);
 				$('#candidate_profiles').show();
 				$('#candidate_profiles_def').hide();
-				
+			pleaseDontWait();	
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 		        alert(xhr.status);
@@ -367,8 +367,8 @@
 	</div>
 					<div  class="sort_by" style="float: right;margin-left: 20px;">
 								
-									<label><input type="radio" name="sortOrder" id="sortOrder" value="asc" onchange="loadclientposts('1')"/>Asc</label>
-									<label><input type="radio" name="sortOrder" id="sortOrder" value="desc"  onchange="loadclientposts('1')" checked="checked"   />Desc</label>
+									<label style="line-height: 27px;"><input type="radio" name="sortOrder" id="sortOrder" value="asc" onchange="loadclientposts('1')"/>Asc</label>
+									<label style="line-height: 27px;"><input type="radio" name="sortOrder" id="sortOrder" value="desc"  onchange="loadclientposts('1')" checked="checked"   />Desc</label>
 								</div>		
   				<div class="sort_by"  id="filterDiv" > <span>Filter by Status</span>
 		          <select id="filterBy"  onchange="loadclientposts('1')">
@@ -402,8 +402,8 @@
 		            <option value="joinDropDate">Dropped</option>
 		          </select>
 		        </div>
-		        <div style="float: right;margin-right: 20px;padding-top:6px;">
-							<label><input onchange="loadclientposts('1');" type="checkbox" name="excludeType"   value="rejected"/> Include Rejected</label>
+		        <div style="float: right;margin-right: 20px;">
+							<label style="line-height: 27px;"><input onchange="loadclientposts('1');" type="checkbox" name="excludeType"   value="rejected"/> Include Rejected</label>
 							</div>
 						</div>
 						<div id="candidate_profiles" class="rightside_in new_table "

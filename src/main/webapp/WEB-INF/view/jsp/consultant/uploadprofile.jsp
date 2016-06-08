@@ -451,20 +451,20 @@
 										</div>
 									    <span class="error resumePath_error">&nbsp;<form:errors path="resumePath" /></span>
 									</div>
-									<div style="float: left;">
+							<!-- 		<div style="float: left;">
 						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
 								    border-radius: 0 5px 5px 0;
 								    float: right;
 								    height: 27px;
 								    overflow: hidden;
 								    position: relative;padding: 5px;"  type="button" value="Upload" onclick="$('#resumeTextField').attr('display','none')" />
-						</div>
+						</div> -->
 								</dd>
 							</dl>
 							
 						</div>
 					</div>
-				<div class="block coment_fild bottom-padding"   id="resumeTextField">
+				<div class="block coment_fild bottom-padding"   id="resumeTextField" style="display: none;">
 					<p>Resume<span class="req"></span></p>
 					<form:textarea path="resumeText" id="resumeText" ></form:textarea>
 					<span class="error resumeText_error">&nbsp;<form:errors path="resumeText" /></span>

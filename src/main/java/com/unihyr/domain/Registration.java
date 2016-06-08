@@ -101,9 +101,8 @@ public class Registration implements Serializable
 	private double feePercent3;
 	private double feePercent4;
 	private double feePercent5;
-	
-
-	private double ctcSlabs1Min;
+	private double feeCommission;
+	/*private double ctcSlabs1Min;
 	private double ctcSlabs1Max;
 	private double ctcSlabs2Min;
 	private double ctcSlabs2Max;
@@ -111,9 +110,13 @@ public class Registration implements Serializable
 	private double ctcSlabs3Max;
 	private double ctcSlabs4Min;
 	private double ctcSlabs4Max;
-	private double ctcSlabs5Min;
-	
-	
+	private double ctcSlabs5Min;*/
+
+	private String slab1;
+	private String slab2;
+	private String slab3;
+	private String slab4;
+	private String slab5;
 	
 	private Integer paymentDays;
 
@@ -123,9 +126,81 @@ public class Registration implements Serializable
 	
 	
 	
-	
-//	------------------ Consultant Data -------------- 	
-	
+	@Column	
+	public double getFeeCommission()
+	{
+		return feeCommission;
+	}
+
+
+	public void setFeeCommission(double feeCommission)
+	{
+		this.feeCommission = feeCommission;
+	}
+
+
+	//	------------------ Consultant Data -------------- 	
+	@Column
+	public String getSlab1()
+	{
+		return slab1;
+	}
+
+
+	public void setSlab1(String slab1)
+	{
+		this.slab1 = slab1;
+	}
+
+	@Column
+	public String getSlab2()
+	{
+		return slab2;
+	}
+
+
+	public void setSlab2(String slab2)
+	{
+		this.slab2 = slab2;
+	}
+
+	@Column
+	public String getSlab3()
+	{
+		return slab3;
+	}
+
+
+	public void setSlab3(String slab3)
+	{
+		this.slab3 = slab3;
+	}
+
+	@Column
+	public String getSlab4()
+	{
+		return slab4;
+	}
+
+
+	public void setSlab4(String slab4)
+	{
+		this.slab4 = slab4;
+	}
+
+	@Column
+	public String getSlab5()
+	{
+		return slab5;
+	}
+
+
+	public void setSlab5(String slab5)
+	{
+		this.slab5 = slab5;
+	}
+
+
 	@Column
 	public Boolean getFirstTime()
 	{
@@ -139,10 +214,7 @@ public class Registration implements Serializable
 	}
 
 
-	public void setCtcSlabs1Min(double ctcSlabs1Min)
-	{
-		this.ctcSlabs1Min = ctcSlabs1Min;
-	}
+	
 
 
 	public void setFeePercent5(double feePercent5)
@@ -201,7 +273,10 @@ public class Registration implements Serializable
 		return feePercent5;
 	}
 
-
+	/*public void setCtcSlabs1Min(double ctcSlabs1Min)
+	{
+		this.ctcSlabs1Min = ctcSlabs1Min;
+	}
 
 	@Column
 	public double getCtcSlabs1Min()
@@ -296,7 +371,7 @@ public class Registration implements Serializable
 	public void setCtcSlabs5Min(double ctcSlabs5Min)
 	{
 		this.ctcSlabs5Min = ctcSlabs5Min;
-	}
+	}*/
 
 	@Column
 	public String getContractNo()

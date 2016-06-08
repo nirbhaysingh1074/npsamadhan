@@ -99,7 +99,8 @@ public class ConsultantUserController
 			login.setIsactive("true");
 
 			String id=GeneralConfig.generatePassword();
-			login.setPassword(id);
+
+			loginInfoService.updatePassword(login.getUserid(), null, id);
 			
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_CON_USER.toString());
@@ -110,10 +111,34 @@ public class ConsultantUserController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
-			mailService.sendMail(model.getUserid(), "Sign Up info",
-					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
-							+ id + "<br> After first login please change this password.");
-		
+
+			String companyName="";
+			if(parent.getConsultName()!=null){
+				companyName=parent.getConsultName();
+			}else{
+				companyName=parent.getOrganizationName();
+			}
+			
+
+			String mailContent="Dear "+reg.getName()+" ("+companyName+"),<br><br><br>"+
+ 
+"Congratulations, you have successfully registered to UniHyr. <br>"+
+ 
+"We are delighted to have you on-board our UniHyr family.<br>"+
+ 
+"Please find below your user credentials. Please login and change password for security reasons. For any assistance, please feel free to reach out to us at help@unihyr.com<br><br>"+
+ 
+"Username - "+reg.getUserid()+"<br>"+
+"Password - "+id+"<br><br><br>"+
+ 
+"Regards,<br>"+
+"UniHyr Admin Team";
+			
+			
+			
+			
+			mailService.sendMail(reg.getUserid(), "UniHyr - Registeration Successful",
+					mailContent);
 			
 			return "redirect:consultantaccount";
 		}

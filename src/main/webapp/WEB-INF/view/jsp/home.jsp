@@ -372,11 +372,11 @@ a.control_next {
 			<div class="featserv rw">
 				<ul>
 					<li style="width: 42%;">
-						<img style="height: 200px;"  src="images/whyuni1.jpg" alt="img">
+						<img style="height: 250px;"  src="images/whyuni1.jpg" alt="img">
 					</li> 
 				<li style="width: 10%;"><img style="margin-top:60px;height:50px;" src="images/arrow1.png" /></li>
 					<li style="width: 42%;float: right;">
-						<img style="height: 200px;"   src="images/whyuni2.jpg" alt="img">
+						<img style="height: 250px;"   src="images/whyuni2.jpg" alt="img">
 					
 						</li> 
 				
