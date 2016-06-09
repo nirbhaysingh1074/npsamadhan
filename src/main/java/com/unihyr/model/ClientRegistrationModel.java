@@ -26,10 +26,10 @@ public class ClientRegistrationModel
 	private String organizationName;
 	
 	
-	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
+//	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
 	private String password;
 	
-	@NotNull(message="{NotNull.regForm.repassword}")
+//	@NotNull(message="{NotNull.regForm.repassword}")
 	private String repassword;
 	
 	@NotBlank(message="{NotBlank.regForm.office}")
@@ -48,6 +48,8 @@ public class ClientRegistrationModel
 	@NumberFormat(style=Style.NUMBER)
 	private String contact;
 	
+	private String name;
+	
 	
 	private Industry industry ;
 	
@@ -58,6 +60,16 @@ public class ClientRegistrationModel
 	
 	private String officeAddress;
 	
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
 	public String getUserid() {
 		return userid;
 	}

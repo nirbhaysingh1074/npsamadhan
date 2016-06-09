@@ -51,9 +51,12 @@ public class Post implements Serializable
 	
 	@Column(nullable=false)
 	private double ctc_min;
-	
+
 	@Column(nullable=false)
 	private double ctc_max;
+
+	@Column
+	private double feePercent;
 	
 	@Column
 	private String criteria;
@@ -61,9 +64,12 @@ public class Post implements Serializable
 	@Column
 	@Lob
 	private String comment;
-	
+
 	@Column
 	private String uploadjd;
+
+	@Column
+	private String posterId;
 	
 	@Column
 	@Lob
@@ -106,11 +112,44 @@ public class Post implements Serializable
 	private String workHourStartMin;
 	@Column
 	private String workHourEndMin;
+	@Column
+	private String updateInfo;
 	
 	@Column
 	@Lob
 	private String editSummary;
 	
+	
+
+	public double getFeePercent()
+	{
+		return feePercent;
+	}
+
+	public void setFeePercent(double feePercent)
+	{
+		this.feePercent = feePercent;
+	}
+
+	public String getPosterId()
+	{
+		return posterId;
+	}
+
+	public void setPosterId(String posterId)
+	{
+		this.posterId = posterId;
+	}
+
+	public String getUpdateInfo()
+	{
+		return updateInfo;
+	}
+
+	public void setUpdateInfo(String updateInfo)
+	{
+		this.updateInfo = updateInfo;
+	}
 
 	public int getNoOfPostsFilled()
 	{

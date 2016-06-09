@@ -14,24 +14,31 @@ media css
  .bottom-padding20{padding-bottom: 20px;}
  .login-form{max-width: 400px;background-color: #fff;margin: 100px auto; border-radius: 5px;}
  .reg-form{max-width: 800px;background-color: #fff;margin: 50px auto; border-radius: 5px;}
- .login-wrap{padding: 25px;box-shadow:0 4px 4px rgba(0, 0, 0, 0.6) inset;}
+ .login-wrap{padding: 25px;/* box-shadow:0 4px 4px rgba(0, 0, 0, 0.6) inset; */}
  .reg-wrap{padding: 0 25px;float: left;width: 50%;margin-bottom: 5px;}
  .login-header{text-align: center;padding:20px 0;}
  .login-header .close
  	{
- 		float: right; position: relative; 
- 		padding: 4px 10px; font-size: 16px; 
- 		border-radius: 45%; /* background-color: gray; 
- 		color: #fff; */ cursor:pointer;
- 		top: -15px; right: 5px;
+float: right;
+position: relative;
+padding: 3px 9px;
+font-size: 16px;
+color: #fff;
+cursor: pointer;
+top: -40px;
+right: -25px;
 	}
 .reg_page .close
  	{
- 		float: right; position: relative; 
- 		padding: 4px 10px; font-size: 16px; 
- 		border-radius: 45%; background-color: gray; 
- 		color: #fff; cursor:pointer;
- 		top: 5px; right: 5px;
+ 		float: right;
+position: relative;
+padding: 4px 10px;
+font-size: 16px;
+border-radius: 45%;
+color: #fff;
+cursor: pointer;
+top: -19px;
+right: -27px;
 	}
 	
  .reg-header{padding:20px 25px;}
@@ -188,7 +195,7 @@ text-transform:uppercase; padding-bottom:10px;}
 
 .Hwrk{ width:100%; float:left; padding:35px 0px;} 
 
-.feature_sec{ width:100%; float:left; background:#f5f5f5; padding:35px 0px;} 
+.feature_sec{ width:100%; float:left;  padding:35px 0px;} 
 .featserv>ul {
 	margin: 0;
 	padding: 0;
@@ -231,12 +238,68 @@ text-transform:uppercase; padding-bottom:10px;}
 
 .featserv ul li h4 {
 	font-size: 14px;
-	color: #f8b910;
+	color: #000;
 	text-transform: uppercase;
 	margin-bottom: 6px;
+	font-weight: bold;
 }
 
 .featserv ul li p {
+	font-size: 12px;
+	color: #000000;
+	line-height: 20px;
+	margin-bottom: 10px;
+}
+
+.howflow>ul {
+	margin: 0;
+	padding: 0;
+}
+
+.howflow>ul>li {
+	list-style: none;
+	text-align: center;
+	width: 18%;
+	float: left;
+	margin-right: 2.0%;
+}
+
+
+
+.howflow>ul>li>img {
+	max-width: 100%;
+}
+
+.howflow>ul>li>.thumbnl {
+	display: inline-block;
+	background: #fff;
+	
+	padding: 7px;
+	margin-bottom: 15px;
+}
+
+.howflow>ul>li>.thumbnl>img {
+	
+	margin-bottom: -5px;
+	
+	height: 70px;
+}
+
+.howflow ul li h3 {
+	font-size: 18px;
+	color: #000;
+	margin-bottom: 4px;
+}
+
+.howflow ul li h4 {
+	font-size: 14px;
+	color: #000;
+	text-transform: uppercase;
+	margin-bottom: 6px;
+	font-weight: bold;
+}
+
+.howflow ul li p {
 	font-size: 12px;
 	color: #000000;
 	line-height: 20px;

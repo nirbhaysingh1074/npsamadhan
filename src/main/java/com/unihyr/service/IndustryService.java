@@ -1,5 +1,6 @@
 package com.unihyr.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.unihyr.domain.Industry;
@@ -15,5 +16,7 @@ public interface IndustryService
 	public List<Industry> getIndustryList();
 	
 	public List<Industry> getIndustryList(int first, int max);
+
+	public List<Industry> getIndustryByName(String industry);
 
 }

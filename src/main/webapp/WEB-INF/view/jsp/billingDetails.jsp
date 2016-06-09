@@ -53,10 +53,10 @@
 		        		<tr>
 	       				<th align="left">Position</th>
 	       				<th align="left">
-	       					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+	       					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 												Consultant Name
 											</sec:authorize>
-												<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+												<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 												Client Name
 							</sec:authorize>
 												</th>
@@ -64,6 +64,7 @@
 	       				<th align="left">Candidate Name</th>
 	       				<th align="left">Offer Accepted Date</th>
 	       				<th align="left">Expected Joining Date</th>
+	       				<th align="left">Joining Date</th>
 	       				<th align="left">Total CTC.</th>
 	       				<th align="left">Billable CTC.</th>
 	       				<th align="left">
@@ -83,6 +84,7 @@ Fee
 	       				<th align="left">Tax(%)</th>
 	       				<th align="left">Total Amount</th>
 	       				<th align="left">Payment Due Date</th>
+	       				<th align="left">Verification Status</th>
 	       				<th align="left">Action</th>
 		       			</tr>
 	       			</thead>
@@ -95,10 +97,10 @@ for(BillingDetails bill:bills){
 <tr>
 <td><%=bill.getPosition() %></td>
 <td>
-	<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	<%=bill.getConsultantName()%> 
 </sec:authorize>
-	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+	<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
    
 	<%=bill.getClientName()%> 
 </sec:authorize>
@@ -110,22 +112,29 @@ for(BillingDetails bill:bills){
 <td>
 <%if(bill.getExpectedJoiningDate()!=null){ %>
 <%=DateFormats.ddMMMMyyyy.format(bill.getExpectedJoiningDate()) %>
-<%}else if(bill.getJoiningDate()!=null){ %>
-<%=DateFormats.ddMMMMyyyy.format(bill.getJoiningDate()) %>(Joined)
+<%}else{ %>
+Yet to Join
+<%} %>
+</td>
+<td>
+<%
+if(bill.getJoiningDate()!=null){ %>
+<%=DateFormats.ddMMMMyyyy.format(bill.getJoiningDate()) %>
 
 <%}else{ %>
 Yet to Join
 <%} %>
+
 </td>
 <td>
 <%=NumberUtils.convertNumberToCommoSeprated(bill.getTotalCTC()) %></td>
 <td><%=NumberUtils.convertNumberToCommoSeprated(bill.getBillableCTC()) %></td>
 <td>
 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
-<%=bill.getFeePercentForClient() %>
+<%=bill.getFeePercentToAdmin() %>
 </sec:authorize>
 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-<%=bill.getFeePercentToAdmin() %>
+<%=bill.getFeePercentForClient() %>
 </sec:authorize>
 
 </td>
@@ -139,16 +148,29 @@ Yet to Join
 Yet to Join
 <%} %></td>
 <td>
+
+<%if(bill.getJoiningDate()!=null){ %>
+<%if(bill.getVerificationStatus()==null|| (!bill.getVerificationStatus())){ 
+%>
+<a href="clientVerifyBillingDetails?billId=<%=bill.getBillId() %>" >Verify</a>
+<%}else{ %>
+<span>Verfied</span>
+<%} }else{%>
+
+<span>--</span>
+<%} %>
+</td>
+<td >
 	<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 
 <%if(bill.getJoiningDate()!=null){ %>
-<a target="_blank" href="consBillInvoice?billId=<%=bill.getBillId() %>" >View</a>
+<a target="_blank" href="consBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>
 <%} %>
 </sec:authorize>
 	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 
 <%if(bill.getJoiningDate()!=null){ %>
-<a target="_blank" href="clientBillInvoice?billId=<%=bill.getBillId() %>" >View</a>
+<a target="_blank" href="clientBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>
 <%} %>
 </sec:authorize>
 

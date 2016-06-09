@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unihyr.domain.LoginInfo;
+import com.unihyr.domain.Notifications;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unihyr.constraints.GeneralConfig;
@@ -39,6 +42,8 @@ import com.unihyr.service.GlobalRatingService;
 import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
 import com.unihyr.service.LoginInfoService;
+import com.unihyr.service.MailService;
+import com.unihyr.service.NotificationService;
 import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
@@ -54,31 +59,58 @@ import com.unihyr.service.UserRoleService;
 @Controller
 public class AdminPanelController
 {
+	/**
+	 * industry service to invoke industry related functions
+	 */
 	@Autowired
 	private IndustryService industryService;
+	/**
+	 * service to invoke Job Post related functions
+	 */
 	@Autowired
 	private PostService postService;
+	/**
+	 * user registration service to invoke user registration related functions
+	 */
 	@Autowired
 	private RegistrationService registrationService;
+	/**
+	 * login info service to invoke user login related functions
+	 */
 	@Autowired
 	private LoginInfoService loginInfoService;
+	/**
+	 * service to invoke user role related functions
+	 */
 	@Autowired
 	private UserRoleService userRoleService;
+	/**
+	 * service to invoke candidate profile related functions
+	 */
 	@Autowired
 	private ProfileService profileService;
+	/**
+	 * service to invoke Post Profile together related functions
+	 */
 	@Autowired
 	private PostProfileService postProfileService;
 
-	@Autowired
-	private RatingCalculationService ratingCalculationService;
-	@Autowired
-	private GlobalRatingService globalRatingService;
-	
+	/**
+	 * service to invoke messaging related functions
+	 */
 	@Autowired private 	InboxService inboxService;
+	/**
+	 * service to invoke Mail related functions
+	 */
+	@Autowired private 	MailService mailService;
 	
+	@Autowired
+	private NotificationService notificationService;
 	
-	
-	
+	/**
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value = "/admindashboard", method = RequestMethod.GET)
 	public String admindashboard(ModelMap map)
 	{
@@ -89,14 +121,25 @@ public class AdminPanelController
 		return "admindashboard";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardPostList", method = RequestMethod.GET)
 	public String adminDashboardPostList(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		map.addAttribute("postList", postService.getPosts(0, 10));
-//		map.addAttribute("ppList", postProfileService.getAllPostProfile(0, 10));
 		return "adminDashboardPostList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/acceptPostCloseRequest", method = RequestMethod.GET)
 	@ResponseBody
 	public String acceptPostCloseRequest(ModelMap map, HttpServletRequest request, Principal principal)
@@ -116,24 +159,48 @@ public class AdminPanelController
 			return "wrong post";
 		}
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/rejectPostCloseRequest", method = RequestMethod.GET)
 	public String rejectPostCloseRequest(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		System.out.println("No changes only mail to requestor !!!");
 		return "adminDashboardPostList";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardProfileList", method = RequestMethod.GET)
 	public String adminDashboardProfileList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
 		map.addAttribute("ppList", postProfileService.getAllPostProfile(0, 10));
 		return "adminDashboardPostList";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardClientList", method = RequestMethod.GET)
 	public String adminDashboardClientList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
 		map.addAttribute("empList", registrationService.getClientList(0, 10));
 		return "adminDashboardPostList";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminDashboardConsultantList", method = RequestMethod.GET)
 	public String adminDashboardConsultantList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -141,6 +208,12 @@ public class AdminPanelController
 		return "adminDashboardPostList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserlist", method = RequestMethod.GET)
 	public String adminUserList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -148,6 +221,12 @@ public class AdminPanelController
 		return "adminUserList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminpostlist", method = RequestMethod.GET)
 	public String adminPostList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -168,6 +247,12 @@ public class AdminPanelController
 	}
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminprofilelist", method = RequestMethod.GET)
 	public String adminProfileList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -176,6 +261,13 @@ public class AdminPanelController
 		return "adminProfileList";
 	}
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserderail", method = RequestMethod.GET)
 	public String adminUserDerail(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
 	{
@@ -190,6 +282,13 @@ public class AdminPanelController
 		}
 		return "redirect:admindashboard";
 	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserchild", method = RequestMethod.GET)
 	public String adminUserChild(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
 	{
@@ -205,6 +304,22 @@ public class AdminPanelController
 		return "redirect:admindashboard";
 	}
 	
+	/**
+	 * @param model
+	 * @param result
+	 * @param reg
+	 * @param regResult
+	 * @param login
+	 * @param loginResult
+	 * @param urole
+	 * @param userroleResult
+	 * @param userid
+	 * @param parentid
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminuserchild", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value = "childForm") @Valid ClientUserModel model,
 			BindingResult result, @ModelAttribute(value = "reg") Registration reg, BindingResult regResult,
@@ -219,7 +334,7 @@ public class AdminPanelController
 		{
 			parent = registrationService.getRegistationByUserId(parentid);
 			role = userRoleService.getRoleByUserId(parentid);
-			if(parent != null && role != null && (role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()) || role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString())) )
+			if(parent != null && role != null && (role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()) || role.getUserrole().equals(Roles.ROLE_CON_MANAGER.toString())) )
 			{
 				map.addAttribute("parentAdmin", parent);
 				map.addAttribute("userRole", role);
@@ -262,6 +377,11 @@ public class AdminPanelController
 			
 			login.setReg(reg);
 			login.setIsactive("true");
+
+			String id=GeneralConfig.generatePassword();
+
+			loginInfoService.updatePassword(login.getUserid(), null, id);
+			
 			reg.setLog(login);
 			if(role.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()))
 			{
@@ -279,11 +399,22 @@ public class AdminPanelController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
+			/*mailService.sendMail(reg.getUserid(), "Sign Up info",
+					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
+							+ id + "<br> After first login please change this password.");
+		*/
+			
 			return "redirect:/adminuserchild?userid="+userid;
 		}
 	}
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value = "/adminviewjd", method = RequestMethod.GET)
 	public String adminViewJd(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -303,6 +434,13 @@ public class AdminPanelController
 	
 	
 	
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @param ppid
+	 * @return
+	 */
 	@RequestMapping(value = "/adminviewprofile", method = RequestMethod.GET)
 	public String adminViewProfile(ModelMap map, HttpServletRequest request ,Principal principal, @RequestParam long ppid)
 	{
@@ -413,6 +551,74 @@ public class AdminPanelController
 			
 			post.setVerifyDate(dt);
 			postService.updatePost(post);
+
+			List<Registration> consList =  registrationService.getConsultantsByClientIndustry(post.getClient().getUserid());
+			String ids = "";
+			String position="<a href='consviewjd?pid="+post.getPostId()+"' >"+ post.getTitle()+"</a>";
+			
+			for(Registration cons : consList)
+			{
+				ids += cons.getUserid()+","; 
+				String userid=cons.getUserid();
+			}
+			String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
+			Notifications nser=new Notifications();
+			nser.setDate(new java.sql.Date(new Date().getTime()));
+			nser.setNotification(content1);
+			nser.setUserid(post.getClient().getUserid());
+			notificationService.addNotification(nser);
+			String subject = "UniHyr Alert: "+post.getClient().getOrganizationName()+" - "+post.getTitle()+" - "+post.getLocation();
+			
+			String content = "<table cellspacing='0' cellpadding='8' border='0' style='width: 100%; font-family: Arial, Sans-serif;  background-color: #fff' summary=''>"
+					+ "<tbody><tr>"
+					+ "	<td>"
+					+ "<div style='padding: 2px'>"
+					+ "<span></span>"
+					+ "<p>Dear Partner,</p>"
+					+ "<p></p>"
+					+ "<p>Please note the following:</p>"
+					+ "<table cellspacing='0' cellpadding='0' border='0'"
+					+ "summary='Event details'>"
+					+ "<tbody>"
+					+ "<tr>"
+					+ "<td width='100' valign='top' style='padding: 0 1em 10px 0;  white-space: nowrap'><div>"
+					+ "<i style='font-style: normal'>Company</i></div></td>"
+					+ "<td valign='top' style='padding-bottom: 10px; font-weight:bold;'>"
+					+ post.getClient().getOrganizationName()
+					+ "</td>"
+					+ "</tr>"
+					+ "<tr>"
+					+ "<td  valign='top' style='padding: 0 1em 10px 0;   white-space: nowrap'><div>"
+					+ "<i style='font-style: normal'>Position</i>"
+					+ "</div></td>"
+					+ "<td valign='top' style='padding-bottom: 10px; font-weight:bold;'>"
+					+ post.getTitle()
+					+ "</td>"
+					+ "</tr>"
+					+ "<tr>"
+					+ "<td valign='top' style='padding: 0 1em 10px 0;  white-space: nowrap'><div>"
+					+ "<i style='font-style: normal'>Location</i>"
+					+ "</div></td>"
+					+ "<td valign='top' style='padding-bottom: 10px; font-weight:bold;'>"
+					+ post.getLocation()
+					+ "</td>"
+					+ "</tr>"
+					+ "</tbody>"
+					+ "</table>"
+					+ "<p>The above position has been POSTED. Please review revised requirements before submitting further profiles on this position.</p>"
+					+ "<p></p>"
+					+ "<p>Best Regards,</p>"
+					+ "<p></p>"
+					+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
+					+ "<p><strong>Admin Team</strong></p><p></p>"
+					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
+					+ "</div>"
+					+ "</td>"
+					+ "</tr>"
+					+ "</tbody>"
+					+ "</table>";
+			
+			mailService.sendMail(ids, subject, content);
 			obj.put("status", true);
 			return obj.toJSONString();
 		}
@@ -429,36 +635,69 @@ public class AdminPanelController
 	@RequestMapping(value = "/admincompletereg", method = RequestMethod.GET)
 	public String admincompletereg(ModelMap map, HttpServletRequest request ,Principal principal )
 	{
-		String uid=request.getParameter("useridregister");
+		String uid = request.getParameter("useridregister");
 		Registration registration = registrationService.getRegistationByUserId(uid);
-		if(registration!= null)
+		if (registration != null)
 		{
 			registration.setContractNo(request.getParameter("contractNo"));
-			registration.setFeePercent1(Double.parseDouble(request.getParameter("feePercent1")));
-			registration.setFeePercent2(Double.parseDouble(request.getParameter("feePercent2")));
-			registration.setFeePercent3(Double.parseDouble(request.getParameter("feePercent3")));
-			registration.setFeePercent4(Double.parseDouble(request.getParameter("feePercent4")));
-			registration.setFeePercent5(Double.parseDouble(request.getParameter("feePercent5")));
-			registration.setCtcSlabs1Min(Double.parseDouble(request.getParameter("ctcSlabs1Min")));
-			registration.setCtcSlabs1Max(Double.parseDouble(request.getParameter("ctcSlabs1Max")));
-			registration.setCtcSlabs2Min(Double.parseDouble(request.getParameter("ctcSlabs2Min")));
-			registration.setCtcSlabs2Max(Double.parseDouble(request.getParameter("ctcSlabs2Max")));
-			registration.setCtcSlabs3Min(Double.parseDouble(request.getParameter("ctcSlabs3Min")));
-			registration.setCtcSlabs3Max(Double.parseDouble(request.getParameter("ctcSlabs3Max")));
-			registration.setCtcSlabs4Min(Double.parseDouble(request.getParameter("ctcSlabs4Min")));
-			registration.setCtcSlabs4Max(Double.parseDouble(request.getParameter("ctcSlabs4Max")));
-			registration.setCtcSlabs5Min(Double.parseDouble(request.getParameter("ctcSlabs5Min")));
+			if (registration.getConsultName() != null)
+			{
+				registration.setFeeCommission(Double.parseDouble(request.getParameter("feeCommission")));
+			} else
+			{
+				registration.setFeePercent1(Double.parseDouble(request.getParameter("feePercent1")));
+				registration.setFeePercent2(Double.parseDouble(request.getParameter("feePercent2")));
+				registration.setFeePercent3(Double.parseDouble(request.getParameter("feePercent3")));
+				registration.setFeePercent4(Double.parseDouble(request.getParameter("feePercent4")));
+				registration.setFeePercent5(Double.parseDouble(request.getParameter("feePercent5")));
+				registration.setSlab1(request.getParameter("slab1"));
+				// registration.setCtcSlabs1Max(Double.parseDouble(request.getParameter("ctcSlabs1Max")));
+				registration.setSlab2(request.getParameter("slab1"));
+				// registration.setCtcSlabs2Max(Double.parseDouble(request.getParameter("ctcSlabs2Max")));
+				registration.setSlab3(request.getParameter("slab1"));
+				// registration.setCtcSlabs3Max(Double.parseDouble(request.getParameter("ctcSlabs3Max")));
+				registration.setSlab4(request.getParameter("slab1"));
+				// registration.setCtcSlabs4Max(Double.parseDouble(request.getParameter("ctcSlabs4Max")));
+				registration.setSlab5(request.getParameter("slab1"));
+			}
 			registration.setPaymentDays(Integer.parseInt(request.getParameter("paymentDays")));
+			registration.setUsersRequired(Integer.parseInt(request.getParameter("userQuota")));
 			registration.setEmptyField(request.getParameter("emptyField"));
 			registrationService.update(registration);
 			LoginInfo info = loginInfoService.findUserById(uid);
-			if(info != null)
+			String id = GeneralConfig.generatePassword();
+			if (info.getIsactive() != null && (!Boolean.parseBoolean(info.getIsactive())))
 			{
-				info.setIsactive("true");
-				loginInfoService.updateLoginInfo(info);
-			}
-			
 
+				if (info != null)
+				{
+					loginInfoService.updatePassword(info.getUserid(), null, id);
+					info.setIsactive("true");
+					loginInfoService.updateLoginInfo(info);
+				}
+				String companyName = "";
+				if (registration.getConsultName() != null)
+				{
+					companyName = registration.getConsultName();
+				} else
+				{
+					companyName = registration.getOrganizationName();
+				}
+
+				String mailContent = "Dear " + registration.getName() + " (" + companyName + "),<br><br><br>" +
+
+				"Congratulations, you have successfully registered to UniHyr. <br>" +
+
+				"We are delighted to have you on-board our UniHyr family.<br>" +
+
+				"Please find below your user credentials. Please login and change "
+						+ "password for security reasons. For any assistance, please feel free to reach out to us at help@unihyr.com<br><br>"
+						+ "Username - " + registration.getUserid() + "<br>" + "Password - " + id + "<br><br><br>" +
+
+				"Regards,<br>" + "UniHyr Admin Team";
+
+				mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Successful", mailContent);
+			}
 			map.addAttribute("regList", registrationService.getRegistrations(0, 1000));
 			return "adminUserList";
 		}

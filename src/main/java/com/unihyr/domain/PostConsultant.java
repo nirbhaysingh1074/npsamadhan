@@ -29,112 +29,16 @@ public class PostConsultant
 	@ManyToOne  
     @JoinColumn(name = "lid")
 	private Registration consultant;
-
-	@Column(nullable = false)
-	private double turnAround;
-	
-	@Column(nullable = false)
-	private double shortlistRatio;
-
-	@Column(nullable = false)
-	private double closureRatio;
-	
-	@Column(nullable = false)
-	private double industrycoverage;
-	
-	@Column(nullable = false)
-	private double offerdrop;
-	
-	@Column(nullable = false)
-	private double percentileTr;
-	
-	@Column(nullable = false)
-	private double percentileSh;
-	
-	@Column(nullable = false)
-	private double percentileCl;
-	
-	@Column(nullable = false)
-	private double percentileInC;
-	
-	@Column(nullable = false)
-	private double percentileOd;
-	
-	@Column(nullable = false)
-	private double percentile;
 	
 	private Date createDate;
 
 	
-	public double getIndustrycoverage()
-	{
-		return industrycoverage;
-	}
 
-	public void setIndustrycoverage(double industrycoverage)
-	{
-		this.industrycoverage = industrycoverage;
-	}
+	@Column
+	private double percentile;
 
-	public double getOfferdrop()
-	{
-		return offerdrop;
-	}
 
-	public void setOfferdrop(double offerdrop)
-	{
-		this.offerdrop = offerdrop;
-	}
-
-	public double getPercentileInC()
-	{
-		return percentileInC;
-	}
-
-	public void setPercentileInC(double percentileInC)
-	{
-		this.percentileInC = percentileInC;
-	}
-
-	public double getPercentileOd()
-	{
-		return percentileOd;
-	}
-
-	public void setPercentileOd(double percentileOd)
-	{
-		this.percentileOd = percentileOd;
-	}
-
-	public double getPercentileTr()
-	{
-		return percentileTr;
-	}
-
-	public void setPercentileTr(double percentileTr)
-	{
-		this.percentileTr = percentileTr;
-	}
-
-	public double getPercentileSh()
-	{
-		return percentileSh;
-	}
-
-	public void setPercentileSh(double percentileSh)
-	{
-		this.percentileSh = percentileSh;
-	}
-
-	public double getPercentileCl()
-	{
-		return percentileCl;
-	}
-
-	public void setPercentileCl(double percentileCl)
-	{
-		this.percentileCl = percentileCl;
-	}
+	
 
 	public double getPercentile()
 	{
@@ -144,36 +48,6 @@ public class PostConsultant
 	public void setPercentile(double percentile)
 	{
 		this.percentile = percentile;
-	}
-
-	public double getTurnAround()
-	{
-		return turnAround;
-	}
-
-	public void setTurnAround(double turnAround)
-	{
-		this.turnAround = turnAround;
-	}
-
-	public double getShortlistRatio()
-	{
-		return shortlistRatio;
-	}
-
-	public void setShortlistRatio(double shortlistRatio)
-	{
-		this.shortlistRatio = shortlistRatio;
-	}
-
-	public double getClosureRatio()
-	{
-		return closureRatio;
-	}
-
-	public void setClosureRatio(double closureRatio)
-	{
-		this.closureRatio = closureRatio;
 	}
 
 	public long getPcid()

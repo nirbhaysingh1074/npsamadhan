@@ -2,6 +2,7 @@ package com.unihyr.controller;
 
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.constraints.Roles;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Registration;
 import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientUserModel;
 import com.unihyr.service.LoginInfoService;
+import com.unihyr.service.MailService;
 import com.unihyr.service.RegistrationService;
 /**
  * Controls all the request create update delete general users of client
@@ -35,8 +38,8 @@ public class ClientUserController
 	private RegistrationService registrationService;
 	@Autowired
 	private LoginInfoService loginInfoService;
-	
-	
+	@Autowired
+	private MailService mailService;
 	
 	@RequestMapping(value = "/clientnewuser", method = RequestMethod.GET)
 	public String clientNewUser(ModelMap map, Principal principal)
@@ -59,7 +62,7 @@ public class ClientUserController
 			Registration user = registrationService.getRegistationByUserId(userid);
 			if (user != null)
 			{
-				map.addAttribute("uidex", "exist");
+				map.addAttribute("uidex", "user already exist");
 				 valid = false; 
 			}
 		} catch (Exception e)
@@ -82,14 +85,58 @@ public class ClientUserController
 			
 			login.setReg(reg);
 			login.setIsactive("true");
+
+			String id=GeneralConfig.generatePassword();
+
+			loginInfoService.updatePassword(login.getUserid(), null, id);
+			
+			
+			
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_EMP_USER.toString());
 			Set<UserRole> roles = new HashSet<UserRole>();
 			roles.add(urole);
 			login.setRoles(roles);
+			login.setIsactive("true");
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
+			
+			String companyName="";
+			if(parent.getConsultName()!=null){
+				companyName=parent.getConsultName();
+			}else{
+				companyName=parent.getOrganizationName();
+			}
+			
+
+			String mailContent="Dear "+reg.getName()+" ("+companyName+"),<br><br><br>"+
+ 
+"Congratulations, you have successfully registered to UniHyr. <br>"+
+ 
+"We are delighted to have you on-board our UniHyr family.<br>"+
+ 
+"Please find below your user credentials. Please login and change password for security reasons. For any assistance, please feel free to reach out to us at help@unihyr.com<br><br>"+
+ 
+"Username - "+reg.getUserid()+"<br>"+
+"Password - "+id+"<br><br><br>"+
+ 
+"Regards,<br>"+
+"UniHyr Admin Team";
+			
+			
+			
+			
+			mailService.sendMail(reg.getUserid(), "UniHyr - Registeration Successful",
+					mailContent);
+			
+			
+			
+			
+			/*mailService.sendMail(model.getUserid(), "Sign Up info",
+					"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
+							+ id + "<br> After first login please change this password.");
+		*/
 			return "redirect:/clientaccount";
 		}
 	}

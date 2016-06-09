@@ -1,8 +1,5 @@
 jQuery(document).ready(function() {
 	
-	
-
-	
 	$(".length_check").keydown(function (e) {
 		alert($(this).val().length +"data-length : " + $(this).attr('data-length'));
 		var val = $(this).val().length;
@@ -16,7 +13,7 @@ jQuery(document).ready(function() {
 	
 	$(document.body).on('click', '.edit_post' ,function(){
 		var pid = $(this).attr("pid");
-		alertify.confirm("Are you sure to edit this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to edit this post ?", function (e, str) {
 			if (e) {
 				
 				window.location.href('clienteditpost?pid='+pid);
@@ -25,7 +22,7 @@ jQuery(document).ready(function() {
 		
 	});
 	$(document.body).on('change', '#selected_post' ,function(){
-//		alert("Hello to aLL" + $(this).val());
+	//	alert("Hello to aLL" + $(this).val());
 		
 		$('#candidate_profiles').hide();
 		$('#candidate_profiles_def').show();
@@ -49,8 +46,8 @@ jQuery(document).ready(function() {
 		$('#view_jd .view_consultant').attr('href',"javascript:void(0)");
 		$('#view_jd .view_consultant').attr('target',"");
 		$('#view_jd .view_consultant').addClass('btn_disabled');
-
-		$.ajax({
+		location.href="clientpostapplicants?pid="+pid;
+		/*	$.ajax({
 			type : "GET",
 			url : "postConsultantList",
 			data : {'pid':pid},
@@ -70,7 +67,7 @@ jQuery(document).ready(function() {
 			error: function (xhr, ajaxOptions, thrownError) {
 		        alert(xhr.status);
 		      }
-	    }) ;
+	    }) ;*/
 		
 	});
 	
@@ -105,36 +102,44 @@ jQuery(document).ready(function() {
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
 		var data_view = $(this).parent().attr("data-view");
-		alertify.confirm("Are you sure to shortlist ?", function (e, str) {
+		alertify.confirm(" Are you sure you want to shortlist this profile ?", function (e, str) {
 		if (e) {
-			
+			pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "clientacceptreject",
 				data : {'ppid':ppid,'ppstatus':'accept'},
 				contentType : "application/json",
 				success : function(data) {
+					
+					
 					var obj = jQuery.parseJSON(data);
 					if(obj.status == "accepted")
 					{
-						if(data_view !="table")
+						
+					var pn=	$('.active current_page > a').html();
+					loadclientposts(pn);	
+					/*	if(data_view !="table")
 						{
-							selected.html("<p>Status : Shortlisted - In Progress</p><button class='recruit_profile profile_status_button' title='Click to offer'>Offer</button><button class='btn-open profile_status_button' data-type='reject_recruit' title='Click to decline'>Decline</button>");
+							selected.html("<p>Status : Shortlisted - In Progress</p><a class='recruit_profile profile_status_button' title='Click to offer'>Send Offer</a><a class='btn-open' data-type='reject_recruit' title='Click to decline'>Decline</a>");
 						}
 						else
 						{
 							selected.parent().parent().find('td:eq(7)').html("<span>ShortListed</span>");
-							selected.html("<button class='recruit_profile profile_status_button' title='Click to offer'>Offer</button><button class='btn-open profile_status_button' data-type='reject_recruit' title='Click to decline'>Decline</button>");
-						}
-						alertify.success("Profile shortlisted successfilly !");
+							selected.html("<button class='recruit_profile profile_status_button' title='Click to offer'>Send Offer</button><button class='btn-open profile_status_button' data-type='reject_recruit' title='Click to decline'>Decline</button>");
+						}*/
+				//		alertify.success("Profile shortlisted successfilly !");
 					}
 					else
 					{
 						alertify.error("Oops something wrong !");
 					}
+					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
+
+					pleaseDontWait();
 				}
 			}) ;
 		
@@ -171,7 +176,8 @@ jQuery(document).ready(function() {
 //		var selected = $(this).parent();
 //		var ppid = $(this).parent().attr("id");
 		var data_view = selected.attr("data-view");
-		
+
+		pleaseWait();
 		$.ajax({
 			type : "GET",
 			url : "clientacceptreject",
@@ -181,18 +187,19 @@ jQuery(document).ready(function() {
 				var obj = jQuery.parseJSON(data);
 				if(obj.status == "rejected")
 				{
-					
+					var pn=	$('.current_page > a').html();
+					loadclientposts(pn);
+					pleaseDontWait();
+/*					
 					if(data_view !="table")
 					{
 						location.reload();
-//						selected.html("<p>Status : CV Rejected</p>");
 					}
 					else
 					{
 						selected.parent().parent().find('td:eq(7)').html("<span>CV Rejected</span>");
 						selected.html("")
 					}
-					alertify.success("Profile rejected successfilly !");
 					
 				}
 				else if(obj.status == "reject_recruit")
@@ -200,14 +207,12 @@ jQuery(document).ready(function() {
 					if(data_view !="table")
 					{
 						location.reload();
-//						selected.html("<p>Status : Declined</p>");
 					}
 					else
 					{
 						selected.parent().parent().find('td:eq(7)').html("<span>Declined</span>");
 						selected.html("");
 					}
-					alertify.success("Profile Declined Successfilly !");
 					
 				}
 				else if(obj.status == "offer_reject")
@@ -215,23 +220,26 @@ jQuery(document).ready(function() {
 					if(data_view !="table")
 					{
 						location.reload();
-//						selected.html("<p>Status : Offer Declined</p>");
 					}
 					else
 					{
 						selected.parent().parent().find('td:eq(7)').html("<span>Offer Declined</span>");
 						selected.html("");
 					}
-					alertify.success("Profile Declined Successfilly !");
-					
+*/					
 				}
 				else
 				{
-					alertify.error("Oops something wrong !");
+					var pn=	$('.current_page > a').html();
+					loadclientposts(pn);
+					pleaseDontWait();
+//					alertify.error("Oops something wrong !");
 				}
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 				alert(xhr.status);
+
+				pleaseDontWait();
 			}
 		}) ;
 		
@@ -244,9 +252,9 @@ jQuery(document).ready(function() {
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
 		var data_view = $(this).parent().attr("data-view");
-		alertify.confirm("Are you sure to recruit ?", function (e, str) {
+		alertify.confirm("Are you sure you want to send offer to this candidate?", function (e, str) {
 		if (e) {
-			
+pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "clientacceptreject",
@@ -256,25 +264,34 @@ jQuery(document).ready(function() {
 					var obj = jQuery.parseJSON(data);
 					if(obj.status == "recruited")
 					{
-						
+
+						var pn=	$('.current_page > a').html();
+						loadclientposts(pn);
+						/*
 						if(data_view !="table")
 						{
-							selected.html("<p>Status : Offer </p><button class='offer_accept profile_status_button' title='Click to accept offer'>Offer</button><button class='btn-open profile_status_button' data-type='offer_reject' title='Click to reject offer'>Reject</button>");
+							selected.html("<p>Status : Offer </p><button class='offer_accept profile_status_button' title='Click to accept offer'>Send Offer</button><button class='btn-open profile_status_button' data-type='offer_reject' title='Click to reject offer'>Reject</button>");
 						}
 						else
 						{
 							selected.parent().parent().find('td:eq(7)').html("<span>Offer</span>");
 							selected.html("<button class='btn-offer-open profile_status_button' data-type='offer_accept' title='Click to accept offer' onclick='$('#postIdForAccept').val('"+ppid+"')' >Offer Accept</button><button class='btn-open profile_status_button' data-type='offer_reject' title='Click to reject offer'>Reject</button>");
 						}
-						alertify.success("Profile send offered successfilly !");
+					*///	alertify.success("Profile send offered successfilly !");
 					}
 					else
 					{
-						alertify.error("Oops something wrong !");
+						var pn=	$('.current_page > a').html();
+						loadclientposts(pn);
+						
+						//alertify.error("Oops something wrong !");
 					}
+
+				pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
+					pleaseDontWait();
 				}
 			}) ;
 		
@@ -292,9 +309,9 @@ jQuery(document).ready(function() {
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
 		var data_view = $(this).parent().attr("data-view");
-		alertify.confirm("Are you sure to reject ?", function (e, str) {
+		alertify.confirm("Are you sure you want to reject this profile ?", function (e, str) {
 		if (e) {
-			
+			pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "clientacceptreject",
@@ -302,41 +319,10 @@ jQuery(document).ready(function() {
 				contentType : "application/json",
 				success : function(data) {
 					var obj = jQuery.parseJSON(data);
-					if(obj.status == "reject_recruit")
-					{
-						if(data_view !="table")
-						{
-						}
-						else
-						{
-							selected.parent().parent().find('td:eq(7)').html("<span>Declined</span>");
-							selected.html("")
-						}
-//						selected.html("<h3>Declined</h3>")
-						alertify.success("Profile Declined Successfilly !");
-						
-						/*$.ajax({
-							type : "GET",
-							url : "clientMailRejectRecruit",
-							data : {'ppid':ppid},
-							contentType : "application/json",
-							success : function(data) {
-								var obj = jQuery.parseJSON(data);
-								if(!obj.status)
-								{
-									alertify.error("Oops, mail not send !");
-								}
-								
-							},
-							error: function (xhr, ajaxOptions, thrownError) {
-								alertify.error("Oops, mail not send !");
-							}
-						}) ;*/
-					}
-					else
-					{
-						alertify.error("Oops something wrong !");
-					}
+
+					var pn=	$('.current_page > a').html();
+					loadclientposts(pn);
+					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
@@ -408,6 +394,10 @@ jQuery(document).ready(function() {
 			                $('#datepicker').val('');
 			            }
 				
+			            if(flag&&billableCTC<=totalCTC){
+			            	 alert("Billable CTC should be less than or equal to Total CTC.");
+			            }
+			            
 				/*if(joiningDate=="")
 				{
 					flag=false;
@@ -424,8 +414,7 @@ jQuery(document).ready(function() {
 
 			$('#offerModal').hide();
 		var data_view = $(this).parent().attr("data-view");
-		alertify.confirm("Are you sure to send offer ?", function (e, str) {
-		if (e) {
+		
 			
 			$.ajax({
 				type : "GET",
@@ -446,7 +435,7 @@ jQuery(document).ready(function() {
 							selected.parent().parent().find('td:eq(7)').html("<span>Offered</span>");
 							selected.html("")
 						}
-						alertify.success("Profile Offered Successfilly !");
+						//alertify.success("Profile Offered Successfilly !");
 						
 						/*$.ajax({
 							type : "GET",
@@ -476,8 +465,7 @@ jQuery(document).ready(function() {
 				}
 			}) ;
 		
-		}
-		});
+		
 		}
 	});
 	$(document.body).on('click', '.profile_status > .offer_reject' ,function(){
@@ -487,7 +475,7 @@ jQuery(document).ready(function() {
 		var data_view = $(this).parent().attr("data-view");
 		alertify.confirm("Are you sure to reject offer ?", function (e, str) {
 		if (e) {
-			
+			pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "clientacceptreject",
@@ -495,27 +483,14 @@ jQuery(document).ready(function() {
 				contentType : "application/json",
 				success : function(data) {
 					var obj = jQuery.parseJSON(data);
-					if(obj.status == "offer_reject")
-					{
-						if(data_view != "table")
-						{
-							selected.parent().html("<div class='block btn_row no-margin' style='text-align: left;'><a class='btn check_btn'>Offer Declined</a></div>")
-						}
-						else
-						{
-							selected.html("<h3>Offer Declined</h3>")
-						}
-						alertify.success("Profile Offer Decline Successfilly !");
-						
-						
-					}
-					else
-					{
-						alertify.error("Oops something wrong !");
-					}
+
+					var pn=	$('.current_page > a').html();
+					loadclientposts(pn);
+					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.status);
+					
 				}
 			}) ;
 		
@@ -607,9 +582,10 @@ jQuery(document).ready(function() {
 			 return false;
 		 }
 
-		 	alertify.confirm("Are you sure to active this post ?", function (e, str) {
+		 	alertify.confirm("Are you sure you want to activate this post ?", function (e, str) {
 				if (e) 
 				{
+					pleaseWait();
 					$.ajax({
 						type : "GET",
 						url : "clientBulkActive",
@@ -633,7 +609,7 @@ jQuery(document).ready(function() {
 										{
 											alertify.error("Oops, mail not send !");
 										}
-										
+								pleaseDontWait();		
 									},
 									error: function (xhr, ajaxOptions, thrownError) {
 										alertify.error("Oops, mail not send !");
@@ -663,9 +639,10 @@ jQuery(document).ready(function() {
 			 return false;
 		 }
 		 
-		alertify.confirm("Are you sure to inactive this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to inactivate this post ?", function (e, str) {
 			if (e) 
 			{
+				pleaseWait();
 				$.ajax({
 					type : "GET",
 					url : "clientBulkInactive",
@@ -689,9 +666,10 @@ jQuery(document).ready(function() {
 									{
 										alertify.error("Oops, mail not send !");
 									}
-									
+									pleaseDontWait();
 								},
 								error: function (xhr, ajaxOptions, thrownError) {
+									pleaseDontWait();
 									alertify.error("Oops, mail not send !");
 								}
 							}) ;
@@ -721,7 +699,7 @@ jQuery(document).ready(function() {
 			 return false;
 		 }
 		 
-		alertify.confirm("Are you sure to delete this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to delete this post ?", function (e, str) {
 			if (e) 
 			{
 				$.ajax({
@@ -752,9 +730,10 @@ jQuery(document).ready(function() {
 		var val = [];
 		var pid = $(this).attr("id");
 		val[0]=pid;
-		alertify.confirm("Are you sure to inacivate this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to inactivate this post ?", function (e, str) {
 			if (e) 
 			{
+				pleaseWait();
 				$.ajax({
 					type : "GET",
 					url : "clientBulkInactive",
@@ -776,7 +755,7 @@ jQuery(document).ready(function() {
 									{
 										alertify.error("Oops, mail not send !");
 									}
-									
+									pleaseDontWait();
 								},
 								error: function (xhr, ajaxOptions, thrownError) {
 									alertify.error("Oops, mail not send !");
@@ -800,7 +779,7 @@ jQuery(document).ready(function() {
 		var val = [];
 		var pid = $(this).attr("id");
 		val[0]=pid;
-		alertify.confirm("Are you sure to acivate this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to activate this post ?", function (e, str) {
 			if (e) 
 			{
 				$.ajax({
@@ -847,9 +826,9 @@ jQuery(document).ready(function() {
 		var val = [];
 		var pid = $(this).attr("id");
 		val[0]=pid;
-		alertify.confirm("Are you sure to close this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to close this post ?", function (e, str) {
 			if (e) 
-			{
+			{pleaseWait();
 				$.ajax({
 					type : "GET",
 					url : "clientBulkClose",
@@ -872,10 +851,11 @@ jQuery(document).ready(function() {
 									{
 										alertify.error("Oops, mail not send !");
 									}
-									
+							pleaseDontWait();		
 								},
 								error: function (xhr, ajaxOptions, thrownError) {
 									alertify.error("Oops, mail not send !");
+								pleaseDontWait();
 								}
 							}) ;
 							
@@ -895,7 +875,7 @@ jQuery(document).ready(function() {
 		var val = [];
 		var pid = $(this).attr("id");
 		val[0]=pid;
-		alertify.confirm("Are you sure to delete this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to delete this post ?", function (e, str) {
 			if (e) 
 			{
 				$.ajax({
@@ -939,7 +919,7 @@ jQuery(document).ready(function() {
 			 return false;
 		 }
 		 
-		alertify.confirm("Are you sure to close this post ?", function (e, str) {
+		alertify.confirm("Are you sure you want to close this post ?", function (e, str) {
 			if (e) 
 			{
 				$.ajax({
@@ -1064,5 +1044,4 @@ function getAmountInWords(num,idd){
 	
 	
 }
-
 

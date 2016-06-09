@@ -56,10 +56,23 @@ public class ConsultRegModel
 	
 	
 	private String officeAddress;
-	
+
 	private String firmType;
-	
+
+	private String name;
 	private int usersRequired;
+
+
+	public String getName()
+	{
+		return name;
+	}
+
+
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
 
 	public String getUserid()

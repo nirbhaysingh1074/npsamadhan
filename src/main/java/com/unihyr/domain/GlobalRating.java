@@ -22,11 +22,6 @@ public class GlobalRating
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long sn;
 
-	@ManyToOne(cascade =
-	{ CascadeType.ALL })
-	@JoinColumn(name = "ratingParamId", referencedColumnName = "id")
-	private RatingParameter ratingParameter;
-
 	@Column(nullable = false)
 	private int industryId;
 	
@@ -36,15 +31,61 @@ public class GlobalRating
 	private Registration registration;
 	
 	@Column(nullable = false)
-	private double ratingParamValue;
-
-	@Column(nullable = false)
 	private Date createDate;
 
 	private Date modifyDate;
 
 	private Date deleteDate;
 	
+	@Column(nullable = false)
+	private double turnAround;
+	
+	@Column(nullable = false)
+	private double shortlistRatio;
+
+
+	
+	@Column(nullable = false)
+	private double industrycoverage;
+	
+	
+	
+	
+	
+	public double getTurnAround()
+	{
+		return turnAround;
+	}
+
+	public void setTurnAround(double turnAround)
+	{
+		this.turnAround = turnAround;
+	}
+
+	public double getShortlistRatio()
+	{
+		return shortlistRatio;
+	}
+
+	public void setShortlistRatio(double shortlistRatio)
+	{
+		this.shortlistRatio = shortlistRatio;
+	}
+
+	
+
+	public double getIndustrycoverage()
+	{
+		return industrycoverage;
+	}
+
+	public void setIndustrycoverage(double industrycoverage)
+	{
+		this.industrycoverage = industrycoverage;
+	}
+
+
+
 	
 
 	public int getIndustryId()
@@ -87,16 +128,7 @@ public class GlobalRating
 		this.deleteDate = deleteDate;
 	}
 
-	public double getRatingParamValue()
-	{
-		return ratingParamValue;
-	}
-
-	public void setRatingParamValue(double ratingParamValue)
-	{
-		this.ratingParamValue = ratingParamValue;
-	}
-
+	
 	public long getSn()
 	{
 		return sn;
@@ -107,15 +139,7 @@ public class GlobalRating
 		this.sn = sn;
 	}
 
-	public RatingParameter getRatingParameter()
-	{
-		return ratingParameter;
-	}
-
-	public void setRatingParameter(RatingParameter ratingParameter)
-	{
-		this.ratingParameter = ratingParameter;
-	}
+	
 
 	public Registration getRegistration()
 	{

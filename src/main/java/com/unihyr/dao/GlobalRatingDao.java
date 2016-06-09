@@ -18,4 +18,6 @@ public interface GlobalRatingDao {
 
 	public List<GlobalRating> getGlobalRatingListByIndustryAndConsultantRange(int industryId, String consultantId,
 			int first,int max);
+
+	List<String> getGlobalRatingListByIndustry(int industryId);
 }

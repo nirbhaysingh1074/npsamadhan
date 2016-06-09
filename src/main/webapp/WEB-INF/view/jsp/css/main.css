@@ -2,7 +2,7 @@
 :focus{outline:none;}
 html{height:100%; -webkit-text-size-adjust:none;}
 body{/*min-height:100%; */font-size:12px;  color:#000; /*font-weight:bold;*/ background:gray;font-family:'Roboto';}
-a{text-decoration:none; outline:none; color:#0092CF; -webkit-transition:all 0.3s ease 0s; -moz-transition:all 0.3s ease 0s; -o-transition:all 0.3s ease 0s; transition:all 0.3s ease 0s;}
+a{text-decoration:none; outline:none; color:darkblue; -webkit-transition:all 0.3s ease 0s; -moz-transition:all 0.3s ease 0s; -o-transition:all 0.3s ease 0s; transition:all 0.3s ease 0s;}
 img{padding:0; margin:0; max-width:100%; float:none; border:none;}
 h1, h2, h3, h4, h5, h6, p{font-weight:normal; margin:0; padding:0; display:block; overflow:hidden; clear:both;}
 ul, ul li, ol, ol li{padding:0; margin:0; list-style:none;}
@@ -18,7 +18,7 @@ p{line-height:20px;  color:#000; }
 .text-center{text-align: center;}
 
 .status img{cursor: pointer;}
-.profile_status a{padding: 0 5px;}
+.profile_status a{padding: 0 0px;}
 .profile_status img{cursor: pointer;}
 ::selection{color:white; background:#f8b910;}
 ::-moz-selection{color:white; background:#f8b910;}
@@ -45,6 +45,19 @@ h2{font-size:17px; color:#000; }
 /*BUTTON CSS*/
 .btn{display:inline-block; padding:8px 18px; text-transform:none; background:#f6f6f6; text-align:center; color:#000; font-size:12px; border-radius:3px;  line-height:normal;}
 .profile_status_button{    display: inline-block;
+    padding: 2px 2px;
+    text-transform: none;
+    background: #f8b910;
+    text-align: center;
+    color: #000;
+    font-size: 12px;
+    border-radius: 4px;
+    
+    line-height: normal;
+    cursor: pointer;
+    width: 100px;}
+    
+    .profile_status_buttonGen{    display: inline-block;
     padding: 2px 2px;
     text-transform: none;
     background: #f8b910;
@@ -114,7 +127,7 @@ footer{float:left; width:100%; background:#1f1e1e; padding:20px 0; text-align:ce
 .ft_menu li a{display:inline-block; color:#bfbbbb; font-size:12px;  font-weight:100; margin:0 12px;}
 
 
-.positions_info{float:left; width:100%; padding: 10px 20px 30px; min-height: 500px;}
+.positions_info{float:left; width:100%; padding: 10px 16px 30px; min-height: 500px;}
 .filter{float:left; width:100%; padding:8px 0; background:#4e4e4e; border-radius:4px 4px 0 0;}
 .filter .pagi_summary span{float:left; padding-top:5px; color:#fff; font-size:11px;  font-weight:bold;}
 .filter .set_col{float:left; vertical-align:middle; padding-top:5px;}
@@ -178,7 +191,7 @@ footer{float:left; width:100%; background:#1f1e1e; padding:20px 0; text-align:ce
 .tab_nav ul li{float:left;}
 .tab_nav ul li a{float:left; padding:10px 18px; margin-bottom:-3px; border:1px solid transparent; border-radius:4px 4px 0 0;}
 .tab_nav ul li:hover a, .tab_nav ul li.active a{/* background:#f8b910; */ /* border:1px solid #585757; */ border-bottom:2px solid #f8b910;}
-.md_bar .tab_content{float:left; width:100%; padding:15px; height:740px; overflow:auto;}
+.md_bar .tab_content{float:left; width:100%; padding:15px; height:849px; overflow:auto;}
 .resume_col{float:left; width:100%;}
 .resume_col h2{text-align:center; padding-bottom:15px;}
 .resume_col p{padding-bottom:15px; font-weight:normal;}
@@ -218,9 +231,9 @@ footer{float:left; width:100%; background:#1f1e1e; padding:20px 0; text-align:ce
 /*=======================End=======04=01=2016=================================*/
 
 /*=============================06=01=2016==============================*/
-.new_post_info{float:left; width:100%; position:relative; margin-bottom:40px; padding: 0 15px;}
+.new_post_info{float:left; width:100%; position:relative; margin-bottom:40px; padding: 0 0px;}
 .new_post_info:after{position:absolute; content:''; top:0; left:0; background:#ececec; height:100%; width:20%; z-index:-1;}
-.left_side{float:left; width:19.60%; background:#ececec; position:relative; height:640px; overflow:auto;}
+.left_side{float:left; width:19.60%; background:#f6f7f6; position:relative; height:640px; overflow:auto;}
 .left_menu{float:left; width:100%; padding:10px 0 10px;}
 .left_menu{float:left; width:100%;}
 .left_menu ul{float:left; width:100%;}
@@ -265,7 +278,36 @@ footer{float:left; width:100%; background:#1f1e1e; padding:20px 0; text-align:ce
 /* .progress_btn{background:url(../images/clock-icon.png) no-repeat 10px 7px #e5e5e5;} */
 
 .btn_row{text-align:center; margin-top:20px;}
-
+.firstTimeLoginPopup{
+	    margin: 0px auto;
+    top: 25%;
+    left: 17%;
+    position: fixed;
+    height: 170px;
+    width: 914px;
+    background: #fff;
+    z-index: 10;
+}
+.bodyCover{
+	position: fixed;
+	top: 0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	z-index: 9;
+	opacity:0.8;
+	background: #ececec;
+}
+.bodyCoverWait{
+	position: fixed;
+	top: 0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	z-index: 9;
+	opacity:0.8;
+	background: #ececec;
+}
 
 /*RESPONSIVE CSS*/
 @media (min-width: 1000px) and (max-width: 1300px){.container{margin-left:15px; margin-right:15px; width:auto;}}
@@ -406,12 +448,13 @@ option{padding: 0 5px;}
 }
 
 .notification .noti-icon{
-	background-color: gray;
+	background-color: #000;
 	width: 25px;
 	float: right;
 	border-radius: 50%;
 	height: 25px;
 	cursor: pointer;
+	margin-left: 10px;
 }
 .address_info{
 	float:left;
@@ -464,7 +507,7 @@ option{padding: 0 5px;}
     color: #636161;
     border-bottom: #e0e0e0;
     padding: 5px 10px;
-    font-size: 14px;
+    font-size: 12px;
     border-bottom: 2px solid #e0e0e0;
     cursor: pointer;
     background-color: #fff;
@@ -515,6 +558,44 @@ option{padding: 0 5px;}
  	right: 11px;
     top: 72px;
 } 
+
+.manageposthead {
+	border: 2px solid gray;
+	border-radius: 5px;
+	margin-bottom: 10px;}
+
+.appinfotable{
+	margin-bottom: 10px !important;
+}
+.appinfotable tr td{
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+.appinfotable tr td p{
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.notificationBar{
+	
+}
+.notificationCount {
+	background: #e04c4c;
+	color: #fff;
+	padding-left: 3px;
+	padding-right: 3px;
+	position: absolute;
+	top: 3px;
+	font-size: 9px;
+	font-weight: bold;}
+.messageIcon {
+	    margin-top: 2px;
+    margin-left: 0.5px;
+}
+.messageCount{
+	
+}
+
 
 Pseudo ::after element
 .arrow_box_1:after {

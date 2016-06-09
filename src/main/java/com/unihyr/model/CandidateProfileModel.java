@@ -36,8 +36,7 @@ public class CandidateProfileModel {
 
 	private String willingToRelocate;
 
-	@NotBlank(message="{NotBlank.consForm.noticePeriod}")
-	private String noticePeriod;
+	private int noticePeriod;
 
 	@NotBlank(message="{NotBlank.consForm.contact}")
 	private String contact;
@@ -45,8 +44,8 @@ public class CandidateProfileModel {
 	@NotBlank(message="{NotBlank.consForm.currentOrganization}")
 	private String currentOrganization;
 
-	private String currentCTC;
-	private String expectedCTC;
+	private Long currentCTC;
+	private Long expectedCTC;
 	@NotBlank(message="{NotBlank.consForm.currentLocation}")
 	private String currentLocation;
 
@@ -129,21 +128,7 @@ public class CandidateProfileModel {
 		this.willingToRelocate = willingToRelocate;
 	}
 
-	public String getExpectedCTC() {
-		return expectedCTC;
-	}
-
-	public void setExpectedCTC(String expectedCTC) {
-		this.expectedCTC = expectedCTC;
-	}
-
-	public String getNoticePeriod() {
-		return noticePeriod;
-	}
-
-	public void setNoticePeriod(String noticePeriod) {
-		this.noticePeriod = noticePeriod;
-	}
+	
 
 	public String getContact() {
 		return contact;
@@ -161,15 +146,39 @@ public class CandidateProfileModel {
 		this.currentOrganization = currentOrganization;
 	}
 
-	public String getCurrentCTC() {
+	
+
+	
+	public int getNoticePeriod()
+	{
+		return noticePeriod;
+	}
+
+	public void setNoticePeriod(int noticePeriod)
+	{
+		this.noticePeriod = noticePeriod;
+	}
+
+	public Long getCurrentCTC()
+	{
 		return currentCTC;
 	}
 
-	public void setCurrentCTC(String currentCTC) {
+	public void setCurrentCTC(Long currentCTC)
+	{
 		this.currentCTC = currentCTC;
 	}
 
-	
+	public Long getExpectedCTC()
+	{
+		return expectedCTC;
+	}
+
+	public void setExpectedCTC(Long expectedCTC)
+	{
+		this.expectedCTC = expectedCTC;
+	}
+
 	public String getJdID() {
 		return jdID;
 	}

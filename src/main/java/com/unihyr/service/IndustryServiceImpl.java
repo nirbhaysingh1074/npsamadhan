@@ -1,5 +1,6 @@
 package com.unihyr.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,12 @@ public class IndustryServiceImpl implements IndustryService
 	public List<Industry> getIndustryList(int first, int max) 
 	{
 		return this.industryDao.getIndustryList(first, max);
+	}
+
+	@Override
+	public List<Industry> getIndustryByName(String industry)
+	{
+		return  this.industryDao.getIndustryByName(industry);
 	}
 	
 }

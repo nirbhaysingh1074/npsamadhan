@@ -104,4 +104,11 @@ public class RegistrationServiceImpl implements RegistrationService
 	{
 		return this.registrationDao.getClientAndConsultantAdminList(first, max);
 	}
+
+	@Override
+	public Registration getRegistrationsByName(String userName)
+	{
+		// TODO Auto-generated method stub
+		return this.registrationDao.getRegistrationsByName(userName);
+	}
 }

@@ -35,4 +35,6 @@ public interface RegistrationService
 	public List<Registration> getConsultantsByClientIndustry(String clientId);
 	
 	public List<Registration> getClientAndConsultantAdminList(int first, int max);
+	
+	Registration getRegistrationsByName(String userName);
 }

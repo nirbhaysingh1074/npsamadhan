@@ -39,4 +39,11 @@ public class LocationServiceImpl implements LocationService
 	{
 		return this.locationDao.getLocationList(first, max);
 	}
+
+	@Override
+	public List<Location> getLocationByName(String location)
+	{
+		// TODO Auto-generated method stub
+		return this.locationDao.getLocationByName(location);
+	}
 }

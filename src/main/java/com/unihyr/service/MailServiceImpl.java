@@ -11,6 +11,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unihyr.constraints.GeneralConfig;
+
 @Service
 @Transactional
 public class MailServiceImpl implements MailService
@@ -25,6 +27,7 @@ public class MailServiceImpl implements MailService
 			MimeMessage mimeMessage = mailSender.createMimeMessage();
 		    MimeMessageHelper message=new MimeMessageHelper(mimeMessage, true);
 		    message.setBcc(InternetAddress.parse(to));
+		    message.setCc(InternetAddress.parse(GeneralConfig.admin_email));
 //		    message.setRecipients(Message.RecipientType.BCC,InternetAddress.parse(to));
 		    message.setSubject(subject);
 		    mimeMessage.setContent(content, "text/html");

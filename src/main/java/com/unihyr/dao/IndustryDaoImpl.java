@@ -1,5 +1,6 @@
 package com.unihyr.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.unihyr.domain.Industry;
+import com.unihyr.domain.Location;
 
 @Repository
 public class IndustryDaoImpl implements IndustryDao
@@ -55,6 +57,14 @@ public class IndustryDaoImpl implements IndustryDao
 	public List<Industry> getIndustryList(int first, int max)
 	{
 		return this.sessionFactory.getCurrentSession().createCriteria(Industry.class).add(Restrictions.isNull("deleteDate")).addOrder(Order.asc("industry")).setFirstResult(first).setMaxResults(max).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public  List<Industry>  getIndustryByName(String industry)
+	{
+		return this.sessionFactory.getCurrentSession().createCriteria(Industry.class)
+				.add(Restrictions.eq("industry", industry).ignoreCase()).list();
 	}
 
 }

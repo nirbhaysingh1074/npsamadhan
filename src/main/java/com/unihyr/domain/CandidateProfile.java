@@ -41,8 +41,8 @@ public class CandidateProfile
 	@Column(nullable = false)
 	private String willingToRelocate;
 
-	@Column(nullable = false)
-	private String noticePeriod;
+	@Column
+	private int noticePeriod;
 
 	@Column(nullable = false)
 	private String contact;
@@ -51,9 +51,9 @@ public class CandidateProfile
 	private String currentOrganization;
 
 	@Column
-	private String currentCTC;
+	private Long  currentCTC;
 	@Column
-	private String expectedCTC;
+	private Long expectedCTC;
 
 	@Column
 	private Date date;
@@ -97,12 +97,34 @@ public class CandidateProfile
 	@JoinColumn(name = "consultantId", referencedColumnName = "userid")
 	private Registration registration;
 
-	public String getExpectedCTC()
+
+
+	public int getNoticePeriod()
+	{
+		return noticePeriod;
+	}
+
+	public void setNoticePeriod(int noticePeriod)
+	{
+		this.noticePeriod = noticePeriod;
+	}
+
+	public Long getCurrentCTC()
+	{
+		return currentCTC;
+	}
+
+	public void setCurrentCTC(Long currentCTC)
+	{
+		this.currentCTC = currentCTC;
+	}
+
+	public Long getExpectedCTC()
 	{
 		return expectedCTC;
 	}
 
-	public void setExpectedCTC(String expectedCTC)
+	public void setExpectedCTC(Long expectedCTC)
 	{
 		this.expectedCTC = expectedCTC;
 	}
@@ -158,16 +180,7 @@ public class CandidateProfile
 		this.currentRole = currentRole;
 	}
 
-	public String getNoticePeriod()
-	{
-		return noticePeriod;
-	}
-
-	public void setNoticePeriod(String noticePeriod)
-	{
-		this.noticePeriod = noticePeriod;
-	}
-
+	
 	public String getContact()
 	{
 		return contact;
@@ -188,15 +201,6 @@ public class CandidateProfile
 		this.currentOrganization = currentOrganization;
 	}
 
-	public String getCurrentCTC()
-	{
-		return currentCTC;
-	}
-
-	public void setCurrentCTC(String currentCTC)
-	{
-		this.currentCTC = currentCTC;
-	}
 
 	public Date getDate()
 	{

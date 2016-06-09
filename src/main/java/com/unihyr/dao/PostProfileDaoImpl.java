@@ -117,9 +117,8 @@ public class PostProfileDaoImpl implements PostProfileDao
 		return count;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PostProfile> getPostProfileByPost(long postId, int first, int max,String sortParam,String filterBy)
+	public List<PostProfile> getPostProfileByPost(long postId, int first, int max,String sortParam,String filterBy,String excludeType,String sortOrder)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
 				.createAlias("post", "postAlias")
@@ -134,15 +133,25 @@ public class PostProfileDaoImpl implements PostProfileDao
 		}
 		else
 		criteria.add(Restrictions.isNotNull(filterBy));
-		if(sortParam.indexOf("submitted")>=0)
-		criteria.addOrder(Order.desc(sortParam));
+		
+		if(!excludeType.equals("rejected")){
+			Criterion cn5 = Restrictions.isNull("rejected");
+			Criterion cn6 = Restrictions.isNull("declinedDate");
+			Criterion cn7 = Restrictions.isNull("joinDropDate");
+			Criterion cn8 = Restrictions.isNull("declinedDate");
+			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+		}
+		criteria.createAlias("profile", "profileAlias");
+		if(sortOrder.indexOf("desc")>=0)
+		criteria.addOrder(Order.desc("profileAlias."+sortParam));
 		else
-		criteria.addOrder(Order.asc(sortParam));
+		criteria.addOrder(Order.asc("profileAlias."+sortParam));
+		
 		return criteria.list();
 	}
 	
 	@Override
-	public long countPostProfileByPost(long postId,String filterBy)
+	public long countPostProfileByPost(long postId,String filterBy,String excludeType)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
 				.createAlias("post", "postAlias")
@@ -155,6 +164,15 @@ public class PostProfileDaoImpl implements PostProfileDao
 		}
 		else
 		criteria.add(Restrictions.isNotNull(filterBy));
+		
+
+		if(!excludeType.equals("rejected")){
+			Criterion cn5 = Restrictions.isNull("rejected");
+			Criterion cn6 = Restrictions.isNull("declinedDate");
+			Criterion cn7 = Restrictions.isNull("joinDropDate");
+			Criterion cn8 = Restrictions.isNull("declinedDate");
+			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+		}
 		long count=	(Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
 		return count;
 	}
@@ -210,11 +228,9 @@ public class PostProfileDaoImpl implements PostProfileDao
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max,String sortParam,String filterBy)
+	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max,String sortParam,String filterBy,String excludeType)
 	{
-		List<PostProfile> list = null;
 				
 		Criteria criteria=		this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
 				.createAlias("post", "postAlias")
@@ -230,14 +246,14 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.isNotNull("postAlias.published"));
 				
 		criteria.createAlias("profile.registration", "consAlias");
-//		criteria.add(Restrictions.eq("consAlias.userid", consultantId));
+		//criteria.add(Restrictions.eq("consAlias.userid", consultantId));
 				
 		Criterion cn3 = Restrictions.eq("consAlias.userid", consultantId);
 		Criterion cn4 = Restrictions.eq("consAlias.admin.userid", consultantId);
 		criteria.add(Restrictions.or(cn3, cn4));
 		        
 				
-		criteria.add(Restrictions.eq("post.postId", postId))
+				criteria.add(Restrictions.eq("post.postId", postId))
 				.setFetchMode("messages", FetchMode.JOIN)
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
@@ -248,6 +264,15 @@ public class PostProfileDaoImpl implements PostProfileDao
 				}
 				else
 				criteria.add(Restrictions.isNotNull(filterBy));
+			
+				if(!excludeType.equals("rejected")){
+				Criterion cn5 = Restrictions.isNull("rejected");
+				Criterion cn6 = Restrictions.isNull("declinedDate");
+				Criterion cn7 = Restrictions.isNull("joinDropDate");
+				Criterion cn8 = Restrictions.isNull("declinedDate");
+				criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+				}
+				
 		 		if(sortParam.indexOf("submitted")>=0)
 	      		criteria.addOrder(Order.desc(sortParam));
 	      		else
@@ -492,6 +517,17 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.eq("postAlias.postId", postId))
 				.add(Restrictions.isNull("postAlias.deleteDate"))	
 				.add(Restrictions.isNotNull("accepted"))
+				.setProjection(Projections.rowCount()).uniqueResult();
+		return count;
+	}
+	@Override
+	public long countShortlistedProfileListPostId(long postId,String status)
+	{
+		long count = (Long) this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("post", "postAlias")   
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.add(Restrictions.isNull("postAlias.deleteDate"))	
+				.add(Restrictions.isNotNull(status))
 				.setProjection(Projections.rowCount()).uniqueResult();
 		return count;
 	}
@@ -773,5 +809,18 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.isNotNull("recruited"))
 				.setProjection(Projections.rowCount()).uniqueResult();
 		return count;
+	}
+
+	@Override
+	public List<PostProfile> getPostProfileOfferedByPost(long postId)
+	{
+		List<PostProfile> list = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("post", "postAlias")
+				.add(Restrictions.isNull("postAlias.deleteDate"))
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.add(Restrictions.isNotNull("offerDate"))
+				.addOrder(Order.desc("submitted"))
+				.list();
+		return list;
 	}
 }

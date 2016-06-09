@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 
 @Entity
@@ -38,9 +41,12 @@ public class BillingDetails
 	
 	@Column(nullable=false)
 	private String consultantName;
-	
+
 	@Column
 	private String candidatePerson;
+
+	@Column
+	private String invoicePath;
 	
 	@Column(nullable=false)
 	private String location;
@@ -53,9 +59,11 @@ public class BillingDetails
 
 	@Column
 	private Date joiningDate;
-	
+
 	@Column
 	private Date expectedJoiningDate;
+	@Column
+	private Boolean verificationStatus;
 
 	@Column(nullable=false)
 	private double totalCTC;
@@ -100,9 +108,27 @@ public class BillingDetails
 
 	@Column
 	private Date paidDate;
+	
+	public String getInvoicePath()
+	{
+		return invoicePath;
+	}
 
-	
-	
+	public void setInvoicePath(String invoicePath)
+	{
+		this.invoicePath = invoicePath;
+	}
+
+	public Boolean getVerificationStatus()
+	{
+		return verificationStatus;
+	}
+
+	public void setVerificationStatus(Boolean verificationStatus)
+	{
+		this.verificationStatus = verificationStatus;
+	}
+
 	public Date getExpectedJoiningDate()
 	{
 		return expectedJoiningDate;

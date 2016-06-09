@@ -6,11 +6,11 @@
 	
 	<title>UniHyr</title>
 	
+	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 	<link rel="stylesheet" href="css/media.css" media="screen" />
     <link rel="stylesheet" href="css/style.css" media="screen" />
 	<link rel="stylesheet" href="css/font-awesome.css" media="screen"   />
 	<link href="css/main.css" type="text/css" media="all" rel="stylesheet" />
-	<link href="css/fonts.css" type="text/css" media="all" rel="stylesheet" />
 	<style type="text/css">
 		input[type="text"], input[type="password"], input[type="tel"], input[type="search"], input[type="email"], textarea, select 
 		{
@@ -18,13 +18,13 @@
 		}
 	</style>
 </head>
-<body style="background-image: url('images/bg-image.png')">
+<body style="background: #EDEDED;"> <!-- style="background-image: url('images/bg-image.png')" --> 
 	<section>
 		<div class="container" style="background: inherit;">
 			<div class="login-form">
 				<div class="login-header">
 					<a href="home"><img alt="" src="images/logo.png"></a>
-					<a href="home"><span class="close" title="Home Page">X</span></a>
+					<a href="home"><span class="close" title="Home Page"><img style="    height: 40px;" src="images/close.png" /></span></a>
 				</div>
 				<div class="login-wrap">
 						<%
@@ -66,7 +66,7 @@
 							</div>
 							<div class="form_submt alin_cnt bottom-padding10"
 								class='clearfix'>
-								<button type="submit" class=" btn-login btn btn-block yelo_btn">Login</button>
+								<button type="submit" class=" btn-login btn btn-block yelo_btn" style="margin-left: 0px;">Login</button>
 							</div>
 							Create an account for <a href="clientregistration">Employer</a> or <a href="consultantregistration">Consultant</a>
 						</form>
