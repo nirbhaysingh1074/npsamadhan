@@ -625,7 +625,9 @@ Analytics driven rating system of consultants
 			<div class="container">
 				<div class="col_1">
 					<h3></h3>
-					
+				<a style="margin-left: 22px;" href="" >	<img style="height: 25px;" src="images/fb.png" title="facebook" /></a>
+				<a href="" >	<img style="height: 25px;"  src="images/twitter.png" title="twitter" /></a>
+				<a href="" >	<img style="height: 25px;"  src="images/linkedin.png" title="linkedin"/></a>
 
 				</div>
 <!--

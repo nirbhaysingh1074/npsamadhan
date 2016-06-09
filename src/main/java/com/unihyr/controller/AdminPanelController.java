@@ -556,18 +556,17 @@ public class AdminPanelController
 			String ids = "";
 			String position="<a href='consviewjd?pid="+post.getPostId()+"' >"+ post.getTitle()+"</a>";
 			
-			
 			for(Registration cons : consList)
 			{
 				ids += cons.getUserid()+","; 
 				String userid=cons.getUserid();
-			String	content=post.getClient().getOrganizationName()+" have added new position "+position;
+			}
+			String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
 			Notifications nser=new Notifications();
 			nser.setDate(new java.sql.Date(new Date().getTime()));
-			nser.setNotification(content);
-			nser.setUserid(userid);
+			nser.setNotification(content1);
+			nser.setUserid(post.getClient().getUserid());
 			notificationService.addNotification(nser);
-			}
 			String subject = "UniHyr Alert: "+post.getClient().getOrganizationName()+" - "+post.getTitle()+" - "+post.getLocation();
 			
 			String content = "<table cellspacing='0' cellpadding='8' border='0' style='width: 100%; font-family: Arial, Sans-serif;  background-color: #fff' summary=''>"
@@ -620,11 +619,6 @@ public class AdminPanelController
 					+ "</table>";
 			
 			mailService.sendMail(ids, subject, content);
-			
-			
-			
-			
-			
 			obj.put("status", true);
 			return obj.toJSONString();
 		}

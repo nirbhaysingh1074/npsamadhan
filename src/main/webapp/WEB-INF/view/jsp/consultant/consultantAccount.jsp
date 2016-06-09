@@ -59,8 +59,8 @@
 	 		  {
 	 			  if(response != "failed")
  				  {
- 				  	$('#client_logo').attr("src",response);
- 				  	$('.brnad_logo img').attr("src",response);
+ 				  	$('#client_logo').attr("src","data/"+response);
+ 				  	$('.brnad_logo img').attr("src","data/"+response);
  				  }
 	 			  else
  				  {
@@ -136,7 +136,7 @@
 											if(reg.getLogo() != null && reg.getLogo().length() > 0)
 											{
 												%>
-													<img id="client_logo"  src="<%= reg.getLogo() %>" style="max-width: 200px; max-height: 100px;">
+													<img id="client_logo"  src="data/<%= reg.getLogo() %>" style="max-width: 200px; max-height: 100px;">
 												<%
 											}
 											else

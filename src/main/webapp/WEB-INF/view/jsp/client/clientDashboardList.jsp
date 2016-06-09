@@ -112,20 +112,21 @@
 		       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 		       				<th align="left" width="2%"><input id="sel_all" type="checkbox"></th>
 		       				</sec:authorize>
-		       				<th width="5%">Published</th>
+		       				<th width="5%">Submitted</th>
+		       				<th >Verification Status</th>
 		       				<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 		       				<th>Published By</th>
 		       				</sec:authorize> --%>
 		       				<th align="left"  width="5%">Status</th>
 		       				<th align="left">Job Id</th>
 		       				<th align="left" style="width: 14%;">Role</th>
-		       				<th width="110px"  >No of Positions</th> 
+		       				<th  >No of Positions</th> 
 		       				
 		       				<th align="left">Location</th>
-		       				<th width="10%">Posted Date</th>
+		       				<th >Posted Date</th>
 		       				<th >No of Partners</th> 
-		       				<th width="10%">Received</th>
-		       				<th  style="width:6%;">Shortlisted</th>
+		       				<th style="width:80px;" align="left">Received</th>
+		       				<th >Shortlisted</th>
 		       				
 		       				<th  width="10%">Action</th>
 		       			</tr>
@@ -188,7 +189,13 @@
 		     				<%} %>
 		       				
 		       				</sec:authorize> --%>
-				       						
+				       						<td style="text-align: center;">
+				       						<%if(post.getVerifyDate()!=null){ %>
+				       						Verified
+				       						<%}else{ %>
+				       						Pending
+				       						<%} %>
+				       						</td>
 				       						
 						       				<td class='act_status'>
 		       									<%
@@ -250,7 +257,7 @@
 						       				<td style="text-align: center;"><%= post.getPostConsultants().size() %></td>
 						       				
 <%-- 						       				<td style="text-align: center;"><%= post.getNoOfPostsFilled() %></td> --%>
-						       				<td style="text-align: center;"><%= post.getPostProfile().size() %> (<%=countRead %> new)</td>
+						       				<td style="text-align: left;"><%= post.getPostProfile().size() %> (<%=countRead %> new)</td>
 						       				
 						       				
 						       				<td style="text-align: center;"><%= shortListed.size() %></td>

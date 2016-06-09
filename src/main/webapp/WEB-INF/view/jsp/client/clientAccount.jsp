@@ -59,8 +59,8 @@
 	 		  {
 	 			  if(response != "failed")
  				  {
- 				  	$('#client_logo').attr("src",response);
- 				  	$('.brnad_logo img').attr("src",response);
+ 				  	$('#client_logo').attr("src","data"+response);
+ 				  	$('.brnad_logo img').attr("src","data"+response);
  				  }
 	 			  else
  				  {
@@ -76,18 +76,13 @@
     	if(e.lengthComputable){
             var max = e.total;
             var current = e.loaded;
-
             var Percentage = (current * 100)/max;
 	        $('#status').html(parseInt(Percentage) + '%'); 
-            
-
             if(Percentage >= 100)
             {
             	$('#status').html("Image Uploaded successfully");
-            	
             }
         } 
-       
     }
 </script>
 </head>
@@ -100,8 +95,7 @@
 		Registration reg = (Registration)request.getAttribute("registration");
 		if(reg != null)
 		{
-			
-				%>
+	%>
 			      <div class="filter">
 			        <div class="col-md-7 pagi_summary"><span><%-- <%= reg.getOrganizationName() %> --%></span></div>
 			      </div>
@@ -123,7 +117,7 @@
 												if(reg.getLogo() != null && reg.getLogo().length() > 0)
 												{
 													%>
-														<img id="client_logo"  src="<%= reg.getLogo() %>" style="max-width: 200px; max-height: 100px;">
+														<img id="client_logo"  src="data/<%= reg.getLogo() %>" style="max-width: 200px; max-height: 100px;">
 													<%
 												}
 												else
@@ -417,7 +411,6 @@
 								    		usersMade=0;
 								    	}
 								    	%>
-						        
 						        </span>
 						        <span>
 						        &nbsp;&nbsp;&nbsp;No of Users Allowed : <%=reg.getUsersRequired() %>

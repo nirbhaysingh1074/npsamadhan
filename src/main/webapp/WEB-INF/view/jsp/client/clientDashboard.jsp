@@ -140,7 +140,7 @@ jQuery(document).ready(function() {
 		            <select id="db_post_status">
 		               <option value="all">All</option>
 					   <option value="active">Active</option>
-					   <option value="published">Published</option>
+					   <option value="published">Submitted</option>
 					   <option value="saved">Saved</option>
 					   <option value="closed">Closed</option>
 					</select>

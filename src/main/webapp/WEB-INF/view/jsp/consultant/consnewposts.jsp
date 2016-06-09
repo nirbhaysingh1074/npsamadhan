@@ -79,7 +79,7 @@ jQuery(document).ready(function() {
   <div class="container">
 	  	<div id="positions_info">
 		  	<div>
-				<div class="rightside_in new_table" style="padding: 10px 20px 0px;">
+				<div class="rightside_in new_table" style="padding: 10px 15px 0px;">
 				  	<div class="block consulting" style="float: left; width: auto;">
 				        <div >
 							<select id="cons_db_sel_industry"  onchange="consnewposts('1')">

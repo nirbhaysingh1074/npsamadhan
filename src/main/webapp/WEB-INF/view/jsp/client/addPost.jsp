@@ -215,7 +215,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              <label>Location<span class='error'>*</span> </label>
 	            </dt>
 	            <dd>
-	              <form:select path="location"  multiple="multiple">
+	              <form:select path="location"  multiple="multiple" style="height: 111px;" >
 	              	<form:option value="">Select Location</form:option>
 	            		<c:forEach var="item" items="${locList}">
 						   <form:option value="${item.location}">${item.location}</form:option>
@@ -489,7 +489,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	      </div>
 	      
 	      <div class="block form_submt alin_cnt">
-	        <input type="submit" name="btn_response" value="Publish" class="btn yelo_btn">
+	        <input type="submit" name="btn_response" value="Submit" class="btn yelo_btn">
 	        <input type="submit" name="btn_response" value="Save" class="btn yelo_btn">
 	      </div>
 	      </form:form>

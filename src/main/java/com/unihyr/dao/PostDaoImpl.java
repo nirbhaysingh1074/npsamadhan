@@ -107,6 +107,7 @@ public class PostDaoImpl implements PostDao
 		criteria.add(Restrictions.isNotNull("published"))
 				.add(Restrictions.eq("isActive", true))
 				.add(Restrictions.isNull("deleteDate"))
+				.add(Restrictions.isNotNull("verifyDate"))
 				.add(Restrictions.isNull("closeDate"))
 				
 				.setFetchMode("postProfile", FetchMode.JOIN).addOrder(Order.desc("createDate"))
@@ -129,6 +130,8 @@ public class PostDaoImpl implements PostDao
 		.add(Restrictions.eq("isActive", true))
 		.add(Restrictions.isNull("deleteDate"))
 		.add(Restrictions.isNull("closeDate"));
+		//.add(Restrictions.isNotNull("verifyDate"));
+		
 
 		 if(sortParam.indexOf("published")>=0)
 	      		criteria.addOrder(Order.desc(sortParam));
@@ -192,6 +195,7 @@ public class PostDaoImpl implements PostDao
 				.add(Restrictions.eq("isActive", true))
 				.add(Restrictions.isNull("deleteDate"))
 				.add(Restrictions.isNull("closeDate"))
+			//	.add(Restrictions.isNotNull("verifyDate"))
 				.setProjection(Projections.rowCount());
 		
 		return (Long)criteria.uniqueResult();
@@ -203,6 +207,7 @@ public class PostDaoImpl implements PostDao
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
 		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("postId")))));
 		criteria.add(Restrictions.isNull("deleteDate"));
+	//	.add(Restrictions.isNotNull("verifyDate"));
 //		criteria.add(Restrictions.eq("client.userid", userid));
 		
 		Criterion cn1 = Restrictions.eq("client.userid", userid);
@@ -255,6 +260,7 @@ public class PostDaoImpl implements PostDao
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
 		criteria.add(Restrictions.isNull("deleteDate"));
+	//	.add(Restrictions.isNotNull("verifyDate"));
 //		criteria.add(Restrictions.eq("client.userid", clientId));
 		Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
@@ -275,6 +281,7 @@ public class PostDaoImpl implements PostDao
 		criteria.add(Restrictions.isNotNull("published"))
 		.add(Restrictions.isNull("deleteDate"))
 		.add(Restrictions.isNull("closeDate"));
+		//.add(Restrictions.isNotNull("verifyDate"));
 
 //		criteria.add(Restrictions.eq("client.userid", clientId));
 		Criterion cn1 = Restrictions.eq("client.userid", clientId);
@@ -328,6 +335,7 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
+	//	.add(Restrictions.isNotNull("verifyDate"));
 		
 		criteria.add(Restrictions.isNotNull("published"))
 				.add(Restrictions.isNull("deleteDate"))
@@ -350,6 +358,7 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
+	//	.add(Restrictions.isNotNull("verifyDate"));
 		
 		 if(sortParam.indexOf("published")>=0)
 	      		criteria.addOrder(Order.desc(sortParam));
@@ -402,6 +411,7 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
+		//.add(Restrictions.isNotNull("verifyDate"));
 		
 		
 		criteria.setProjection(Projections.rowCount());
@@ -419,6 +429,7 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
+//		.add(Restrictions.isNotNull("verifyDate"));
 		
 		 if(sortParam.indexOf("published")>=0)
 	      		criteria.addOrder(Order.desc(sortParam));
@@ -470,6 +481,7 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
+	//	.add(Restrictions.isNotNull("verifyDate"));
 		
 		
 		criteria.setProjection(Projections.rowCount());
@@ -512,7 +524,8 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		criteria.createAlias("clientAlias.industries", "indAlias");
 		criteria.add(Restrictions.in("indAlias.id", indList));
-		criteria.add(Restrictions.eq("isActive", true));
+		criteria.add(Restrictions.eq("isActive", true))
+		.add(Restrictions.isNotNull("verifyDate"));
 		  if(sortParam.indexOf("published")>=0)
       		criteria.addOrder(Order.desc(sortParam));
       		else
@@ -575,6 +588,7 @@ public class PostDaoImpl implements PostDao
 					.createAlias("clientAlias.industries", "indAlias")
 					.add(Restrictions.in("indAlias.id", indList))
 					.add(Restrictions.eq("isActive", true))
+					.add(Restrictions.isNotNull("verifyDate"))
 					.setProjection(Projections.rowCount())
 					.uniqueResult();
 		return count;
@@ -590,7 +604,8 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		criteria.createAlias("clientAlias.industries", "indAlias");
 		criteria.add(Restrictions.eq("indAlias.id", industryId));
-		criteria.add(Restrictions.eq("isActive", true));
+		criteria.add(Restrictions.eq("isActive", true))
+		.add(Restrictions.isNotNull("verifyDate"));
 		if(sortParam.indexOf("published")>=0)
 		criteria.addOrder(Order.desc(sortParam));
 		else
@@ -639,6 +654,7 @@ public class PostDaoImpl implements PostDao
 					.createAlias("clientAlias.industries", "indAlias")
 					.add(Restrictions.eq("indAlias.id", industryId))
 					.add(Restrictions.eq("isActive", true))
+					.add(Restrictions.isNotNull("verifyDate"))
 					.setProjection(Projections.rowCount())
 					.uniqueResult();
 		return count;
@@ -652,7 +668,8 @@ public class PostDaoImpl implements PostDao
 		criteria.add(Restrictions.isNull("deleteDate"));
 		criteria.add(Restrictions.eq("isActive", true));
 		criteria.createAlias("postConsultants", "pcAlias");
-		criteria.createAlias("pcAlias.consultant", "consAlias");
+		criteria.createAlias("pcAlias.consultant", "consAlias")
+		.add(Restrictions.isNotNull("verifyDate"));
         criteria.add(Restrictions.eq("consAlias.userid",consultantId));
         if(sortParam.indexOf("published")>=0)
     		criteria.addOrder(Order.desc(sortParam));
@@ -702,7 +719,8 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("postConsultants", "pcAlias");
 		criteria.createAlias("pcAlias.consultant", "consAlias");
         criteria.add(Restrictions.eq("consAlias.userid",consultantId));
-        criteria.addOrder(Order.desc("createDate"));
+        criteria.addOrder(Order.desc("createDate"))
+		.add(Restrictions.isNotNull("verifyDate"));
         
 		List<Object[]> idList = criteria.list();
 		//get the id's from the projection
@@ -733,7 +751,8 @@ public class PostDaoImpl implements PostDao
 		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("postId")))));
 		criteria.add(Restrictions.isNull("deleteDate"));
 		criteria.createAlias("postConsultants", "pcAlias");
-		criteria.createAlias("pcAlias.consultant", "consAlias");
+		criteria.createAlias("pcAlias.consultant", "consAlias")
+		.add(Restrictions.isNotNull("verifyDate"));
 //        criteria.add(Restrictions.eq("consAlias.userid",consultantId));
         
         Criterion cn1 = Restrictions.eq("consAlias.userid", consultantId);
@@ -787,7 +806,8 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("postConsultants", "pcAlias");
 		criteria.createAlias("pcAlias.consultant", "consAlias");
         criteria.add(Restrictions.eq("consAlias.userid",consultantId));
-        criteria.addOrder(Order.desc("createDate"));
+        criteria.addOrder(Order.desc("createDate"))
+		.add(Restrictions.isNotNull("verifyDate"));
         
 		List<Object[]> idList = criteria.list();
 		//get the id's from the projection
@@ -821,7 +841,8 @@ public class PostDaoImpl implements PostDao
 		criteria.add(or);
 		criteria.createAlias("postConsultants", "pcAlias");
 		criteria.createAlias("pcAlias.consultant", "consAlias");
-        criteria.add(Restrictions.eq("consAlias.userid",consultantId));
+        criteria.add(Restrictions.eq("consAlias.userid",consultantId))
+		.add(Restrictions.isNotNull("verifyDate"));
         if(sortParam.indexOf("published")>=0)
       		criteria.addOrder(Order.desc(sortParam));
       		else
@@ -871,6 +892,7 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("postConsultants", "pcAlias");
 		criteria.createAlias("pcAlias.consultant", "consAlias");
         criteria.add(Restrictions.eq("consAlias.userid",consultantId))
+		.add(Restrictions.isNotNull("verifyDate"))
         
         .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 		.setProjection(Projections.rowCount());
@@ -891,7 +913,8 @@ public class PostDaoImpl implements PostDao
         Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
-		criteria.add(Restrictions.or(cn1, cn2));
+		criteria.add(Restrictions.or(cn1, cn2))
+		.add(Restrictions.isNotNull("verifyDate"));
 		
         if(sortParam.indexOf("published")>=0)
       		criteria.addOrder(Order.desc(sortParam));
@@ -945,7 +968,8 @@ public class PostDaoImpl implements PostDao
         Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
-		criteria.add(Restrictions.or(cn1, cn2));
+		criteria.add(Restrictions.or(cn1, cn2))
+		.add(Restrictions.isNotNull("verifyDate"));
 		
         criteria.addOrder(Order.desc("createDate"));
         
@@ -984,7 +1008,8 @@ public class PostDaoImpl implements PostDao
         Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
-		criteria.add(Restrictions.or(cn1, cn2));
+		criteria.add(Restrictions.or(cn1, cn2))
+		.add(Restrictions.isNotNull("verifyDate"));
 		
         if(sortParam.indexOf("published")>=0)
       		criteria.addOrder(Order.desc(sortParam));
@@ -1037,7 +1062,8 @@ public class PostDaoImpl implements PostDao
         Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
-		criteria.add(Restrictions.or(cn1, cn2));
+		criteria.add(Restrictions.or(cn1, cn2))
+		.add(Restrictions.isNotNull("verifyDate"));
 		
         criteria.addOrder(Order.desc("createDate"));
         
@@ -1078,7 +1104,8 @@ public class PostDaoImpl implements PostDao
         Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
-		criteria.add(Restrictions.or(cn1, cn2));
+		criteria.add(Restrictions.or(cn1, cn2))
+		.add(Restrictions.isNotNull("verifyDate"));
 		
         if(sortParam.indexOf("published")>=0)
       		criteria.addOrder(Order.desc(sortParam));
@@ -1133,7 +1160,8 @@ public class PostDaoImpl implements PostDao
         Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
-		criteria.add(Restrictions.or(cn1, cn2));
+		criteria.add(Restrictions.or(cn1, cn2))
+		.add(Restrictions.isNotNull("verifyDate"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 		.setProjection(Projections.rowCount());
@@ -1166,7 +1194,8 @@ public class PostDaoImpl implements PostDao
 		
 		criteria.createAlias("postConsultants", "pcAlias");
 		criteria.createAlias("pcAlias.consultant", "consAlias");
-        criteria.add(Restrictions.eq("consAlias.userid",consultantId));
+        criteria.add(Restrictions.eq("consAlias.userid",consultantId))
+		.add(Restrictions.isNotNull("verifyDate"));
 //        criteria.add(Restrictions.eq("client.userid",clientId));
         if(clientId != null && clientId.trim().length() > 0)
         {
@@ -1237,7 +1266,8 @@ public class PostDaoImpl implements PostDao
 		
 		criteria.createAlias("postConsultants", "pcAlias");
 		criteria.createAlias("pcAlias.consultant", "consAlias");
-        criteria.add(Restrictions.eq("consAlias.userid",consultantId));
+        criteria.add(Restrictions.eq("consAlias.userid",consultantId))
+		.add(Restrictions.isNotNull("verifyDate"));
 //        criteria.add(Restrictions.eq("client.userid",clientId));
         if(clientId != null && clientId.trim().length() > 0)
         {
@@ -1290,7 +1320,8 @@ public class PostDaoImpl implements PostDao
 		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.property("location")))));
 		criteria.add(Restrictions.isNull("deleteDate"));
 		criteria.createAlias("postConsultants", "pcAlias");
-		criteria.createAlias("pcAlias.consultant", "consAlias");
+		criteria.createAlias("pcAlias.consultant", "consAlias")
+		.add(Restrictions.isNotNull("verifyDate"));
         criteria.add(Restrictions.eq("consAlias.userid",consultantId));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return  criteria.list();
