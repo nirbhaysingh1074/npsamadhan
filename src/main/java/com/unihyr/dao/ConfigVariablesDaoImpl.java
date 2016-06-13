@@ -1,7 +1,10 @@
 package com.unihyr.dao;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -30,8 +33,23 @@ public class ConfigVariablesDaoImpl implements ConfigVariablesDao
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConfigVariables> getConfigVariable(String configVarName)
+	{
+		// TODO Auto-generated method stub
+		return this.sessionFactory.getCurrentSession().createCriteria(ConfigVariables.class)
+				.add(Restrictions.eq("varName", configVarName).ignoreCase()).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConfigVariables> getAllConfigVariables()
+	{
+		// TODO Auto-generated method stub
+		return this.sessionFactory.getCurrentSession().createCriteria(ConfigVariables.class).list();
 	}
 
 }

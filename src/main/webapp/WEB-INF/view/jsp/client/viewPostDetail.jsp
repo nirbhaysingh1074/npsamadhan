@@ -37,11 +37,15 @@
 		Post post = (Post)request.getAttribute("post");
 		if(post != null)
 		{
+		
 			%>
 		      <div class="filter">
 		        <div class="col-md-7  pagi_summary"><span><%= post.getJobCode()%> ( <%= post.getTitle() %> - <%= post.getLocation() %> )</span></div>
+		       <%
+		   	if(post.getVerifyDate()!=null){
+		       %>
 		        <div class="col-md-5">
-		<!--           <div class="set_col"><a href=""><img src="images/ic_1.png" alt="img"> <img src="images/ic_2.png" alt="img"></a></div> -->
+				  <!--  <div class="set_col"><a href=""><img src="images/ic_1.png" alt="img"> <img src="images/ic_2.png" alt="img"></a></div> -->
 		          <ul class="page_nav">
 		            <%
 
@@ -51,12 +55,11 @@
 		            			<li class="active" ><a href="clientpostapplicants?pid=<%=post.getPostId()%>">Applied Candidates</a></li> 
 		            		<%
 		            	}
-		            
 			           /*  if(post.getDeleteDate() == null)
 		            	{ */
 		            		%>
 	          				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-<%-- 		            			<li class="active post_delete" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Delete</a></li> --%>
+							<%-- <li class="active post_delete" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Delete</a></li> --%>
 		            		<%
 		            	//}
 			            
@@ -68,7 +71,9 @@
 	            		<%
 		            	}else{
 		            		%>
-<%-- 		            			<li class="active post_close" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Close</a></li> --%>
+							<%--
+							<li class="active post_close" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Close</a></li>
+							 --%>
 		            		<%
 		            	}}
 			            
@@ -91,8 +96,9 @@
 		            <li class="active"><a href="clienteditpost?pid=<%=post.getPostId() %>">Edit</a></li>
 		          </sec:authorize>
 		          </ul>
-		        </div>
+		        </div><%} %>
 		      </div>
+		      
 		      <div class="positions_tab  bottom-margin" style="border: 1px solid gray;">
 		        <div class="form_cont">
 			        <div class="form_col">
@@ -336,7 +342,7 @@
 		        <div id="jobDescription">
 		        </div>
 		      </div>
-							<%--   <%
+						  <%
 							 if(post.getUploadjd()!=null){
 					            String scheme = request.getScheme();
 							    String serverName = request.getServerName();
@@ -373,7 +379,7 @@
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);
 					        			</script>
-			<%}%>  --%>
+			<%}%>  
 		<%}%> 
 	</div>
 </div>

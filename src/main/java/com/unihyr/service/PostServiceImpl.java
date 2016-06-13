@@ -243,4 +243,26 @@ public class PostServiceImpl implements PostService
 	{
 		return this.postDao.getLocationsByConsultant(consultantId);
 	}
+
+	@Override
+	public List<Post> getAllVerifiedPostsByClient(String loggedinUser, int i, int j, String string)
+	{
+		// TODO Auto-generated method stub
+
+		return this.postDao.getAllVerifiedPostsByClient(loggedinUser,  i,  j,  string);
+	}
+
+	@Override
+	public long countAllVerifiedPostByClient(String userid)
+	{
+		// TODO Auto-generated method stub
+		return this.postDao.countAllVerifiedPostByClient(userid);
+	}
+
+	@Override
+	public long countActiveVerifiedPostByClient(String userid)
+	{
+		// TODO Auto-generated method stub
+		return this.postDao.countActiveVerifiedPostByClient(userid);
+	}
 }

@@ -500,7 +500,7 @@
 			                    <%if(userDetail.getOrganizationName()!=null){ %>
 			                    
 			                    <div class="form-group col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Slabs 1</label>
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Fee Slabs 1</label>
 			                      <div class="col-sm-8">
 <%-- 			                        <input required   type="text" id="ctcSlabs1Min" name="ctcSlabs1Min" class="form-control" value="<%=userDetail.getCtcSlabs1Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs1Max" name="ctcSlabs1Max" class="form-control" value="<%=userDetail.getCtcSlabs1Max()%>"  /> --%>
@@ -523,7 +523,7 @@
 			                    
 			                    <div class="clearfix"></div>
 			                    <div class="form-group col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Slabs 2</label>
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Fee Slabs 2</label>
 			                      <div class="col-sm-8">
 <%-- 			                         <input required   type="text" id="ctcSlabs2Min" name="ctcSlabs2Min" class="form-control" value="<%=userDetail.getCtcSlabs2Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs2Max" name="ctcSlabs2Max" class="form-control" value="<%=userDetail.getCtcSlabs2Max()%>"  /> --%>
@@ -544,7 +544,7 @@
 			                    </div>
 			                    <div class="clearfix"></div>
 			                    <div class="form-group col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Slabs 3</label>
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Fee Slabs 3</label>
 			                      <div class="col-sm-8">
 <%-- 			                        <input required   type="text" id="ctcSlabs3Min" name="ctcSlabs3Min" class="form-control" value="<%=userDetail.getCtcSlabs3Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs3Max" name="ctcSlabs3Max" class="form-control" value="<%=userDetail.getCtcSlabs3Max()%>"  /> --%>
@@ -564,7 +564,7 @@
 			                    </div>
 			                    <div class="clearfix"></div>
 			                    <div class="form-group col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Slabs 4</label>
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Fee Slabs 4</label>
 			                      <div class="col-sm-8">
 <%-- 			                        <input required   type="text" id="ctcSlabs4Min" name="ctcSlabs4Min" class="form-control" value="<%=userDetail.getCtcSlabs4Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs4Max" name="ctcSlabs4Max" class="form-control" value="<%=userDetail.getCtcSlabs4Max()%>"  /> --%>
@@ -585,7 +585,7 @@
 			                    </div>
 			                    <div class="clearfix"></div>
 			                    <div class="form-group col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Slabs 5</label>
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Fee Slabs 5</label>
 			                      <div class="col-sm-8">
 			                         
 			                         
@@ -636,7 +636,7 @@
 			                      </div>
 			                    </div>
 			                    <div class="clearfix"></div>
-			                    <div class="form-group col-sm-12">
+			                    <div class="form-group col-sm-12" style="display: none;">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Empty Field</label>
 			                      <div class="col-sm-8">
 			                      

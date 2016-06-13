@@ -212,7 +212,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Location<span class='error'>*</span> </label>
+	              <label>Location<span style="font-style: italic;font-weight: normal;font-size: 10px;">(To select multiple locations, press CTRL and select)</span><span class='error'>*</span> </label>
 	            </dt>
 	            <dd>
 	              <form:select path="location"  multiple="multiple" style="height: 111px;" >
@@ -431,7 +431,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 				
 				<dl style="clear:both;">
 				<dt>
-						<label>Select Slabs</label>
+						<label>Fee Slabs</label>
 					</dt>
 					<dd> 
 						<form:select path="feePercent">

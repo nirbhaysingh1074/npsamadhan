@@ -1,5 +1,7 @@
 package com.unihyr.domain;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,49 @@ public class ConfigVariables
 	private String varName;
 	@Column
 	private String varValue;
+
+	@Column
+	private String scope;
+
+	@Column
+	private String modifiedBy;
+	@Column
+	private Date modificationDate;
+	@Column
+	private Boolean status;
+	
+	public Boolean getStatus()
+	{
+		return status;
+	}
+	public void setStatus(Boolean status)
+	{
+		this.status = status;
+	}
+	public String getScope()
+	{
+		return scope;
+	}
+	public void setScope(String scope)
+	{
+		this.scope = scope;
+	}
+	public String getModifiedBy()
+	{
+		return modifiedBy;
+	}
+	public void setModifiedBy(String modifiedBy)
+	{
+		this.modifiedBy = modifiedBy;
+	}
+	public Date getModificationDate()
+	{
+		return modificationDate;
+	}
+	public void setModificationDate(Date modificationDate)
+	{
+		this.modificationDate = modificationDate;
+	}
 	public int getConfigId()
 	{
 		return configId;

@@ -86,6 +86,12 @@ public interface PostService
 	public long countPostsFilteredForConsultant(String consultantId, String clientId, String status, String location);
 	
 	public List<String> getLocationsByConsultant(String consultantId);
+
+	public List<Post> getAllVerifiedPostsByClient(String loggedinUser, int i, int j, String string);
+
+	public long countAllVerifiedPostByClient(String userid);
+
+	public long countActiveVerifiedPostByClient(String userid);
 	
 	
 }

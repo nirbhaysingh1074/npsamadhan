@@ -63,6 +63,24 @@
         <put-attribute name="title" value="UniHyr - Update Location" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminEditLocation.jsp" />
     </definition>
+    
+    <definition name="adminAddConfiguration" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Add New Configuration" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminAddConfiguration.jsp" />
+    </definition>
+    
+    <definition name="adminEditConfiguration" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Add Edit Configuration" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminEditConfiguration.jsp" />
+    </definition>
+    
+    
+    <definition name="adminConfigurations" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Configurations" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminConfiguration.jsp" />
+    </definition>
+    
+    
     <definition name="adminUserChild" extends="adminTemplate">
         <put-attribute name="title" value="UniHyr - Add Child User" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminUserChild.jsp" />

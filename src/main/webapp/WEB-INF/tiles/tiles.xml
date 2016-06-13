@@ -58,11 +58,24 @@
         <put-attribute name="body" value="" />
         <put-attribute name="footer" value="/WEB-INF/view/jsp/footerIndex.jsp" />
     </definition> 
+    <definition name="pageTemplate" template="/WEB-INF/tilestemplate/jsp/pageTemplate.jsp">
+        <put-attribute name="header" value="/WEB-INF/view/jsp/header.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/WEB-INF/view/jsp/footer.jsp" />
+    </definition> 
     
      
     <definition name="index" extends="indexTemplate">
         <put-attribute name="title" value="UniHyr - Index Page" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/index.jsp" />
+    </definition>
+    <definition name="privacyPolicy" extends="pageTemplate">
+        <put-attribute name="title" value="UniHyr - Privacy Policy" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/privacyPolicy.jsp" />
+    </definition>
+    <definition name="termsOfService" extends="pageTemplate">
+        <put-attribute name="title" value="UniHyr - Terms Of Service" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/termsOfService.jsp" />
     </definition>
     
     

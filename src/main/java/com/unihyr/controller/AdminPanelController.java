@@ -609,7 +609,7 @@ public class AdminPanelController
 					+ "<p></p>"
 					+ "<p>Best Regards,</p>"
 					+ "<p></p>"
-					+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
+					/*+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"*/
 					+ "<p><strong>Admin Team</strong></p><p></p>"
 					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 					+ "</div>"

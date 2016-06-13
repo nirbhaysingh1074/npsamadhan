@@ -13,7 +13,7 @@ import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="billingDetails")
+@Table(name="billingdetails")
 public class BillingDetails
 {
 	@Id

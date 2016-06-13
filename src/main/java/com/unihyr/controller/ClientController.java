@@ -592,7 +592,7 @@ public class ClientController
 						+ "<p></p>"
 						+ "<p>Best Regards,</p>"
 						+ "<p></p>"
-						+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
+//						+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
 						+ "<p><strong>Admin Team</strong></p><p></p>"
 						+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 						+ "</div>"
@@ -717,10 +717,10 @@ public class ClientController
 			map.addAttribute("totalpartner", postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc").size());
 			map.addAttribute("totalshortlist", postProfileService.countShortlistedProfileListPostId(post.getPostId(),"accepted"));
 		}
-		map.addAttribute("postsList", postService.getAllPostsByClient(loggedinUser, 0, 1000, "title"));
+		map.addAttribute("postsList", postService.getAllVerifiedPostsByClient(loggedinUser, 0, 1000, "title"));
 	
-		map.addAttribute("totalposts", postService.countAllPostByClient(reg.getUserid()));
-		map.addAttribute("totalActive", postService.countActivePostByClient(reg.getUserid()));
+		map.addAttribute("totalposts", postService.countAllVerifiedPostByClient(reg.getUserid()));
+		map.addAttribute("totalActive", postService.countActiveVerifiedPostByClient(reg.getUserid()));
 		map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(reg.getUserid(), null));
 		map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null));
 		return "clientPostApplicants";
@@ -1696,6 +1696,9 @@ public class ClientController
 			{
 				if(!this.allowedImageExtensions.contains(imageextension.toLowerCase())){
         			return "failed";
+        		}else if(mpf.getSize()<=GeneralConfig.filesize)
+        		{
+        			return "failed";
         		}
 				filename = UUID.randomUUID().toString()+filename;
 				File dl = new File(GeneralConfig.UploadPath+""+filename);
@@ -1714,7 +1717,7 @@ public class ClientController
 			}
 			catch(IOException e)
 			{
-				
+				e.printStackTrace();
 			}
 			return filename;
 		}

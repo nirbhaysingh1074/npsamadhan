@@ -35,6 +35,7 @@
             <li><a href="adminprofilelist"><i class="fa fa-file-text"></i> <span>Profiles</span></a></li>
             <li><a href="adminindustries"><i class="fa fa-fw fa-folder-open"></i> <span>Industries</span></a></li>
             <li><a href="adminlocations"><i class="fa fa-fw fa-map-marker"></i> <span>Locations</span></a></li>
+            <li><a href="adminConfigurations"><i class="fa fa-fw fa-map-marker"></i> <span>General Configurations</span></a></li>
             
             <li class="treeview">
               <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>

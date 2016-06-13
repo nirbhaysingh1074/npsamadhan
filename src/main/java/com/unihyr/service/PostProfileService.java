@@ -290,5 +290,7 @@ public interface PostProfileService
 
 	public List<PostProfile> getPostProfileOfferedByPost(long postId);
 	long countShortlistedProfileListPostId(long postId,String status);
+	
+	
 
 }

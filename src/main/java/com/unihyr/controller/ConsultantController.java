@@ -798,26 +798,27 @@ public class ConsultantController
 				{
 					return "failed";
 				}
-
-				File dl = new File(System.getProperty("catalina.base") + "/unihyr_uploads/" + loggedinUser
-						+ "/logo/" + filename);
-				String datafile = System.getProperty("catalina.base") + "/unihyr_uploads/" + loggedinUser
-						+ "/logo/" + filename;
-				System.out.println("PATH=" + datafile);
-				if (!dl.exists())
-				{
-					System.out.println("in not file" + dl.getAbsolutePath());
+				else if(mpf.getSize()<=GeneralConfig.filesize)
+        		{
+        			return "failed";
+        		}
+				filename = UUID.randomUUID().toString()+filename;
+				File dl = new File(GeneralConfig.UploadPath+""+filename);
+				String datafile=GeneralConfig.UploadPath+""+filename;
+				System.out.println("PATH="+datafile);
+				if(!dl.exists()){
+					System.out.println("in not file"+dl.getAbsolutePath());
 					dl.mkdirs();
 				}
-				filename = "/unihyr_uploads/" + loggedinUser + "/logo/" + filename;
+				//filename= "/unihyr_uploads/"+filename;
 				mpf.transferTo(dl);
-				Registration registration = registrationService.getRegistationByUserId(loggedinUser);
+				Registration registration = registrationService.getRegistationByUserId(principal.getName());
 				registration.setLogo(filename);
 				request.getSession().setAttribute("registration", registration);
 				registrationService.update(registration);
 			} catch (IOException e)
 			{
-
+e.printStackTrace();
 			}
 			return filename;
 		}

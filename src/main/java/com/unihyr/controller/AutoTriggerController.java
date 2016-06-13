@@ -1,39 +1,32 @@
 package com.unihyr.controller;
 
-import static org.junit.Assert.assertEquals;
+import java.util.List;
+import java.util.Timer;
 
 import javax.annotation.PostConstruct;
 
-import org.junit.After;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.unihyr.domain.ConfigVariables;
 import com.unihyr.service.ConfigVariablesService;
 import com.unihyr.service.PostProfileService;
+import com.unihyr.util.ApplicationContextProvider;
+
 @Component
-public class WebConfig
+public class AutoTriggerController
 {
 	@Autowired
 	private ConfigVariablesService configVariablesService;
-
+	
 	@Autowired 
 	private PostProfileService postProfileService;
 	
-	@PostConstruct
-	public void initialize()  throws Exception {
-			System.out.println("initialized");
-			ConfigVariables configVariable= new ConfigVariables();
-			configVariable.setVarName("CESS");
-			configVariable.setVarValue("0.5");
-			//configVariablesService.add(configVariable);
 
-			
-
-	}
 	public static boolean checkPostIdle(){
-	//	System.out.println(postProfileService);
+		
+			System.out.println();
 		return false;
 	}
 }

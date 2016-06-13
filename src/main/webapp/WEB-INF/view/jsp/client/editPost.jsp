@@ -204,11 +204,14 @@ jQuery(document).ready(function() {
 	<div class="mid_wrapper">
 	  <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	  <div class="container">
-	   <div style="width: 100%;padding: 20px;" >
 	   <%
 	   Post post=(Post)request.getAttribute("post");
 	   Registration registration=post.getClient();
+	  if(post.getVerifyDate()!=null){
 	   %>
+	  
+	  
+	   <div style="width: 100%;padding: 20px;" >
 	   <h2>Post : <%=post.getTitle() %></h2><br><br>
 									<label onclick="$('#divedit').css('display','none');$('#divupddateinfo').css('display','block');" style="vertical-align: middle;">
 									 <input style="vertical-align: middle;" type="radio" name="updateType"  />&nbsp;&nbsp;Quick
@@ -266,20 +269,21 @@ jQuery(document).ready(function() {
 		            </dd>
 		          </dl>
 		          <dl>
-		            <dt>
-		              <label>Location<span class='error'>*</span> </label>
-		            </dt>
-		            <dd>
-						<form:select path="location" multiple="multiple">
-		              		<form:option value="">Select Location</form:option>
-		            		<c:forEach var="item" items="${locList}">
-							   <form:option value="${item.location}" selected= "${item.location == postForm.location ? 'selected' : ''}" >${item.location}</form:option>
-							</c:forEach>
-		            	</form:select>
-<%-- 		    <form:input path="location" /> --%>
-		              <span class='error location_error'><form:errors path="location"/></span>
-		            </dd>
-		          </dl>
+	            <dt>
+	              <label>Location<span style="font-style: italic;font-weight: normal;font-size: 10px;">(To select multiple locations, press CTRL and select)</span><span class='error'>*</span> </label>
+	            </dt>
+	            <dd>
+	              <form:select path="location"  multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Location</form:option>
+	            		<c:forEach var="item" items="${locList}">
+						   <form:option value="${item.location}">${item.location}</form:option>
+						</c:forEach>
+	            	</form:select>
+	              
+					<%--  <form:input path="location" /> --%>
+	              <span class='error location_error'><form:errors path="location"/></span>
+	            </dd>
+	          </dl>
 		          <dl style="clear: both;">
 	            <dt>
 	              <label>Role Type<span class='error'>*</span></label>
@@ -473,7 +477,7 @@ jQuery(document).ready(function() {
 				</dl>
 		          <dl style="clear:both;">
 				<dt>
-						<label>Select Slabs</label>
+						<label>Fee Slabs</label>
 					</dt>
 					<dd> 
 						<form:select path="feePercent">
@@ -540,7 +544,14 @@ jQuery(document).ready(function() {
 		      </div>
 	      </form:form>
 	    </div>
-	  </div></sec:authorize>
+	  
+	  <%}else{ %>
+	  Post not verified yet.
+	  <%} %>
+	  </div>
+	  
+	  
+	  </sec:authorize>
 	  
 	  <sec:authorize access="hasRole('ROLE_EMP_USER')">
 	 <div class="container">  You don't have permission to edit this post.</div>
