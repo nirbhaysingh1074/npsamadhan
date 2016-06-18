@@ -436,12 +436,12 @@
 			             		{
 		             				if(loginInfo.getIsactive().equals("true")&&false){
 			             			%>
-					             		<div class="form-group disable_user col-md-6 col-sm-12">
+					             		<%-- <div class="form-group disable_user col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label"  >&nbsp;</label>
 					                      <div class="col-sm-8">
 					                        <a href="adminuserchild?userid=<%= userDetail.getUserid() %>"><button class="btn btn-sm btn-info ">Add User</button></a>
 					                      </div>
-					                    </div>
+					                    </div> --%>
 			             			<%
 			             		}}
 			             		

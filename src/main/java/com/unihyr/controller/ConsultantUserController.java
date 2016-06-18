@@ -96,11 +96,9 @@ public class ConsultantUserController
 			reg.setAbout(parent.getAbout());
 			
 			login.setReg(reg);
-			login.setIsactive("true");
 
 			String id=GeneralConfig.generatePassword();
 
-			loginInfoService.updatePassword(login.getUserid(), null, id);
 			
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_CON_USER.toString());
@@ -109,6 +107,7 @@ public class ConsultantUserController
 			login.setRoles(roles);
 			login.setIsactive("true");
 			loginInfoService.addLoginInfo(login, null);
+			loginInfoService.updatePassword(login.getUserid(), null, id);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
 

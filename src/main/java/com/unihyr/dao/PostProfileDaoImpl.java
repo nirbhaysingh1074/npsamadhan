@@ -142,10 +142,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
 		}
 		criteria.createAlias("profile", "profileAlias");
-		if(sortOrder.indexOf("desc")>=0)
-		criteria.addOrder(Order.desc("profileAlias."+sortParam));
-		else
-		criteria.addOrder(Order.asc("profileAlias."+sortParam));
+	
 		
 		return criteria.list();
 	}

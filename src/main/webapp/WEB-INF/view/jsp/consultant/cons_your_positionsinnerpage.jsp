@@ -52,7 +52,7 @@
     
     
     
-    	 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+    	 <%-- <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
     <div style="padding-bottom: 0" class="rightside_in new_table">
         <div class="bottom-padding" style=" border: 2px solid gray; border-radius: 5px; margin-bottom: 10px;  padding: 10px;">
 	        <div class="bottom-padding">
@@ -133,7 +133,7 @@
 	        </div>
         </div>
     </div>
-    </sec:authorize> 
+    </sec:authorize>  --%>
     <%} %>
 	
 	

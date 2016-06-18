@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.Registration"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.DecimalFormat"%>
@@ -46,8 +47,8 @@
 		var location = $('#location').val();
 		var fun = $('#function').val();
 		var noOfPosts = $('#noOfPosts').val();
-		var role = $('#role').val();
-		var designation = $('#designation').val();
+		/* var role = $('#role').val();
+		var designation = $('#designation').val(); */
 		var exp_min = $('#exp_min').val();
 		var exp_max = $('#exp_max').val();
 		var ctc_min = $('#ctc_min').val();
@@ -60,6 +61,7 @@
 		
 		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); //$('#additionDetail').val();
 		var select_jd = $('.select_jd').val();
+		var feePercent = $('#feePercent').val();
 		
 		
 		$('.error').html('&nbsp;');
@@ -85,16 +87,16 @@
 			$('.noOfPosts_error').html('Please enter no of posts')
 			valid = false;
 		}
-		if(role == "")
+		/* if(role == "")
 		{
 			$('.role_error').html('Please enter post role')
 			valid = false;
-		}
-		if(designation == "")
+		} */
+		/* if(designation == "")
 		{
 			$('.designation_error').html('Please enter post designation')
 			valid = false;
-		}
+		} */
 		if(exp_min == ""  || isNaN(exp_min))
 		{
 			$('.exp_min_error').html('Please select minimum expirence')
@@ -118,6 +120,11 @@
 		if(select_jd == "" && additionDetail == "")
 		{
 			$('.uploadjd_error').html("Please select JD or enter job description");
+			valid = false;
+		}
+		if(feePercent == "0" )
+		{
+			$('.feePercent_error').html("Please select a fee slab");
 			valid = false;
 		}
 		/* if(workHourStartHour[0] >= workHourEndHour[0])
@@ -248,7 +255,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
 	            </dd>
 	          </dl>
-	          <dl style="clear: both;">
+	      <%--     <dl style="clear: both;">
 	          
 	            <dt>
 	              <label>Role<span class='error'>*</span></label>
@@ -266,7 +273,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              <form:input path="designation" />
 	              <span class='error designation_error'><form:errors path="designation"/></span>
 	            </dd>
-	          </dl>
+	          </dl> --%>
 	          <dl style="clear: both;">
 	            <dt>
 	              <label>Experience<span class='error'>*</span></label>
@@ -304,7 +311,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>Annual CTC<span class='error'>*</span></label>
+	              <label>Annual Fixed CTC<span class='error'>*</span></label>
 	            </dt>
 	            <dd>
 	              <div class="row">
@@ -435,7 +442,8 @@ Registration registration=(Registration)request.getAttribute("registration");
 					</dt>
 					<dd> 
 						<form:select path="feePercent">
-						 <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
+						 <form:option value='0'>Select Slab</form:option>
+						  <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
 						 <form:option value='<%=registration.getFeePercent2() %>'><%=registration.getSlab2() %>(<%=registration.getFeePercent2() %>)</form:option>
 						 <form:option value='<%=registration.getFeePercent3() %>'><%=registration.getSlab3() %>(<%=registration.getFeePercent3() %>)</form:option>
 						 <form:option value='<%=registration.getFeePercent4() %>'><%=registration.getSlab4() %>(<%=registration.getFeePercent4() %>)</form:option>
@@ -489,7 +497,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	      </div>
 	      
 	      <div class="block form_submt alin_cnt">
-	        <input type="submit" name="btn_response" value="Submit" class="btn yelo_btn">
+	        <input type="submit" name="btn_response" value="<%=GeneralConfig.Add_Post_Submit_Button_Value %>" class="btn yelo_btn">
 	        <input type="submit" name="btn_response" value="Save" class="btn yelo_btn">
 	      </div>
 	      </form:form>

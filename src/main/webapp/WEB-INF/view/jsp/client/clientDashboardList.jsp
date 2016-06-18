@@ -114,7 +114,7 @@
 <!-- 		       				<input id="sel_all" type="checkbox"> -->
 		       				</th>
 		       				</sec:authorize>
-		       				<th >Submitted</th>
+		       				<th ></th>
 		       				<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 		       				<th>Published By</th>
 		       				</sec:authorize> --%>
@@ -129,7 +129,7 @@
 		       				<th style="width:80px;" align="left">Received</th>
 		       				<th >Shortlisted</th>
 		       				
-		       				<th  width="10%">Action</th>
+		       				<th  width="10%" style="text-align: right;">Action</th>
 		       			</tr>
 	       			</thead>
 	       			<tbody>
@@ -162,7 +162,7 @@
 		       						} 
 	       							
 	       							%>
-						       				<tr id="<%= post.getPostId()%>">
+						       				<tr id="<%= post.getPostId()%>" style="color:<%=(post.getVerifyDate()!=null)?"black":"gray"%>">
 											<%-- <td><%= count++ %></td> --%>
 											
 											<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
@@ -328,7 +328,7 @@
 							                  	</div>
 						       					
 									<%
-										if(verified) {
+										if(post.getCloseDate()==null&&post.isActive()) {
 									%>
 									<a target="_blank"
 										href="clienteditpost?pid=<%=post.getPostId()%>"><button
@@ -336,11 +336,19 @@
 											title="Click to edit this post">Edit</button></a>
 									<%
 										} else {
+											String tooltip="";
+											if(!verified){
+												tooltip="Verification Pending";
+											}else if(post.getCloseDate()!=null){
+												tooltip="position closed";
+											}else if(!post.isActive()){
+												tooltip="position inactive";
+											}
+											
 									%>
 									<button
 											class="profile_status_buttonGen" style="background: #ececec;cursor: auto;"
-											pid="<%=post.getPostId()%>" title="Verification Pending">Edit</button>
-
+											pid="<%=post.getPostId()%>" title="<%=tooltip%>">Edit</button>
 									<%
 										}
 									%>

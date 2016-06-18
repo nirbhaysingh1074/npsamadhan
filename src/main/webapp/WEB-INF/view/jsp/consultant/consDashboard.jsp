@@ -18,6 +18,7 @@
 <script type="text/javascript">
 	function  loadconsdashboardposts(pn)
 	{
+		pleaseWait();
 		var sortParam=$('#sortParam').val();
 		if(typeof sortParam != 'undefined'){}
 		else
@@ -49,6 +50,7 @@
 			success : function(data) {
 //				alert(data);
 				$('.cons_db_posts').html(data);
+			pleaseDontWait();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 		        alert(xhr.status);

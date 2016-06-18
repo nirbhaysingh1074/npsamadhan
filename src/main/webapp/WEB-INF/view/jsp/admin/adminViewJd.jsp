@@ -102,18 +102,18 @@
 			                        <label  class="form-control" ><%= post.getFunction()%></label>
 			                      </div>
 			                    </div> <!-- attribute end -->
-			                    <div class="form-group col-md-6 col-sm-12">
+			                    <%-- <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Job Role</label>
 			                      <div class="col-sm-8">
 			                        <label  class="form-control" ><%= post.getRole()%></label>
 			                      </div>
-			                    </div> <!-- attribute end -->
-			                    <div class="form-group col-md-6 col-sm-12">
+			                    </div> --%> <!-- attribute end -->
+			                   <%--  <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Designation</label>
 			                      <div class="col-sm-8">
 			                        <label  class="form-control" ><%= post.getDesignation()%></label>
 			                      </div>
-			                    </div> <!-- attribute end -->
+			                    </div> --%> <!-- attribute end -->
 	                    		<div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Profile Quata</label>
 			                      <div class="col-sm-8">

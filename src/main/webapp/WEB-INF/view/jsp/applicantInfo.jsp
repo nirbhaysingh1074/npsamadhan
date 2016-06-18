@@ -605,7 +605,7 @@ jQuery(document).ready(function() {
 
 </script>
 
-<%-- 
+
 							 <%
 							 if(pp.getProfile().getResumePath()!=null){
 								 
@@ -644,6 +644,6 @@ jQuery(document).ready(function() {
 					        				$('#tab-1').append(x);
 					        			</script>
 					        	<%} %>
- --%></div>
+</div>
 </body>
 </html>

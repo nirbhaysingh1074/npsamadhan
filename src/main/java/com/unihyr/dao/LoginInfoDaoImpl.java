@@ -35,9 +35,7 @@ public class LoginInfoDaoImpl implements LoginInfoDao
 		System.out.println("rawpwd in logindao="+rawpwd);
 		String encryptedpwd=BCrypt.hashpw(rawpwd, BCrypt.gensalt());
 		System.out.println("encrypted pwd in logindao="+encryptedpwd);
-		
 		login.setPassword(encryptedpwd);
-		login.setIsactive("false");
 		this.sessionFactory.getCurrentSession().save(login);
 		System.out.println("User added successfully");
 	}

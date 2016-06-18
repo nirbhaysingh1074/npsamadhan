@@ -21,9 +21,9 @@ public interface PostService
 	
 	public List<Post> getActivePostsByClient(String userid);
 	
-	public List<Post> getActivePostsByClient(String userid, int first, int max, String sortParam);
+	public List<Post> getActivePostsByClient(String userid, int first, int max, String sortParam,String filterBy);
 	
-	public long countActivePostByClient(String userid);
+	public long countActivePostByClient(String userid,String filterBy);
 
 	
 	public List<Post> getAllPostsByClient(String userid, int first, int max, String sortParam);
@@ -92,6 +92,8 @@ public interface PostService
 	public long countAllVerifiedPostByClient(String userid);
 
 	public long countActiveVerifiedPostByClient(String userid);
+
+	List<Post> getAllActivePosts();
 	
 	
 }

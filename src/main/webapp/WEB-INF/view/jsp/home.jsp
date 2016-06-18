@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="google-site-verification" content="Y0V9el2D8FpRHQiyJSr8ChBQSiWbOCqEsvpsz3N75lE" />
+	<meta name="google-site-verification" content="2TLKAStrzYOfVRQYE-ULixk2twy9uHdoAxmZI3YTAVY" />
 <title>UniHyr</title>
 
 	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
@@ -19,7 +19,12 @@
 	margin: 20px auto 0 auto;
 	border-radius: 4px;
 }
-
+#u_0_2{
+color: #fff;
+}
+#u_0_3{
+color: #fff;
+}
 #slider ul {
 	position: relative;
 	margin: 0;
@@ -174,7 +179,14 @@ a.control_next {
 
 </head>
 <body>
-
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 	<header id="header" style="
     position: fixed;
     z-index: 9;">
@@ -625,10 +637,13 @@ Analytics driven rating system of consultants
 			<div class="container">
 				<div class="col_1">
 					<h3></h3>
-				<a style="margin-left: 22px;" href="" >	<img style="height: 25px;" src="images/fb.png" title="facebook" /></a>
-				<a href="" >	<img style="height: 25px;"  src="images/twitter.png" title="twitter" /></a>
-				<a href="" >	<img style="height: 25px;"  src="images/linkedin.png" title="linkedin"/></a>
-
+					<a style="margin-left: 22px;"
+						href="https://www.facebook.com/UniHyr-491301114398011/"
+						target="_blank"> <img style="height: 25px;"
+						src="images/fb.png" title="facebook" /></a> <a href="https://twitter.com/unihyr" target="_blank"> <img
+						style="height: 25px;" src="images/twitter.png" title="twitter" /></a> <a target="_blank" href="https://in.linkedin.com/in/unihyr-admin-5aab60122"> <img style="height: 25px;"
+						src="images/linkedin.png" title="linkedin" /></a>
+					<div style="margin-left: 22px; color: #fff !important;" class="fb-like" data-href="https://www.facebook.com/UniHyr-491301114398011/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 				</div>
 <!--
 				 <div class="col_2">

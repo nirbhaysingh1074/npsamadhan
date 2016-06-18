@@ -548,7 +548,7 @@ public class AdminPanelController
 		{
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
-			
+			post.setActive(true);
 			post.setVerifyDate(dt);
 			postService.updatePost(post);
 
@@ -560,13 +560,14 @@ public class AdminPanelController
 			{
 				ids += cons.getUserid()+","; 
 				String userid=cons.getUserid();
-			}
-			String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
+				String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
 			Notifications nser=new Notifications();
 			nser.setDate(new java.sql.Date(new Date().getTime()));
 			nser.setNotification(content1);
-			nser.setUserid(post.getClient().getUserid());
+			nser.setUserid(userid);
 			notificationService.addNotification(nser);
+			}
+			
 			String subject = "UniHyr Alert: "+post.getClient().getOrganizationName()+" - "+post.getTitle()+" - "+post.getLocation();
 			
 			String content = "<table cellspacing='0' cellpadding='8' border='0' style='width: 100%; font-family: Arial, Sans-serif;  background-color: #fff' summary=''>"
@@ -671,9 +672,9 @@ public class AdminPanelController
 
 				if (info != null)
 				{
-					loginInfoService.updatePassword(info.getUserid(), null, id);
 					info.setIsactive("true");
 					loginInfoService.updateLoginInfo(info);
+					loginInfoService.updatePassword(info.getUserid(), null, id);
 				}
 				String companyName = "";
 				if (registration.getConsultName() != null)

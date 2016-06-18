@@ -97,26 +97,22 @@ public class PostDaoImpl implements PostDao
 	public List<Post> getActivePostsByClient(String clientId)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
-//		criteria.add(Restrictions.eq("client.userid", clientId));
-
 		Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
-				
 		criteria.add(Restrictions.isNotNull("published"))
 				.add(Restrictions.eq("isActive", true))
 				.add(Restrictions.isNull("deleteDate"))
 				.add(Restrictions.isNotNull("verifyDate"))
 				.add(Restrictions.isNull("closeDate"))
-				
 				.setFetchMode("postProfile", FetchMode.JOIN).addOrder(Order.desc("createDate"))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
 	}
 	
 	
-	public List<Post> getActivePostsByClient(String clientId, int first, int max,String sortParam)
+	public List<Post> getActivePostsByClient(String clientId, int first, int max,String sortParam,String filterBy)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
 		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("postId")))));
@@ -126,21 +122,29 @@ public class PostDaoImpl implements PostDao
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
 		
-		criteria.add(Restrictions.isNotNull("published"))
-		.add(Restrictions.eq("isActive", true))
-		.add(Restrictions.isNull("deleteDate"))
-		.add(Restrictions.isNull("closeDate"));
-		//.add(Restrictions.isNotNull("verifyDate"));
-		
-
+		if(filterBy.equals("isActive")){
+			criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNotNull("verifyDate"));
+		}
+		else if(filterBy.equals("isNotActive")){
+			criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNotNull("verifyDate"));
+		}
+			else if(filterBy.equals("saved")){
+			criteria.add(Restrictions.isNull("published"));
+		}else if(filterBy.equals("pending")){
+			criteria.add(Restrictions.isNull("verifyDate")).add(Restrictions.isNotNull("published"));
+		}
+		else
+		criteria.add(Restrictions.isNotNull(filterBy)).add(Restrictions.isNotNull("verifyDate"));
+		//.add(Restrictions.eq("isActive", true))
+		criteria.add(Restrictions.isNull("deleteDate"));
+		//	.add(Restrictions.isNull("closeDate"));
+		//	.add(Restrictions.isNotNull("verifyDate"));
 		 if(sortParam.indexOf("published")>=0)
 	      		criteria.addOrder(Order.desc(sortParam));
 	      		else
 	      		criteria.addOrder(Order.asc(sortParam));
 		criteria.setFirstResult(first);
 		criteria.setMaxResults(max);
-		
-		
 		List<Object[]> idList = criteria.list();
 		//get the id's from the projection
         List<Long> longList = new ArrayList<Long>();
@@ -148,7 +152,6 @@ public class PostDaoImpl implements PostDao
             Object[] record = long1;
             longList.add((Long) record[0]);
         }
-
 		if (longList.size() > 0)
 		{
 			//get all the id's corresponding to the projection, 
@@ -181,23 +184,31 @@ public class PostDaoImpl implements PostDao
 	
 	
 	@Override
-	public long countActivePostByClient(String clientId)
+	public long countActivePostByClient(String clientId,String filterBy)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
-//		criteria.add(Restrictions.eq("client.userid", clientId));
-				
+		//criteria.add(Restrictions.eq("client.userid", clientId));
 		Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
-				
-		criteria.add(Restrictions.isNotNull("published"))
-				.add(Restrictions.eq("isActive", true))
-				.add(Restrictions.isNull("deleteDate"))
-				.add(Restrictions.isNull("closeDate"))
-			//	.add(Restrictions.isNotNull("verifyDate"))
-				.setProjection(Projections.rowCount());
-		
+		if(filterBy.equals("isActive")){
+		criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNotNull("verifyDate"));
+		}
+		else if(filterBy.equals("isNotActive")){
+		criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNotNull("verifyDate"));
+		}
+		else if(filterBy.equals("saved")){
+		criteria.add(Restrictions.isNull("published"));
+		}else if(filterBy.equals("pending")){
+		criteria.add(Restrictions.isNull("verifyDate")).add(Restrictions.isNotNull("published"));
+		}
+		else
+		criteria.add(Restrictions.isNotNull(filterBy)).add(Restrictions.isNotNull("verifyDate"));
+		//.add(Restrictions.eq("isActive", true))
+		criteria.add(Restrictions.isNull("deleteDate"));
+		//.add(Restrictions.isNotNull("verifyDate"))
+		criteria.setProjection(Projections.rowCount());
 		return (Long)criteria.uniqueResult();
 	}
 	
@@ -207,8 +218,8 @@ public class PostDaoImpl implements PostDao
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
 		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("postId")))));
 		criteria.add(Restrictions.isNull("deleteDate"));
-	//	.add(Restrictions.isNotNull("verifyDate"));
-//		criteria.add(Restrictions.eq("client.userid", userid));
+		//	.add(Restrictions.isNotNull("verifyDate"));
+		//	criteria.add(Restrictions.eq("client.userid", userid));
 		
 		Criterion cn1 = Restrictions.eq("client.userid", userid);
 		criteria.createAlias("client", "clientAlias");
@@ -1419,5 +1430,17 @@ public class PostDaoImpl implements PostDao
 		
 		return (Long)criteria.uniqueResult();
 	}
-	
+	@Override
+	public List<Post> getAllActivePosts()
+	{
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
+		criteria.add(Restrictions.isNull("deleteDate"))
+		.add(Restrictions.isNotNull("published"))
+		.add(Restrictions.eq("isActive", true))
+		.add(Restrictions.isNull("deleteDate"))
+		.add(Restrictions.isNull("closeDate"))
+		.add(Restrictions.isNotNull("verifyDate"));
+		
+		return criteria.list();
+	}
 }

@@ -42,7 +42,7 @@
 		      <div class="filter">
 		        <div class="col-md-7  pagi_summary"><span><%= post.getJobCode()%> ( <%= post.getTitle() %> - <%= post.getLocation() %> )</span></div>
 		       <%
-		   	if(post.getVerifyDate()!=null){
+		   	if(post.getVerifyDate()!=null&&post.isActive()&&post.getCloseDate()==null){
 		       %>
 		        <div class="col-md-5">
 				  <!--  <div class="set_col"><a href=""><img src="images/ic_1.png" alt="img"> <img src="images/ic_2.png" alt="img"></a></div> -->
@@ -139,7 +139,7 @@
 								
 							</dd>
 						</dl>
-						<dl>
+					<%-- 	<dl>
 							<dt>
 								<label>Role</label>
 							</dt>
@@ -156,7 +156,7 @@
 								<label><%= post.getDesignation()%></label>
 								
 							</dd>
-						</dl>
+						</dl> --%>
 						<dl>
 							<dt>
 								<label>Role Type</label>
@@ -178,10 +178,10 @@
 						</dl>
 						<dl>
 							<dt>
-								<label>Annual CTC</label>
+								<label>Annual fixed CTC</label>
 							</dt>
 							<dd>
-								<label><%= post.getCtc_min() %> - <%= post.getCtc_max() %> Lacs</label>
+								<label>Min : <%= post.getCtc_min() %> Lacs   Max: <%= post.getCtc_max() %> Lacs</label>
 								
 							</dd>
 						</dl>
@@ -379,7 +379,7 @@
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);
 					        			</script>
-			<%}%>  
+			<%}%>    
 		<%}%> 
 	</div>
 </div>

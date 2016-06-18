@@ -26,8 +26,8 @@ public class TriggerOnPost extends TimerTask implements ApplicationContextAware
 	
 	@Override 
 	public void run(){
-		System.out.println(this.applicationContext);
-		AutoTriggerController autTrigger=		applicationContext.getBean("autoTriggerController",AutoTriggerController.class);
+		System.out.println(applicationContext);
+		AutoTriggerController autTrigger=applicationContext.getBean("autoTriggerController",AutoTriggerController.class);
 		autTrigger.checkPostIdle();
 		
 	}

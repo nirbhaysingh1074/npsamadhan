@@ -158,32 +158,32 @@ public class ConsultantController
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.WEEK_OF_MONTH, -1);
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+		Date rowDate=null;
 		try
 		{
-
-			Date rowDate = df.parse(df.format(cal.getTime()));
-			long quata = postProfileService.countPostProfilesForPostByDate(post.getPostId(), loggedinUser,
-					rowDate);
-			if (post != null && post.isActive())
-			{
-				if (post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
-				{
-					map.addAttribute("quataExceed", false);
-				} else
-				{
-					map.addAttribute("quataExceed", true);
-				}
-				map.addAttribute("post", post);
-
-				CandidateProfileModel model = new CandidateProfileModel();
-				model.setPost(post);
-				map.addAttribute("uploadProfileForm", model);
-				return "uploadprofile";
-			}
+			rowDate = df.parse(df.format(cal.getTime()));
 		} catch (ParseException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		long quata = postProfileService.countPostProfilesForPostByDate(post.getPostId(), loggedinUser,
+				rowDate);
+		if (post != null && post.isActive())
+		{
+			if (post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
+			{
+				map.addAttribute("quataExceed", false);
+			} else
+			{
+				map.addAttribute("quataExceed", true);
+			}
+			map.addAttribute("post", post);
+
+			CandidateProfileModel model = new CandidateProfileModel();
+			model.setPost(post);
+			map.addAttribute("uploadProfileForm", model);
+			return "uploadprofile";
 		}
 		return "redirect:consdashboard";
 	}
@@ -390,6 +390,31 @@ public class ConsultantController
 			
 				map.addAttribute("rpp", GeneralConfig.rpp_cons);
 				map.addAttribute("pn", 1);
+				Calendar cal = Calendar.getInstance();
+				SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+				Date rowDate;
+				try
+				{
+					rowDate = df.parse(df.format(cal.getTime()));
+					long quata = postProfileService.countPostProfilesForPostByDate(post.getPostId(), loggedinUser,
+						rowDate);
+					if (post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
+					{
+						map.addAttribute("quataExceed", false);
+					} else
+					{
+						map.addAttribute("quataExceed", true);
+					}
+				
+				} catch (ParseException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				
 			}
 		}
 		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(cons.getUserid()));
@@ -798,7 +823,7 @@ public class ConsultantController
 				{
 					return "failed";
 				}
-				else if(mpf.getSize()<=GeneralConfig.filesize)
+				else if(mpf.getSize()>GeneralConfig.filesize)
         		{
         			return "failed";
         		}

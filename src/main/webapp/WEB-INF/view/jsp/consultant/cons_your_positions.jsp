@@ -34,6 +34,7 @@ function fillProfiles(pageNo)
 	}
 	if(postId != "" && clientId != "")
 	{
+		pleaseWait();
 		$.ajax({
 			type : "GET",
 			url : "profilelistbyconsidclientid",
@@ -46,6 +47,7 @@ function fillProfiles(pageNo)
 			success : function(data) {
 				$('.candidate_profiles_for_cons').html(data);
 				$('.candidate_profiles_def').hide();
+			pleaseDontWait();
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
 				alert(xhr.status);
@@ -306,6 +308,10 @@ Post post=(Post)request.getAttribute("selectedPost");
 						<div class="block consulting">
 							<div class="pull-left">
 								<%
+								boolean quataExceed = (Boolean)request.getAttribute("quataExceed");
+								
+								
+								
 								
 								
 								if(postConsList != null && !postConsList.isEmpty())
@@ -318,9 +324,17 @@ Post post=(Post)request.getAttribute("selectedPost");
 									<%
 								}else{
 									if(post.isActive()){
+										if(quataExceed){
+											%>
+											<a style="padding: 5px 13px;"  href="javascript:void(0)" class="btn file_btn btn_disabled"><strong>Upload New Profile</strong></a><br>
+											You have already exhausted your weekly quota, please submit profile later.
+										<%		
+										}else{
+											
+										
 									%>
 										<a style="padding: 5px 13px;"  href="javascript:void(0)" class="btn file_btn upload_new_profile"><strong>Upload New Profile</strong></a>
-									<%
+									<%}
 								}else{
 									%>
 									<a style="padding: 5px 13px;"  href="javascript:void(0)" class="btn file_btn btn_disabled"><strong>Upload New Profile</strong></a>
@@ -820,7 +834,7 @@ Post post=(Post)request.getAttribute("selectedPost");
 		            <option value="accepted">Shortlisted</option>
 		            <option value="rejected">Rejected</option>
 		            <option value="pending">Pending</option>
-		            <option value="recruited">Recruited</option>
+<!-- 		            <option value="recruited">Recruited</option> -->
 		          </select>
 		        </div> <%
         String sortParam=(String)request.getAttribute("sortParam");

@@ -56,7 +56,7 @@
 					if(obj.status == true)
 					{
 						alertify.error("Profile already uploaded for this post !");
-						$('.email_error').html("Profile with this email alreadt uploaded for this post !");
+						$('.email_error').html("Profile with this email already uploaded for this post !");
 						$('#email').focus();
 					}
 				},

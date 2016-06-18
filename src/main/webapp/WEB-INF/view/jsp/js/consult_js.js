@@ -187,6 +187,7 @@ jQuery(document).ready(function() {
 		 	alertify.confirm("By adding these positions to your active list, you agree to terms of condientiality of the client", function (e, str) {
 				if (e) 
 				{
+					pleaseWait();
 					$.ajax({
 						type : "GET",
 						url : "consBulkInterest",
@@ -198,7 +199,8 @@ jQuery(document).ready(function() {
 							{
 
 					//		alertify.success("Hi, Submitted Interest Successfully !");
-							location.href="";
+								pleaseDontWait();
+								location.href="";
 							}
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
@@ -385,9 +387,10 @@ function consCloseRequest(pids){
 }
 function consShowInterest(pids){
 
- 	alertify.confirm("Are you want to add  this post to your active postions?", function (e, str) {
+ 	alertify.confirm("By adding these positions to your active list, you agree to terms of condientiality of the client", function (e, str) {
 		if (e) 
 		{
+			pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "consBulkInterest",
@@ -397,8 +400,8 @@ function consShowInterest(pids){
 					var obj = jQuery.parseJSON(data);
 					if(obj.status == "success")
 					{
-
-							alertify.success("Hi, Submitted Interest Successfully !");
+						pleaseDontWait();
+							//alertify.success("Hi, Submitted Interest Successfully !");
 					location.href="";
 					}
 				},

@@ -47,8 +47,8 @@
 		var location = $('#location').val();
 		var fun = $('#function').val();
 		var noOfPosts = $('#noOfPosts').val();
-		var role = $('#role').val();
-		var designation = $('#designation').val();
+		/* var role = $('#role').val();
+		var designation = $('#designation').val(); */
 		var exp_min = $('#exp_min').val();
 		var exp_max = $('#exp_max').val();
 		var ctc_min = $('#ctc_min').val();
@@ -81,21 +81,21 @@
 			$('.noOfPosts_error').html('Please enter no of posts')
 			valid = false;
 		}
-		if(role == "")
+		/* if(role == "")
 		{
 			$('.role_error').html('Please enter post role')
 			valid = false;
-		}
+		} */
 		if(editSummary == "")
 		{
 			$('.editSummary_error').html('Please enter edit summary');
 			valid = false;
 		}
-		if(designation == "")
+		/* if(designation == "")
 		{
 			$('.designation_error').html('Please enter post designation')
 			valid = false;
-		}
+		} */
 		if(exp_min == ""  || isNaN(exp_min))
 		{
 			$('.exp_min_error').html('Please select minimum expirence')
@@ -207,7 +207,7 @@ jQuery(document).ready(function() {
 	   <%
 	   Post post=(Post)request.getAttribute("post");
 	   Registration registration=post.getClient();
-	  if(post.getVerifyDate()!=null){
+	  if(post.getCloseDate()==null&&post.isActive()){
 	   %>
 	  
 	  
@@ -306,7 +306,7 @@ jQuery(document).ready(function() {
 		              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
 		            </dd>
 		          </dl>
-		          <dl style="clear: both;">
+		          <%-- <dl style="clear: both;">
 		            <dt>
 		              <label>Role<span class='error'>*</span></label>
 		            </dt>
@@ -323,7 +323,7 @@ jQuery(document).ready(function() {
 		              <form:input path="designation" />
 		              <span class='error designation_error'><form:errors path="designation"/></span>
 		            </dd>
-		          </dl>
+		          </dl> --%>
 		          <dl style="clear: both;">
 		            <dt>
 		              <label>Experience<span class='error'>*</span></label>
@@ -361,7 +361,7 @@ jQuery(document).ready(function() {
 		          </dl>
 		          <dl>
 		            <dt>
-		              <label>Annual CTC<span class='error'>*</span></label>
+		              <label>Annual Fixed CTC<span class='error'>*</span></label>
 		            </dt>
 		            <dd>
 		              <div class="row">
@@ -546,7 +546,7 @@ jQuery(document).ready(function() {
 	    </div>
 	  
 	  <%}else{ %>
-	  Post not verified yet.
+	  Post can not be edited.
 	  <%} %>
 	  </div>
 	  
