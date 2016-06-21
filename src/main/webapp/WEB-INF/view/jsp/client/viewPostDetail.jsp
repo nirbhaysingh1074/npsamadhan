@@ -342,7 +342,7 @@
 		        <div id="jobDescription">
 		        </div>
 		      </div>
-						  <%
+		<%-- 				  <%
 							 if(post.getUploadjd()!=null){
 					            String scheme = request.getScheme();
 							    String serverName = request.getServerName();
@@ -379,7 +379,7 @@
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);
 					        			</script>
-			<%}%>    
+			<%}%>  --%>   
 		<%}%> 
 	</div>
 </div>

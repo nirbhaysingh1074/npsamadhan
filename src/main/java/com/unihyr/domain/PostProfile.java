@@ -55,20 +55,32 @@ public class PostProfile
 	
 	@Column
 	private Date joinDate;
-	
+
 	@Column
 	private Date joinDropDate;
 	
 	@Column
+	private Date withdrawDate;
+	
+	@Column
 	private String rejectReason;
+	
 	@Column
 	private String actionPerformerId;
 	
 	@Column
 	private Boolean viewStatus;
 	
+	public Date getWithdrawDate()
+	{
+		return withdrawDate;
+	}
 
-	
+	public void setWithdrawDate(Date withdrawDate)
+	{
+		this.withdrawDate = withdrawDate;
+	}
+
 	public String getActionPerformerId()
 	{
 		return actionPerformerId;

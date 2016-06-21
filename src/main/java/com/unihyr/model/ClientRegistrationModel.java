@@ -57,9 +57,20 @@ public class ClientRegistrationModel
 	private int usersRequired;
 
 	private String websiteUrl;
-	
+
 	private String officeAddress;
+	private String designation;
 	
+	public String getDesignation()
+	{
+		return designation;
+	}
+
+	public void setDesignation(String designation)
+	{
+		this.designation = designation;
+	}
+
 	public String getName()
 	{
 		return name;

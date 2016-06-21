@@ -417,7 +417,7 @@ public class PostDaoImpl implements PostDao
 		Criteria criteria =  this.sessionFactory.getCurrentSession().createCriteria(Post.class);
 		criteria.add(Restrictions.isNull("deleteDate"));
 		criteria.add(Restrictions.isNotNull("closeDate"));
-//		criteria.add(Restrictions.eq("client.userid", clientId));
+		//criteria.add(Restrictions.eq("client.userid", clientId));
 		Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);

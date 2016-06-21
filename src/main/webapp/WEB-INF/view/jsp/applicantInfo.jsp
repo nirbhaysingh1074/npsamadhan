@@ -606,7 +606,7 @@ jQuery(document).ready(function() {
 </script>
 
 
-							 <%
+					<%-- 		 <%
 							 if(pp.getProfile().getResumePath()!=null){
 								 
 					            String scheme = request.getScheme();
@@ -643,7 +643,7 @@ jQuery(document).ready(function() {
 					        			    x.setAttribute("width", "100%");
 					        				$('#tab-1').append(x);
 					        			</script>
-					        	<%} %>
+					        	<%} %> --%>
 </div>
 </body>
 </html>

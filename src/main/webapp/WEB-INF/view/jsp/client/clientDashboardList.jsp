@@ -121,7 +121,7 @@
 		       				<th align="left"  width="5%">Status</th>
 		       				<th align="left">Job Id</th>
 		       				<th align="left" style="width: 14%;">Role</th>
-		       				<th  >No of Positions</th> 
+		       				<th >No of Positions</th> 
 		       				
 		       				<th align="left">Location</th>
 		       				<th >Posted Date</th>
@@ -129,7 +129,7 @@
 		       				<th style="width:80px;" align="left">Received</th>
 		       				<th >Shortlisted</th>
 		       				
-		       				<th  width="10%" style="text-align: right;">Action</th>
+		       				<th  width="10%" style="text-align: right;">View JD</th>
 		       			</tr>
 	       			</thead>
 	       			<tbody>
@@ -200,7 +200,7 @@
 							                  			<sec:authorize access="hasRole('ROLE_EMP_USER')">
 							                  				<%if(post.getPublished() != null) {%>
 							                  				
-							                  				<img style="cursor: auto;" src="images/cloud-yello.png" width="20px" title="Verification Pending">
+							                  				<img style="cursor: auto;" src="images/cloud-yellow.png" width="20px" title="Verification Pending">
 							                  				<%}else{ %>
 							                  				<img class="st_unpublished"   src="images/cloud-gray.png" width="20px" title="Click to publish">
 							                  				<%}%>

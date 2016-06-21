@@ -63,10 +63,11 @@
 
 	<div class="mid_wrapper">
 	  <div class="container">
-	    <div style="text-align: center;margin-top: 50px">
-	    	<h1 style="color: #000;">New User</h1>
+	   
+	   <div class="form_cont formContNewUser" > 
+<div style="text-align: center;margin-bottom: 20px;">
+	    	<h2 class="formHeading">NEW USER</h2>
 	    </div>
-	    <div class="form_cont" style="margin-top: 50px;">
           <form:form method="POST" action="consnewuser" commandName="cuForm"  onsubmit=" return validateForm()">
 	      <div class="block">
 	        <div class="form_col">

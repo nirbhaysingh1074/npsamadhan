@@ -653,13 +653,13 @@ public class AdminPanelController
 				registration.setFeePercent5(Double.parseDouble(request.getParameter("feePercent5")));
 				registration.setSlab1(request.getParameter("slab1"));
 				// registration.setCtcSlabs1Max(Double.parseDouble(request.getParameter("ctcSlabs1Max")));
-				registration.setSlab2(request.getParameter("slab1"));
+				registration.setSlab2(request.getParameter("slab2"));
 				// registration.setCtcSlabs2Max(Double.parseDouble(request.getParameter("ctcSlabs2Max")));
-				registration.setSlab3(request.getParameter("slab1"));
+				registration.setSlab3(request.getParameter("slab3"));
 				// registration.setCtcSlabs3Max(Double.parseDouble(request.getParameter("ctcSlabs3Max")));
-				registration.setSlab4(request.getParameter("slab1"));
+				registration.setSlab4(request.getParameter("slab4"));
 				// registration.setCtcSlabs4Max(Double.parseDouble(request.getParameter("ctcSlabs4Max")));
-				registration.setSlab5(request.getParameter("slab1"));
+				registration.setSlab5(request.getParameter("slab5"));
 			}
 			registration.setPaymentDays(Integer.parseInt(request.getParameter("paymentDays")));
 			registration.setUsersRequired(Integer.parseInt(request.getParameter("userQuota")));

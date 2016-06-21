@@ -85,4 +85,6 @@ public interface PostProfileDao
 	public List<PostProfile> getPostProfileOfferedByPost(long postId);
 
 	long countShortlistedProfileListPostId(long postId,String status);
+
+	boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob);
 }

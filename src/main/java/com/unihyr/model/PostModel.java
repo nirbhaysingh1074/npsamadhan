@@ -38,8 +38,9 @@ public class PostModel
 
 	private String workHourEndHour;
 	private String workHourEndMin;
-	
+
 	private String editSummary;
+	private String variablePayComment;
 
 //	@NotBlank(message="{NotBlank.postForm.criteria}")
 //	private String criteria;
@@ -68,6 +69,16 @@ public class PostModel
 	private MultipartFile uploadJdfile;
 
 	private double feePercent;
+
+	public String getVariablePayComment()
+	{
+		return variablePayComment;
+	}
+
+	public void setVariablePayComment(String variablePayComment)
+	{
+		this.variablePayComment = variablePayComment;
+	}
 
 	public double getFeePercent()
 	{

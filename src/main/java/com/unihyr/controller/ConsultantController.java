@@ -153,8 +153,6 @@ public class ConsultantController
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
-		
-		
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.WEEK_OF_MONTH, -1);
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
@@ -164,7 +162,6 @@ public class ConsultantController
 			rowDate = df.parse(df.format(cal.getTime()));
 		} catch (ParseException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		long quata = postProfileService.countPostProfilesForPostByDate(post.getPostId(), loggedinUser,
@@ -179,7 +176,6 @@ public class ConsultantController
 				map.addAttribute("quataExceed", true);
 			}
 			map.addAttribute("post", post);
-
 			CandidateProfileModel model = new CandidateProfileModel();
 			model.setPost(post);
 			map.addAttribute("uploadProfileForm", model);
@@ -197,7 +193,8 @@ public class ConsultantController
 				model.getEmail(), null);
 		boolean contact_st = postProfileService.checkPostProfileAvailability(model.getPost().getPostId(), null,
 				model.getContact());
-
+		boolean dob = postProfileService.getPostProfileByContactAndDob(model.getPost().getPostId(), model.getEmail(),
+				model.getDateofbirth());
 		MultipartFile resumefile = model.getResumeFile();
 		String resumefilename = resumefile.getOriginalFilename();
 		String resumeNewfilename = null;
@@ -214,8 +211,16 @@ public class ConsultantController
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 		try
 		{
-
-			Date rowDate = df.parse(df.format(new Date()));
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.WEEK_OF_MONTH, -1);
+			Date rowDate=null;
+			try
+			{
+				rowDate = df.parse(df.format(cal.getTime()));
+			} catch (ParseException e)
+			{
+				e.printStackTrace();
+			}
 			long quata = postProfileService.countPostProfilesForPostByDate(post.getPostId(), loggedinUser,
 					rowDate);
 
@@ -252,7 +257,7 @@ public class ConsultantController
 
 		}
 
-		if (result.hasErrors() || email_st || contact_st || !valid)
+		if (result.hasErrors() || email_st || contact_st || !valid || dob)
 		{
 			if (email_st)
 			{
@@ -262,7 +267,10 @@ public class ConsultantController
 			{
 				map.addAttribute("profileExist_contact", "Profile with this contact already uploaded for this post !");
 			}
-
+			if(dob)
+			{
+				map.addAttribute("profileExist_dob", "Profile with this dob already uploaded for this post !");
+			}
 			map.addAttribute("post", post);
 			map.addAttribute("uploadMsg", uploadMsg);
 			return "uploadprofile";
@@ -351,7 +359,7 @@ public class ConsultantController
 			cons = cons.getAdmin();
 		}
 
-		map.addAttribute("totalActive",
+	/*	map.addAttribute("totalActive",
 				postService.countPostsFilteredForConsultant(cons.getUserid(), null, null, null));
 		map.addAttribute("totalprofiles",
 				postProfileService.countSubmittedProfileByClientOrConsultant(null, cons.getUserid()));
@@ -360,7 +368,7 @@ public class ConsultantController
 		map.addAttribute("totaljoin",
 				postProfileService.countJoinedProfileByClientOrConsultant(null, cons.getUserid()));
 		map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(null, cons.getUserid()));
-
+*/
 		String pid = request.getParameter("pid");
 		System.out.println("pid : " + pid);
 		if (pid != null && pid.length() > 0)
@@ -378,43 +386,12 @@ public class ConsultantController
 
 				map.addAttribute("selClient", client);
 
-				map.addAttribute("profileList",
-						postProfileService.getPostProfileByClientPostAndConsultant(client.getUserid(), cons.getUserid(),
-								post.getPostId(), 0, GeneralConfig.rpp_cons, "submitted", "submitted","rejected"));
-				map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(
-						client.getUserid(), cons.getUserid(), post.getPostId(), "submitted"));
-				map.addAttribute("postSelected", post.getPostId());
+//				map.addAttribute("postSelected", post.getPostId());
 				map.addAttribute("selectedPost", postService.getPost(post.getPostId()));
-				map.addAttribute("totalpartner", postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc").size());
-				map.addAttribute("totalshortlist", postProfileService.countShortlistedProfileListPostId(post.getPostId(),"accepted"));
+//				map.addAttribute("totalpartner", postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc").size());
+//				map.addAttribute("totalshortlist", postProfileService.countShortlistedProfileListPostId(post.getPostId(),"accepted"));
 			
-				map.addAttribute("rpp", GeneralConfig.rpp_cons);
-				map.addAttribute("pn", 1);
-				Calendar cal = Calendar.getInstance();
-				SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
-				Date rowDate;
-				try
-				{
-					rowDate = df.parse(df.format(cal.getTime()));
-					long quata = postProfileService.countPostProfilesForPostByDate(post.getPostId(), loggedinUser,
-						rowDate);
-					if (post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
-					{
-						map.addAttribute("quataExceed", false);
-					} else
-					{
-						map.addAttribute("quataExceed", true);
-					}
-				
-				} catch (ParseException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-				
-				
+			
 			}
 		}
 		map.addAttribute("clientList", registrationService.getClientsByIndustyForConsultant(cons.getUserid()));
@@ -425,7 +402,7 @@ public class ConsultantController
 	@RequestMapping(value = "/profilelistbyconsidclientid", method = RequestMethod.GET)
 	public String profilelistbyconsidclientid(ModelMap map, @RequestParam String clientId, @RequestParam String postId,
 			@RequestParam String pageNo, Principal principal, HttpServletRequest request)
-	{
+		{
 		int pn = Integer.parseInt(pageNo);
 
 		String sortParam = request.getParameter("sortParam");
@@ -436,6 +413,8 @@ public class ConsultantController
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
+		Post post=postService.getPost(Long.parseLong(postId));
 		if (clientId != null && clientId.length() > 0 && postId != null && postId.length() > 0)
 		{
 			map.addAttribute("profileList", postProfileService.getPostProfileByClientPostAndConsultant(clientId,
@@ -443,13 +422,46 @@ public class ConsultantController
 			map.addAttribute("totalCount", postProfileService.countPostProfileByClientPostAndConsultant(clientId,
 					loggedinUser, Long.parseLong(postId), sortParam));
 					map.addAttribute("postSelected", postId);
-					map.addAttribute("selectedPost", postService.getPost(Long.parseLong(postId)));
-		} else
+					map.addAttribute("selectedPost", post);
+		} 
+		else
 		{
 			map.addAttribute("totalCount", 0);
 			map.addAttribute("postSelected", postId);
-			map.addAttribute("selectedPost", postService.getPost(Long.parseLong(postId)));
+			map.addAttribute("selectedPost", post);
 		}
+		
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.WEEK_OF_MONTH, -1);
+		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+		Date rowDate=null;
+		try
+		{
+			rowDate = df.parse(df.format(cal.getTime()));
+		} catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		try
+		{
+			rowDate = df.parse(df.format(cal.getTime()));
+			long quata = postProfileService.countPostProfilesForPostByDate(post.getPostId(), loggedinUser,
+					rowDate);
+			if (post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
+			{
+				map.addAttribute("quataExceed", false);
+			} else
+			{
+				map.addAttribute("quataExceed", true);
+			}
+
+		} 
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+		
+		
 		map.addAttribute("rpp", GeneralConfig.rpp_cons);
 		map.addAttribute("pn", Integer.parseInt(pageNo));
 		map.addAttribute("sortParam", sortParam);
@@ -1088,17 +1100,9 @@ e.printStackTrace();
 "<tr><td>Payment Days (as per contract) (days)</td><td>"+pp.getProfile().getRegistration().getPaymentDays()+"</td></tr>"+
  
 "<tr><td>Payment Due Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForCo())+"</td></tr></table>";
-					
- 
- 
 mailContent+="<br><br> Best Regards,<br>"+
 "UniHyr Admin Team";
-					
-					
 					mailService.sendMail(pp.getPost().getClient().getUserid(), "Bill Invoice verfication",mailContent);
-					
-					
-
 					String	content= pp.getProfile().getName() +" has accepted offer for the "+post.getTitle()+" ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
 					nser.setDate(new java.sql.Date(new Date().getTime()));
@@ -1141,7 +1145,20 @@ mailContent+="<br><br> Best Regards,<br>"+
 				
 					//st = mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_reject");
-				} else
+				}else if (ppstatus.equals("candidate_withdraw")){
+					Date date = new Date();
+					java.sql.Date dt = new java.sql.Date(date.getTime());
+					pp.setWithdrawDate(dt);
+					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
+
+					String	content= pp.getProfile().getName() +" had withdrawn candidature for the "+post.getTitle()+" ("+(client.getOrganizationName())+")" ;
+					Notifications nser=new Notifications();
+					nser.setDate(new java.sql.Date(new Date().getTime()));
+					nser.setNotification(content);
+					nser.setUserid(principal.getName());
+					notificationService.addNotification(nser);
+					
+				}else
 				{
 					obj.put("status", "failed");
 				}

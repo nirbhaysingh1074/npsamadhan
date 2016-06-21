@@ -176,7 +176,7 @@ Registration reg = (Registration)request.getSession().getAttribute("registration
 				<div class="icon "  >
 					<img  class="messageIcon"  src="images/mailbox.png">
 					
-					<span id="messageCount" class="notificationCount" ></span>
+					<span id="messageCount" class="messageCount" ></span>
 				</div>
 			</div>
 			<div class="noti-icon more_product" onclick="getNotifications()">

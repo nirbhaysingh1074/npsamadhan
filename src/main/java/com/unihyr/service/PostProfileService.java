@@ -292,5 +292,5 @@ public interface PostProfileService
 	long countShortlistedProfileListPostId(long postId,String status);
 	
 	
-
+	boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob);
 }

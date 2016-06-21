@@ -391,6 +391,7 @@ public class ClientController
 			model.setWorkHourStartHour(post.getWorkHourStartHour());
 			model.setWorkHourEndHour(post.getWorkHourEndHour());
 			model.setFeePercent(post.getFeePercent());
+			model.setVariablePayComment(post.getVariablePayComment());
 			map.addAttribute("postForm", model);
 			map.addAttribute("post", post);
 			map.addAttribute("locList", locationService.getLocationList());

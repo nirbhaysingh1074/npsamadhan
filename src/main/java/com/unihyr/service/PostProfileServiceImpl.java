@@ -226,6 +226,12 @@ public class PostProfileServiceImpl implements PostProfileService
 	public long countShortlistedProfileListPostId(long postId, String status)
 	{
 		return this.postProfileDao.countShortlistedProfileListPostId(postId,status);
-		}
+	}
+
+	@Override
+	public boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob)
+	{
+		return this.postProfileDao.getPostProfileByContactAndDob(postId,contactNo,dob);
+	}
 	
 }

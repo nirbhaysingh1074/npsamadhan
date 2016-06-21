@@ -99,7 +99,6 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.setFirstResult(first)
 				.setMaxResults(max)
 				.list();
-		
 		return list;
 	}
 
@@ -189,7 +188,6 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
 				.setMaxResults(max);
-
 		if(filterBy.indexOf("pending")>=0){
 			criteria.add(Restrictions.isNull("accepted"));
 			criteria.add(Restrictions.isNull("rejected"));
@@ -200,9 +198,6 @@ public class PostProfileDaoImpl implements PostProfileDao
   		criteria.addOrder(Order.desc(sortParam));
   		else
   		criteria.addOrder(Order.asc(sortParam));
-		
-		
-		
 		return criteria.list();
 	}
 	
@@ -820,4 +815,30 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.list();
 		return list;
 	}
+	@Override
+	public boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob){
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
+		criteria.createAlias("profile", "profileAlias");
+		criteria.createAlias("post", "postAlias");
+		criteria.add(Restrictions.eq("postAlias.postId", postId));
+		
+		if(contactNo != null && contactNo.length() > 0)
+		{
+			criteria.add(Restrictions.eq("profileAlias.email", contactNo));
+		}
+		if(dob != null)
+		{
+			criteria.add(Restrictions.eq("profileAlias.contact", dob));
+		}
+		
+			criteria.setProjection(Projections.rowCount());
+			
+			long count = (Long)criteria.uniqueResult();
+			if(count > 0)
+			{
+				return true;
+			}
+		return false;
+	}
+	
 }

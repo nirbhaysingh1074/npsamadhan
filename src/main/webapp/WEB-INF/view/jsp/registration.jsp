@@ -233,6 +233,36 @@
 						<a href="home"><img alt="" src="images/logo.png"></a>
 						<h2 style="float: right;">Registration for Employer</h2>
 					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Your Name<span class="req">*</span></label>
+							<form:input path="name" />
+							<span class="error name_error">&nbsp;<form:errors path="name" /></span>
+						</div>
+					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Phone.<span class="req">*</span></label>
+							<form:input path="contact" cssStyle="padding-left:35px;" cssClass="number_only" maxlength="10" minlength="10"  />
+							<span style="position: relative; padding: 5px; border-right: 1px solid rgb(212, 212, 212); float: left; margin-top: -27px;font-size: 12px;"> +91 </span>
+							<span class="error contact_error">&nbsp;<form:errors path="contact" /></span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Email id<span class="req">*</span></label>
+							<form:input path="userid" type="email"  onchange="checkUserExistance()" />
+							<span class="error userid_error">&nbsp;<form:errors path="userid" /> <%= usermsg %></span>
+						</div>
+					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Designation<span class="req">*</span></label>
+							<form:input path="designation"  />
+							<span class="error designation_error">&nbsp;<form:errors path="designation" /> </span>
+						</div>
+					</div>
 					
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
@@ -241,13 +271,7 @@
 							<span class="error org_error">&nbsp;<form:errors path="organizationName" /> <%= orgmsg %></span>
 						</div>
 					</div>
-					<div class="reg-wrap">
-						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Email id<span class="req">*</span></label>
-							<form:input path="userid" type="email"  onchange="checkUserExistance()" />
-							<span class="error userid_error">&nbsp;<form:errors path="userid" /> <%= usermsg %></span>
-						</div>
-					</div>
+					
 				<%-- 	<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
@@ -264,8 +288,8 @@
 							<span class="error repassword_error">&nbsp;<form:errors path="repassword" /></span>
 						</div>
 					</div> --%>
-					<div class="clearfix"></div>
-					<div class="reg-wrap">
+					
+					<div class="reg-wrap" style="display: none;">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Revenue<span class="req">*</span></label>
 							<form:input path="revenue" cssClass="number_only" maxlength="10"   style="padding-right: 150px" />
@@ -293,15 +317,7 @@
 							<span class="error noofpeoples_error">&nbsp;<form:errors path="noofpeoples" /></span>
 						</div>
 					</div>
-					<div class="reg-wrap">
-						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Contact No.<span class="req">*</span></label>
-							<form:input path="contact" cssStyle="padding-left:35px;" cssClass="number_only" maxlength="10" minlength="10"  />
-							<span style="position: relative; padding: 5px; border-right: 1px solid rgb(212, 212, 212); float: left; margin-top: -27px;font-size: 12px;"> +91 </span>
-							<span class="error contact_error">&nbsp;<form:errors path="contact" /></span>
-						</div>
-					</div>
-					<div class="clearfix"></div>
+					
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Website URL<span style="font-size: 9px;"></span><span class="req">*</span></label>
@@ -309,7 +325,7 @@
 							<span class="error websiteUrl_error">&nbsp;<form:errors path="websiteUrl" /></span>
 						</div>
 					</div>
-					<div class="reg-wrap">
+					<div class="reg-wrap" style="display: none;">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>No. of locations<span class="req">*</span></label>
 							<form:input path="hoAddress" class="number_only number_pasitive"/>
@@ -319,7 +335,7 @@
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Office Address<span class="req">*</span></label>
+							<label>Corporate Office + City<span class="req">*</span></label>
 							<form:textarea path="officeAddress" />
 							<span class="error officeAddress_error">&nbsp;<form:errors path="officeAddress" /></span>
 						</div>
@@ -328,7 +344,6 @@
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>About Company</label>
 							<form:textarea path="about"  rows="4"/>
-							
 							<span class="error about_error">&nbsp;<form:errors path="about" /></span>
 						</div>
 					</div>
@@ -376,13 +391,7 @@
 						</div>
 					</div>
 					
-					<div class="reg-wrap">
-						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Your Name<span class="req">*</span></label>
-							<form:input path="name" />
-							<span class="error name_error">&nbsp;<form:errors path="name" /></span>
-						</div>
-					</div>
+					
 					<div class="clearfix"></div>
 					<div class="login-footer bottom-padding clearfix">
 						<div class="form_submt bottom-padding10" class='clearfix'>

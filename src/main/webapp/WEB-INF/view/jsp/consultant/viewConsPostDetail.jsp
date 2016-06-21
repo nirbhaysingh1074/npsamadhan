@@ -161,14 +161,12 @@
 								
 							</dd>
 						</dl>
-						
 						<dl>
 							<dt>
 								<label>Exp.</label>
 							</dt>
 							<dd>
 								<label><%= post.getExp_min() %> - <%= post.getExp_max() %> Year(s)</label>
-								
 							</dd>
 						</dl>
 						<dl>
@@ -177,7 +175,6 @@
 							</dt>
 							<dd>
 								<label>Min : <%= post.getCtc_min() %> Lacs Max :  <%= post.getCtc_max() %> Lacs</label>
-								
 							</dd>
 						</dl>
 						
@@ -257,7 +254,7 @@
 								<label>Fee Percent</label>
 							</dt>
 							<dd>
-								<label><%= post.getFeePercent() %></label>
+								<label><%= post.getFeePercent() %>%</label>
 								
 							</dd>
 						</dl>
@@ -270,28 +267,22 @@
 							</dd></dl>
 						
 						<div class="clearfix" style="padding: 15px">
-							<h3><b>Additional Description</b></h3><br>
+							<h3><b>Additional Description</b></h3>
 							<p><%= post.getAdditionDetail() %></p>
 						</div>
 						
 			        </div>
-			         <div class="block coment_fild" style="padding-top: 15px;">
-	        
+			<div class="block coment_fild" style="padding-top: 11px;">
 	        <div class="form_col" >
-	        
-	        
-	       
-	        
-	        
 	        </div>
-	      </div> 
-		        </div>
-		        <div id="jobDescription">
+		    </div> 
+		    </div>
+		    <div id="jobDescription">
 		        
-		        </div>
-		      </div>
+		    </div>
+		    </div>
 		      
-		     
+		     <%-- 
 							   <%
 							 if(post.getUploadjd()!=null){
 
@@ -345,7 +336,7 @@
 		      
 		      
 		      
-			<%}%>   
+			<%}%>    --%>
 		      
 		      
 			<%

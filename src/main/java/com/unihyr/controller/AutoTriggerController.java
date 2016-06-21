@@ -23,6 +23,10 @@ import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.util.ApplicationContextProvider;
 
+/**
+ * @author silvereye
+ * A controller to check whether any post is idle for particular days and perform action if idle.
+ */
 @Component
 public class AutoTriggerController
 {
@@ -35,6 +39,10 @@ public class AutoTriggerController
 	private MailService mailService;
 	
 
+	/**
+	 * method to check that if any post is idle or not 
+	 * @return true if post is idle, false if post is active
+	 */
 	public boolean checkPostIdle()
 	{
 		List<Post> list = postService.getAllActivePosts();
