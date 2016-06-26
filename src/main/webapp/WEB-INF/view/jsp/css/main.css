@@ -91,7 +91,7 @@ header{float:left; width:100%; position:relative;}
 .last_login{clear:both; padding-top:60px;}
 
 .nav{float:left; width:100%; position:relative;  padding-left: 9px;}
-.nav ul{float:left;}
+.nav ul{float:left;border-bottom: 2px solid #f8b800;}
 .nav ul li{float:left; font-size:12px; color:#100f0f;  margin: 0 5px;}
 .nav ul li a{display:inline-block; font-size:12px; color:#000; padding: 7px 28px; text-align:center; margin-left:1px;background: #f8b910 none repeat scroll 0 0; border-radius: 9px 10px 0 0;}
 .nav ul li:hover a, .nav ul li.active a{background:#000; color:#fff;}
@@ -100,10 +100,17 @@ header{float:left; width:100%; position:relative;}
 .breadcrumbs_in{float:left; width:100%; background:#ececec; margin:2px 0 2px; padding:10px 0;}
 
 .mid_wrapper{float:left; width:100%;min-height: 570px;}
-.form_cont{float:left; width:100%; padding:20px 0 30px;}
+.form_cont{float: left;
+	width: 97%;
+	padding: 20px 0 30px;
+	border: 1px solid rgb(236, 236, 236);
+	border-right: 4px solid rgb(236, 236, 236);
+	border-bottom: 4px solid rgb(236, 236, 236);
+	margin: 15px;
+}
 .form_cont .form_col{float:left; width:100%; margin-right:6%;}
 .form_cont .form_col:last-child{margin-right:0;}
-.form_cont .form_col dl{float:left; width:50%; margin-bottom:16px;padding: 0 15px;}
+.form_cont .form_col dl{float:left; width:50%; margin-bottom:3px;padding: 0 15px;}
 .form_cont .form_col dl dt{float:left; width:25%; font-size:12px; color:#000;  font-weight:bold;}
 .form_cont .form_col dl dt label{padding-top:5px; float:left;}
 .form_cont .form_col dl dd label{padding-top:5px; float:left;}
@@ -136,7 +143,7 @@ footer{float:left; width:100%; background:#1f1e1e; padding:20px 0; text-align:ce
 .filter .page_nav li{float:left; margin-left:8px;cursor: pointer;}
 .filter .page_nav .disabled a{background: #B2B1AD;}
 .filter .page_nav .disabled a:hover{background: #B2B1AD;color: #000;}
-.filter .page_nav li a{display:inline-block; min-width:22px; padding: 5px 10px; font-size:12px;  color:#000; height:24px; border-radius:3px; background:#fff; text-align:center; font-weight: bold;}
+.filter .page_nav li a{display:inline-block; min-width:22px; padding: 5px 10px; font-size:12px;  color:#000; height:28px; border-radius:3px; background:#fff; text-align:center; font-weight: bold;}
 .filter .page_nav li:hover a, .filter .page_nav li.active a{color:#7ba901;color: #fff; background-color: #F8B910;}
 
 .positions_tab{float:left; width:100%;}
@@ -587,15 +594,57 @@ option{padding: 0 5px;}
 	position: absolute;
 	top: 3px;
 	font-size: 9px;
-	font-weight: bold;}
+	font-weight: bold;
+	right: 52px;
+	}
 .messageIcon {
 	    margin-top: 2px;
     margin-left: 0.5px;
 }
 .messageCount{
-	
+	    
+	background: #e04c4c;
+	color: #fff;
+	padding-left: 3px;
+	padding-right: 3px;
+	position: absolute;
+	top: 3px;
+	font-size: 9px;
+	font-weight: bold;
+	right: 15px;
 }
-
+.editDiv{
+vertical-align: middle;
+padding: 9px !important;
+background: rgb(255, 255, 255) none repeat scroll 0% 0%;
+border-radius: 5px;
+font-weight: bold;
+}
+.formHeading{
+padding: 5px;
+background: rgb(236, 236, 236) none repeat scroll 0% 0%;
+width: 11%;
+border-radius: 5px;
+margin: 0px auto;
+font-weight: bold;
+}
+.formContNewUser{
+	border: 1px solid rgb(236, 236, 236);
+    margin: 20px 17px 17px;
+    width: 97%;
+    BACKGROUND: #ECECEC;
+    border-radius: 2px;
+    border-bottom: 3px solid #d1d1d1;
+    border-right: 3px solid #d1d1d1;
+}
+.statusInfo{
+	border: 1px solid rgb(236, 236, 236);
+    width: 97%;
+    BACKGROUND: #ECECEC;
+    border-radius: 2px;
+    border-bottom: 3px solid #d1d1d1;
+    border-right: 3px solid #d1d1d1;
+}
 
 Pseudo ::after element
 .arrow_box_1:after {

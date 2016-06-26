@@ -15,8 +15,8 @@
 		{
 					
 			%>
-				<li  id="<%=pc.getPost().getPostId() %>">
-			<a title="Click to view your positions" href="cons_your_positions?pid=<%= pc.getPost().getPostId()%>" >
+				<li  id="<%=pc.getPost().getPostId() %>" >
+			<a title="Click to view your positions"  >
 			<%=pc.getPost().getTitle()%></a></li>
 			<%
 			

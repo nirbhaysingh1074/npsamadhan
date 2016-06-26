@@ -82,8 +82,9 @@ public class Registration implements Serializable
 	
 //	------------------ Client Data -------------- 
 	
-	
+
 	private String organizationName;
+	private String designation;
 	
 	
 	private int usersRequired;
@@ -125,7 +126,19 @@ public class Registration implements Serializable
 	
 	
 	
-	
+	@Column
+	public String getDesignation()
+	{
+		return designation;
+	}
+
+
+	public void setDesignation(String designation)
+	{
+		this.designation = designation;
+	}
+
+
 	@Column	
 	public double getFeeCommission()
 	{

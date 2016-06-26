@@ -16,8 +16,12 @@ public class GeneralConfig
 {
 	public static final double CESS = 0.5;
 	public static final String UploadPath = "/var/unihyr/data/";
-//	public static final String UniHyrUrl = "http://localhost:8081/unihyr/";
-	public static final String UniHyrUrl = "http://54.191.37.178/";
+	//	public static final String UniHyrUrl = "http://localhost:8081/unihyr/";
+	//public static final String UniHyrUrl = "http://54.191.37.178/";
+	public static final String UniHyrUrl = "http://54.191.37.178/unihyr";
+	public static final long PostDaysOut = 25;
+	public static final long IdleCheckInterval = 86400000;
+	public static final String Add_Post_Submit_Button_Value = "Submit";
 	//public static final String UploadPath = "D:/var/unihyr/data/";
 	public static double TAX = 14;
 	public static int NoOfRatingStaticParams = 2;
@@ -40,11 +44,11 @@ public class GeneralConfig
 	}
 	
 	/**
-	 * String variable to store pattern for passord validation.
+	 * String variable to store pattern for password validation.
 	 */
 	public static String passwordRegEx = "(?=.*\\d)(?=.*[a-z]).{6,20}";
 	
-	/** to validate possword having required pattern or not
+	/** to validate password having required pattern or not
 	 * @param password a String variable to pass password as an argument
 	 * @return return boolean value either password is valid or not.
 	 */
@@ -56,6 +60,9 @@ public class GeneralConfig
 		return b;
 	}
 
+	/**generate random password
+	 * @return random value of type string
+	 */
 	public static String generatePassword()
 	{
 		char[] alphNum = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();

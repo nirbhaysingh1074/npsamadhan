@@ -140,7 +140,7 @@ public class ClientController
 				reg =reg.getAdmin(); 
 			}
 			map.addAttribute("totalposts", postService.countAllPostByClient(reg.getUserid()));
-			map.addAttribute("totalActive", postService.countActivePostByClient(reg.getUserid()));
+			map.addAttribute("totalActive", postService.countActivePostByClient(reg.getUserid(),"verifyDate"));
 			map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(reg.getUserid(), null));
 			map.addAttribute("totalshortlist", postProfileService.countShortListedProfileByClientOrConsultant(reg.getUserid(), null));
 			map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null));
@@ -174,31 +174,14 @@ public class ClientController
 		String loggedinUser=reg.getUserid();
 		
 		String userid=reg.getUserid();
-		if(db_post_status.equals("active"))
-		{
-			map.addAttribute("postList", postService.getActivePostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam));
-			map.addAttribute("totalCount", postService.countActivePostByClient(loggedinUser));
-		}
-		else if(db_post_status.equals("published"))
-		{
-			map.addAttribute("postList", postService.getPublishedPostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam));
-			map.addAttribute("totalCount", postService.countPublishedPostByClient(loggedinUser));
-		}
-		else if(db_post_status.equals("saved"))
-		{
-			
-			map.addAttribute("postList", postService.getSavedPostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam));
-			map.addAttribute("totalCount", postService.countSavedPostByClient(loggedinUser));
-		}
-		else if(db_post_status.equals("closed"))
-		{
-			map.addAttribute("postList", postService.getClosedPostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam));
-			map.addAttribute("totalCount", postService.countClosedPostByClient(loggedinUser));
-		}
-		else
+		if(db_post_status.equals("all"))
 		{
 			map.addAttribute("postList", postService.getAllPostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam));
 			map.addAttribute("totalCount", postService.countAllPostByClient(loggedinUser));
+		}
+		else{
+			map.addAttribute("postList", postService.getActivePostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam,db_post_status));
+			map.addAttribute("totalCount", postService.countActivePostByClient(loggedinUser,db_post_status));
 		}
 		
 		map.addAttribute("rpp", rpp);
@@ -299,20 +282,20 @@ public class ClientController
 			post.setCtc_min(model.getCtc_min());
 			post.setCtc_max(model.getCtc_max());
 			post.setNoOfPosts(model.getNoOfPosts());
-			post.setRole(model.getRole());
-			post.setDesignation(model.getDesignation());
+		/*	post.setRole(model.getRole());
+			post.setDesignation(model.getDesignation());*/
 			post.setProfileParDay(model.getProfileParDay());
 			post.setComment(model.getComment());
 			post.setUploadjd(model.getUploadjd());
 			post.setAdditionDetail(model.getAdditionDetail());
 			post.setWorkHourStartHour(model.getWorkHourStartHour());
 			post.setWorkHourEndHour(model.getWorkHourEndHour());
-			post.setActive(true);
+			//post.setActive(true);
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
 			
 			String btn_response = request.getParameter("btn_response");
-			if(btn_response.equals("Publish"))
+			if(btn_response.equals(GeneralConfig.Add_Post_Submit_Button_Value))
 			{
 				post.setPublished(dt);
 			}
@@ -398,8 +381,8 @@ public class ClientController
 			model.setCtc_min(post.getCtc_min());
 			model.setCtc_max(post.getCtc_max());
 			model.setNoOfPosts(post.getNoOfPosts());
-			model.setRole(post.getRole());
-			model.setDesignation(post.getDesignation());
+			/*model.setRole(post.getRole());
+			model.setDesignation(post.getDesignation());*/
 			model.setProfileParDay(post.getProfileParDay());
 			model.setComment(post.getComment());
 			model.setUploadjd(post.getUploadjd());
@@ -408,6 +391,7 @@ public class ClientController
 			model.setWorkHourStartHour(post.getWorkHourStartHour());
 			model.setWorkHourEndHour(post.getWorkHourEndHour());
 			model.setFeePercent(post.getFeePercent());
+			model.setVariablePayComment(post.getVariablePayComment());
 			map.addAttribute("postForm", model);
 			map.addAttribute("post", post);
 			map.addAttribute("locList", locationService.getLocationList());
@@ -491,8 +475,8 @@ public class ClientController
 				post.setCtc_min(model.getCtc_min());
 				post.setCtc_max(model.getCtc_max());
 				post.setNoOfPosts(model.getNoOfPosts());
-				post.setRole(model.getRole());
-				post.setDesignation(model.getDesignation());
+			/*	post.setRole(model.getRole());
+				post.setDesignation(model.getDesignation());*/
 				post.setProfileParDay(model.getProfileParDay());
 				post.setComment(model.getComment());
 				post.setAdditionDetail(model.getAdditionDetail());
@@ -592,7 +576,7 @@ public class ClientController
 						+ "<p></p>"
 						+ "<p>Best Regards,</p>"
 						+ "<p></p>"
-						+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
+//						+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
 						+ "<p><strong>Admin Team</strong></p><p></p>"
 						+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 						+ "</div>"
@@ -717,10 +701,10 @@ public class ClientController
 			map.addAttribute("totalpartner", postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc").size());
 			map.addAttribute("totalshortlist", postProfileService.countShortlistedProfileListPostId(post.getPostId(),"accepted"));
 		}
-		map.addAttribute("postsList", postService.getAllPostsByClient(loggedinUser, 0, 1000, "title"));
+		map.addAttribute("postsList", postService.getAllVerifiedPostsByClient(loggedinUser, 0, 1000, "title"));
 	
-		map.addAttribute("totalposts", postService.countAllPostByClient(reg.getUserid()));
-		map.addAttribute("totalActive", postService.countActivePostByClient(reg.getUserid()));
+		map.addAttribute("totalposts", postService.countAllVerifiedPostByClient(reg.getUserid()));
+		map.addAttribute("totalActive", postService.countActiveVerifiedPostByClient(reg.getUserid()));
 		map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(reg.getUserid(), null));
 		map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null));
 		return "clientPostApplicants";
@@ -1696,6 +1680,9 @@ public class ClientController
 			{
 				if(!this.allowedImageExtensions.contains(imageextension.toLowerCase())){
         			return "failed";
+        		}else if(mpf.getSize()>GeneralConfig.filesize)
+        		{
+        			return "failed";
         		}
 				filename = UUID.randomUUID().toString()+filename;
 				File dl = new File(GeneralConfig.UploadPath+""+filename);
@@ -1714,7 +1701,7 @@ public class ClientController
 			}
 			catch(IOException e)
 			{
-				
+				e.printStackTrace();
 			}
 			return filename;
 		}

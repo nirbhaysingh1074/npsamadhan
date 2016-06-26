@@ -68,11 +68,11 @@ font-weight: bold;height: 50px">Help Desk</div>
 			</div> -->
 			<div class="content-field">
 				<label>Subject</label>
-				<input type="text" name="subject" class="subject" />
+				<input type="text" name="subject" id="subject" class="subject" />
 			</div>
 			<div class="content-field">
 				<label>Message</label>
-				<textarea name="message" class="msg"></textarea>
+				<textarea name="message" id="message" class="msg"></textarea>
 			</div>
 			<div class="content-field">
 				<button class="submit profile_status_button">Submit</button>
@@ -106,13 +106,14 @@ $(".help-desk .submit").click(function(event){
 	var name = $('.help-desk .name').val();
 	var email ='';
 	//var contactNo=$('#contactNo').val();
+	var subject=$('#subject').val();
 	var msg = $('.help-desk .msg').val();
 	$(this).html("Sending...");
 	pleaseWait();
 	$.ajax({
 		type : "GET",
 		url : "helpDeskMessage",
-		data : {'name':name,'email':email,'msg':msg},
+		data : {'name':name,'email':email,'message':msg,'subject':subject},
 		contentType : "application/json",
 		success : function(data) {
 			
@@ -163,13 +164,14 @@ height: 29px;">
 <script type="text/javascript">
 
 function getClosedCandidates(postId){
+	pleaseWait();
 	$.ajax({
 		type : "GET",
 		url : "profileClosures",
 		data : {'postId':postId},
 		contentType : "application/json",
 		success : function(data) {
-			
+			pleaseDontWait();
 			$('#profileClosed').html(data);
 			$('.profileClosed1').css('display','block');
 			$('.profileClosed1').css('display','block');

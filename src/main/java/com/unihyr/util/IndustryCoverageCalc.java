@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import com.unihyr.domain.GlobalRating;
 import com.unihyr.domain.GlobalRatingPercentile;
 
@@ -21,7 +20,7 @@ public class IndustryCoverageCalc implements RatingCalcInterface
 		for (GlobalRating globalRating : rating)
 		{
 			total += globalRating.getIndustrycoverage()*(N-i);
-				i++;
+			i++;
 		}
 		int div=(N*(N+1))/2;
 		if(div > 0)
@@ -38,9 +37,7 @@ public class IndustryCoverageCalc implements RatingCalcInterface
 	@Override
 	public Map<String, Double> calculatePercentile(Map<String, Double> values)
 	{
-
 		Map<Double, List<String>> valList = new TreeMap<Double, List<String>>();
-
 		for (Map.Entry<String, Double> entry : values.entrySet())
 		{
 			List<String> user = new ArrayList<String>();
@@ -55,11 +52,8 @@ public class IndustryCoverageCalc implements RatingCalcInterface
 		}
 		valList=((TreeMap<Double, List<String>>) valList).descendingMap();
 		Map<String, Double> trratingpr = new LinkedHashMap<String, Double>();
-		System.out.println();
-
 		for (Map.Entry<Double, List<String>> entry : valList.entrySet())
 		{
-			
 			List<String> users=entry.getValue();
 			double noofless=values.size()-trratingpr.size()-users.size();
 			double per=(noofless*100/values.size());
@@ -68,7 +62,6 @@ public class IndustryCoverageCalc implements RatingCalcInterface
 				trratingpr.put(string, per);
 			}
 		}
-
 		return trratingpr;
 	}
 

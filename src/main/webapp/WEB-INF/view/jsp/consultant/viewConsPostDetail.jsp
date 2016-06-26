@@ -134,7 +134,7 @@
 								
 							</dd>
 						</dl>
-						<dl>
+						<%-- <dl>
 							<dt>
 								<label>Role</label>
 							</dt>
@@ -151,7 +151,7 @@
 								<label><%= post.getDesignation()%></label>
 								
 							</dd>
-						</dl>
+						</dl> --%>
 						<dl>
 							<dt>
 								<label>Function</label>
@@ -161,23 +161,20 @@
 								
 							</dd>
 						</dl>
-						
 						<dl>
 							<dt>
 								<label>Exp.</label>
 							</dt>
 							<dd>
 								<label><%= post.getExp_min() %> - <%= post.getExp_max() %> Year(s)</label>
-								
 							</dd>
 						</dl>
 						<dl>
 							<dt>
-								<label>Expected Salary</label>
+								<label>Annual Fixed CTC</label>
 							</dt>
 							<dd>
-								<label><%= post.getCtc_min() %> - <%= post.getCtc_max() %> Lacs</label>
-								
+								<label>Min : <%= post.getCtc_min() %> Lacs Max :  <%= post.getCtc_max() %> Lacs</label>
 							</dd>
 						</dl>
 						
@@ -229,7 +226,17 @@
 								
 							</dd>
 						</dl>
-						<dl>
+						
+						<dl >
+							<dt>
+								<label>Comment</label>
+							</dt>
+							<dd>
+								<label><%= post.getComment() %></label>
+								
+							</dd>
+						</dl>
+					<%-- 	<dl>
 							<dt>
 								<label>Client</label>
 							</dt>
@@ -242,191 +249,40 @@
 								</label>
 								
 							</dd>
-						</dl>
-						<dl><p style="font-weight: bold;">Contract Info</p>
-	        <table class="table no-margin" style="border: 1px solid gray;width:100%;">
-	       <thead>
-	        <tr style="text-align:left; ">
-	        <th>Slab no.</th>
-	        <th>Slab detail</th>
-<!-- 	        <th>Max Billable CTC (INR)</th> -->
-	        <th>Fee Percent (%)</th>
-	        </tr>
-	        </thead>
-	        <tbody>
-	        <tr >
-	        
-	        <td>1.</td>
-	        <td><%=registration.getSlab1() %></td>
-<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs1Max()) %></td> --%>
-	        <td><%=registration.getFeePercent1() %></td>
-	        </tr>
-	        <tr >
-	        <td>2.</td>
-	        <td><%=registration.getSlab2() %></td>
-<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs2Max()) %></td> --%>
-	        <td><%=registration.getFeePercent2() %></td>
-	        </tr>
-	        <tr >
-	        <td>3.</td>
-	        <td><%=registration.getSlab3() %></td>
-<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs3Max()) %></td> --%>
-	        <td><%=registration.getFeePercent3() %></td>
-	        </tr>
-	        <tr >
-	        <td>4.</td>
-	        <td><%=registration.getSlab4() %></td>
-<%-- 	        <td><%=NumberUtils.convertNumberToCommoSeprated(registration.getCtcSlabs4Max()) %></td> --%>
-	        <td><%=registration.getFeePercent4() %></td>
-	        </tr>
-	        <tr >
-	        <td>5.</td>
-	        <td><%=registration.getSlab5() %></td>
-<!-- 	        <td>No limit</td> -->
-	        <td><%=registration.getFeePercent5() %></td>
-	        </tr>
-	        </tbody>
-	        </table>
-						
-						</dl>
-						<dl></dl>
-						<dl style="clear: both;">
-							<dt>
-								<label>Comment</label>
+						</dl> --%>
+						<dl><dt>
+								<label>Fee Percent</label>
 							</dt>
 							<dd>
-								<label><%= post.getComment() %></label>
+								<label><%= post.getFeePercent() %>%</label>
 								
 							</dd>
 						</dl>
+						<dl><dt>
+								<label>Payment Days</label>
+							</dt>
+							<dd>
+								<label><%= post.getClient().getPaymentDays() %></label>
+								
+							</dd></dl>
 						
 						<div class="clearfix" style="padding: 15px">
-							<h3><b>Additional Description</b></h3><br>
+							<h3><b>Additional Description</b></h3>
 							<p><%= post.getAdditionDetail() %></p>
 						</div>
 						
 			        </div>
-			         <div class="block coment_fild" style="padding-top: 15px;">
-	        
+			<div class="block coment_fild" style="padding-top: 11px;">
 	        <div class="form_col" >
-	        
-	        
-	          <%-- <dl style="width: 100%;">
-	          <dt  style="width: 100%;text-align: center;">
-	          <strong style="font-size: 16px;">
-	          Contract Info</strong> </dt>
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt  style="width: 50%;">
-	          <label>Billable CTC Slab1 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs1Min() %> to <%=registration.getCtcSlabs1Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent1() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab2 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs2Min() %> to <%=registration.getCtcSlabs2Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent2() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab3 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs3Min() %> to <%=registration.getCtcSlabs3Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent3() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab4 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs4Min() %> to <%=registration.getCtcSlabs4Max() %> (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent4() %>
-	          </dd>
-	          
-	          </dl>
-	          <dl style="width: 30%;">
-	          <dt style="width: 50%;">
-	          <label>Billable CTC Slab5 : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getCtcSlabs5Min() %> to no limit (INR)
-	          </dd>
-	          </dl>
-	          <dl style="width: 20%;">
-	          
-	          <dt style="width: 50%;">
-	          <label>Fee Percent : </label>
-	          
-	          </dt>
-	          <dd style="width: 50%;">
-	          <%=registration.getFeePercent5() %>
-	          </dd>
-	          
-	          </dl> --%>
-	        
-	        
 	        </div>
-	      </div> 
-		        </div>
-		        <div id="jobDescription">
+		    </div> 
+		    </div>
+		    <div id="jobDescription">
 		        
-		        </div>
-		      </div>
+		    </div>
+		    </div>
 		      
-		      <%-- 
+		     <%-- 
 							   <%
 							 if(post.getUploadjd()!=null){
 
@@ -480,7 +336,7 @@
 		      
 		      
 		      
-			<%}%>   --%>
+			<%}%>    --%>
 		      
 		      
 			<%

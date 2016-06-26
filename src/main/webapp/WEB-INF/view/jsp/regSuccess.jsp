@@ -23,20 +23,23 @@
 	<section>
 		<div class="container" style="background: inherit;">
 			<div class="login-form"  style="max-width: 700px">
-				<div class="login-header">
-					<a href="index"><img alt="" src="images/logo.png"></a>
-					<a href="home"><span class="close" title="Home Page"><img style="    height: 40px;" src="images/close.png" /></span></a>
+				<div class="login-header" style="padding: 4px;">
+					<a href="index">
+					<img alt="" src="images/logo.png" style="margin-left: 48px;">
+					</a>
+					<a href="home"><span class="close" title="Home Page" style="top: -24px;">
+					<img style="    height: 40px;" src="images/close.png" /></span></a>
 				</div>
 				<div class="login-wrap bottom-padding">
 						
 						<%
 							String regSuccess = (String) request.getParameter("regSuccess");
-							if (regSuccess != null && regSuccess.equals("true"))
-							{
+ 							if (regSuccess != null && regSuccess.equals("true"))
+						{
 								String org = (String) request.getParameter("orgName");
 								%>
-									<form class="form-box bottom-padding" method="POST" action="j_spring_security_check">
-									<p style="font-weight: bold;">
+									<form class="form-box bottom-padding" method="POST" action="j_spring_security_check" style="padding-bottom: 0px !important;">
+									<p >
 										Thank You for showing interest in UniHyr. Our representative will get in touch with you within 24 business hours . For any other information, please write to register@unihyr.com
 									</p>	
 									</form>
@@ -55,7 +58,7 @@
     font-size: 17px;
     color: rgb(255, 255, 255);
     padding: 3px 14px;
-    text-align: center;' href='index' >OK</a>
+    text-align: center;' href='index' >Ok</a>
 				</div>
 			</div>
 		</div>

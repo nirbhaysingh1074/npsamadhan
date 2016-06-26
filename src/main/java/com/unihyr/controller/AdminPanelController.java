@@ -548,7 +548,7 @@ public class AdminPanelController
 		{
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
-			
+			post.setActive(true);
 			post.setVerifyDate(dt);
 			postService.updatePost(post);
 
@@ -560,13 +560,14 @@ public class AdminPanelController
 			{
 				ids += cons.getUserid()+","; 
 				String userid=cons.getUserid();
-			}
-			String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
+				String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
 			Notifications nser=new Notifications();
 			nser.setDate(new java.sql.Date(new Date().getTime()));
 			nser.setNotification(content1);
-			nser.setUserid(post.getClient().getUserid());
+			nser.setUserid(userid);
 			notificationService.addNotification(nser);
+			}
+			
 			String subject = "UniHyr Alert: "+post.getClient().getOrganizationName()+" - "+post.getTitle()+" - "+post.getLocation();
 			
 			String content = "<table cellspacing='0' cellpadding='8' border='0' style='width: 100%; font-family: Arial, Sans-serif;  background-color: #fff' summary=''>"
@@ -609,7 +610,7 @@ public class AdminPanelController
 					+ "<p></p>"
 					+ "<p>Best Regards,</p>"
 					+ "<p></p>"
-					+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
+					/*+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"*/
 					+ "<p><strong>Admin Team</strong></p><p></p>"
 					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 					+ "</div>"
@@ -652,13 +653,13 @@ public class AdminPanelController
 				registration.setFeePercent5(Double.parseDouble(request.getParameter("feePercent5")));
 				registration.setSlab1(request.getParameter("slab1"));
 				// registration.setCtcSlabs1Max(Double.parseDouble(request.getParameter("ctcSlabs1Max")));
-				registration.setSlab2(request.getParameter("slab1"));
+				registration.setSlab2(request.getParameter("slab2"));
 				// registration.setCtcSlabs2Max(Double.parseDouble(request.getParameter("ctcSlabs2Max")));
-				registration.setSlab3(request.getParameter("slab1"));
+				registration.setSlab3(request.getParameter("slab3"));
 				// registration.setCtcSlabs3Max(Double.parseDouble(request.getParameter("ctcSlabs3Max")));
-				registration.setSlab4(request.getParameter("slab1"));
+				registration.setSlab4(request.getParameter("slab4"));
 				// registration.setCtcSlabs4Max(Double.parseDouble(request.getParameter("ctcSlabs4Max")));
-				registration.setSlab5(request.getParameter("slab1"));
+				registration.setSlab5(request.getParameter("slab5"));
 			}
 			registration.setPaymentDays(Integer.parseInt(request.getParameter("paymentDays")));
 			registration.setUsersRequired(Integer.parseInt(request.getParameter("userQuota")));
@@ -671,9 +672,9 @@ public class AdminPanelController
 
 				if (info != null)
 				{
-					loginInfoService.updatePassword(info.getUserid(), null, id);
 					info.setIsactive("true");
 					loginInfoService.updateLoginInfo(info);
+					loginInfoService.updatePassword(info.getUserid(), null, id);
 				}
 				String companyName = "";
 				if (registration.getConsultName() != null)

@@ -20,7 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "candidateProfile")
+@Table(name = "candidateprofile")
 public class CandidateProfile
 {
 	@Id
@@ -71,7 +71,34 @@ public class CandidateProfile
 	private String resumePath;
 	@Column
 	private String ctcComments;
+
+	@Column
+	private Date dateofbirth;
+	@Column
+	private String qualification;
 	
+	
+	
+	public Date getDateofbirth()
+	{
+		return dateofbirth;
+	}
+
+	public void setDateofbirth(Date dateofbirth)
+	{
+		this.dateofbirth = dateofbirth;
+	}
+
+	public String getQualification()
+	{
+		return qualification;
+	}
+
+	public void setQualification(String qualification)
+	{
+		this.qualification = qualification;
+	}
+
 	public String getCtcComments()
 	{
 		return ctcComments;

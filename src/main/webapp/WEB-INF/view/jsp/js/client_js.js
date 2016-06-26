@@ -536,9 +536,9 @@ pleaseWait();
 	$(document.body).on('click', '.status > .st_unpublished' ,function(){
 		var sel_img = $(this);
 		var pid = $(this).parent().parent().attr("id");
-		alertify.confirm("Are you sure to publish ?", function (e, str) {
+		alertify.confirm("Are you sure you want to publish ?", function (e, str) {
 		if (e) {
-			
+			pleaseWait();
 			$.ajax({
 				type : "GET",
 				url : "clientpublishpost",
@@ -552,10 +552,12 @@ pleaseWait();
 						sel_img.removeClass("st_unpublished");
 //						sel_img.addClass("st_published");
 						alertify.success("Hi, You posted "+obj.jobCode+" successfully !");
+					pleaseDontWait();
 					}
 					else
 					{
 						alertify.error("Oops something wrong !");
+					pleaseDontWait();
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
@@ -610,6 +612,7 @@ pleaseWait();
 											alertify.error("Oops, mail not send !");
 										}
 								pleaseDontWait();		
+								location.href="";
 									},
 									error: function (xhr, ajaxOptions, thrownError) {
 										alertify.error("Oops, mail not send !");
@@ -667,6 +670,7 @@ pleaseWait();
 										alertify.error("Oops, mail not send !");
 									}
 									pleaseDontWait();
+									location.href="";
 								},
 								error: function (xhr, ajaxOptions, thrownError) {
 									pleaseDontWait();
@@ -965,19 +969,20 @@ pleaseWait();
 		if(sel_val == "Active")
 		{
 			url = "clientBulkActive";
-			msg = "Are you sure to active this post ?";
+			msg = "Are you sure you want to activate this post ?";
 			mailurl="clientMailActive";
 		}
 		else
 		{
 			url = "clientBulkInactive";
-			msg = "Are you sure to inactive this post ?";
+			msg = "Are you sure you want to inactive this post ?";
 			mailurl="clientMailInactive";
 		}
 		
 		alertify.confirm(msg, function (e, str) {
 			if (e) 
 			{
+				pleaseWait();
 				$.ajax({
 					type : "GET",
 					url : url,
@@ -988,7 +993,6 @@ pleaseWait();
 						var obj = jQuery.parseJSON(data);
 						if(obj.status == "success")
 						{
-							alertify.success("Hi, Post "+sel_val+"  successfully !");
 							$.ajax({
 								type : "GET",
 								url : mailurl,
@@ -998,14 +1002,19 @@ pleaseWait();
 									var obj = jQuery.parseJSON(data);
 									if(!obj.status)
 									{
-										alertify.error("Oops, mail not send !");
+										alertify.error("Oops, Error occured in sending mail!");
+									}else{
+										alertify.success("Hi, Post "+sel_val+"  successfully !");
+												
 									}
-									
+									pleaseDontWait();
 								},
 								error: function (xhr, ajaxOptions, thrownError) {
-									alertify.error("Oops, mail not send !");
+									alertify.error("Oops, Error occured in sending mail !");
+									pleaseDontWait();
 								}
 							}) ;
+
 						}
 						
 					},

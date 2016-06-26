@@ -9,12 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "localRating")
+@Table(name = "localrating")
 public class LocalRating
 {
 	@Id
@@ -22,21 +21,18 @@ public class LocalRating
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long sn;
 
-	@ManyToOne(cascade =
-	{ CascadeType.ALL })
+	@ManyToOne(cascade =	{ CascadeType.ALL })
 	@JoinColumn(name = "ratingParamId", referencedColumnName = "id")
 	private RatingParameter ratingParameter;
 
-	@ManyToOne(cascade =
-	{ CascadeType.ALL })
+	@ManyToOne(cascade =	{ CascadeType.ALL })
 	@JoinColumn(name = "postId", referencedColumnName = "postId")
 	private Post post;
 
 	@Column(nullable = false)
 	private int industryId;
 
-	@ManyToOne(cascade =
-	{ CascadeType.ALL })
+	@ManyToOne(cascade ={ CascadeType.ALL })
 	@JoinColumn(name = "consultantId", referencedColumnName = "userId")
 	private Registration registration;
 

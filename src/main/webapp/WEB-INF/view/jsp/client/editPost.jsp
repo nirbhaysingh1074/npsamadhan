@@ -47,8 +47,8 @@
 		var location = $('#location').val();
 		var fun = $('#function').val();
 		var noOfPosts = $('#noOfPosts').val();
-		var role = $('#role').val();
-		var designation = $('#designation').val();
+		/* var role = $('#role').val();
+		var designation = $('#designation').val(); */
 		var exp_min = $('#exp_min').val();
 		var exp_max = $('#exp_max').val();
 		var ctc_min = $('#ctc_min').val();
@@ -81,21 +81,21 @@
 			$('.noOfPosts_error').html('Please enter no of posts')
 			valid = false;
 		}
-		if(role == "")
+		/* if(role == "")
 		{
 			$('.role_error').html('Please enter post role')
 			valid = false;
-		}
+		} */
 		if(editSummary == "")
 		{
 			$('.editSummary_error').html('Please enter edit summary');
 			valid = false;
 		}
-		if(designation == "")
+		/* if(designation == "")
 		{
 			$('.designation_error').html('Please enter post designation')
 			valid = false;
-		}
+		} */
 		if(exp_min == ""  || isNaN(exp_min))
 		{
 			$('.exp_min_error').html('Please select minimum expirence')
@@ -198,25 +198,32 @@ jQuery(document).ready(function() {
 	});
 });
 </script>
+<style type="text/css">
+
+</style>
 </head>
 <body class="loading">
 
 	<div class="mid_wrapper">
 	  <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	  <div class="container">
-	   <div style="width: 100%;padding: 20px;" >
 	   <%
 	   Post post=(Post)request.getAttribute("post");
 	   Registration registration=post.getClient();
+	  if(post.getCloseDate()==null&&post.isActive()){
 	   %>
+	  
+	  
+	   <div style="width: 100%;padding: 20px;background: #ececec;
+border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 	   <h2>Post : <%=post.getTitle() %></h2><br><br>
-									<label onclick="$('#divedit').css('display','none');$('#divupddateinfo').css('display','block');" style="vertical-align: middle;">
+									<label onclick="$('#divedit').css('display','none');$('#divupddateinfo').css('display','block');" class="editDiv">
 									 <input style="vertical-align: middle;" type="radio" name="updateType"  />&nbsp;&nbsp;Quick
 										update to associated partners
 									</label >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									OR
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									 <label onclick="$('#divedit').css('display','block');$('#divupddateinfo').css('display','none');" style="margin-left: 20px; ">
+									 <label onclick="$('#divedit').css('display','block');$('#divupddateinfo').css('display','none');"  class="editDiv">
 									<input style="vertical-align: middle;" type="radio" name="updateType" />&nbsp;&nbsp;Edit JD</label>
 				<br><br>
 							
@@ -251,7 +258,7 @@ jQuery(document).ready(function() {
           <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
 		      <div class="block">
 		       <div style="margin-left: 20px;text-align: center;margin-top: 10px;" > 
-		       <h3>Edit JD</h3>
+		       <h3 class="formHeading">Edit JD</h3>
 	   <br><br></div>
 		        <div class="form_col">
 		       
@@ -265,21 +272,30 @@ jQuery(document).ready(function() {
 		              <span class='error title_error'><form:errors path="title" /></span>
 		            </dd>
 		          </dl>
-		          <dl>
-		            <dt>
-		              <label>Location<span class='error'>*</span> </label>
-		            </dt>
-		            <dd>
-						<form:select path="location" multiple="multiple">
-		              		<form:option value="">Select Location</form:option>
-		            		<c:forEach var="item" items="${locList}">
-							   <form:option value="${item.location}" selected= "${item.location == postForm.location ? 'selected' : ''}" >${item.location}</form:option>
-							</c:forEach>
-		            	</form:select>
-<%-- 		    <form:input path="location" /> --%>
-		              <span class='error location_error'><form:errors path="location"/></span>
-		            </dd>
-		          </dl>
+		          <dl >
+				<dt>
+						<label>Fee Slabs</label>
+					</dt>
+					<dd> 
+						<form:select path="feePercent">
+							 <form:option value='0'>Select Slab</form:option>
+						  <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
+						 <%if(registration.getFeePercent2()!=0&&registration.getSlab2()!=null&&registration.getSlab2()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent2() %>'><%=registration.getSlab2() %>(<%=registration.getFeePercent2() %>)</form:option>
+						 <%} %>
+						 <%if(registration.getFeePercent3()!=0&&registration.getSlab3()!=null&&registration.getSlab3()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent3() %>'><%=registration.getSlab3() %>(<%=registration.getFeePercent3() %>)</form:option>
+						 <%} %>
+						 <%if(registration.getFeePercent4()!=0&&registration.getSlab4()!=null&&registration.getSlab4()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent4() %>'><%=registration.getSlab4() %>(<%=registration.getFeePercent4() %>)</form:option>
+						 <%} %>
+						 <%if(registration.getFeePercent5()!=0&&registration.getSlab5()!=null&&registration.getSlab5()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
+						 <%} %>
+						</form:select>
+					<span class='error feePercent_error'><form:errors path="feePercent"/></span>
+	     </dd>
+				</dl>
 		          <dl style="clear: both;">
 	            <dt>
 	              <label>Role Type<span class='error'>*</span></label>
@@ -302,7 +318,7 @@ jQuery(document).ready(function() {
 		              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
 		            </dd>
 		          </dl>
-		          <dl style="clear: both;">
+		          <%-- <dl style="clear: both;">
 		            <dt>
 		              <label>Role<span class='error'>*</span></label>
 		            </dt>
@@ -319,7 +335,7 @@ jQuery(document).ready(function() {
 		              <form:input path="designation" />
 		              <span class='error designation_error'><form:errors path="designation"/></span>
 		            </dd>
-		          </dl>
+		          </dl> --%>
 		          <dl style="clear: both;">
 		            <dt>
 		              <label>Experience<span class='error'>*</span></label>
@@ -357,7 +373,7 @@ jQuery(document).ready(function() {
 		          </dl>
 		          <dl>
 		            <dt>
-		              <label>Annual CTC<span class='error'>*</span></label>
+		              <label>Annual Fixed CTC<span class='error'>*</span></label>
 		            </dt>
 		            <dd>
 		              <div class="row">
@@ -471,21 +487,32 @@ jQuery(document).ready(function() {
 					</div>
 					</dd>
 				</dl>
-		          <dl style="clear:both;">
-				<dt>
-						<label>Select Slabs</label>
-					</dt>
-					<dd> 
-						<form:select path="feePercent">
-						 <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
-						 <form:option value='<%=registration.getFeePercent2() %>'><%=registration.getSlab2() %>(<%=registration.getFeePercent2() %>)</form:option>
-						 <form:option value='<%=registration.getFeePercent3() %>'><%=registration.getSlab3() %>(<%=registration.getFeePercent3() %>)</form:option>
-						 <form:option value='<%=registration.getFeePercent4() %>'><%=registration.getSlab4() %>(<%=registration.getFeePercent4() %>)</form:option>
-						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
-						</form:select>
-					<span class='error feePercent_error'><form:errors path="feePercent"/></span>
-	     </dd>
+				<dl style="clear:both;">
+	            <dt>
+	              <label>Location<span style="font-style: italic;font-weight: normal;font-size: 10px;">(To select multiple locations, press CTRL and select)</span><span class='error'>*</span> </label>
+	            </dt>
+	            <dd>
+	              <form:select path="location"  multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Location</form:option>
+	            		<c:forEach var="item" items="${locList}">
+						   <form:option value="${item.location}">${item.location}</form:option>
+						</c:forEach>
+	            	</form:select>
+	              
+					<%--  <form:input path="location" /> --%>
+	              <span class='error location_error'><form:errors path="location"/></span>
+	            </dd>
+	          </dl>
+				<dl>
+	          <dt>Variable Pay Related Comments</dt>
+				   
+	      <dd>
+	        <form:textarea path="variablePayComment"  style="height: 111px;"></form:textarea>
+             <span class='variablePayComment_error'><form:errors path="variablePayComment"/></span>
+	      </dd>
 				</dl>
+				
+		          
 		           <%
 					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
 					if(fileuploaderror != null && fileuploaderror.equals("true"))
@@ -521,12 +548,12 @@ jQuery(document).ready(function() {
 		        <span class='error additionDetail_error'><form:errors path="additionDetail"/></span>
 		      </div>
 		      <br>
-		      <div class="block coment_fild" style="padding-top: 35px">
+		      <div class="block coment_fild" style="padding-top: 11px">
 		        <p>Additional Comments</p>
 		        <form:textarea path="comment" ></form:textarea>
 	             <span class='error'><form:errors path="comment"/></span>
 		      </div>
-		      <div class="block coment_fild" style="padding-top: 35px">
+		      <div class="block coment_fild" style="padding-top: 11px">
 		        <p>Edit Summary<span style="font-size: 10px;font-style: italic;">(Note: please mention the key specifications that have been modified in the updated Job Description)</span></p>
 		        <form:textarea path="editSummary" ></form:textarea>
 	             <span class='error editSummary_error'><form:errors path="editSummary"/></span>
@@ -540,7 +567,14 @@ jQuery(document).ready(function() {
 		      </div>
 	      </form:form>
 	    </div>
-	  </div></sec:authorize>
+	  
+	  <%}else{ %>
+	  Post can not be edited.
+	  <%} %>
+	  </div>
+	  
+	  
+	  </sec:authorize>
 	  
 	  <sec:authorize access="hasRole('ROLE_EMP_USER')">
 	 <div class="container">  You don't have permission to edit this post.</div>

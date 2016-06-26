@@ -18,22 +18,16 @@
         http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-        
 	<mvc:annotation-driven />
 	<context:component-scan base-package="com" />
-	 
 	<mvc:resources location="/WEB-INF/view/jsp/css/" mapping="css/**"  />
 	<mvc:resources location="/WEB-INF/view/jsp/images/" mapping="images/**"  />
 	<mvc:resources location="/WEB-INF/view/jsp/js/" mapping="js/**"  />
 	<mvc:resources location="/WEB-INF/view/jsp/fonts/" mapping="fonts/**" />
-	
-
-	
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 	    <property name="basename" value="classpath:messages" />
 	    <property name="defaultEncoding" value="UTF-8" />
 	</bean>
-	
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 	    <property name="ignoreUnresolvablePlaceholders" value="true"/>
 	    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
@@ -64,18 +58,15 @@
 	        </props>
 	    </property>
 	</bean>
-	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
         p:driverClassName="${jdbc.driverClassName}"
         p:url="${jdbc.databaseurl}" p:username="${jdbc.username}"
         p:password="${jdbc.password}"
          />
-        
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 	   <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
 	<mvc:interceptors>
 	     <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
 	         <property name="cacheSeconds" value="0"/>
@@ -84,9 +75,7 @@
 	         <property name="useCacheControlNoStore" value="true"/>
 	     </bean>     
 	</mvc:interceptors>
-	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" /> 
-	
 	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
 	<property name="supportedMediaTypes" value="application/json"/>
 	</bean>

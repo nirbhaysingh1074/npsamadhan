@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
-
+	<meta name="google-site-verification" content="2TLKAStrzYOfVRQYE-ULixk2twy9uHdoAxmZI3YTAVY" />
 <title>UniHyr</title>
 
 	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
@@ -19,7 +19,12 @@
 	margin: 20px auto 0 auto;
 	border-radius: 4px;
 }
-
+#u_0_2{
+color: #fff;
+}
+#u_0_3{
+color: #fff;
+}
 #slider ul {
 	position: relative;
 	margin: 0;
@@ -174,21 +179,28 @@ a.control_next {
 
 </head>
 <body>
-
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 	<header id="header" style="
     position: fixed;
     z-index: 9;">
 		<div class="Headr_top ">
 			<div class="container">
 				<div class="logo">
-					<a href="home"><img src="images/logo.png" alt="img" border="0"></a>
+					<a id="home" href="home"><img src="images/logo.png" alt="img" border="0"></a>
 				</div>
 				<div class="home-nav">
 					<ul style="margin-bottom: 0px; margin-top: 27px;">
-						<li onclick="$('html, body').animate({ scrollTop: 590 }, 'slow');" ><a >How It Works </a></li>
-						<li onclick="$('html, body').animate({ scrollTop: 920 }, 'slow');" ><a>Why UniHyr</a></li>
+						<li  onclick="$('html, body').animate({ scrollTop: 590 }, 'slow');" ><a href="home#howitworks" style="text-decoration: none;" >How It Works </a></li>
+						<li onclick="$('html, body').animate({ scrollTop: 920 }, 'slow');" ><a href="home#whyunihyr" style="text-decoration: none;">Why UniHyr</a></li>
 <!-- 						<li onclick="$('html, body').animate({ scrollTop: 1000 }, 'slow');" ><a>Whats In It for</a></li> -->
-						<li onclick="$('html, body').animate({ scrollTop: 1940 }, 'slow');" ><a>About</a></li>
+						<li onclick="$('html, body').animate({ scrollTop: 1940 }, 'slow');" ><a href="home#aboutus" style="text-decoration: none;">About</a></li>
 						<!-- <li><a style="color: #f8b910;font-weight: bold;">How It Works </a></li>
 					<li><a style="color: #f8b910;font-weight: bold;">Features</a></li>
 					<li><a style="color: #f8b910;font-weight: bold;">Customers</a></li>
@@ -325,7 +337,7 @@ a.control_next {
 <div class="feature_sec">
 			<div class="container">
 				<div class="title_rw">
-					<h2>How it works</h2>
+					<h2 id="howitworks" >How it works</h2>
 				</div>
 
 				<div class="howflow rw">
@@ -360,14 +372,14 @@ a.control_next {
 								alt="img"></a>
 							<h4>Track Billing</h4>
 							<p>On joining, automatic invoice generation and payment
-								tracking as per the terms</p> </li>
+								tracking as per the terms</p></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div class="feature_sec">
 		<div class="container">
-			<div class="title_rw"><h2 >Why UniHyr</h2></div>
+			<div class="title_rw"><h2  id="whyunihyr" >Why UniHyr</h2></div>
 		
 			<div class="featserv rw">
 				<ul>
@@ -556,7 +568,7 @@ Analytics driven rating system of consultants
 		
 <div class="feature_sec">
 		<div class="container">
-			<div class="title_rw"><h2 >About Us</h2></div>
+			<div class="title_rw"><h2 id="aboutus"  >About Us</h2></div>
 		
 			<div class="featserv rw" style="text-align: left;">
 				
@@ -625,10 +637,13 @@ Analytics driven rating system of consultants
 			<div class="container">
 				<div class="col_1">
 					<h3></h3>
-				<a style="margin-left: 22px;" href="" >	<img style="height: 25px;" src="images/fb.png" title="facebook" /></a>
-				<a href="" >	<img style="height: 25px;"  src="images/twitter.png" title="twitter" /></a>
-				<a href="" >	<img style="height: 25px;"  src="images/linkedin.png" title="linkedin"/></a>
-
+					<a style="margin-left: 22px;"
+						href="https://www.facebook.com/UniHyr-491301114398011/"
+						target="_blank"> <img style="height: 25px;"
+						src="images/fb.png" title="facebook" /></a> <a href="https://twitter.com/unihyr" target="_blank"> <img
+						style="height: 25px;" src="images/twitter.png" title="twitter" /></a> <a target="_blank" href="https://in.linkedin.com/in/unihyr-admin-5aab60122"> <img style="height: 25px;"
+						src="images/linkedin.png" title="linkedin" /></a>
+					<div style="margin-left: 22px; color: #fff !important;" class="fb-like" data-href="https://www.facebook.com/UniHyr-491301114398011/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 				</div>
 <!--
 				 <div class="col_2">
@@ -694,7 +709,7 @@ Analytics driven rating system of consultants
 		</div>
 		<div class="footer_botm Align_cent Light12 grey3">
 			<div class="container" style="background-color: #1f1e1e;">
-				<a href="">Terms of Use</a> | <a href="">Privacy Policy</a> | <a
+				<a href="termsOfService">Terms of Use</a> | <a href="privacyPolicy">Privacy Policy</a> | <a
 					href="">Sitemap</a> | <a href="">Work with Us</a>
 			</div>
 		</div>
@@ -702,8 +717,8 @@ Analytics driven rating system of consultants
 	<div
 		style=" cursor: pointer;
 		position:fixed;bottom:10px;right: 10px;z-index:100;"
-		id="movetotop">
-<img style="height: 40px;" alt="Top" src="images/movetotop.png">
+		id="movetotop"><a href="#home">
+<img style="height: 40px;" alt="Top" src="images/movetotop.png"></a>
 </div>
 
 	<script type="text/javascript" src="js/script.js"></script>

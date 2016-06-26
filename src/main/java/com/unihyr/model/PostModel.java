@@ -38,8 +38,9 @@ public class PostModel
 
 	private String workHourEndHour;
 	private String workHourEndMin;
-	
+
 	private String editSummary;
+	private String variablePayComment;
 
 //	@NotBlank(message="{NotBlank.postForm.criteria}")
 //	private String criteria;
@@ -55,19 +56,29 @@ public class PostModel
 	@Min(value=1, message="{Min.postForm.noOfPosts}")
 	private int noOfPosts;
 	
-	
+/*	
 	@NotBlank(message="{NotBlank.postForm.role}")
 	private String role;
 	
 	
 	@NotBlank(message="{NotBlank.postForm.designation}")
-	private String designation;
+	private String designation;*/
 	
 	private int profileParDay;
 	
 	private MultipartFile uploadJdfile;
 
 	private double feePercent;
+
+	public String getVariablePayComment()
+	{
+		return variablePayComment;
+	}
+
+	public void setVariablePayComment(String variablePayComment)
+	{
+		this.variablePayComment = variablePayComment;
+	}
 
 	public double getFeePercent()
 	{
@@ -238,7 +249,7 @@ public class PostModel
 		this.noOfPosts = noOfPosts;
 	}
 
-	public String getRole()
+	/*public String getRole()
 	{
 		return role;
 	}
@@ -256,7 +267,7 @@ public class PostModel
 	public void setDesignation(String designation)
 	{
 		this.designation = designation;
-	}
+	}*/
 
 	public MultipartFile getUploadJdfile()
 	{

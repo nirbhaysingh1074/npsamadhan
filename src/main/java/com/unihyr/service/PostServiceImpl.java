@@ -57,15 +57,15 @@ public class PostServiceImpl implements PostService
 	}
 	
 	@Override
-	public List<Post> getActivePostsByClient(String userid, int first, int max,String sortParam)
+	public List<Post> getActivePostsByClient(String userid, int first, int max,String sortParam,String filterBy)
 	{
-		return this.postDao.getActivePostsByClient(userid, first, max,sortParam);
+		return this.postDao.getActivePostsByClient(userid, first, max,sortParam,filterBy);
 	}
 	
 	@Override
-	public long countActivePostByClient(String userid)
+	public long countActivePostByClient(String userid,String filterBy)
 	{
-		return this.postDao.countActivePostByClient(userid);
+		return this.postDao.countActivePostByClient(userid,filterBy);
 	}
 	
 	@Override
@@ -242,5 +242,32 @@ public class PostServiceImpl implements PostService
 	public List<String> getLocationsByConsultant(String consultantId)
 	{
 		return this.postDao.getLocationsByConsultant(consultantId);
+	}
+
+	@Override
+	public List<Post> getAllVerifiedPostsByClient(String loggedinUser, int i, int j, String string)
+	{
+		// TODO Auto-generated method stub
+
+		return this.postDao.getAllVerifiedPostsByClient(loggedinUser,  i,  j,  string);
+	}
+
+	@Override
+	public long countAllVerifiedPostByClient(String userid)
+	{
+		// TODO Auto-generated method stub
+		return this.postDao.countAllVerifiedPostByClient(userid);
+	}
+
+	@Override
+	public long countActiveVerifiedPostByClient(String userid)
+	{
+		// TODO Auto-generated method stub
+		return this.postDao.countActiveVerifiedPostByClient(userid);
+	}
+	
+	@Override
+	public List<Post> getAllActivePosts(){
+		return this.postDao.getAllActivePosts();
 	}
 }

@@ -84,12 +84,9 @@ public class ClientUserController
 			reg.setAdmin(parent);
 			
 			login.setReg(reg);
-			login.setIsactive("true");
 
 			String id=GeneralConfig.generatePassword();
 
-			loginInfoService.updatePassword(login.getUserid(), null, id);
-			
 			
 			
 			reg.setLog(login);
@@ -99,6 +96,8 @@ public class ClientUserController
 			login.setRoles(roles);
 			login.setIsactive("true");
 			loginInfoService.addLoginInfo(login, null);
+			loginInfoService.updatePassword(login.getUserid(), null, id);
+			
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("name", reg.getName());
 			

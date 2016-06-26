@@ -270,15 +270,19 @@ function contractSignUp(){
 	
 
 							if (feePercent1 == ""  ||(!$.isNumeric(feePercent1)) || 
-								feePercent2 == ""  ||(!$.isNumeric(feePercent2)) || 
-								feePercent3 == ""  ||(!$.isNumeric(feePercent3)) || 
-								feePercent4 == ""  ||(!$.isNumeric(feePercent4)) || 
-								feePercent5 == ""  ||(!$.isNumeric(feePercent5)) ||
+//								feePercent2 == ""  ||
+//								feePercent3 == ""  ||
+//								feePercent4 == ""  ||
+//								feePercent5 == ""  ||
+								(feePercent2 != ""&&!$.isNumeric(feePercent2)) || 
+								(feePercent3 != ""&&!$.isNumeric(feePercent3)) || 
+								(feePercent4 != ""&&!$.isNumeric(feePercent4)) || 
+								(feePercent5 != ""&&!$.isNumeric(feePercent5)) ||
 								slab1 == ""  ||
-								slab2 == ""  ||
-								slab3 == ""  ||
-								slab4 == ""  ||
-								slab5== ""  ||
+//								slab2 == ""  ||
+//								slab3 == ""  ||
+//								slab4 == ""  ||
+//								slab5 == ""  ||
 							    paymentDays == ""  ||(!$.isNumeric(paymentDays)) ) {
 		
 			alertify.error("Please fill all fields correctly !!");
@@ -290,7 +294,34 @@ function contractSignUp(){
 
 
 }
+function onBlueZero(){
 
+	var feePercent1 = $('#feePercent1').val();
+	var feePercent2 = $('#feePercent2').val();
+	var feePercent3 = $('#feePercent3').val();
+	var feePercent4 = $('#feePercent4').val();
+	var feePercent5 = $('#feePercent5').val();
+	if(feePercent1 == ""||!$.isNumeric(feePercent1)) {
+		$('#feePercent1').val('0');
+	} 
+	if(feePercent2 == ""||!$.isNumeric(feePercent2)) {
+
+		$('#feePercent2').val('0');
+	} 
+	if(feePercent3 == ""||!$.isNumeric(feePercent3)) {
+
+		$('#feePercent3').val('0');
+	} 
+	if(feePercent4 == ""||!$.isNumeric(feePercent4)) {
+
+		$('#feePercent4').val('0');
+	} 
+	if(feePercent5 == ""||!$.isNumeric(feePercent5)) {
+
+		$('#feePercent5').val('0');
+	}
+	
+}
 
 function checkComplexity(password)
 {

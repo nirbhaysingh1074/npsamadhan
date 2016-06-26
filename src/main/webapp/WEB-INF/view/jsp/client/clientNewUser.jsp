@@ -63,10 +63,11 @@
 
 	<div class="mid_wrapper">
 	  <div class="container">
-	    <div style="text-align: center;margin-top: 50px">
-	    	<h1 style="color: #000;">New User</h1>
+	    
+	    <div class="form_cont formContNewUser" > 
+<div style="text-align: center;margin-bottom: 20px;">
+	    	<h2 class="formHeading">NEW USER</h2>
 	    </div>
-	    <div class="form_cont" style="margin-top: 50px;">
           <form:form method="POST" action="clientnewuser" commandName="cuForm"  onsubmit=" return validateForm()">
 	      <div class="block">
 	        <div class="form_col">
@@ -81,7 +82,7 @@
 	          </dl>
 	          <dl>
 	            <dt>
-	              <label>User Id<span class='error'>*</span></label>
+	              <label>Email Id<span class='error'>*</span></label>
 	            </dt>
 	            <dd>
 	              <form:input path="userid"  />
@@ -121,7 +122,7 @@
 	      </div>
 	      
 	      <div class="block form_submt alin_cnt">
-	        <input type="submit" name="btn_response" value="Save User" class="btn yelo_btn">
+	        <input type="submit" name="btn_response" value="Add User" class="btn yelo_btn">
 	      </div>
 	      </form:form>
 	    </div>

@@ -25,9 +25,9 @@ public interface PostDao
 	
 	public List<Post> getActivePostsByClient(String clientId);
 	
-	public List<Post> getActivePostsByClient(String clientId, int first, int max, String sortParam);
+	public List<Post> getActivePostsByClient(String clientId, int first, int max, String sortParam,String filterBy);
 	
-	public long countActivePostByClient(String clientId);
+	public long countActivePostByClient(String clientId,String filterBy);
 	
 	public List<Post> getAllPostsByClient(String clientId, int first, int max, String sortParam);
 	
@@ -87,5 +87,13 @@ public interface PostDao
 	public long countPostsFilteredForConsultant(String consultantId, String clientId, String status, String location);
 	
 	public List<String> getLocationsByConsultant(String consultantId);
+
+	public List<Post> getAllVerifiedPostsByClient(String loggedinUser, int i, int j, String string);
+
+	public long countAllVerifiedPostByClient(String userid);
+
+	public long countActiveVerifiedPostByClient(String userid);
+
+	List<Post> getAllActivePosts();
 	
 }

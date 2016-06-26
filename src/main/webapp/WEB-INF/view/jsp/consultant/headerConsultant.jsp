@@ -28,7 +28,6 @@
 <script src="js/alertify.min.js"></script>
 
 <script type="text/javascript">
-
 jQuery(document).ready(function() {
 	$.ajax({
 		type : "GET",
@@ -38,32 +37,15 @@ jQuery(document).ready(function() {
 		contentType : "application/json",
 		success : function(data) {
 			var obj = jQuery.parseJSON(data);
-//			alert();
-			$('.notification .noti_inner').html("");
 			if(obj.mList.length > 0)
 			{
-			//	$('.notification .noti-icon').css("background-color","#F8B910");
-			
 				$('#messageCount').html(obj.mList.length);
-				$.each(obj.mList , function(i, val) {
-					
-					$('.notification .noti_inner').append("<a href='consapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
-							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
-							"<span class='post-title'>"+val.ptitle+"</span>.</div></a>");
-					
-				});
-			}
-			else
-			{
-				$('.notification .noti_inner').append("<p>No message available</p>");
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 	        alert(xhr.status);
 	      }
 	}) ;
-	
-
 	$.ajax({
 		type : "GET",
 		url : "getUserNotifications",
@@ -71,62 +53,45 @@ jQuery(document).ready(function() {
 		contentType : "application/json",
 		success : function(data) {
 			var obj = jQuery.parseJSON(data);
-//			alert();
-			$('.notification .noti_inner').html("");	
-			$('.noti_title').html("Notifications");
-			
 			if(obj.mList.length > 0)
 			{
-				//$('.notification .noti-icon').css("background-color","#F8B910");
 				$('#notificationCount').html(obj.mList.length);
-				$.each(obj.mList , function(i, val) {
-					
-					$('.notification .noti_inner').append("<span>"+val.notification+"</span>");
-				});
-			}
-			else
-			{
-				$('.notification .noti_inner').append("<p>No notification available</p>");
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 	        alert(xhr.status);
 	      }
     }) ;
-
-
-	
 });
 
 function getMessages(){
+	pleaseWait();
+	$('.notification .noti_inner').html("");
+	$('.noti_title').html("Messages");
 	$.ajax({
 		type : "GET",
 		url : "consmessages",
-		 async: false,
+		async: false,
 		data : {},
 		contentType : "application/json",
 		success : function(data) {
 			var obj = jQuery.parseJSON(data);
-//			alert();
-			$('.notification .noti_inner').html("");
-			$('.noti_title').html("Notifications");
 			if(obj.mList.length > 0)
 			{
-			//	$('.notification .noti-icon').css("background-color","#F8B910");
-			
+				$('.notification .noti_inner').html("");
+				$('.noti_title').html("Messages");
 				$('#messageCount').html(obj.mList.length);
 				$.each(obj.mList , function(i, val) {
-					
-					$('.notification .noti_inner').append("<a href='consapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
+				$('.notification .noti_inner').append("<a href='consapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
 							"<span class='post-title'>"+val.ptitle+"</span>.</div></a>");
-					
 				});
 			}
 			else
 			{
 				$('.notification .noti_inner').append("<p>No message available</p>");
 			}
+			pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 	        alert(xhr.status);
@@ -135,24 +100,22 @@ function getMessages(){
 }
 
 function getNotifications(){
-
+	pleaseWait();
+	$('.notification .noti_inner').html("");	
+	$('.noti_title').html("Notifications");
 	$.ajax({
 		type : "GET",
 		url : "getUserNotifications",
 		data : {},
 		contentType : "application/json",
 		success : function(data) {
-			var obj = jQuery.parseJSON(data);
-//			alert();
-			$('.notification .noti_inner').html("");	
-			$('.noti_title').html("Notifications");
-			
+		var obj = jQuery.parseJSON(data);
+		$('.notification .noti_inner').html("");	
+		$('.noti_title').html("Notifications");
 			if(obj.mList.length > 0)
 			{
-				//$('.notification .noti-icon').css("background-color","#F8B910");
 				$('#notificationCount').html(obj.mList.length);
 				$.each(obj.mList , function(i, val) {
-					
 					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+"</p></div>");
 				});
 			}
@@ -160,14 +123,12 @@ function getNotifications(){
 			{
 				$('.notification .noti_inner').append("<p>No notification available</p>");
 			}
+			pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
 	        alert(xhr.status);
 	      }
     }) ;
-
-
-	
 }
 </script>
 
@@ -186,7 +147,6 @@ function getNotifications(){
 		    	 if(x.readyState==4 && x.status==200)
 					{
 		    		 var res = x.responseText;
-// 		    		 alert(res);
 		    		 window.location.href="${pageContext.request.contextPath}/j_spring_security_logout";
 		    		}
 			}
@@ -197,21 +157,17 @@ function getNotifications(){
 </script>
 </head>
 <body class="loading"  >
-	<tilesx:useAttribute name="currentpage" />
+<tilesx:useAttribute name="currentpage" />
 <%
-	Registration reg = (Registration)request.getSession().getAttribute("registration");
-	
+Registration reg = (Registration)request.getSession().getAttribute("registration");
 %>
 <header>
     <div class="container">
 		<div class="header">
 	      <div class="logo">
 	      	<a href="consdashboard"><img src="images/logo.png" alt="Logo"></a> 
-	      	
 	      </div>
-	      
 	      <div class="header_right">
-	        
 	        <div class="address_info">
 	        	<p><span><a href="consultantaccount"><%= reg.getConsultName() %> </a></span>| <span>  <a>FAQ </a></span> | <span style="color: red;cursor: pointer;" onclick="getLogOut()">Log out </span></span ></p>
 	        </div>
@@ -220,7 +176,7 @@ function getNotifications(){
 				<div class="icon "  >
 					<img  class="messageIcon"  src="images/mailbox.png">
 					
-					<span id="messageCount" class="notificationCount" ></span>
+					<span id="messageCount" class="messageCount" ></span>
 				</div>
 			</div>
 			<div class="noti-icon more_product" onclick="getNotifications()">

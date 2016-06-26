@@ -111,7 +111,7 @@
 									<th >Current Annual CTC (In Lacs)</th>
 									<th >Notice Period (In Days)</th>
 									<th align="left">Submitted</th>
-									<th align="left">Status</th>
+									<th style="width: 85px;"  align="left">Status</th>
 									<th style="width: 155px;" align="left">Action</th>
 									<th></th>
 								</tr>
@@ -128,9 +128,9 @@
 									<td>
 									<%if(pp.getViewStatus()!=null&&pp.getViewStatus()){
 										 %>
-									<a style="color: #1a0dab" href="clientapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a>
+									<a style="color: #1a0dab" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									<%}else{ %>
-									<a href="clientapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a>
+									<a href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									
 									<%} %>
 									</td>

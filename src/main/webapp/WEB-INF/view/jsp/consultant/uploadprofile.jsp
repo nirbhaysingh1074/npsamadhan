@@ -56,7 +56,7 @@
 					if(obj.status == true)
 					{
 						alertify.error("Profile already uploaded for this post !");
-						$('.email_error').html("Profile with this email alreadt uploaded for this post !");
+						$('.email_error').html("Profile with this email already uploaded for this post !");
 						$('#email').focus();
 					}
 				},
@@ -184,7 +184,13 @@
 			$('.resumeText_error').html("Please enter resume text");
 			valid = false;
 		} */
-		
+		var r=confirm("Are you sure you want to upload "+name+" profile for "+$('#postName').html()+" at "+$('#clientName').html()+ "?");
+			if (r==true) 
+			{
+				return true;
+			}else{
+				return false;
+			}
 		if(!valid)
 		{
 			return false;
@@ -249,8 +255,11 @@
 		%>
 			<script type="text/javascript">
 			jQuery(document).ready(function() {
-				alertify.confirm("Daily quota for this position has been exhausted please submit your profile tomorrow. Close this tab ?", function (e, str) {
+				alertify.confirm("You have already exhausted your weekly upload profile quota, please submit profile later.", function (e, str) {
 					if (e) {
+						window.close();
+					}else{
+
 						window.close();
 					}
 				});
@@ -265,11 +274,14 @@
 
 </head>
 <body class="loading">
+<script type="text/javascript">
 
+alert('<%=quataExceed%>');
+</script>
 	<div class="mid_wrapper">
 		<div class="container">
 			<div class="form_cont">
-				<form:form method="POST" action="uploadprofile"	commandName="uploadProfileForm"  enctype="multipart/form-data" onsubmit=" return validateForm()">
+				<form:form method="POST" action="uploadprofile"	commandName="uploadProfileForm"  enctype="multipart/form-data" onsubmit="return validateForm()">
 					<div class="block">
 						<div class="form_col">
 							<%
@@ -305,7 +317,7 @@
 								</dt>
 								<dd>
 									<form:hidden path="post.client.lid" id="cleintId"  value="${post.client.lid}"></form:hidden>
-										<label>${post.client.organizationName}</label>
+										<label id="clientName">${post.client.organizationName}</label>
 									
 									<span class='error client_error'> &nbsp;<form:errors path="post.client.lid" /></span>
 								</dd>
@@ -316,7 +328,7 @@
 								</dt>
 								<dd>
 									<form:hidden path="post.postId" id="postId" value="${post.postId}" ></form:hidden>
-										<label>${post.title}</label>
+										<label id="postName">${post.title}</label>
 									<span class='error post_error'> &nbsp;<form:errors path="post.postId" /></span>
 								</dd>
 							</dl>
@@ -435,9 +447,30 @@
 									<span class='error noticePeriod_error'>&nbsp;<form:errors path="noticePeriod" /></span>
 								</dd>
 							</dl>
-							
-							
-							
+							<dl>
+								<dt>
+									<label>Date of Birth<span class="req">*</span></label>
+								</dt>
+								<dd>
+									<form:input path="dateofbirth"  maxlength="2"   style="padding-right: 150px" />
+									<span class='error dateofbirth_error'>&nbsp;${profileExist_dob}<form:errors path="dateofbirth" /></span>
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<label>Qualification<span class="req">*</span></label>
+								</dt>
+								<dd>
+									<form:select path="qualification">
+										<form:option value="bca">Bachelors of Computer Applications</form:option>
+										<form:option value="btech">Bachelors of Technology</form:option>
+										<form:option value="others">Others</form:option>
+									</form:select>
+									<span class='error qualification_error'>&nbsp;<form:errors path="qualification" /></span>
+								
+								
+								</dd>
+							</dl>
 							<dl>
 								<dt>
 									<label>Upload Resume</label>
@@ -451,14 +484,15 @@
 										</div>
 									    <span class="error resumePath_error">&nbsp;<form:errors path="resumePath" /></span>
 									</div>
-							<!-- 		<div style="float: left;">
-						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
+							<!-- 	<div style="float: left;">
+						    		<input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
 								    border-radius: 0 5px 5px 0;
 								    float: right;
 								    height: 27px;
 								    overflow: hidden;
 								    position: relative;padding: 5px;"  type="button" value="Upload" onclick="$('#resumeTextField').attr('display','none')" />
-						</div> -->
+									</div> 
+							-->
 								</dd>
 							</dl>
 							

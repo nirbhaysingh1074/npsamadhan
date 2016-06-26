@@ -86,7 +86,7 @@ public class CommonController
 					+ "<p></p>"
 					+ "<p>Best Regards,</p>"
 					+ "<p></p>"
-					+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"/images/logo.png' width='63'> </p>"
+//					+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"/images/logo.png' width='63'> </p>"
 					+ "<p><strong>Admin Team</strong></p><p></p>"
 					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 					+ "</div>"
@@ -116,12 +116,22 @@ public class CommonController
 	 * @param principal
 	 * @return returns view resolver in tiles for test page
 	 */
-			
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public String test(ModelMap map, HttpServletRequest request, Principal principal)
-	{
-		return "test";
-	}
+	
+@RequestMapping(value = "/test", method = RequestMethod.GET)
+public String test(ModelMap map, HttpServletRequest request, Principal principal)
+{
+	return "test";
+}		
+@RequestMapping(value = "/privacyPolicy", method = RequestMethod.GET)
+public String privacyPolicy(ModelMap map, HttpServletRequest request, Principal principal)
+{
+	return "privacyPolicy";
+}		
+@RequestMapping(value = "/termsOfService", method = RequestMethod.GET)
+public String termsOfService(ModelMap map, HttpServletRequest request, Principal principal)
+{
+	return "termsOfService";
+}
 	@RequestMapping(value = "/setFirstTimeFalse", method = RequestMethod.GET)
 	@ResponseBody
 	public String setFirstTimeFalse(ModelMap map, HttpServletRequest request, Principal principal)

@@ -90,11 +90,11 @@ public class Post implements Serializable
 	@Column
 	private int noOfPostsFilled;
 	
-	@Column(nullable=false)
+/*	@Column(nullable=false)
 	private String role;
 
 	@Column(nullable=false)
-	private String designation;
+	private String designation;*/
 
 	@Column
 	private String closeRequestClient;
@@ -114,12 +114,25 @@ public class Post implements Serializable
 	private String workHourEndMin;
 	@Column
 	private String updateInfo;
-	
+
 	@Column
 	@Lob
 	private String editSummary;
+	@Column
+	@Lob
+	private String variablePayComment;
 	
 	
+
+	public String getVariablePayComment()
+	{
+		return variablePayComment;
+	}
+
+	public void setVariablePayComment(String variablePayComment)
+	{
+		this.variablePayComment = variablePayComment;
+	}
 
 	public double getFeePercent()
 	{
@@ -382,7 +395,7 @@ public class Post implements Serializable
 		this.noOfPosts = noOfPosts;
 	}
 
-	public String getRole()
+/*	public String getRole()
 	{
 		return role;
 	}
@@ -400,7 +413,7 @@ public class Post implements Serializable
 	public void setDesignation(String designation)
 	{
 		this.designation = designation;
-	}
+	}*/
 
 	public Registration getClient()
 	{

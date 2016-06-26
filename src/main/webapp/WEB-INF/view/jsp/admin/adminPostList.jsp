@@ -103,7 +103,7 @@
 												<td><a target="_blank" href="adminviewjd?pid=<%= post.getPostId()%>"><%= post.getTitle() %></a></td>
 												<td><%= post.getLocation()%></td>
 												<td class="text-center"><%= post.getNoOfPosts()%></td>
-												<td><%= post.getRole()%></td>
+												<%-- <td><%= post.getRole()%></td> --%>
 												<td class="text-center"><%= post.getExp_min() +" - " + post.getExp_max()%> Years</td>
 												<td>
 													<%

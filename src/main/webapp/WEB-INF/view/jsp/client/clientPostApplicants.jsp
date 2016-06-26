@@ -334,7 +334,7 @@ pleaseWait();
 									</c:forEach>
 								</select>
 							</div>
-
+							<%if(post!=null){ %>
 							<div id="view_jd" class="view_id pre_check"
 								style="float: none; margin: 0; padding: 0;">
 								<%
@@ -402,10 +402,13 @@ pleaseWait();
 		            <option value="joinDropDate">Dropped</option>
 		          </select>
 		        </div>
+		       
 		        <div style="float: right;margin-right: 20px;">
 							<label style="line-height: 27px;"><input onchange="loadclientposts('1');" type="checkbox" name="excludeType"   value="rejected"/> Include Rejected</label>
-							</div>
+							</div> <%} %>
 						</div>
+						
+						
 						<div id="candidate_profiles" class="rightside_in new_table "
 							style="display: <%if (ppList == null) {%>none<%}%>">
 							<!--           ----------------------------  inner data start --------------------- -->
@@ -721,10 +724,10 @@ pleaseWait();
 
 
 
-									<tr align="left" style="margin: 10px 0;" class="bottom-margin">
+									<!-- <tr align="left" style="margin: 10px 0;" class="bottom-margin">
 										<td style="width: auto; font-weight: bold;" colspan="10">Select
 											post and consultant</td>
-									</tr>
+									</tr> -->
 
 
 								</tbody>

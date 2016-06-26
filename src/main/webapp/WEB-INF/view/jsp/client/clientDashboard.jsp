@@ -17,6 +17,7 @@
 <script type="text/javascript">
 	function  loadclientdashboardposts(pn)
 	{
+		pleaseWait();
 		var db_post_status = $('#db_post_status').val();
 		var sortParam=$('#sortParam').val();
 		if(typeof sortParam != 'undefined'){}
@@ -31,6 +32,7 @@
 			success : function(data) {
 //				alert(data);
 				$('.client_db_posts').html(data);
+			pleaseDontWait();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 		        alert(xhr.status);
@@ -139,10 +141,11 @@ jQuery(document).ready(function() {
 		          <div style="    float: left;">
 		            <select id="db_post_status">
 		               <option value="all">All</option>
-					   <option value="active">Active</option>
-					   <option value="published">Submitted</option>
+					   <option value="isActive" selected="selected">Active</option>
+					   <option value="isNotActive" >Inactive</option>
+					   <option value="pending">Pending Verification</option>
 					   <option value="saved">Saved</option>
-					   <option value="closed">Closed</option>
+					   <option value="closeDate">Closed</option>
 					</select>
 		          </div>
 		        <!--  <div  class="sort_by"> <span>Sort by</span>
@@ -156,10 +159,10 @@ jQuery(document).ready(function() {
 	        String sortParam=(String)request.getAttribute("sortParam");
 	        %>
 	        <script type="text/javascript">
-	        <%if(sortParam!=null){%>
-	        $("#sortParam").val('<%=sortParam%>');
-	        $("#sortParam option[value='<%=sortParam%>']").attr('selected','selected');
-	        <%}%>
+		        <%if(sortParam!=null){%>
+			        $("#sortParam").val('<%=sortParam%>');
+			        $("#sortParam option[value='<%=sortParam%>']").attr('selected','selected');
+		        <%}%>
 	        </script>
 		        </div>
 		    </div>

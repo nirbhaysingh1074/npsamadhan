@@ -59,8 +59,8 @@
 	 		  {
 	 			  if(response != "failed")
  				  {
- 				  	$('#client_logo').attr("src","data"+response);
- 				  	$('.brnad_logo img').attr("src","data"+response);
+ 				  	$('#client_logo').attr("src","data/"+response);
+ 				  	$('.brnad_logo img').attr("src","data/"+response);
  				  }
 	 			  else
  				  {

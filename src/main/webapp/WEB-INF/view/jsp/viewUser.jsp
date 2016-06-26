@@ -98,7 +98,7 @@
 												%>
 												<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 												
-													<a href="clientDisableUser?userid=<%= reg.getUserid() %>" class="btn yelo_btn">Disable User</a>
+													<a href="clientDisableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Disable User</a>
 													
 													</sec:authorize>
 													<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
@@ -110,7 +110,7 @@
 											else
 											{
 												%><sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-													<a href="clinetEnableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Enable User</a>
+													<a href="clientEnableUser?childId=<%= reg.getUserid() %>" class="btn yelo_btn">Enable User</a>
 												
 													</sec:authorize>
 													<sec:authorize access="hasRole('ROLE_CON_MANAGER')">

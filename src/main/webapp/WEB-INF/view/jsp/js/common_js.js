@@ -7,10 +7,10 @@ jQuery(document).ready(function() {
 		{
 			$('.user_noti_content').css('display','block');
 		}
-		else 
+		/*else 
 		{
 			$('.user_noti_content').css('display','none');
-		}
+		}*/
 		event.stopPropagation();
 			
 	});
