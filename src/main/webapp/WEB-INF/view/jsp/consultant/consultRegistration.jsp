@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="com.unihyr.domain.Industry"%>
 <%@page import="com.unihyr.domain.Location"%>
@@ -397,32 +398,52 @@ $(document).ready(function() {
 								<option value="<%=ind.getId()%>"><%=ind.getIndustry()%></option>
 								<%
 									}
-											}
-										}
+									}
+									}
 								%>
 							</select> <span class="error industry_error">&nbsp; ${industry_req }</span>
 						</div>
 					</div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Office Locations<span class="req">*</span></label>
+							<label>Office Locations<span class="req">*</span>
+							<span style="font-size: 9px;">
+							(press CTRL to select multiple)
+							</span>
+							</label>
 							<form:select path="officeLocations" multiple="multiple" size="5">
 								<%
-									if (locList != null && !locList.isEmpty()) {
-												for (Location loc : locList) {
-													if (model.getOfficeLocations() != null
-															&& model.getOfficeLocations().contains(loc.getLocation())) {
-								%>
-								<form:option value="<%=loc.getLocation()%>" selected="selected"><%=loc.getLocation()%></form:option>
-								<%
-									} else {
-								%>
-								<form:option value="<%=loc.getLocation()%>"><%=loc.getLocation()%></form:option>
-								<%
-									}
-												}
-											}
-								%>
+	              				List<String> locList1=GeneralConfig.topLocations;
+	              				for(String loc:locList1){
+	              					%>
+						   				<form:option value="<%=loc %>"><%=loc %></form:option>
+	              					<%
+	              				}
+	              				%>
+								
+			            		<%
+			            			if(locList != null && !locList.isEmpty())
+			            			{
+			            				for(Location loc : locList)
+			            				{
+			            					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc.getLocation()) )
+			            					{
+			            						if(!locList1.contains(loc.getLocation())){
+			            						%>
+			            							<form:option value="<%= loc.getLocation() %>" selected = "selected"><%= loc.getLocation() %></form:option>
+			            						<%
+			            					}}
+			            					else
+			            					{
+			            						if(!locList1.contains(loc.getLocation())){
+			            						%>
+			            							<form:option value="<%= loc.getLocation() %>"><%= loc.getLocation() %></form:option>
+			            						<%
+			            						}
+			            					}
+			            				}
+			            			}
+			            		%>
 							</form:select>
 							<span class="error officeLocations_error">&nbsp;<form:errors
 									path="officeLocations" /></span>

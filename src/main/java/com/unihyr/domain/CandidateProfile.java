@@ -46,7 +46,9 @@ public class CandidateProfile
 
 	@Column(nullable = false)
 	private String contact;
-
+	@Column
+	private String countryCode;
+	
 	@Column(nullable = false)
 	private String currentOrganization;
 
@@ -73,30 +75,54 @@ public class CandidateProfile
 	private String ctcComments;
 
 	@Column
-	private Date dateofbirth;
+	private String dateofbirth;
 	@Column
-	private String qualification;
+	private String qualification_ug;
+	@Column
+	private String qualification_pg;
 	
 	
 	
-	public Date getDateofbirth()
+	public String getCountryCode()
+	{
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode)
+	{
+		this.countryCode = countryCode;
+	}
+
+	public String getQualification_ug()
+	{
+		return qualification_ug;
+	}
+
+	public void setQualification_ug(String qualification_ug)
+	{
+		this.qualification_ug = qualification_ug;
+	}
+
+	public String getQualification_pg()
+	{
+		return qualification_pg;
+	}
+
+	public void setQualification_pg(String qualification_pg)
+	{
+		this.qualification_pg = qualification_pg;
+	}
+
+	
+
+	public String getDateofbirth()
 	{
 		return dateofbirth;
 	}
 
-	public void setDateofbirth(Date dateofbirth)
+	public void setDateofbirth(String dateofbirth)
 	{
 		this.dateofbirth = dateofbirth;
-	}
-
-	public String getQualification()
-	{
-		return qualification;
-	}
-
-	public void setQualification(String qualification)
-	{
-		this.qualification = qualification;
 	}
 
 	public String getCtcComments()
@@ -123,8 +149,6 @@ public class CandidateProfile
 	{ CascadeType.ALL })
 	@JoinColumn(name = "consultantId", referencedColumnName = "userid")
 	private Registration registration;
-
-
 
 	public int getNoticePeriod()
 	{

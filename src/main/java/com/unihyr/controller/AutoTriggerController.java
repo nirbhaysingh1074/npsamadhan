@@ -48,7 +48,7 @@ public class AutoTriggerController
 		List<Post> list = postService.getAllActivePosts();
 		for (Post post : list)
 		{
-			List<PostProfile> profileList = postProfileService.getPostProfileByPost(post.getPostId(), 0, 1, "submitted",
+			List<PostProfile> profileList = postProfileService.getPostProfileByPostForStartup(post.getPostId(), 0, 1, "submitted",
 					"submitted", "rejected", "desc");
 			Date today = new Date();
 			Date submitted = null;

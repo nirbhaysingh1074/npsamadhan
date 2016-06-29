@@ -571,7 +571,7 @@ pleaseWait();
 	
 	
 	$(document.body).on('click', '.filter  #act_post' ,function(){
-//		alert("set Active");
+		//		alert("set Active");
 		
 		var val = [];
 		 $('.sel_posts:checkbox:checked').each(function(i){
@@ -584,7 +584,7 @@ pleaseWait();
 			 return false;
 		 }
 
-		 	alertify.confirm("Are you sure you want to activate this post ?", function (e, str) {
+		 alertify.confirm("Are you sure you want to activate this post ?", function (e, str) {
 				if (e) 
 				{
 					pleaseWait();
@@ -599,7 +599,6 @@ pleaseWait();
 							{
 								loadclientdashboardposts($('.page_nav .current_page').attr("id"));
 								alertify.success("Hi, post activate successfully !");
-								
 								$.ajax({
 									type : "GET",
 									url : "clientMailActive",
@@ -611,8 +610,8 @@ pleaseWait();
 										{
 											alertify.error("Oops, mail not send !");
 										}
-								pleaseDontWait();		
-								location.href="";
+										pleaseDontWait();		
+										location.href="";
 									},
 									error: function (xhr, ajaxOptions, thrownError) {
 										alertify.error("Oops, mail not send !");

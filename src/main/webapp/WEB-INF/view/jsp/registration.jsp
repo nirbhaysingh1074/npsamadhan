@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.model.ClientRegistrationModel"%>
 <%@page import="com.unihyr.domain.Location"%>
 <%@page import="java.util.Arrays"%>
@@ -28,26 +29,21 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$(".btn_submit").click(function() {
-// 			alert("Hello")	;
 			var valid = true;
-			
-			
 			var org = $('#organizationName').val();
+			var designation = $('#designation').val();
 			var userid = $('#userid').val();
-			/* var password = $('#password').val();
-			var repassword = $('#repassword').val(); */
 			var revenue = $('#revenue').val();
 			var industry = $('#industry').val();
 			var noofpeoples = $('#noofpeoples').val();
 			var contact = $('#contact').val();
 			var officeLocations = $('#officeLocations').val();
-			
 			var websiteUrl = $('#websiteUrl').val();
 			var nooflocation = $('#hoAddress').val();
 			var about = $('#about').val();
 			var officeAddress = $("#officeAddress").val();
 			var name = $("#name").val();
-// 			alert(officeLocations);
+			//alert(officeLocations);
 			
 			$('.error').html('&nbsp;');
 			if(org == "")
@@ -62,24 +58,36 @@
 				valid = false;
 			}
 			
-			/* if(password == "")
+			/*
+			if(password == "")
 			{
 				$('.password_error').html("please enter a valid password");
 				valid = false;
 			}
-			
 			if(repassword == "" || password != repassword)
 			{
 				$('.repassword_error').html("Password do not match. Please re-enter both passwords");
 				valid = false;
-			} */
-			
+			}
+			*/
+			/*
 			if(revenue == "")
 			{
 				$('.revenue_error').html("Please enter revenue");
 				valid = false;
 			}
+			*/
 			
+			if(noofpeoples == "")
+			{
+				$('.noofpeoples_error').html("Please enter no of employees");
+				valid = false;
+			}
+			if(designation == "")
+			{
+				$('.designation_error').html("Please enter designation");
+				valid = false;
+			}
 			if(industry == "" || industry =='0')
 			{
 				$('.industry_error').html("Please select an industry");
@@ -114,7 +122,7 @@
 				valid = false;
 			}
 
-			if(name== "")
+			if(name == "")
 			{
 				$('.name_error').html("Please enter your name");
 				valid = false;
@@ -292,7 +300,7 @@
 					<div class="reg-wrap" style="display: none;">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Revenue<span class="req">*</span></label>
-							<form:input path="revenue" cssClass="number_only" maxlength="10"   style="padding-right: 150px" />
+							<form:input path="revenue" cssClass="number_only" maxlength="10"   style="padding-right: 150px" value="10"/>
 							<span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">  INR (Millions)</span>
 							<span class="error revenue_error">&nbsp;<form:errors path="revenue" /></span>
 						</div>
@@ -335,7 +343,7 @@
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Corporate Office + City<span class="req">*</span></label>
+							<label>Corporate Office<span class="req">*</span></label>
 							<form:textarea path="officeAddress" />
 							<span class="error officeAddress_error">&nbsp;<form:errors path="officeAddress" /></span>
 						</div>
@@ -364,22 +372,34 @@
 							<label>City<span class="req">*</span></label>
 							<form:select path="officeLocations" >
 								<form:option value="">Select City</form:option>
+								<%
+	              				List<String> locList1=GeneralConfig.topLocations;
+	              				for(String loc:locList1){
+	              					%>
+						   				<form:option value="<%=loc %>"><%=loc %></form:option>
+	              					<%
+	              				}
+	              				%>
+								
 			            		<%
 			            			if(locList != null && !locList.isEmpty())
 			            			{
 			            				for(Location loc : locList)
 			            				{
-			            					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc.getLocation()))
+			            					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc.getLocation()) )
 			            					{
+			            						if(!locList1.contains(loc.getLocation())){
 			            						%>
 			            							<form:option value="<%= loc.getLocation() %>" selected = "selected"><%= loc.getLocation() %></form:option>
 			            						<%
-			            					}
+			            					}}
 			            					else
 			            					{
+			            						if(!locList1.contains(loc.getLocation())){
 			            						%>
 			            							<form:option value="<%= loc.getLocation() %>"><%= loc.getLocation() %></form:option>
 			            						<%
+			            						}
 			            					}
 			            				}
 			            			}

@@ -53,8 +53,6 @@ public class IndustryController
 			
 			industry.setCreateDate(dt);
 			industry.setUserid("admin@silvereye.co");
-//		industry.setUserid(principal.getName());
-			
 			industryService.addIndustry(industry);
 			return "redirect:admindashboard";
 		}

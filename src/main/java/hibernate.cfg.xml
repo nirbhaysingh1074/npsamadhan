@@ -27,6 +27,7 @@
    	    <mapping class="com.unihyr.domain.ConfigVariables"/>
    	    <mapping class="com.unihyr.domain.GlobalRatingPercentile"/>
    	    <mapping class="com.unihyr.domain.Notifications"/>
+   	    <mapping class="com.unihyr.domain.Qualification"/>
     </session-factory>
     
 </hibernate-configuration>

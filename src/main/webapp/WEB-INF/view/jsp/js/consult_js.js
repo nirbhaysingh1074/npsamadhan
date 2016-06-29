@@ -109,19 +109,15 @@ jQuery(document).ready(function() {
 					pleaseDontWait();
 				}
 			}) ;
-		
 	});
 	
 	
 	$(document.body).on('click', '.pre_check > .post_interest' ,function(){
 //		alert("Hello to all" + $(this).attr("id"));
 		var row = $(this);
-		
 		var pid = $(this).attr("id");
-		
 		alertify.confirm("Are you interested for this post ?", function (e, str) {
 		if (e) {
-		
 			$.ajax({
 				type : "GET",
 				url : "consPostInterest",
@@ -134,7 +130,7 @@ jQuery(document).ready(function() {
 						row.removeClass("post_interest");
 						row.html("<img src='images/int-icon.png' alt='interested'>");
 						row.prop('title','You have added this post to active postions.');
-				//		alertify.success("Add interest for post "+obj.jobCode);
+						//alertify.success("Add interest for post "+obj.jobCode);
 						location.href="";
 					}
 					
@@ -143,12 +139,8 @@ jQuery(document).ready(function() {
 					alert(xhr.responseText);
 				}
 			}) ;
-			
 		}
-		
 		});
-		
-		
 	});
 	
 
@@ -292,6 +284,42 @@ jQuery(document).ready(function() {
 			
 		}
 	});
+	var matched, browser;
+
+	jQuery.uaMatch = function( ua ) {
+	    ua = ua.toLowerCase();
+
+	    var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+	        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+	        /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+	        /(msie) ([\w.]+)/.exec( ua ) ||
+	        ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+	        [];
+
+	    return {
+	        browser: match[ 1 ] || "",
+	        version: match[ 2 ] || "0"
+	    };
+	};
+
+	matched = jQuery.uaMatch( navigator.userAgent );
+	browser = {};
+
+	if ( matched.browser ) {
+	    browser[ matched.browser ] = true;
+	    browser.version = matched.version;
+	}
+
+	// Chrome is Webkit, but Webkit is also Safari.
+	if ( browser.chrome ) {
+	    browser.webkit = true;
+	} else if ( browser.webkit ) {
+	    browser.safari = true;
+	}
+
+	jQuery.browser = browser;
+	 window.availableTags = [ '91','11' ];
+	$("#countryCode").autocomplete({source: availableTags});
 });
 
 
@@ -383,4 +411,30 @@ function consShowInterest(pids){
 		    }) ;
 		}
  	});
+}
+
+
+function setCandidatureWithdraw(ppid){
+//	var ppid =$('#postIdForAccept').val();
+	alertify.confirm("Are you sure you want to withdraw your candidature from this position ?", function (e, str) {
+		if (e) 
+		{
+	pleaseWait();
+		$.ajax({
+			type : "GET",
+			url : "consacceptoffer",
+			data : {'ppid':ppid,'ppstatus':'candidate_withdraw','joiningDate':''},
+			contentType : "application/json",
+			success : function(data) {
+				var obj = jQuery.parseJSON(data);
+				pleaseDontWait();
+				location.href="";	
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				alert(xhr.status);
+				pleaseDontWait();
+			}
+		});
+		}
+	});
 }

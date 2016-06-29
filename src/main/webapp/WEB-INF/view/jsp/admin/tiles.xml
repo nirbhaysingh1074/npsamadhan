@@ -79,6 +79,16 @@
         <put-attribute name="title" value="UniHyr - Configurations" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminConfiguration.jsp" />
     </definition>
+    <definition name="adminAddQualification" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Add Qualification" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminAddQualification.jsp" />
+    </definition>
+    
+    
+    <definition name="adminQualificationList" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Qualification List" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminQualificationList.jsp" />
+    </definition>
     
     
     <definition name="adminUserChild" extends="adminTemplate">

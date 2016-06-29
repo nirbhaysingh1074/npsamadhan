@@ -214,6 +214,8 @@ public class LoginController
 			Set<UserRole> roles = new HashSet<UserRole>();
 			roles.add(urole);
 			login.setRoles(roles);
+			login.setIsactive("false");
+
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("orgName", reg.getOrganizationName());
@@ -303,6 +305,7 @@ public class LoginController
 				Set<UserRole> roles = new HashSet<UserRole>();
 				roles.add(urole);
 				login.setRoles(roles);
+				login.setIsactive("false");
 				loginInfoService.addLoginInfo(login, null);
 				map.addAttribute("regSuccess", "true");
 				map.addAttribute("orgName", reg.getConsultName());

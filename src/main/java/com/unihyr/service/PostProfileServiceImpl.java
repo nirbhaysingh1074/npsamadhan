@@ -51,11 +51,17 @@ public class PostProfileServiceImpl implements PostProfileService
 	{
 		return this.postProfileDao.countPostProfileByClient(clientId);
 	}
-	
+
 	@Override
 	public List<PostProfile> getPostProfileByPost(long postId, int first, int max,String sortParam,String filterBy,String excludeType,String sortOrder)
 	{
 		return this.postProfileDao.getPostProfileByPost(postId, first, max,sortParam, filterBy,excludeType,sortOrder);
+	}
+
+	@Override
+	public	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String sortParam, String filterBy,
+			String excludeType, String sortOrder){
+		return this.postProfileDao.getPostProfileByPostForStartup(postId, first, max,sortParam, filterBy,excludeType,sortOrder);
 	}
 	
 	@Override
@@ -229,7 +235,7 @@ public class PostProfileServiceImpl implements PostProfileService
 	}
 
 	@Override
-	public boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob)
+	public boolean getPostProfileByContactAndDob(long postId, String contactNo, String dob)
 	{
 		return this.postProfileDao.getPostProfileByContactAndDob(postId,contactNo,dob);
 	}

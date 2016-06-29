@@ -19,7 +19,24 @@
 <style type="text/css">
 	.error{color: red;}
 </style>
+<script type="text/javascript">
+var buttonst=$('#db_post_status').val();
+	if(buttonst=="isActive"){
+		//$('#inact_post').css('display','none');
+		$('#act_post').css('display','none');
+		}else if (buttonst=="isNotActive"){
+			$('#inact_post').css('display','none');
+			//$('#inact_post').css('display','block');
+			}else if (buttonst=="all"){
+			//	$('#act_post').css('display','block');
+				//$('#inact_post').css('display','block');
+				}else{
+				$('#act_post').css('display','none');
+				$('#inact_post').css('display','none');
+				}
 
+
+</script>
 </head>
 <body class="loading">
 	<%
@@ -57,10 +74,10 @@
 	      <div class="filter">
 	      	 <div class="col-md-4">&nbsp;
 	      	 	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-		      	 	<button id="del_post">Delete</button>
+		      	 	<button id="act_post">Activate</button> 
+ 		      	 	<button id="inact_post">Deactivate</button> 
+<!-- 		      	 	<button id="del_post">Delete</button> -->
 <!-- 		      	 	<button id="close_post" >Close</button> -->
-<!-- 		      	 	<button id="act_post">Activate</button> -->
-<!-- 		      	 	<button id="inact_post">Inactivate</button> -->
 	      	 	</sec:authorize>
 	      	 </div>
 	         <div class="col-md-4 pagi_summary"><span>Showing <%= cc %> of <%= totalCount %></span></div>
@@ -111,23 +128,22 @@
 		        		<tr>
 		       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 		       				<th align="left" width="2%">
-<!-- 		       				<input id="sel_all" type="checkbox"> -->
+		       				<input id="sel_all" name="sel_all" type="checkbox"> 
 		       				</th>
 		       				</sec:authorize>
-		       				<th ></th>
+		       				<th style="text-align: left;">Status</th>
 		       				<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 		       				<th>Published By</th>
 		       				</sec:authorize> --%>
-		       				<th align="left"  width="5%">Status</th>
+<!-- 		       				<th align="left"  width="5%">Status</th> -->
 		       				<th align="left">Job Id</th>
 		       				<th align="left" style="width: 14%;">Role</th>
 		       				<th >No of Positions</th> 
-		       				
 		       				<th align="left">Location</th>
 		       				<th >Posted Date</th>
 		       				<th >No of Partners</th> 
 		       				<th style="width:80px;" align="left">Received</th>
-		       				<th >Shortlisted</th>
+		       				<th >In Process</th>
 		       				
 		       				<th  width="10%" style="text-align: right;">View JD</th>
 		       			</tr>
@@ -171,13 +187,13 @@
 						        				<input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>">
 						        				<%} else{
 						        				%>
-						        				<input disabled="disabled" class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>">
-						        				
+						        				 <input disabled="disabled" class="sel_postss" type="checkbox" name="selector[]" value="<%=post.getPostId() %>">
+						        				 
 						        				<%} %>
 						        				</td>
 						        			</sec:authorize>
 						        			
-					       					<td class="status" style="text-align: center;">
+					       			<%-- 		<td class="status" style="text-align: center;">
 					       						<%
 							                  		if(post.getPublished() != null&&verified)
 							                  		{
@@ -208,7 +224,7 @@
 							                  			<%
 							                  		}
 							                  	%>
-				       						</td>
+				       						</td> --%>
 				       						<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 		       				<%if(post.getPosterId()!=null){ %>
 		       				<td><%=post.getPosterId() %></td>
@@ -223,40 +239,45 @@
 		       									<%
 		       									if(post.getCloseDate()!=null){
 					       							out.println("Closed");
+					       						}
+		       									else if(post.getPublished()==null){
+					       							out.println("Saved");
+					       						}
+		       									else if(post.getVerifyDate()==null){
+					       							out.println("Verification Pending");
 					       						}else{
-					       							
 					       							if(verified){
 		       									%>
-		       									<select id="sel_act_inact" style="padding: 0;width: 65px;font-size: 11px;border-radius: 0;">
-					       						
+<!-- 		       									<select id="sel_act_inact" style="padding: 0;width: 65px;font-size: 11px;border-radius: 0;"> -->
 					       						<%
 					       							}else{
 						       					%>
-						       					<select disabled="disabled" id="sel_act_inact" style="padding: 0;width: 65px;font-size: 11px;border-radius: 0;">
-					       						
+<!-- 						       					<select disabled="disabled" id="sel_act_inact" style="padding: 0;width: 65px;font-size: 11px;border-radius: 0;"> -->
 						       					<%	
 					       							}
 					       						if(post.isActive())
 					       							{
 					       								%>
-				       										<option value="Active" selected="selected">Active</option>
+				       										<%-- <option value="Active" selected="selected">Active</option>
 				       										<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 				       											<option value="Inactive">Inactive</option>
-				       										</sec:authorize>
+				       										</sec:authorize> --%>
+				       										<span>Active</span>
 					       								<%
 					       							}
 					       							else
 					       							{
 					       								%>
-					       									<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+					       									<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 				       											<option value="Active" >Active</option>
 				       										</sec:authorize>
 				       										
-				       										<option value="Inactive" selected="selected">Inactive</option>
+				       										<option value="Inactive" selected="selected">Inactive</option> --%>
+				       										<span>Inactive</span>
 					       								<%
 					       							}
 					       						%>
-		       									</select>
+<!-- 		       									</select> -->
 		       									<%} %>
 					       					</td>
 					       					<td style="font-size: 9px;"><%= post.getJobCode() %></td>
@@ -270,11 +291,7 @@
 									       						<%= post.getTitle() %> 
 									       					</a>
 									       					<%}else{ %>
-									       					
-									       					
 									       						<%= post.getTitle() %> 
-									       				
-									       					
 									       					<%} %>
 						       							<%	
 						       						}
@@ -291,7 +308,6 @@
 						       						}
 						       					%>
 					       					</td>
-					       					
 					       					<%if(verified){ %>
 					       					<td style="text-align: center;cursor: pointer;" onclick="getClosedCandidates(<%=post.getPostId()%>)">
 						       				<a href="javascript:void(0)" ><%= post.getNoOfPosts() %> (<%=post.getNoOfPostsFilled() %> closed)</a>
@@ -301,22 +317,13 @@
 						       				<%= post.getNoOfPosts() %> (<%=post.getNoOfPostsFilled() %> closed)
 						       				</td>
 					       					<%} %>
-					       					
-						       				
-						       				
 						       				<td><%= post.getLocation() %></td>
 						       				<td style="text-align: center;"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
-
 						       				<td style="text-align: center;"><%= post.getPostConsultants().size() %></td>
-						       				
 											<%-- <td style="text-align: center;"><%= post.getNoOfPostsFilled() %></td> --%>
 						       				<td style="text-align: left;"><%= post.getPostProfile().size() %> (<%=countRead %> new)</td>
-						       				
-						       				
 						       				<td style="text-align: center;"><%= shortListed.size() %></td>
-						       				
 						       				<td  style="text-align: center;">
-						       					
 						       					<sec:authorize access="hasRole('ROLE_EMP_USER')">
 						       					<div class="pre_check" style="float:none;padding: 0px;">
 								                  	<a href="viewPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
@@ -326,15 +333,13 @@
 						       					<div class="pre_check" >
 								                  	<a href="viewPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
 							                  	</div>
-						       					
-									<%
+										<%
 										if(post.getCloseDate()==null&&post.isActive()) {
-									%>
-									<a target="_blank"
-										href="clienteditpost?pid=<%=post.getPostId()%>"><button
-											class="profile_status_buttonGen" pid="<%=post.getPostId()%>"
-											title="Click to edit this post">Edit</button></a>
-									<%
+											%>
+											<a target="_blank" href="clienteditpost?pid=<%=post.getPostId()%>">
+												<button	class="profile_status_buttonGen" pid="<%=post.getPostId()%>" title="Click to edit this post">Edit</button>
+											</a>
+											<%
 										} else {
 											String tooltip="";
 											if(!verified){

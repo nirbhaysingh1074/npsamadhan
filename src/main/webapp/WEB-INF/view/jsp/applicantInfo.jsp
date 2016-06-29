@@ -177,11 +177,11 @@ unviewed=0;
 					              			%>
 					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
 													<div class="block btn_row no-margin" style="text-align: left;">
-														 Shortlisted - In Progress
+														In Progress
 													</div>
 												</sec:authorize>
 												<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-					              					 Shortlisted - In Process
+					              					 In Process
 												</sec:authorize>
 				              				<%
 					              		}
@@ -233,7 +233,26 @@ unviewed=0;
 				                <td>Email</td><td><p><%=profile.getEmail()  %></p></td>
 				                </tr>
 				                <tr>
-				                <td>Contact</td><td><p>+91 <%= profile.getContact() %></p>
+				                <td>Contact</td><td><p>
+								<%if(profile.getCountryCode()!=null){ %>
+								+<%=profile.getCountryCode() %>
+								<%} %>
+								 <%= profile.getContact() %></p>
+				                </td>
+				                </tr>
+				                <tr>
+				                <td>Date Of Birth</td><td><p><%= profile.getDateofbirth() %></p>
+				                </td>
+				                </tr>
+				                <tr>
+				                <td>Qualification</td><td><p>
+				                 <%if(profile.getQualification_ug()!=null&&profile.getQualification_ug()!=""){ %>
+								<%= profile.getQualification_ug() %>
+								, <%} %>
+								<%if(profile.getQualification_pg()!=null&&profile.getQualification_pg()!=""){ %>
+									<%=profile.getQualification_pg() %>
+								<%} %>
+				                </p>
 				                </td>
 				                </tr>
 				                <tr>
@@ -606,7 +625,7 @@ jQuery(document).ready(function() {
 </script>
 
 
-					<%-- 		 <%
+							 <%
 							 if(pp.getProfile().getResumePath()!=null){
 								 
 					            String scheme = request.getScheme();
@@ -623,14 +642,14 @@ jQuery(document).ready(function() {
 					        	  OpenOfficeConnection connection = new	  SocketOpenOfficeConnection("127.0.0.1",8100);
 					        	  try {
 					        		connection.connect();
+						        	  DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
+						        	  converter.convert(inputFile, outputFile); // close
+						        	  connection.disconnect(); 
+						        	pathh=outputFile.getName();
 					        	} catch (ConnectException e) {
 					        	
 					        		e.printStackTrace();
 					        	}
-					        	  DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
-					        	  converter.convert(inputFile, outputFile); // close
-					        	  connection.disconnect(); 
-					        	pathh=outputFile.getName();
 					         }else{
 					        	 pathh=pp.getProfile().getResumePath();
 					         }
@@ -643,7 +662,7 @@ jQuery(document).ready(function() {
 					        			    x.setAttribute("width", "100%");
 					        				$('#tab-1').append(x);
 					        			</script>
-					        	<%} %> --%>
+					        	<%} %> 
 </div>
 </body>
 </html>

@@ -128,7 +128,7 @@
 									<td>
 									<%if(pp.getViewStatus()!=null&&pp.getViewStatus()){
 										 %>
-									<a style="color: #1a0dab" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
+									<a style="color: purple;" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									<%}else{ %>
 									<a href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									
@@ -142,7 +142,12 @@
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 
 									<%
-										if (pp.getJoinDropDate() != null) {
+										if (pp.getWithdrawDate() != null) {
+									%>
+									<td><span>Withdrawn</span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<%
+										}else  if (pp.getJoinDropDate() != null) {
 									%>
 									<td><span>Dropped</span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>

@@ -21,6 +21,19 @@
     <script src="js/admin.js"></script>
     <script src="js/common_js.js"></script>
 <script src="js/alertify.min.js"></script>
+<style type="text/css">
+
+.bodyCoverWait{
+	position: fixed;
+	top: 0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	z-index: 9;
+	opacity:0.8;
+	background: #ececec;
+}
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">

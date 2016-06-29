@@ -84,6 +84,7 @@ import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.ProfileService;
+import com.unihyr.service.QualificationService;
 import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.util.CalculateRating;
@@ -137,6 +138,8 @@ public class ConsultantController
 	GlobalRatingPercentileService globalRatingPercentileService;
 	@Autowired
 	private NotificationService notificationService;
+	@Autowired
+	private QualificationService qualificationService;
 	/**
 	 * login info service to invoke user login related functions
 	 */
@@ -179,6 +182,8 @@ public class ConsultantController
 			CandidateProfileModel model = new CandidateProfileModel();
 			model.setPost(post);
 			map.addAttribute("uploadProfileForm", model);
+			map.addAttribute("qListUg",qualificationService.getAllUGQualification());
+			map.addAttribute("qListPg",qualificationService.getAllPGQualification());
 			return "uploadprofile";
 		}
 		return "redirect:consdashboard";
@@ -199,6 +204,7 @@ public class ConsultantController
 		String resumefilename = resumefile.getOriginalFilename();
 		String resumeNewfilename = null;
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
@@ -207,6 +213,8 @@ public class ConsultantController
 		boolean valid = true;
 		List<String> uploadMsg = new ArrayList<>();
 
+		map.addAttribute("qListUg",qualificationService.getAllUGQualification());
+		map.addAttribute("qListPg",qualificationService.getAllPGQualification());
 		Post post = postService.getPost(model.getPost().getPostId());
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 		try
@@ -293,7 +301,11 @@ public class ConsultantController
 			profile.setResumePath(model.getResumePath());
 			profile.setCtcComments(model.getCtcComments());
 			profile.setCurrentLocation(model.getCurrentLocation());
+			profile.setQualification_pg(model.getQualification_pg());
+			profile.setQualification_ug(model.getQualification_ug());
 			profile.setRegistration(registrationService.getRegistationByUserId(loggedinUser));
+			profile.setDateofbirth(model.getDateofbirth());
+			profile.setCountryCode(model.getCountryCode());
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
 			profile.setDate(dt);
@@ -413,6 +425,8 @@ public class ConsultantController
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+
+		Registration cons = registrationService.getRegistationByUserId(loggedinUser);
 		
 		Post post=postService.getPost(Long.parseLong(postId));
 		if (clientId != null && clientId.length() > 0 && postId != null && postId.length() > 0)
@@ -460,7 +474,11 @@ public class ConsultantController
 		{
 			e.printStackTrace();
 		}
-		
+
+		Registration client = post.getClient();
+		map.addAttribute("postConsList", postConsultnatService
+				.getInterestedPostForConsultantByClient(cons.getUserid(), client.getUserid(), "percentile"));
+
 		
 		map.addAttribute("rpp", GeneralConfig.rpp_cons);
 		map.addAttribute("pn", Integer.parseInt(pageNo));
@@ -1065,43 +1083,43 @@ e.printStackTrace();
 					billingService.updateBillingDetails(bill);
 					String mailContent="Dear Sir/Madam<br><br>"+
  
-"Congratulations on closing your position on UniHyr.<br><br>"+
- 
-"Please find below the details of the closed position. You can view the invoice <a href='" + GeneralConfig.UniHyrUrl + "data/" + billInvoiceHtml
-							+ "' >here</a>.Please click the following link to <a href='" + GeneralConfig.UniHyrUrl
-							+ "verifyBillingDetails?billId=" + bill.getBillId() + "' >verify</a> the invoice.<br><br>"
-									+ "In case of any errors, please reply to this mail. If there is no response for a period of 7 days, the invoice will be deemed as Verified."
-									+ "<br><br>"+
- 
-"<h3>Details</h3><br>"+
- 
-"<table style='width:80%;border:1px solid #000;'><tr><td>Position Name</td><td>"+bill.getPosition()+"</td></tr>"+
- 
-"<tr><td>Candidate Name</td><td>"+bill.getCandidatePerson()+"</td></tr>"+
- 
-"<tr><td>Location of Joining</td><td>"+bill.getLocation()+"</td></tr>"+
- 
-"<tr><td>Total CTC (INR lacs)</td><td>"+bill.getTotalCTC()+"</td></tr>"+
- 
-"<tr><td>Billable CTC (INR lacs)</td><td>"+bill.getBillableCTC()+"</td></tr>"+
- 
-"<tr><td>Joining Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getJoiningDate())+"</td></tr>"+
- 
-"<tr><td>Recruitment Fee% (as per contract)</td><td>"+bill.getFeePercentForClient()+"</td></tr>"+
- 
-"<tr><td>Recruitment Fee (INR)</td><td>"+bill.getFee()+"</td></tr>"+
-
-"<tr><td>Service Tax @14%</td><td>"+GeneralConfig.TAX+"</td></tr>"+
- 
-"<tr><td>Swach Bharat Cess @ 0.5%</td><td>"+GeneralConfig.CESS+"</td></tr>"+
- 
-"<tr><td>Total Invoice Amount (INR)</td><td>"+bill.getTotalAmount()+"</td></tr>"+
- 
-"<tr><td>Payment Days (as per contract) (days)</td><td>"+pp.getProfile().getRegistration().getPaymentDays()+"</td></tr>"+
- 
-"<tr><td>Payment Due Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForCo())+"</td></tr></table>";
-mailContent+="<br><br> Best Regards,<br>"+
-"UniHyr Admin Team";
+					"Congratulations on closing your position on UniHyr.<br><br>"+
+					 
+					"Please find below the details of the closed position. You can view the invoice <a href='" + GeneralConfig.UniHyrUrl + "data/" + billInvoiceHtml
+												+ "' >here</a>.Please click the following link to <a href='" + GeneralConfig.UniHyrUrl
+												+ "verifyBillingDetails?billId=" + bill.getBillId() + "' >verify</a> the invoice.<br><br>"
+														+ "In case of any errors, please reply to this mail. If there is no response for a period of 7 days, the invoice will be deemed as Verified."
+														+ "<br><br>"+
+					 
+					"<h3>Details</h3><br>"+
+					 
+					"<table style='width:80%;border:1px solid #000;'><tr><td>Position Name</td><td>"+bill.getPosition()+"</td></tr>"+
+					 
+					"<tr><td>Candidate Name</td><td>"+bill.getCandidatePerson()+"</td></tr>"+
+					 
+					"<tr><td>Location of Joining</td><td>"+bill.getLocation()+"</td></tr>"+
+					 
+					"<tr><td>Total CTC (INR lacs)</td><td>"+bill.getTotalCTC()+"</td></tr>"+
+					 
+					"<tr><td>Billable CTC (INR lacs)</td><td>"+bill.getBillableCTC()+"</td></tr>"+
+					 
+					"<tr><td>Joining Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getJoiningDate())+"</td></tr>"+
+					 
+					"<tr><td>Recruitment Fee% (as per contract)</td><td>"+bill.getFeePercentForClient()+"</td></tr>"+
+					 
+					"<tr><td>Recruitment Fee (INR)</td><td>"+bill.getFee()+"</td></tr>"+
+					
+					"<tr><td>Service Tax @14%</td><td>"+GeneralConfig.TAX+"</td></tr>"+
+					 
+					"<tr><td>Swach Bharat Cess @ 0.5%</td><td>"+GeneralConfig.CESS+"</td></tr>"+
+					 
+					"<tr><td>Total Invoice Amount (INR)</td><td>"+bill.getTotalAmount()+"</td></tr>"+
+					 
+					"<tr><td>Payment Days (as per contract) (days)</td><td>"+pp.getProfile().getRegistration().getPaymentDays()+"</td></tr>"+
+					 
+					"<tr><td>Payment Due Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForCo())+"</td></tr></table>";
+					mailContent+="<br><br> Best Regards,<br>"+
+					"UniHyr Admin Team";
 					mailService.sendMail(pp.getPost().getClient().getUserid(), "Bill Invoice verfication",mailContent);
 					String	content= pp.getProfile().getName() +" has accepted offer for the "+post.getTitle()+" ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
@@ -1110,14 +1128,14 @@ mailContent+="<br><br> Best Regards,<br>"+
 					nser.setUserid(principal.getName());
 					notificationService.addNotification(nser);
 					obj.put("status", "join_accept");
-				} else if (ppstatus.equals("join_reject"))
+				} 
+				else if (ppstatus.equals("join_reject"))
 				{
 					Date date = new Date();
 					java.sql.Date dt = new java.sql.Date(date.getTime());
 					String rej_reason = request.getParameter("rej_reason");
 					pp.setJoinDropDate(dt);
 					pp.setRejectReason(rej_reason);
-
 					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
 
 					Set<Industry> industry = client.getIndustries();
@@ -1157,6 +1175,7 @@ mailContent+="<br><br> Best Regards,<br>"+
 					nser.setNotification(content);
 					nser.setUserid(principal.getName());
 					notificationService.addNotification(nser);
+					obj.put("status", "candidate_withdraw");
 					
 				}else
 				{

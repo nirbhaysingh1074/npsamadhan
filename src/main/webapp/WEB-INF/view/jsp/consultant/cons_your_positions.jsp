@@ -393,7 +393,13 @@ jQuery(document).ready(function() {
 				<div class="modal-body">
 					<p>Please fill all details</p>
 					<br>
-					<input	type="hidden" id="postIdForAccept" />
+					<%if(post!=null){ %>
+					<input	type="hidden" id="postIdForAccept" value="<%=post.getPostId() %>" />
+					 <%}else{ %>
+					<input	type="hidden" id="postIdForAccept"  />
+					  
+					 <%} %>
+					 
 					 <!-- <label>Total CTC (INR): </label><span
 						style="color: green; font-weight: bold;" id="totalCTCinWords"></span>
 					<br>

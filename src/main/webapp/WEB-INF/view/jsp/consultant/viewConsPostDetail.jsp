@@ -96,8 +96,8 @@
 		      <div class="positions_tab  bottom-margin" style="border: 1px solid gray;">
 		        <div class="form_cont">
 			       
-			        <div class="form_col">
-						<dl>
+			        <div class="form_col viewJd">
+						 <dl>
 							<dt>
 								<label>Job Code</label>
 							</dt>
@@ -105,7 +105,7 @@
 								<label><%= post.getJobCode() %></label>
 								
 							</dd>
-						</dl>
+						</dl> 
 						<dl>
 							<dt>
 								<label>Title</label>
@@ -115,26 +115,10 @@
 								
 							</dd>
 						</dl>
-						<dl>
-							<dt>
-								<label>Location</label>
-							</dt>
-							<dd>
-								<label><%= post.getLocation() %></label>
-								
-							</dd>
-						</dl>
 						
-						<dl>
-							<dt>
-								<label>No of posts</label>
-							</dt>
-							<dd>
-								<label><%= post.getNoOfPosts() %></label>
-								
-							</dd>
-						</dl>
-						<%-- <dl>
+						
+					
+					<%-- 	<dl>
 							<dt>
 								<label>Role</label>
 							</dt>
@@ -152,53 +136,109 @@
 								
 							</dd>
 						</dl> --%>
-						<dl>
+						<%-- <dl>
 							<dt>
-								<label>Function</label>
+								<label>Role Type</label>
 							</dt>
 							<dd>
 								<label><%= post.getFunction() %></label>
 								
 							</dd>
 						</dl>
+						 --%>
 						<dl>
 							<dt>
 								<label>Exp.</label>
 							</dt>
 							<dd>
 								<label><%= post.getExp_min() %> - <%= post.getExp_max() %> Year(s)</label>
+								
 							</dd>
 						</dl>
 						<dl>
 							<dt>
-								<label>Annual Fixed CTC</label>
+								<label>Annual fixed CTC</label>
 							</dt>
 							<dd>
-								<label>Min : <%= post.getCtc_min() %> Lacs Max :  <%= post.getCtc_max() %> Lacs</label>
+								<label>Min : <%= post.getCtc_min() %> Lacs &nbsp;&nbsp;&nbsp;  Max: <%= post.getCtc_max() %> Lacs</label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Location</label>
+							</dt>
+							<dd>
+								<label><%= post.getLocation() %></label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Qualification</label>
+							</dt>
+							<dd>
+								<label><%if(post.getQualification_ug()!=null&&post.getQualification_ug()!=""){ %>
+								<%= post.getQualification_ug() %>
+								, <%} %>
+								
+							<%if(post.getQualification_pg()!=null&&post.getQualification_pg()!=""){ %>
+								<%=post.getQualification_pg() %>
+								<%} %>
+								</label>
+								
 							</dd>
 						</dl>
 						
+						<dl>
+						<dt><label>No of Positions</label></dt>
+						<dd>
+								<label><%= post.getNoOfPosts() %></label>
+						</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Profile Quota</label>
+							</dt>
+							<dd>
+								<%
+									if(post.getProfileParDay() > 0)
+									{
+										%>
+											<label><%= post.getProfileParDay() %></label>
+										<%
+									}
+									else
+									{
+										%>
+											<label>No Limit</label>
+										<%
+									}
+								%>
+								
+							</dd>
+						</dl> 
 						<dl>
 							<dt>
 								<label>Publish Status</label>
 							</dt>
 							<dd>
-								<label>
+								
 									<%
 										if(post.getPublished() != null)
 										{
 											%>
-												<a > Published on <%= DateFormats.ddMMMMyyyyathhmm.format(post.getPublished()) %> </a>
+												<label > Published on <%= DateFormats.ddMMMMyyyyathhmm.format(post.getPublished()) %> </label>
 											<%
 										}
 										else
 										{
 											%>
-												<a > Not Published </a>
+												<label > Not Published </label>
 											<%
 										}
 									%>
-								</label>
+								
 								
 							</dd>
 						</dl>
@@ -226,17 +266,25 @@
 								
 							</dd>
 						</dl>
-						
-						<dl >
-							<dt>
-								<label>Comment</label>
-							</dt>
-							<dd>
-								<label><%= post.getComment() %></label>
-								
-							</dd>
-						</dl>
-					<%-- 	<dl>
+						<%
+							if(post.getDeleteDate() != null)
+							{
+								%>
+									<dl>
+										<dt>
+											<label>Delete On</label>
+										</dt>
+										<dd>
+											<label>
+															<span><%= DateFormats.ddMMMMyyyyathhmm.format(post.getDeleteDate()) %></span>
+											</label>
+											
+										</dd>
+									</dl>
+								<%
+							}
+						%>
+						<dl>
 							<dt>
 								<label>Client</label>
 							</dt>
@@ -249,15 +297,16 @@
 								</label>
 								
 							</dd>
-						</dl> --%>
-						<dl><dt>
+						</dl>
+						
+					 	<dl>
+							<dt>
 								<label>Fee Percent</label>
 							</dt>
 							<dd>
-								<label><%= post.getFeePercent() %>%</label>
-								
+								<label><%=post.getFeePercent() %> %</label>
 							</dd>
-						</dl>
+						</dl> 
 						<dl><dt>
 								<label>Payment Days</label>
 							</dt>
@@ -265,11 +314,51 @@
 								<label><%= post.getClient().getPaymentDays() %></label>
 								
 							</dd></dl>
+						<dl>
+							<dt>
+								<label>Additional Comments</label>
+							</dt>
+							<dd>
+								<label><%= post.getComment() %></label>
+								
+							</dd>
+						</dl>
 						
+						 
+						<%
+							if(post.getEditSummary() != null)
+							{
+								%>
+									<dl>
+										<dt>
+											<label>Edit Summary</label>
+										</dt>
+										<dd>
+											<label><%= post.getEditSummary() %></label>
+											
+										</dd>
+									</dl>
+								<%
+							}
+						%>
+				<%-- 		<%
+							if(post.getUploadjd() != null)
+							{
+								%>
+									<dl>
+										<dt>
+											<label><a href="data/<%= post.getUploadjd()%>">Download JD</a></label>
+										</dt>
+									</dl>
+								<%
+							}
+						%> --%>
+						<%if(post.getAdditionDetail()!=null&&post.getAdditionDetail().trim()!="") {%>
 						<div class="clearfix" style="padding: 15px">
-							<h3><b>Additional Description</b></h3>
+							<h3><b>Job Description</b></h3><br>
 							<p><%= post.getAdditionDetail() %></p>
 						</div>
+						<%} %>
 						
 			        </div>
 			<div class="block coment_fild" style="padding-top: 11px;">
@@ -282,46 +371,33 @@
 		    </div>
 		    </div>
 		      
-		     <%-- 
-							   <%
+		     		   <%
 							 if(post.getUploadjd()!=null){
-
 					            String scheme = request.getScheme();
 							    String serverName = request.getServerName();
 							    int serverPort = request.getServerPort();
-							    
-							    
-					         	 
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
 					            String pathh="";
 					            if(!inPath.toLowerCase().contains(".pdf"))
-					         {
-					            
+					         	{
 					            String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
-					        	
-
 					        	java.io.File inputFile = new java.io.File(inPath); //
 					        	java.io.File outputFile = new java.io.File(outPath); //
-					        	  OpenOfficeConnection connection = new	  SocketOpenOfficeConnection("127.0.0.1",8100);
+					        	OpenOfficeConnection connection = new SocketOpenOfficeConnection("127.0.0.1",8100);
 					        	  try {
-					        		connection.connect();
-					        	} catch (ConnectException e) {
-					        		e.printStackTrace();
-					        	} 
-					        	  DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
-					        	  converter.convert(inputFile, outputFile); 
-					        	  connection.disconnect(); 
-
-					        		 pathh=outputFile.getName();
-
-					         }else{
-					        	 pathh=post.getUploadjd();
-					         }
+				        			connection.connect();
+					        	  	DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
+					        	  	converter.convert(inputFile, outputFile); 
+					        	  	connection.disconnect(); 
+					        		pathh=outputFile.getName();
+						        	} catch (ConnectException e) {
+						        		e.printStackTrace();
+						        	} 
+						         }else{
+						        	 pathh=post.getUploadjd();
+						         }
 					        	%>
-
-
-					        			
 					        			<script type="text/javascript">
 					        			 	var x = document.createElement("EMBED");
 					        			 	//path=path.replace(/\//g, "////");
@@ -330,19 +406,10 @@
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);
 					        			</script>
-					        			
-		      
-		      
-		      
-		      
-		      
-			<%}%>    --%>
-		      
-		      
-			<%
-		}
-		
-	%>
+						<%}%>   
+						<%
+						}
+						%>
 	</div>
 </div>
 </div>

@@ -192,5 +192,20 @@ function pleaseDontWait(){
 	$('.bodyCoverWait').css('display','none');
 }
 </script>
+<% 
+String message="";
+System.out.println(request.getParameter("message"));
+if(request.getParameter("message")!=null){
+	message=request.getParameter("message");
+	message="<div style='text:center;'>"+message+"<div>";
+%>
+<script type="text/javascript">
+			$('#profileClosed').html("<%=message%>");
+			$('.profileClosed1').css('display','block');
+			$('.profileClosed1').css('display','block');
+			</script>
+<%
+}
+%>
 </body>
 </html>

@@ -115,7 +115,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 		
 		return count;
 	}
-	
+
 	@Override
 	public List<PostProfile> getPostProfileByPost(long postId, int first, int max,String sortParam,String filterBy,String excludeType,String sortOrder)
 	{
@@ -132,7 +132,6 @@ public class PostProfileDaoImpl implements PostProfileDao
 		}
 		else
 		criteria.add(Restrictions.isNotNull(filterBy));
-		
 		if(!excludeType.equals("rejected")){
 			Criterion cn5 = Restrictions.isNull("rejected");
 			Criterion cn6 = Restrictions.isNull("declinedDate");
@@ -140,7 +139,45 @@ public class PostProfileDaoImpl implements PostProfileDao
 			Criterion cn8 = Restrictions.isNull("declinedDate");
 			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
 		}
+		
 		criteria.createAlias("profile", "profileAlias");
+		if(sortOrder.indexOf("desc")>=0)
+	  		criteria.addOrder(Order.desc("profileAlias."+sortParam));
+	  		else if(sortOrder.indexOf("asc")>=0)
+	  		criteria.addOrder(Order.asc("profileAlias."+sortParam));
+		
+		return criteria.list();
+	}
+	
+	/**
+	 * a method to get last profile submitted over any post
+	 * @param postId
+	 * @param first
+	 * @param max
+	 * @param sortParam
+	 * @param filterBy
+	 * @param excludeType
+	 * @param sortOrder
+	 * @return
+	 */
+	@Override
+	public List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max,String sortParam,String filterBy,String excludeType,String sortOrder)
+	{
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("post", "postAlias")
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+				.setFirstResult(first)
+				.setMaxResults(max);
+
+		criteria.add(Restrictions.isNotNull(filterBy));
+		if(!excludeType.equals("rejected")){
+			Criterion cn5 = Restrictions.isNull("rejected");
+			Criterion cn6 = Restrictions.isNull("declinedDate");
+			Criterion cn7 = Restrictions.isNull("joinDropDate");
+			Criterion cn8 = Restrictions.isNull("declinedDate");
+			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+		}
 	
 		
 		return criteria.list();
@@ -816,7 +853,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 		return list;
 	}
 	@Override
-	public boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob){
+	public boolean getPostProfileByContactAndDob(long postId, String contactNo, String dob){
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
 		criteria.createAlias("profile", "profileAlias");
 		criteria.createAlias("post", "postAlias");

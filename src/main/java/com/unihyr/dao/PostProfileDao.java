@@ -86,5 +86,8 @@ public interface PostProfileDao
 
 	long countShortlistedProfileListPostId(long postId,String status);
 
-	boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob);
+	boolean getPostProfileByContactAndDob(long postId, String contactNo, String dob);
+
+	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String sortParam, String filterBy,
+			String excludeType, String sortOrder);
 }

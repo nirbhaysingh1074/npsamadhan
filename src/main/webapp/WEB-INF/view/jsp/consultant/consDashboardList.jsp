@@ -191,7 +191,7 @@
 		       				<th width="80px">Posted Date</th>
 		       				<th width="80px">Submitted</th>
 		       				<th width="50px">Pending</th>
-		       				<th width="80px">Shortlisted</th>
+		       				<th width="80px">In Process</th>
 		       				<th width="50px">Joined</th>
 		       				<th width="50px">View</th>
 		       			</tr>	
@@ -324,13 +324,13 @@
 					       					    					
 						       				
 					   
-						       				<td  align="center" title="No. of profiles shortlisted">
+						       				<td  align="center" title="No. of profiles In Process">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prpending %></a>
 						       				</td>
-					       					<td  align="center" title="No. of profiles shortlisted">
+					       					<td  align="center" title="No. of profiles In Process">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prshort %></a>
 						       				</td>
-						       				<td  align="center" title="No. of profiles shortlisted">
+						       				<td  align="center" title="No. of profiles In Process">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prjoined %></a>
 						       				</td>
 						       				<td align="center" >

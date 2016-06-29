@@ -97,6 +97,10 @@ public class Post implements Serializable
 	private String designation;*/
 
 	@Column
+	private String qualification_ug;
+	@Column
+	private String qualification_pg;
+	@Column
 	private String closeRequestClient;
 	@Column
 	private String closeRequestConsultant;
@@ -123,6 +127,26 @@ public class Post implements Serializable
 	private String variablePayComment;
 	
 	
+
+	public String getQualification_ug()
+	{
+		return qualification_ug;
+	}
+
+	public void setQualification_ug(String qualification_ug)
+	{
+		this.qualification_ug = qualification_ug;
+	}
+
+	public String getQualification_pg()
+	{
+		return qualification_pg;
+	}
+
+	public void setQualification_pg(String qualification_pg)
+	{
+		this.qualification_pg = qualification_pg;
+	}
 
 	public String getVariablePayComment()
 	{

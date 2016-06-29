@@ -1,12 +1,15 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Qualification"%>
 <%@page import="java.util.List"%>
 <%@page import="com.unihyr.domain.Post"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" type="text/css" href="css/autocomplete.css" />
 <title>UniHyr</title>
 <style type="text/css">
 	.req{color: red;}
@@ -34,6 +37,18 @@
     cursor: pointer;
     opacity: 0;
     filter: alpha(opacity=0);
+}
+select{
+width:auto !important;
+}
+#willingToRelocate{
+width:100% !important;
+}
+#qualification_pg{
+width:100% !important;
+}
+#qualification_ug{
+width:100% !important;
 }
 </style>
 
@@ -107,8 +122,10 @@
 		var email = $('#email').val();
 		var currentRole = $('#currentRole').val();
 		var noticePeriod = $('#noticePeriod').val();
+		var dob = $('#dateofbirth').val();
 		var contact = $('#contact').val();
 		var currentOrganization = $('#currentOrganization').val();
+		var currentLocation = $('#currentLocation').val();
 		var currentCTC = $('#currentCTC').val();
 		var expectedCTC = $('#expectedCTC').val();
 		var resumeText = CKEDITOR.instances['resumeText'].getData(); //$('#resumeText').val();
@@ -119,7 +136,17 @@
 		$('.error').html("&nbsp;");
 
 		var valid = true;
-		
+
+		var qug= $('#qualification_ug').val();
+		if(!qug||qug === null||qug==""){
+			$('.qualification_ug_error').html('Please specify undergraduate qualification');
+			valid = false;
+		}
+		var qpg= $('#qualification_pg').val();
+		if(!qpg||qpg === null||qpg==""){
+			$('.qualification_pg_error').html('Please specify postgraduate qualification');
+			valid = false;
+		}
 		if(client == "")
 		{
 			$('.client_error').html("Please provide client name");
@@ -145,10 +172,20 @@
 			$('.currentRole_error').html("Please enter current role");
 			valid = false;
 		}
-		
+
 		if(currentOrganization == "")
 		{
 			$('.currentOrganization_error').html("Please enter current Organization");
+			valid = false;
+		}
+		if(currentLocation == "")
+		{
+			$('.currentLocation_error').html("Please enter current Location");
+			valid = false;
+		}
+		if(dob == "")
+		{
+			$('.dateofbirth_error').html("Please enter date of birth");
 			valid = false;
 		}
 		if(noticePeriod == "")
@@ -184,6 +221,11 @@
 			$('.resumeText_error').html("Please enter resume text");
 			valid = false;
 		} */
+		
+		if(!valid)
+		{
+			return false;
+		}
 		var r=confirm("Are you sure you want to upload "+name+" profile for "+$('#postName').html()+" at "+$('#clientName').html()+ "?");
 			if (r==true) 
 			{
@@ -191,10 +233,7 @@
 			}else{
 				return false;
 			}
-		if(!valid)
-		{
-			return false;
-		}
+		
 		
 	}
 	function isEmail(email) {
@@ -275,8 +314,6 @@
 </head>
 <body class="loading">
 <script type="text/javascript">
-
-alert('<%=quataExceed%>');
 </script>
 	<div class="mid_wrapper">
 		<div class="container">
@@ -350,7 +387,15 @@ alert('<%=quataExceed%>');
 								</dt>
 								<dd>
 									<form:input path="contact"   onchange="conscheckapplicantbycontact()" cssStyle="padding-left:35px;" cssClass="number_only" maxlength="10" minlength="10"/>
-									<span style="position: relative; padding: 5px; border-right: 1px solid rgb(212, 212, 212); float: left; margin-top: -27px;font-size: 12px;"> +91 </span>
+									
+									<form:input path="countryCode"  cssClass="number_only" style="position: relative;
+padding: 5px;
+border-right: 1px solid rgb(212, 212, 212);
+float: left;
+margin-top: -27px;
+font-size: 12px;
+width: 33px;
+height: 26px;" type="text" value="" />
 									<span class="error contact_error">&nbsp;${profileExist_contact}<form:errors path="contact" /></span>
 								</dd>
 							</dl>
@@ -414,14 +459,13 @@ alert('<%=quataExceed%>');
 									<span class="error expectedCTC_error">&nbsp;<form:errors path="expectedCTC" /></span>
 								</dd>
 							</dl>
-							
 							<dl>
 								<dt>
-									<label>CTC Related Comments<!-- <span class="req">*</span> --></label>
+									<label>Date of Birth<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:textarea path="ctcComments" ></form:textarea>
-									<span class="error ctcComments_error">&nbsp;<form:errors path="ctcComments" /></span>
+									<form:input path="dateofbirth"  class="popupDatepicker"   style="padding-right: 150px" />
+									<span class='error dateofbirth_error'>&nbsp;${profileExist_dob}<form:errors path="dateofbirth" /></span>
 								</dd>
 							</dl>
 							
@@ -430,14 +474,14 @@ alert('<%=quataExceed%>');
 									<label>Willing to Relocate<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:select path="willingToRelocate">
+									<form:select path="willingToRelocate" style="width:100%;">
 										<form:option value="Yes">Yes</form:option>
 										<form:option value="No">Not applicable</form:option>
 									</form:select>
 									<span class='error'>&nbsp;<form:errors path="willingToRelocate" /></span>
 								</dd>
 							</dl>
-							<dl>
+							<dl style="clear: both;">
 								<dt>
 									<label>Notice Period<span class="req">*</span></label>
 								</dt>
@@ -449,34 +493,10 @@ alert('<%=quataExceed%>');
 							</dl>
 							<dl>
 								<dt>
-									<label>Date of Birth<span class="req">*</span></label>
-								</dt>
-								<dd>
-									<form:input path="dateofbirth"  maxlength="2"   style="padding-right: 150px" />
-									<span class='error dateofbirth_error'>&nbsp;${profileExist_dob}<form:errors path="dateofbirth" /></span>
-								</dd>
-							</dl>
-							<dl>
-								<dt>
-									<label>Qualification<span class="req">*</span></label>
-								</dt>
-								<dd>
-									<form:select path="qualification">
-										<form:option value="bca">Bachelors of Computer Applications</form:option>
-										<form:option value="btech">Bachelors of Technology</form:option>
-										<form:option value="others">Others</form:option>
-									</form:select>
-									<span class='error qualification_error'>&nbsp;<form:errors path="qualification" /></span>
-								
-								
-								</dd>
-							</dl>
-							<dl>
-								<dt>
 									<label>Upload Resume</label>
 								</dt>
 								<dd>
-									<div class="file_up" style="float: left;">
+									<div class="file_up" style="float: left;width: 100%">
 										<form:input path="resumePath" disabled = "true"/>
 										<div class="fileUpload">
 										    <span>Browse</span>
@@ -495,6 +515,45 @@ alert('<%=quataExceed%>');
 							-->
 								</dd>
 							</dl>
+							<dl style="clear: both;">
+								<dt>
+									<label>CTC Related Comments<!-- <span class="req">*</span> --></label>
+								</dt>
+								<dd>
+									<form:textarea path="ctcComments"  style="height: 111px !important;" ></form:textarea>
+									<span class="error ctcComments_error">&nbsp;<form:errors path="ctcComments" /></span>
+								</dd>
+							</dl>
+							
+							<dl >
+	            <dt>
+	              <label>Qualification<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <div class="row">
+	                <div class="col-md-6">
+	                  <form:select path="qualification_ug" multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Qualification</form:option>
+	             
+	              		            		 <c:forEach var="item" items="${qListUg}">
+						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
+						</c:forEach> 
+	            	</form:select>
+	                  <span class='error qualification_ug_error'><form:errors path="qualification_ug"/></span>
+	                </div>
+	                <div class="col-md-6">
+	                  <form:select path="qualification_pg" multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Qualification</form:option>
+	            		 <c:forEach var="item" items="${qListPg}">
+						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
+						</c:forEach> 
+	            	</form:select>
+	                  <span class='error qualification_pg_error' ><form:errors path="qualification_pg"/></span>
+	                </div>
+	              </div>
+	            </dd>
+</dl>
+							
 							
 						</div>
 					</div>
@@ -530,6 +589,7 @@ alert('<%=quataExceed%>');
 	</div>
 <script src="ckeditor/ckeditor.js"></script>
 <script src="ckeditor/bootstrap3-wysihtml5.all.js"></script>
+<script src="js/jquery.autocomplete.js"></script>
 <script>
       $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
@@ -539,5 +599,20 @@ alert('<%=quataExceed%>');
         
       });
     </script>
+    
+    <script>
+    
+    $(document).ready(function(){ 
+    	$('.popupDatepicker').datepick();
+    });
+  /*   var $j = jQuery.noConflict();
+    $j(document).ready(function() {
+			$(function() {
+				$("#dateofbirth").datepicker({
+					dateFormat : 'yy-mm-dd'
+				});
+			});
+		}); */
+	</script>
 </body>
 </html>

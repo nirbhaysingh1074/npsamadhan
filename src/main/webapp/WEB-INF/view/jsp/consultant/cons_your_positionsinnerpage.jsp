@@ -12,6 +12,7 @@
 <%
 	List<PostProfile> profileList = (List<PostProfile>) request.getAttribute("profileList");
 	List<PostConsultant> postConsList = (List)request.getAttribute("postConsList");
+	System.out.println(postConsList);
 	Post post=(Post)request.getAttribute("selectedPost");
 	long totalCount = (Long) request.getAttribute("totalCount");
 	int pn = (Integer) request.getAttribute("pn");
@@ -170,6 +171,7 @@
 										New Profile</strong></a>
 								<%
 									} else {
+										System.out.println("ggggggggggggggggggggggggggggggggggggg");
 								%>
 								<a style="padding: 5px 13px;" href="javascript:void(0)"
 									class="btn file_btn upload_new_profile"><strong>Upload
@@ -177,6 +179,7 @@
 								<%
 									}
 											} else {
+												System.out.println("gggddgggggggggggggggggggfggggggggggggggg");
 								%>
 								<a style="padding: 5px 13px;" href="javascript:void(0)"
 									class="btn file_btn btn_disabled"><strong>Upload
@@ -185,6 +188,7 @@
 									}
 										}
 									} else {
+										System.out.println("gggggggggggggffgggggggggfggggggggggggggg");
 								%>
 								<a style="padding: 5px 13px;" href="javascript:void(0)"
 									class="btn file_btn btn_disabled"><strong>Upload
@@ -337,6 +341,7 @@
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 						
 	                  							<%
+	                  							System.out.println("asddddddddddddddddddddd"+pp.getPpid());
 	                  							if(pp.getWithdrawDate()!=null){
 	                  								%>
 				                  					<td style="text-align: left;">
@@ -361,18 +366,14 @@
 							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
-																
 															<%
 														}
 														else
 														{
 															%>
-							                  					
 															<td class="text-center" style="text-align: left;">
-																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<a style="cursor: pointer;"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
-																	</p>
-																</td>
+																	<span>None Required</span>
+															</td>
 															<%
 															
 														}
@@ -383,7 +384,6 @@
 															<td style="text-align: left;">
 																<span>Joined</span>
 															</td>
-															
 														<%
 														if( !pp.getPost().isActive())
 														{
@@ -391,21 +391,15 @@
 							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
-																
 															<%
 														}
 														else
 														{
 															%>
-							                  					
-																
 															<td class="text-center" style="text-align: left;">
-																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<a style="cursor: pointer;"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
-																	</p>
-																</td>
+																	<span>None Required</span>
+															</td>
 															<%
-															
 														}
 													}
 													else if(pp.getOfferDropDate() != null)
@@ -414,7 +408,6 @@
 															<td style="text-align: left;">
 																<span>Offer Declined</span>
 															</td>
-															
 														<%
 														if( !pp.getPost().isActive())
 														{
@@ -422,20 +415,15 @@
 							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
-																
 															<%
 														}
 														else
 														{
 															%>
-							                  					
 																<td class="text-center" style="text-align: left;">
-																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<a style="cursor: pointer;"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
-																	</p>
+																	<span>None Required</span>
 																</td>
 															<%
-															
 														}
 													}
 													else if(pp.getOfferDate() != null)
@@ -444,7 +432,7 @@
 															<td style="text-align: left;">
 																<span>Offered</span>
 															</td>
-													<%-- 	<%
+															<%
 														if( !pp.getPost().isActive())
 														{
 															%>
@@ -456,16 +444,21 @@
 														}
 														else
 														{
-															%> --%>
+															%> 
 																<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
 																		<a style="cursor: pointer;" class="join_accept" title="Click to accept offer" 	onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')" >Join</a> 
 																		 | <a style="cursor:pointer;" class="btn-open" data-type="join_reject"  title="Click to reject offer" >Offer Drop</a>
 																	</p>
 																</td>
+																<td class="text-center" style="text-align: left;">
+																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
+																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
+																</p>
+																</td>
+																
 															<%
-															
-														//}
+														}
 													}
 													else if(pp.getDeclinedDate() != null)
 													{
@@ -518,8 +511,8 @@
 																
 																<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<a style="cursor: pointer;"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
-																	</p>
+																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
+																</p>
 																</td>
 															<%
 															
@@ -559,7 +552,7 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>ShortListed</span>
+																<span>In Process</span>
 															</td>
 															
 														<%
@@ -578,7 +571,9 @@
 							                  					
 																
 																<td class="text-center" style="text-align: left;">
-															<span>	none required</span>
+																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
+																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
+																</p>
 																</td>
 															<%
 															
@@ -605,9 +600,10 @@
 														{
 															%>
 							                  					
-																
-																<td class="text-center" style="text-align: left;">
-															<span>	none required</span>
+															<td class="text-center" style="text-align: left;">
+																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
+																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
+																</p>
 																</td>
 															<%
 															
@@ -678,7 +674,7 @@
 									  <div class="sort_by"> <span>Filter by</span>
 		          <select id="sortParam"  onchange="fillProfiles('1')">
 		           <option value="submitted">Submitted</option>
-		            <option value="accepted">Shortlisted</option>
+		            <option value="accepted">In Process</option>
 		            <option value="rejected">Rejected</option>
 		            <option value="pending">Pending</option>
 <!-- 		            <option value="recruited">Recruited</option> -->
@@ -749,7 +745,7 @@
 <!-- 							--------------------           inner data ---------------------- -->
 							
 						</div>
-						<div >
+						<!-- <div >
 						<ul  >
 						<li>Shortlisted : </li>
 						<li>Offer Sent : </li>
@@ -759,7 +755,7 @@
 						<li>Dropped :</li>
 						</ul>
 						
-						</div>
+						</div> -->
 					</div>
 					<div id="post_detail" style="padding: 25px 15px;"></div>
 				</div>

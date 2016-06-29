@@ -210,6 +210,7 @@ jQuery(document).ready(function() {
 	
 	
 	$(document.body).on('click', '.verify_status .btn_verify' ,function(){
+		pleaseWait();
 		var pid= $(this).attr("verify-post");
 		$.ajax({
 			type : "GET",
@@ -227,9 +228,11 @@ jQuery(document).ready(function() {
 				{
 					alertify.error("Oops, Something wrong !");
 				}
+				pleaseDontWait();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 		        alert(xhr.status);
+		        pleaseDontWait();
 		      }
 	    }) ;	
 		
@@ -355,4 +358,14 @@ function validateLocationForm(){
 	
 	
 	
+}
+
+
+function pleaseWait(){
+
+	$('.bodyCoverWait').css('display','block');
+}
+function pleaseDontWait(){
+
+	$('.bodyCoverWait').css('display','none');
 }
