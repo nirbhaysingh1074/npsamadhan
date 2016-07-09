@@ -39,6 +39,9 @@ public class CandidateProfileModel
 
 	private int noticePeriod;
 
+	@Column
+	private Integer experience;
+	
 	@NotBlank(message = "{NotBlank.consForm.contact}")
 	private String contact;
 
@@ -69,6 +72,16 @@ public class CandidateProfileModel
 	private String countryCode;
 	
 	private MultipartFile resumeFile;
+
+	public Integer getExperience()
+	{
+		return experience;
+	}
+
+	public void setExperience(Integer experience)
+	{
+		this.experience = experience;
+	}
 
 	public String getCountryCode()
 	{

@@ -57,20 +57,15 @@ $(document).ready(function() {
 	PostProfile pp = (PostProfile)request.getAttribute("postProfile");
 	if(pp != null)
 	{
-		
-		
-		
 		int unviewed = 0;
 		%>
-		
-		
 <script type="text/javascript">
 	<%
 		String upload_success = request.getParameter("upload_success");
 		if(upload_success != null && upload_success.equals("true"))
 		{
 			%>
-				alertify.success(' Profile of <%=pp.getProfile().getName() %> has been submitted successfully for <%= pp.getPost().getTitle()%> opprotunity');
+				alertify.success(' Profile of <%=pp.getProfile().getName() %> has been submitted successfully for <%= pp.getPost().getTitle()%> opportunity');
 			<%
 		}
 	%>
@@ -264,6 +259,11 @@ unviewed=0;
 				                <tr>
 				                <td>Current Location</td><td> <p>  <%= profile.getCurrentLocation() %></p> </td>
 				                </tr>
+				                <%if(profile.getExperience()!=null){ %>
+				                <tr>
+				                <td>Experience</td><td> <p>  <%= profile.getExperience() %> Year</p> </td>
+				                </tr>
+				                <%} %>
 				                <tr>
 				                <td>Current CTC</td><td> <p><%= profile.getCurrentCTC() %> Lakh  </p> </td>
 				                </tr>

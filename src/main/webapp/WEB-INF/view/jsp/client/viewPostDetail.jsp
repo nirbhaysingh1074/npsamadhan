@@ -319,6 +319,17 @@
 								<label><%= post.getClient().getPaymentDays() %></label>
 								
 							</dd></dl>
+					<dl><dt>
+								<label>Payment Clause</label>
+							</dt>
+							<dd>
+								<label>
+								<%if(post.getClient().getEmptyField()!=null){ %>
+								<%= post.getClient().getEmptyField() %>
+								<%} %>
+								</label>
+								
+							</dd></dl>
 						<dl>
 							<dt>
 								<label>Additional Comments</label>
@@ -377,21 +388,21 @@
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
 					            String pathh="";
 					            if(!inPath.toLowerCase().contains(".pdf"))
-					         {
-					            
+					         	{
+					            	 try {
 					            String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
 					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
 					        	java.io.File inputFile = new java.io.File(inPath); //
 					        	java.io.File outputFile = new java.io.File(outPath); //
 					        	  OpenOfficeConnection connection = new	  SocketOpenOfficeConnection("127.0.0.1",8100);
-					        	  try {
+					        	 
 					        		connection.connect();
 					        	  
 					        	  	DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
 					        	  	converter.convert(inputFile, outputFile); // close
 					        	  	connection.disconnect(); 
 					        		pathh=outputFile.getName();
-					        	} catch (ConnectException e) {
+					        	} catch (Exception e) {
 					        		// TODO Auto-generated catch block
 					        		e.printStackTrace();
 					        	} // convert 

@@ -74,8 +74,8 @@ var buttonst=$('#db_post_status').val();
 	      <div class="filter">
 	      	 <div class="col-md-4">&nbsp;
 	      	 	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-		      	 	<button id="act_post">Activate</button> 
- 		      	 	<button id="inact_post">Deactivate</button> 
+		      	 	<button id="act_post" class="profile_status_buttonGen">Activate</button> 
+ 		      	 	<button id="inact_post" class="profile_status_buttonGen" >Deactivate</button> 
 <!-- 		      	 	<button id="del_post">Delete</button> -->
 <!-- 		      	 	<button id="close_post" >Close</button> -->
 	      	 	</sec:authorize>
@@ -144,7 +144,6 @@ var buttonst=$('#db_post_status').val();
 		       				<th >No of Partners</th> 
 		       				<th style="width:80px;" align="left">Received</th>
 		       				<th >In Process</th>
-		       				
 		       				<th  width="10%" style="text-align: right;">View JD</th>
 		       			</tr>
 	       			</thead>
@@ -176,15 +175,22 @@ var buttonst=$('#db_post_status').val();
 		       						verified=true;
 		       						}else{ 
 		       						} 
-	       							
+	       							String actStatus="inactive";
+	       							if(post.isActive())
+	       							{
+	       								actStatus="active";	
+	       							}
 	       							%>
 						       				<tr id="<%= post.getPostId()%>" style="color:<%=(post.getVerifyDate()!=null)?"black":"gray"%>">
 											<%-- <td><%= count++ %></td> --%>
 											
 											<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 						        				<td>
-											<%if(verified){ %>
-						        				<input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>">
+											<%if(verified&&post.getCloseDate()==null){ 
+											
+											%>
+											
+						        				<input class="sel_posts" type="checkbox" name="selector[]" value="<%=post.getPostId() %>,<%=actStatus%>">
 						        				<%} else{
 						        				%>
 						        				 <input disabled="disabled" class="sel_postss" type="checkbox" name="selector[]" value="<%=post.getPostId() %>">
@@ -333,13 +339,23 @@ var buttonst=$('#db_post_status').val();
 						       					<div class="pre_check" >
 								                  	<a href="viewPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
 							                  	</div>
-										<%
-										if(post.getCloseDate()==null&&post.isActive()) {
-											%>
-											<a target="_blank" href="clienteditpost?pid=<%=post.getPostId()%>">
-												<button	class="profile_status_buttonGen" pid="<%=post.getPostId()%>" title="Click to edit this post">Edit</button>
-											</a>
-											<%
+									<%
+										if(post.getCloseDate()==null&&post.isActive()||post.getPublished()==null) {							if (post.getPublished() == null) {
+									%>
+									<a target="_blank"
+										href="clientsavedpost?pid=<%=post.getPostId()%>">
+										<button class="profile_status_buttonGen"
+											pid="<%=post.getPostId()%>" title="Click to Publish post">Publish</button>
+									</a>
+									<%
+										} else {
+									%>
+									<a target="_blank"
+										href="clienteditpost?pid=<%=post.getPostId()%>">
+										<button class="profile_status_buttonGen"
+											pid="<%=post.getPostId()%>" title="Click to edit this post">Edit</button>
+									</a>
+									<%}
 										} else {
 											String tooltip="";
 											if(!verified){

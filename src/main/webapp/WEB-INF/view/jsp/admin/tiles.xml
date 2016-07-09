@@ -46,9 +46,21 @@
         <put-attribute name="title" value="UniHyr - Industries List" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminIndustries.jsp" />
     </definition>
+    <definition name="adminHelpMessages" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Help Desk" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminHelpDeskMsges.jsp" />
+    </definition>
+    <definition name="adminLoggedUsers" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Help Desk" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminLoggedUsers.jsp" />
+    </definition>
     <definition name="editIndustry" extends="adminTemplate">
         <put-attribute name="title" value="UniHyr - Update Industries" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/editIndustry.jsp" />
+    </definition>
+    <definition name="adminEditClientRegistration" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Update Registration" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminEditClientRegistration.jsp" />
     </definition>
     
     <definition name="adminLocations" extends="adminTemplate">

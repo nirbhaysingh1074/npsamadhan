@@ -394,7 +394,7 @@ pleaseWait();
 			                $('#datepicker').val('');
 			            }
 				
-			            if(flag&&billableCTC<=totalCTC){
+			            if(flag&&Number(billableCTC)<=Number(totalCTC)){
 			            	 alert("Billable CTC should be less than or equal to Total CTC.");
 			            }
 			            
@@ -574,10 +574,20 @@ pleaseWait();
 		//		alert("set Active");
 		
 		var val = [];
+		var valida=true;
 		 $('.sel_posts:checkbox:checked').each(function(i){
 	        val[i] = $(this).val();
+	        var valsplit=val[i].split(',');
+	        if(valsplit[1]=='active'){
+				 valida=false;
+	        }
+	        val[i]=valsplit[0];
 	      });
-	 
+		 if(valida==false){
+        	 alertify.error("Oops, you have selected already active post !");
+			 return false;
+		 }
+		 
 		 if(! val.length > 0)
 		 {
 			 alertify.error("Oops, please select any post !");
@@ -611,7 +621,7 @@ pleaseWait();
 											alertify.error("Oops, mail not send !");
 										}
 										pleaseDontWait();		
-										location.href="";
+									//	location.href="";
 									},
 									error: function (xhr, ajaxOptions, thrownError) {
 										alertify.error("Oops, mail not send !");
@@ -631,11 +641,22 @@ pleaseWait();
 	$(document.body).on('click', '.filter  #inact_post' ,function(){
 
 		var val = [];
+		var valida=true;
 		 $('.sel_posts:checkbox:checked').each(function(i){
 	        val[i] = $(this).val();
-	     
-		 });
-		 if(! val.length > 0)
+	        var valsplit=val[i].split(',');
+	        if(valsplit[1]=='inactive'){
+	        	 valida=false;
+	        }
+
+	        val[i]=valsplit[0];
+	      });
+		 if(valida==false){
+			 alertify.error("Oops, you have selected already inactive post !");
+			 return false;
+		 }
+		 
+		 if(!(val.length > 0))
 		 {
 			 alertify.error("Oops, please select any post !");
 			 return false;
@@ -669,7 +690,7 @@ pleaseWait();
 										alertify.error("Oops, mail not send !");
 									}
 									pleaseDontWait();
-									location.href="";
+									//location.href="";
 								},
 								error: function (xhr, ajaxOptions, thrownError) {
 									pleaseDontWait();

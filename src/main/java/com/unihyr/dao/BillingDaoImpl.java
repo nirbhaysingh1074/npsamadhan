@@ -96,6 +96,15 @@ public class BillingDaoImpl implements BillingDao
 		return (BillingDetails)crieteria.list().get(0);
 	}
 
+	@Override
+	public List<BillingDetails> getAllDetailsUnverified()
+	{
+		Session session=this.sessionFactory.getCurrentSession();
+		Criteria crieteria=session.createCriteria(BillingDetails.class);
+		crieteria.add(Restrictions.isNull("verificationStatus"));
+		return crieteria.list();
+	}
+
 
 
 }

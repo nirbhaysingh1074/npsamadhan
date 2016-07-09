@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Location"%>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.Qualification"%>
 <%@page import="java.util.List"%>
 <%@page import="com.unihyr.domain.Post"%>
@@ -386,16 +388,14 @@ width:100% !important;
 									<label>Phone<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:input path="contact"   onchange="conscheckapplicantbycontact()" cssStyle="padding-left:35px;" cssClass="number_only" maxlength="10" minlength="10"/>
-									
+								
 									<form:input path="countryCode"  cssClass="number_only" style="position: relative;
-padding: 5px;
-border-right: 1px solid rgb(212, 212, 212);
-float: left;
-margin-top: -27px;
-font-size: 12px;
-width: 33px;
-height: 26px;" type="text" value="" />
+										padding: 5px;
+										float: left;
+										width: 34px;"  />
+									<form:input path="contact"   onchange="conscheckapplicantbycontact()" style="float:left;width:90%;"
+									 cssClass="number_only" maxlength="10" minlength="10"/>
+									
 									<span class="error contact_error">&nbsp;${profileExist_contact}<form:errors path="contact" /></span>
 								</dd>
 							</dl>
@@ -413,7 +413,36 @@ height: 26px;" type="text" value="" />
 									<label>Current Location<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:input path="currentLocation" />
+					<form:select path="currentLocation"  multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Location</form:option>
+	              		<%
+	              		List<String> locList=GeneralConfig.topLocations;
+	              		for(String loc:locList){
+	              			%>
+						   	<form:option value="<%=loc %>"><%=loc %></form:option>
+	              			<%
+	              			}
+		              		List<Location> locList1=(List<Location>)request.getAttribute("locList");
+		              		for(Location loc:locList1)
+		              		{
+		              			if(!locList.contains(loc.getLocation())){
+		              		%>
+							   <form:option value="<%=loc.getLocation()%>"><%=loc.getLocation()%></form:option>
+		            		<%
+		            		}
+	              		}
+	              		%>
+	              		<form:option value="other">Other</form:option>
+	            	</form:select>
+	            	 <div id="div1"></div>
+	            	
+	            	<script type="text/javascript">
+function showfield(name){
+  if(name=='Other')document.getElementById('div1').innerHTML='Other: <form:input path="currentLocation"  />';
+  else document.getElementById('div1').innerHTML='';
+}
+</script>
+	            	
 									<span class='error currentLocation_error'>&nbsp;<form:errors path="currentLocation" /></span>
 								</dd>
 							</dl>
@@ -471,6 +500,16 @@ height: 26px;" type="text" value="" />
 							
 							<dl>
 								<dt>
+									<label>Experience<span class="req">*</span></label>
+								</dt>
+								<dd>
+									<form:input path="experience" cssClass="number_only" maxlength="5"/>
+									<span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;"> (in years)</span>
+									<span class="error experience_error">&nbsp;<form:errors path="experience" /></span>
+								</dd>
+							</dl>
+							<dl style="clear: both;">
+								<dt>
 									<label>Willing to Relocate<span class="req">*</span></label>
 								</dt>
 								<dd>
@@ -481,7 +520,7 @@ height: 26px;" type="text" value="" />
 									<span class='error'>&nbsp;<form:errors path="willingToRelocate" /></span>
 								</dd>
 							</dl>
-							<dl style="clear: both;">
+							<dl>
 								<dt>
 									<label>Notice Period<span class="req">*</span></label>
 								</dt>
@@ -491,30 +530,7 @@ height: 26px;" type="text" value="" />
 									<span class='error noticePeriod_error'>&nbsp;<form:errors path="noticePeriod" /></span>
 								</dd>
 							</dl>
-							<dl>
-								<dt>
-									<label>Upload Resume</label>
-								</dt>
-								<dd>
-									<div class="file_up" style="float: left;width: 100%">
-										<form:input path="resumePath" disabled = "true"/>
-										<div class="fileUpload">
-										    <span>Browse</span>
-										    <input type="file" class="upload select_jd" name="resumeFile" />
-										</div>
-									    <span class="error resumePath_error">&nbsp;<form:errors path="resumePath" /></span>
-									</div>
-							<!-- 	<div style="float: left;">
-						    		<input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
-								    border-radius: 0 5px 5px 0;
-								    float: right;
-								    height: 27px;
-								    overflow: hidden;
-								    position: relative;padding: 5px;"  type="button" value="Upload" onclick="$('#resumeTextField').attr('display','none')" />
-									</div> 
-							-->
-								</dd>
-							</dl>
+							
 							<dl style="clear: both;">
 								<dt>
 									<label>CTC Related Comments<!-- <span class="req">*</span> --></label>
@@ -548,12 +564,38 @@ height: 26px;" type="text" value="" />
 						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
 						</c:forEach> 
 	            	</form:select>
-	                  <span class='error qualification_pg_error' ><form:errors path="qualification_pg"/></span>
-	                </div>
+	                  </div>
 	              </div>
+	               <span class='error qualification_pg_error' >&nbsp;<form:errors path="qualification_pg"/></span>
+	               
 	            </dd>
 </dl>
-							
+		<dl style="clear: both;">
+								<dt>
+									<label>Upload Resume<span title='Allowed doc type  : .docx, .doc, .pdf &#013Allowed doc size : 1MB '>(?)</span></label>
+								</dt>
+								<dd>
+									<div class="file_up" style="float: left;width: 100%">
+										<form:input path="resumePath" disabled = "true"/>
+										<div class="fileUpload">
+										    <span>Browse</span>
+										    <input type="file" class="upload select_jd" name="resumeFile" />
+										</div>
+									    <span class="" style="font-size: 10px;">Supported Formats : doc, docx, pdf. Max size : 1MB</span>
+						   
+									    <span class="error resumePath_error">&nbsp;<form:errors path="resumePath" /></span>
+									</div>
+							<!-- 	<div style="float: left;">
+						    		<input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
+								    border-radius: 0 5px 5px 0;
+								    float: right;
+								    height: 27px;
+								    overflow: hidden;
+								    position: relative;padding: 5px;"  type="button" value="Upload" onclick="$('#resumeTextField').attr('display','none')" />
+									</div> 
+							-->
+								</dd>
+							</dl>					
 							
 						</div>
 					</div>

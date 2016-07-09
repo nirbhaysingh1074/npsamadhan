@@ -56,6 +56,8 @@ public class CandidateProfile
 	private Long  currentCTC;
 	@Column
 	private Long expectedCTC;
+	@Column
+	private Integer experience;
 
 	@Column
 	private Date date;
@@ -83,6 +85,16 @@ public class CandidateProfile
 	
 	
 	
+	public Integer getExperience()
+	{
+		return experience;
+	}
+
+	public void setExperience(Integer experience)
+	{
+		this.experience = experience;
+	}
+
 	public String getCountryCode()
 	{
 		return countryCode;

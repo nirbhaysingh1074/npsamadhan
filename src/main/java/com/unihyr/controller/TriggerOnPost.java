@@ -29,7 +29,7 @@ public class TriggerOnPost extends TimerTask implements ApplicationContextAware
 		System.out.println(applicationContext);
 		AutoTriggerController autTrigger=applicationContext.getBean("autoTriggerController",AutoTriggerController.class);
 		autTrigger.checkPostIdle();
-		
+		autTrigger.checkBillingDetailsIdle();
 	}
 
 }

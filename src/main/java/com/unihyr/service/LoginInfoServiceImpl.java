@@ -1,5 +1,7 @@
 package com.unihyr.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,5 +45,11 @@ public class LoginInfoServiceImpl implements LoginInfoService
 	public boolean updatePassword(String userid, String oldPassword, String password)
 	{
 		return this.loginInfoDao.updatePassword(userid, oldPassword, password);
+	}
+
+	@Override
+	public List<LoginInfo> getLoggedInUsers()
+	{
+		return this.loginInfoDao.getLoggedInUsers();
 	}
 }

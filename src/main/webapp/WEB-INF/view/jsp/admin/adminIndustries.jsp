@@ -25,7 +25,7 @@
           <ol class="breadcrumb">
             <li><a href="admindashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
 <!--             <li><a href="#"><i class="fa fa-dashboard"></i> Industries</a></li> -->
-            <li class="active">Industriesy</li>
+            <li class="active">Industries</li>
           </ol>
         </section>
 
@@ -58,14 +58,14 @@
 		   	           		 	{
 		   	           		 		for (Industry ind : indList) 
 		   	           		 		{
-		     	           		 			
 		     	           		 		%>
 											<tr>
 												<td><%= ind.getIndustry() %></td>
 												<td><%= DateFormats.getTimeValue(ind.getCreateDate()) %></td>
-												<td class="text-center"><a href="admineditindustry?industryId=<%= ind.getId()%>"><button class="btn btn-sm btn-success"> Edit </button></a></td>
+												<td class="text-center"><a href="admineditindustry?industryId=<%= ind.getId()%>"><button class="btn btn-sm btn-success"> Edit </button></a>
+												<a href="admindeleteindustry?industryId=<%= ind.getId()%>"><button class="btn btn-sm btn-error"> Delete </button></a>
+												</td>
 											</tr>
-		     	           		 		
 		       		 					<%
 			           		 		}
 			           		 	}

@@ -175,7 +175,7 @@ function getNotifications(){
 <tilesx:useAttribute name="currentpage"/>
 <header>
 <%
-	Registration reg = (Registration)request.getSession().getAttribute("registration");
+	Registration reg = (Registration)request.getAttribute("registration");
 
 %>
 <div class="container">
@@ -244,41 +244,6 @@ function getNotifications(){
 </div>
 </header>
 
-<%
-if(reg!=null&&reg.getFirstTime()!=null){
-	
-	if(!reg.getFirstTime()){
-
-	System.out.println(reg.getFirstTime());
-%>
-
-<div class="firstTimeLoginPopup" style="border:1px solid #f8b910;">
-				<div class="login-header" style="padding: 3px 3px 3px 2px;
-line-height: 44px;
-height: 30px;">
-					
-					<a href="javascript:void(0)"><span style="padding: 0px 16px;top: 22px;" class="close" title="Close" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')">X</span></a>
-				</div>
-				<div class="login-wrap" style="padding: 10px;">
-				
-				Congratulations on signing up
-			with UniHyr. Now you can access our partner network to fulfill your
-			hiring mandates. Start by posting a new position from the Post a New
-			Job tab. Our user interface is intuitive and easy to use. In case of
-			any issues, please feel free to reach out to your Account Manager or
-			our Help Desk</div>
-			<div style="text-align: center;padding: 10px;" class="login-wrap">
-			<h2 style="color: #f8b910;font-weight: bold;">HAPPY HIRING!</h2>
-			<input style="margin-top: 15px;color: #fff;font-size: 14px;font-weight: bold;" type="button" value="Get started with UniHyr" class="profile_status_buttonGen" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')"  /> 
-			</div>
-			</div>
-
-<div class="bodyCover">
-
-</div>
-
-
-<%}} %>
 
 
 

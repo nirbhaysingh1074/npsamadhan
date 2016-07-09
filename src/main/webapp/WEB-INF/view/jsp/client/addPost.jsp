@@ -113,7 +113,7 @@
 			$('.exp_min_error').html('Please select minimum expirence')
 			valid = false;
 		}
-		if(exp_max == ""  || isNaN(exp_max) || exp_min >= exp_max)
+		if(exp_max == ""  || isNaN(exp_max) || Number(exp_min) >= Number(exp_max))
 		{
 			$('.exp_max_error').html('Min cannot be greater than or equal to Max')
 			valid = false;
@@ -123,7 +123,7 @@
 			$('.ctc_min_error').html('Please enter minimum ctc')
 			valid = false;
 		}
-		if(ctc_max == ""  || isNaN(ctc_max) || ctc_min >= ctc_max)
+		if(ctc_max == ""  || isNaN(ctc_max) || Number(ctc_min) >= Number(ctc_max))
 		{
 			$('.ctc_max_error').html('Min cannot be greater than or equal to Max')
 			valid = false;
@@ -226,7 +226,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	            </dt>
 	            <dd>
 	              <form:input path="title"  />
-	              <span class='error title_error'><form:errors path="title" /></span>
+	              <span class='error title_error'>&nbsp;<form:errors path="title" /></span>
 	            </dd>
 	          </dl>
 	     <dl>
@@ -241,6 +241,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 							    <span>Browse</span>
 							    <input type="file" class="upload select_jd" name="uploadJdfile" />
 							</div>
+							 <span class="" style="font-size: 10px;">Supported Formats : doc, docx, pdf. Max size : 1MB</span>
 							 <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
 						    
 						</div>
@@ -278,12 +279,12 @@ Registration registration=(Registration)request.getAttribute("registration");
 	                <div class="col-md-6">
 	                  <form:input path="exp_min" class="number_only" style="padding-right: 75px"  />
 	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Min in Years)</span>
-	                  <span class='error exp_min_error'><form:errors path="exp_min"/></span>
+	                  <span class='error exp_min_error'>&nbsp;<form:errors path="exp_min"/></span>
 	                </div>
 	                <div class="col-md-6">
 	                  <form:input path="exp_max" class="number_only" style="padding-right: 75px" />
 	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Max in Years)</span>
-	                  <span class='error exp_max_error'><form:errors path="exp_max"/></span>
+	                  <span class='error exp_max_error'>&nbsp;<form:errors path="exp_max"/></span>
 	                </div>
 	              </div>
 	            </dd>
@@ -297,12 +298,12 @@ Registration registration=(Registration)request.getAttribute("registration");
 	                <div class="col-md-6">
 	                  <form:input path="ctc_min" class="number_only" style="padding-right: 75px"  />
 	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Min INR Lacs)</span>
-	                  <span class='error ctc_min_error'><form:errors path="ctc_min"/></span>
+	                  <span class='error ctc_min_error'>&nbsp;<form:errors path="ctc_min"/></span>
 	                </div>
 	                <div class="col-md-6">
 	                  <form:input path="ctc_max" class="number_only" style="padding-right: 75px" />
 	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Max INR Lacs)</span>
-	                  <span class='error ctc_max_error'><form:errors path="ctc_max"/></span>
+	                  <span class='error ctc_max_error'>&nbsp;<form:errors path="ctc_max"/></span>
 	                </div>
 	              </div>
 	            </dd>
@@ -333,7 +334,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              		%>
 	            	</form:select>
 					<%--  <form:input path="location" /> --%>
-	              <span class='error location_error'><form:errors path="location"/></span>
+	              <span class='error location_error'>&nbsp;<form:errors path="location"/></span>
 	            </dd>
 	          </dl>
 	          <dl>
@@ -341,7 +342,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 				   
 	      <dd>
 	        <form:textarea path="variablePayComment"  style="height: 111px;"></form:textarea>
-             <span class='variablePayComment_error'><form:errors path="variablePayComment"/></span>
+             <span class='variablePayComment_error'>&nbsp;<form:errors path="variablePayComment"/></span>
 	      </dd>
 				</dl>
 	          <dl style="display: none;">
@@ -354,7 +355,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	                    <form:option value="Team Leading">Team Leading</form:option>
 	            </form:select>
 					<%-- 	 <form:input path="function" /> --%>
-	              <span class='error function_error'><form:errors path="function"/></span>
+	              <span class='error function_error'>&nbsp;<form:errors path="function"/></span>
 	            </dd>
 	          </dl>
 	          <dl style="clear: both;">
@@ -363,10 +364,19 @@ Registration registration=(Registration)request.getAttribute("registration");
 	            </dt>
 	            <dd>
 	              <form:input path="noOfPosts" class="number_only number_pasitive" maxlength="5" />
-	              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
+	              <span class='error noOfPosts_error'>&nbsp;<form:errors path="noOfPosts"/></span>
 	            </dd>
 	          </dl>
-	           <dl >
+	          <dl >
+					<dt>
+						<label>Profile Quota</label>
+					</dt>
+					<dd>
+						<form:input path="profileParDay" class="number_only"  />
+						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
+					</dd>
+			  </dl>
+	           <dl   style="clear: both;">
 	            <dt>
 	              <label>Qualification<span class='error'>*</span></label>
 	            </dt>
@@ -388,7 +398,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
 						</c:forEach>
 	            	</form:select>
-	                  <span class='error qualification_pg_error' ><form:errors path="qualification_pg"/></span>
+	                  <span class='error qualification_pg_error' >&nbsp;<form:errors path="qualification_pg"/></span>
 	                </div>
 	              </div>
 	            </dd>
@@ -421,7 +431,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	                
 	                 
 	                  </form:select>
-	                  <span class='error workHourStartHour_error'><form:errors path="workHourStartHour"/></span>
+	                  <span class='error workHourStartHour_error'>&nbsp;<form:errors path="workHourStartHour"/></span>
 	                </div>
 	         
 	                <div class="col-md-4"> End Time
@@ -448,7 +458,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 						<%} %>
 	                 
 	                  </form:select>
-	                  <span class='error workHourEndHour_error'><form:errors path="workHourEndHour"/></span>
+	                  <span class='error workHourEndHour_error'>&nbsp;<form:errors path="workHourEndHour"/></span>
 	                </div>
 	             
 	                
@@ -456,15 +466,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	            </dd>
 	          </dl>
 	          
-	       <dl   style="clear: both;">
-					<dt>
-						<label>Profile Quota</label>
-					</dt>
-					<dd>
-						<form:input path="profileParDay" class="number_only"  />
-						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
-					</dd>
-			  </dl>
+	       
 	          
 				    <dl>
 				<dt>
@@ -487,7 +489,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
 						 <%} %>
 						</form:select>
-					<span class='error feePercent_error'><form:errors path="feePercent"/></span>
+					<span class='error feePercent_error'>&nbsp;<form:errors path="feePercent"/></span>
 	     </dd>
 				</dl>
 				

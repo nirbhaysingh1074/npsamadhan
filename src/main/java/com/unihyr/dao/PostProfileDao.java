@@ -67,7 +67,7 @@ public interface PostProfileDao
 	
 	public long countShortListedProfileByClientOrConsultant(String client, String consultant);
 	
-	public long countJoinedProfileByClientOrConsultant(String client, String consultant);
+	public long countJoinedProfileByClientOrConsultant(String client, String consultant, String statusFilter);
 	
 	public long countPartnerByClientOrConsultant(String client, String consultant);
 	

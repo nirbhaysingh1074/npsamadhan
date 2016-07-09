@@ -237,9 +237,10 @@ public interface PostProfileService
 	 * 
 	 * @param client
 	 * @param consultant
+	 * @param statusFilter 
 	 * @return
 	 */
-	public long countJoinedProfileByClientOrConsultant(String client, String consultant);
+	public long countJoinedProfileByClientOrConsultant(String client, String consultant, String statusFilter);
 	
 	/**
 	 * 

@@ -185,9 +185,9 @@ public class PostProfileServiceImpl implements PostProfileService
 		return this.postProfileDao.countShortListedProfileByClientOrConsultant(client, consultant);
 	}
 	
-	public long countJoinedProfileByClientOrConsultant(String client, String consultant)
+	public long countJoinedProfileByClientOrConsultant(String client, String consultant,String statusFilter)
 	{
-		return this.postProfileDao.countJoinedProfileByClientOrConsultant(client, consultant);
+		return this.postProfileDao.countJoinedProfileByClientOrConsultant(client, consultant, statusFilter);
 	}
 	
 	public long countPartnerByClientOrConsultant(String client, String consultant)

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unihyr.constraints.Roles;
+import com.unihyr.domain.ContactUs;
 import com.unihyr.domain.Industry;
 import com.unihyr.domain.Post;
 import com.unihyr.model.ClientRegistrationModel;
@@ -37,10 +38,9 @@ public class IndexController
 	{
 		if(principal != null)
 		{
-			System.out.println("Princile : " + principal.getName());
 			System.out.println("Princile : " + request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString()));
 			
-		}
+		}map.addAttribute("contactusform", new ContactUs());
         return "home";
     }
 	

@@ -128,10 +128,9 @@
 									<td>
 									<%if(pp.getViewStatus()!=null&&pp.getViewStatus()){
 										 %>
-									<a style="color: purple;" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
+									<a style="color: purple;cursor: default;" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									<%}else{ %>
-									<a href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
-									
+									<a style="cursor: default;" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									<%} %>
 									</td>
 									<td><%=pp.getProfile().getContact()%></td>
@@ -140,41 +139,72 @@
 									<td align="center"><%=pp.getProfile().getCurrentCTC()%></td>
 									<td align="center"><%=pp.getProfile().getNoticePeriod()%></td>
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
-
 									<%
-										if (pp.getWithdrawDate() != null) {
+												String status = "";
+												if (pp.getWithdrawDate() != null) {
+													status = "Withdrawn";
+												} else if (pp.getJoinDropDate() != null) {
+													status = "Dropped";
+												} else if (pp.getJoinDate() != null) {
+													status = "Joined";
+												} else if (pp.getOfferDropDate() != null) {
+													status = "Offer Declined";
+												} else if (pp.getOfferDate() != null) {
+													status = "Offered";
+												} else if (pp.getDeclinedDate() != null) {
+													status = "Interview Reject";
+												} else if (pp.getRecruited() != null) {
+													status = "Offer Sent ";
+												} else if (pp.getRejected() != null) {
+													status = "CV Rejected";
+												} else if (pp.getAccepted() != null) {
+													status = "ShortListed";
+												} else {
+													status = "Pending";
+												}
+												if (pp.getPost().getCloseDate() != null) {
 									%>
-									<td><span>Withdrawn</span></td>
+									<td><span><%=status %></span></td>
+									<td class="text-center" style="text-align: left;"><span>Post Closed</span></td>
+									<%	
+										}else if(!pp.getPost().isActive()) {
+									%>
+									<td><span><%=status %></span></td>
+									<td class="text-center" style="text-align: left;"><span>Post Inactive</span></td>
+									<%
+										}else  if (pp.getWithdrawDate() != null) {
+									%>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										}else  if (pp.getJoinDropDate() != null) {
 									%>
-									<td><span>Dropped</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getJoinDate() != null) {
 									%>
-									<td><span>Joined</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getOfferDropDate() != null) {
 									%>
-									<td><span>Offer Declined</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getOfferDate() != null) {
 									%>
-									<td><span>Offered</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getDeclinedDate() != null) {
 									%>
-									<td><span>Interview Reject</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getRecruited() != null) {
 									%>
-									<td><span>Offer Sent </span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -188,15 +218,14 @@
 									</td>
 									<%
 										}
-
-													else if (pp.getRejected() != null) {
+									else if (pp.getRejected() != null) {
 									%>
-									<td><span>CV Rejected</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
-										} else if (pp.getAccepted() != null) {
+									} else if (pp.getAccepted() != null) {
 									%>
-									<td><span>ShortListed</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -212,7 +241,7 @@
 									<%
 										} else {
 									%>
-									<td><span>Pending</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -227,12 +256,11 @@
 										}
 									%>
 
-									<td><p style="width: 105px; border-radius: 2px;">
+									<td><p style="width: 90px; border-radius: 2px;">
 											<a
 												style="line-height: 0.42857em; background: url(images/ic_12.png) no-repeat 3px 4px #f8b910; padding: 8px 18px 8px 18px;"
 												class="btn search_btn" target="_blank"
-												href="clientapplicantinfo?ppid=<%=pp.getPpid()%>">View
-												Applicant</a>
+												href="clientapplicantinfo?ppid=<%=pp.getPpid()%>">View Profile</a>
 										</p></td>
 								</tr>
 

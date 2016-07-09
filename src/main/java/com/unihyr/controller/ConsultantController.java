@@ -77,6 +77,7 @@ import com.unihyr.service.GlobalRatingPercentileService;
 import com.unihyr.service.GlobalRatingService;
 import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
+import com.unihyr.service.LocationService;
 import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.MailService;
 import com.unihyr.service.NotificationService;
@@ -127,6 +128,8 @@ public class ConsultantController
 	InboxService inboxService;
 	@Autowired
 	private BillingService billingService;
+	@Autowired
+	private LocationService locationService;
 
 	@Autowired
 	private PostConsultnatService postConsultantService;
@@ -151,11 +154,13 @@ public class ConsultantController
 	{
 		Post post = postService.getPost(pid);
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.WEEK_OF_MONTH, -1);
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
@@ -182,6 +187,7 @@ public class ConsultantController
 			CandidateProfileModel model = new CandidateProfileModel();
 			model.setPost(post);
 			map.addAttribute("uploadProfileForm", model);
+			map.addAttribute("locList", locationService.getLocationList());
 			map.addAttribute("qListUg",qualificationService.getAllUGQualification());
 			map.addAttribute("qListPg",qualificationService.getAllPGQualification());
 			return "uploadprofile";
@@ -204,12 +210,13 @@ public class ConsultantController
 		String resumefilename = resumefile.getOriginalFilename();
 		String resumeNewfilename = null;
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
-		
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		boolean valid = true;
 		List<String> uploadMsg = new ArrayList<>();
 
@@ -300,6 +307,7 @@ public class ConsultantController
 			profile.setResumeText(model.getResumeText());
 			profile.setResumePath(model.getResumePath());
 			profile.setCtcComments(model.getCtcComments());
+			profile.setExperience(model.getExperience());
 			profile.setCurrentLocation(model.getCurrentLocation());
 			profile.setQualification_pg(model.getQualification_pg());
 			profile.setQualification_ug(model.getQualification_ug());
@@ -360,11 +368,13 @@ public class ConsultantController
 	{
 		
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		Registration cons = registrationService.getRegistationByUserId(loggedinUser);
 		if (cons.getAdmin() != null)
 		{
@@ -378,7 +388,7 @@ public class ConsultantController
 		map.addAttribute("totalshortlist",
 				postProfileService.countShortListedProfileByClientOrConsultant(null, cons.getUserid()));
 		map.addAttribute("totaljoin",
-				postProfileService.countJoinedProfileByClientOrConsultant(null, cons.getUserid()));
+				postProfileService.countJoinedProfileByClientOrConsultant(null, cons.getUserid(),"joinDate"));
 		map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(null, cons.getUserid()));
 */
 		String pid = request.getParameter("pid");
@@ -420,11 +430,13 @@ public class ConsultantController
 		String sortParam = request.getParameter("sortParam");
 		pn = (pn - 1) * GeneralConfig.rpp_cons;
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 
 		Registration cons = registrationService.getRegistationByUserId(loggedinUser);
 		
@@ -488,12 +500,15 @@ public class ConsultantController
 
 	@RequestMapping(value = "/cons_leftside_postlist", method = RequestMethod.GET)
 	public String cons_leftside_postlist(ModelMap map, @RequestParam String clientId, Principal principal)
-	{	Registration reg = registrationService.getRegistationByUserId(principal.getName());
+	{	
+	Registration reg = registrationService.getRegistationByUserId(principal.getName());
+	map.addAttribute("registration",reg);
 	if(reg.getAdmin() != null)
 	{
 		reg =reg.getAdmin(); 
 	}
 	String loggedinUser=reg.getUserid();
+	
 		Registration cons = registrationService.getRegistationByUserId(loggedinUser);
 		if (cons.getAdmin() != null)
 		{
@@ -510,12 +525,15 @@ public class ConsultantController
 
 	@RequestMapping(value = "/consnewposts", method = RequestMethod.GET)
 	public String consnewposts(ModelMap map, HttpServletRequest request, Principal principal)
-	{	Registration reg = registrationService.getRegistationByUserId(principal.getName());
-	if(reg.getAdmin() != null)
-	{
-		reg =reg.getAdmin(); 
-	}
-	String loggedinUser=reg.getUserid();
+	{	
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+	
 		List<Industry> indList = new ArrayList<Industry>();
 		Set<Industry> inds = registrationService.getRegistationByUserId(loggedinUser).getIndustries();
 		Iterator<Industry> it = inds.iterator();
@@ -531,30 +549,28 @@ public class ConsultantController
 	@RequestMapping(value = "/consnewpostslist", method = RequestMethod.GET)
 	public String consnewpostslist(ModelMap map, HttpServletRequest request, Principal principal,
 			@RequestParam int sel_industry)
-	{	Registration reg = registrationService.getRegistationByUserId(principal.getName());
-	if(reg.getAdmin() != null)
-	{
-		reg =reg.getAdmin(); 
-	}
-	String loggedinUser=reg.getUserid();
+	{	
+		
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+	
 		System.out.println("sel_industry : " + sel_industry);
 		int rpp = GeneralConfig.rpp;
 		int pn = Integer.parseInt(request.getParameter("pn"));
 		String sortParam = request.getParameter("sortParam");
 		if (sel_industry > 0)
 		{
-			// map.addAttribute("postList",
-			// postService.getPostsByIndustryId(sel_industry, (pn - 1) * rpp,
-			// rpp,sortParam));
 			map.addAttribute("postList", postService.getPostsByIndustryId(sel_industry, 0, 1000, sortParam));
 			map.addAttribute("totalCount", postService.countPostsByIndustryId(sel_industry));
-		} else
+		} 
+		else
 		{
-			// map.addAttribute("postList",
-			// postService.getPostsByIndustryUsingConsultantId(loggedinUser,
-			// (pn - 1) * rpp, rpp,sortParam));
-			map.addAttribute("postList",
-					postService.getPostsByIndustryUsingConsultantId(loggedinUser, 0, 1000, sortParam));
+			map.addAttribute("postList", postService.getPostsByIndustryUsingConsultantId(loggedinUser, 0, 1000, sortParam));
 			map.addAttribute("totalCount", postService.countPostsByIndustryUsingConsultantId(loggedinUser));
 		}
 		map.addAttribute("rpp", rpp);
@@ -565,19 +581,24 @@ public class ConsultantController
 
 	@RequestMapping(value = "/consdashboard", method = RequestMethod.GET)
 	public String consdashboard(ModelMap map, Principal principal)
-	{	Registration reg = registrationService.getRegistationByUserId(principal.getName());
-	if(reg.getAdmin() != null)
-	{
-		reg =reg.getAdmin(); 
-	}
-	String loggedinUser=reg.getUserid();
+	{	
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+	
 		if (reg != null)
 		{
 			if (reg.getAdmin() != null)
 			{
 				reg = reg.getAdmin();
 			}
-
+			
+			map.addAttribute("totalPosted",
+					postService.countPostsByIndustryUsingConsultantId(reg.getUserid()));
 			map.addAttribute("totalActive",
 					postService.countPostsFilteredForConsultant(reg.getUserid(), null, null, null));
 			map.addAttribute("totalprofiles",
@@ -585,10 +606,12 @@ public class ConsultantController
 			map.addAttribute("totalshortlist",
 					postProfileService.countShortListedProfileByClientOrConsultant(null, reg.getUserid()));
 			map.addAttribute("totaljoin",
-					postProfileService.countJoinedProfileByClientOrConsultant(null, reg.getUserid()));
-			map.addAttribute("totalpartner",
+					postProfileService.countJoinedProfileByClientOrConsultant(null, reg.getUserid(),"joinDate"));
+			map.addAttribute("offersent",
+					postProfileService.countJoinedProfileByClientOrConsultant(null, reg.getUserid(),"offerDate"));
+		/*	map.addAttribute("totalpartner",
 					postProfileService.countPartnerByClientOrConsultant(null, reg.getUserid()));
-
+*/
 			return "consdashboard";
 		}
 		return "redirect:login";
@@ -605,11 +628,13 @@ public class ConsultantController
 
 		String sortParam = request.getParameter("sortParam");
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		Registration consultant = registrationService.getRegistationByUserId(loggedinUser);
 		if (consultant.getAdmin() != null)
 		{
@@ -646,6 +671,8 @@ public class ConsultantController
 		map.addAttribute("registration", registrationService.getRegistationByUserId(principal.getName()));
 		map.addAttribute("co-users", registrationService.getCoUsersByUserid(principal.getName()));
 		map.addAttribute("status", request.getParameter("status"));
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		return "consultantAccount";
 	}
 
@@ -653,6 +680,8 @@ public class ConsultantController
 	public String consProfileCenter(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		return "consProfileCenter";
 	}
 
@@ -670,11 +699,13 @@ public class ConsultantController
 			e.printStackTrace();
 		}
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		map.addAttribute("ppList", postProfileService.getPostProfileByConsForCenter(loggedinUser,
 				(pn - 1) * GeneralConfig.rpp, GeneralConfig.rpp));
 		map.addAttribute("totalCount", postProfileService.countPostProfileByConsForCenter(loggedinUser));
@@ -696,11 +727,13 @@ public class ConsultantController
 	{
 		Post post = null;	
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		JSONObject object = new JSONObject();
 		String pids = request.getParameter("pids");
 		if (pids != null && pids.length() > 0)
@@ -786,6 +819,13 @@ public class ConsultantController
 	public String consApplicantInfo(ModelMap map, HttpServletRequest request, Principal principal,
 			@RequestParam long ppid)
 	{
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		
 		PostProfile postProfile = postProfileService.getPostProfile(ppid);
 		map.addAttribute("postProfile", postProfile);
 		map.addAttribute("msgList", inboxService.getInboxMessages(ppid, 0, 10));
@@ -795,12 +835,15 @@ public class ConsultantController
 
 	@RequestMapping(value = "/consviewjd", method = RequestMethod.GET)
 	public String viewConsPostDetail(ModelMap map, HttpServletRequest request, Principal principal)
-	{	Registration reg = registrationService.getRegistationByUserId(principal.getName());
-	if(reg.getAdmin() != null)
-	{
-		reg =reg.getAdmin(); 
-	}
-	String loggedinUser=reg.getUserid();
+	{	
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+	
 		String pid = request.getParameter("pid");
 		if (pid != null && pid.trim().length() > 0)
 		{
@@ -818,7 +861,7 @@ public class ConsultantController
 	private Set<String> allowedImageExtensions;
 
 	@RequestMapping(value = "/consultant.uploadLogo", method = RequestMethod.POST)
-	public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req,
+	public @ResponseBody String ajaxFileUpload(ModelMap map,MultipartHttpServletRequest request, HttpServletRequest req,
 			Principal principal) throws ServletException
 	{
 		String loggedinUser=principal.getName();
@@ -831,6 +874,8 @@ public class ConsultantController
 		this.allowedImageExtensions.add("JPG");
 		this.allowedImageExtensions.add("JPEG");
 		this.allowedImageExtensions.add("GIF");
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		MultipartFile mpf = null;
 		int flag = 0;
 		Iterator<String> itr = request.getFileNames();
@@ -1019,11 +1064,13 @@ e.printStackTrace();
 			String ppstatus = request.getParameter("ppstatus");
 			PostProfile pp = postProfileService.getPostProfile(ppid);
 			Registration reg = registrationService.getRegistationByUserId(principal.getName());
+			map.addAttribute("registration",reg);
 			if(reg.getAdmin() != null)
 			{
 				reg =reg.getAdmin(); 
 			}
 			String loggedinUser=reg.getUserid();
+			
 			Post post = pp.getPost();
 			Registration consultant = registrationService.getRegistationByUserId(loggedinUser);
 			if (pp != null)
@@ -1040,11 +1087,11 @@ e.printStackTrace();
 					BillingDetails billingDetailscl = billingService.getBillingDetailsById(pp.getPpid());
 					billingDetailscl.setJoiningDate(dt);
 					long payDay = Long.parseLong(pp.getPost().getClient().getPaymentDays() + "");
-					billingDetailscl
-							.setPaymentDueDateForAd(new java.sql.Date(dt.getTime() + (payDay) * 24 * 60 * 60 * 1000));
 					try
 					{
-						billingDetailscl
+					billingDetailscl
+							.setPaymentDueDateForAd(new java.sql.Date(dt.getTime() + (payDay) * 24 * 60 * 60 * 1000));
+					billingDetailscl
 								.setPaymentDueDateForCo(
 										new java.sql.Date(dt.getTime() + (payDay) * 24 * 60 * 60 * 1000
 												+ (Long.parseLong(
@@ -1115,9 +1162,9 @@ e.printStackTrace();
 					 
 					"<tr><td>Total Invoice Amount (INR)</td><td>"+bill.getTotalAmount()+"</td></tr>"+
 					 
-					"<tr><td>Payment Days (as per contract) (days)</td><td>"+pp.getProfile().getRegistration().getPaymentDays()+"</td></tr>"+
+					"<tr><td>Payment Days (as per contract) (days)</td><td>"+payDay+"</td></tr>"+
 					 
-					"<tr><td>Payment Due Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForCo())+"</td></tr></table>";
+					"<tr><td>Payment Due Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForAd())+"</td></tr></table>";
 					mailContent+="<br><br> Best Regards,<br>"+
 					"UniHyr Admin Team";
 					mailService.sendMail(pp.getPost().getClient().getUserid(), "Bill Invoice verfication",mailContent);
@@ -1167,6 +1214,8 @@ e.printStackTrace();
 					Date date = new Date();
 					java.sql.Date dt = new java.sql.Date(date.getTime());
 					pp.setWithdrawDate(dt);
+					String rej_reason = request.getParameter("rej_reason");
+					pp.setRejectReason(rej_reason);
 					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
 
 					String	content= pp.getProfile().getName() +" had withdrawn candidature for the "+post.getTitle()+" ("+(client.getOrganizationName())+")" ;
@@ -1175,8 +1224,23 @@ e.printStackTrace();
 					nser.setNotification(content);
 					nser.setUserid(principal.getName());
 					notificationService.addNotification(nser);
-					obj.put("status", "candidate_withdraw");
-					
+					String consultId=pp.getProfile().getRegistration().getUserid();
+					subject="UniHyr Alert : Candidature Withdrawn - "+consultId+"," +pp.getPost().getTitle();
+							
+					String mailContent="Dear Employer,<br><br>"+
+ 
+					"Candidature of the following candidate has been withdrawn by the hiring partner.<br><br>"+
+ 
+					"<table style='width:100%;border:1px solid #dcdcdc;'>"+
+					 "<tr><td>Candidate Name</td><td>"+consultId+"</td>"+
+					 "<tr><td>Position</td><td>"+pp.getPost().getTitle()+"</td>"+
+					 "<tr><td>Hiring Partner</td><td>"+client.getUserid()+"</td>"+
+					 "<tr><td>Profile Submitted Date</td><td>"+pp.getProfile().getPublished()+"</td>"+
+					 "<tr><td>Reason for withdrawal</td><td>"+rej_reason+"</td>"+
+					 "<br><br>Regards,<br><br>"+
+					 "UniHyr Admin Team";
+					 mailService.sendMail(client.getUserid(), subject, mailContent);
+					 obj.put("status", "candidate_withdraw");
 				}else
 				{
 					obj.put("status", "failed");
@@ -1204,9 +1268,9 @@ e.printStackTrace();
 			String path = GeneralConfig.UploadPath +pathToStore ;
 			PdfWriter.getInstance(document, new FileOutputStream(path));
 			document.open();
-			document.addAuthor("Real Gagnon");
-			document.addCreator("Real's HowTo");
-			document.addSubject("Thanks for your support");
+//			document.addAuthor("Real Gagnon");
+//			document.addCreator("Real's HowTo");
+//			document.addSubject("Thanks for your support");
 			document.addCreationDate();
 			HTMLWorker htmlWorker = new HTMLWorker(document);
 			StringBuilder str = new StringBuilder();
@@ -1373,10 +1437,16 @@ e.printStackTrace();
 	@RequestMapping(value = "/consviewuser", method = RequestMethod.GET)
 	public String clientViewUser(ModelMap map, Principal principal, @RequestParam String uid)
 	{
-		Registration reg = registrationService.getRegistationByUserId(uid);
-		if (reg != null)
+		
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		if(reg != null)
 		{
 			map.addAttribute("registration", reg);
+		}
+		Registration reg1 = registrationService.getRegistationByUserId(uid);
+		if (reg1 != null)
+		{
+			map.addAttribute("userdetails", reg1);
 			return "consViewUser";
 		}
 		return "redirect:clientdashboard";
@@ -1388,11 +1458,13 @@ e.printStackTrace();
 	{
 		JSONObject object = new JSONObject();
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		List<Inbox> mList = inboxService.getMessageByConsultant(loggedinUser, 0, 100);
 		JSONArray array = new JSONArray();
 		JSONObject jm = null;

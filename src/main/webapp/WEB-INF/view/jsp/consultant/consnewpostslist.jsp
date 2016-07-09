@@ -24,7 +24,7 @@
 </head>
 <body class="loading">
 	<%
-		Registration reg = (Registration)request.getSession().getAttribute("registration");
+		Registration reg = (Registration)request.getAttribute("registration");
 		long totalCount = (Long)request.getAttribute("totalCount");
        	List<Post> postList = (List)request.getAttribute("postList");
 		int pn = (Integer) request.getAttribute("pn");

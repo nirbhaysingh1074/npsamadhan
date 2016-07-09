@@ -47,6 +47,11 @@ public class ConsultantUserController
 	public String clientNewUser(ModelMap map, Principal principal)
 	{
 		map.addAttribute("cuForm", new ClientUserModel());
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		if(reg != null)
+		{
+			map.addAttribute("registration", reg);
+		}
 		return "consNewUser";
 	}
 
@@ -59,6 +64,11 @@ public class ConsultantUserController
 	{
 
 		boolean valid = true; 
+		Registration reg1 = registrationService.getRegistationByUserId(principal.getName());
+		if(reg1 != null)
+		{
+			map.addAttribute("registration", reg1);
+		}
 		try
 		{
 			Registration user = registrationService.getRegistationByUserId(userid);

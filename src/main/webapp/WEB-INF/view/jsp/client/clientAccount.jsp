@@ -358,7 +358,7 @@
 										<label>Old Password</label>
 									</dt>
 									<dd>
-										<input type="password" name="oldPassword" autocomplete="off">
+										<input required="required" type="password" name="oldPassword" autocomplete="off">
 										
 									</dd>
 								</dl>
@@ -368,7 +368,7 @@
 										<label>New Password</label>
 									</dt>
 									<dd>
-										<input type="password"  name="newPassword" >
+										<input required="required" type="password"  name="newPassword" >
 										
 									</dd>
 								</dl>
@@ -378,7 +378,7 @@
 										<label>Re-Password</label>
 									</dt>
 									<dd>
-										<input type="password"  name="rePassword">
+										<input required="required" type="password"  name="rePassword">
 									</dd>
 								</dl>
 								<div style="clear: both;"></div>
@@ -388,7 +388,7 @@
 									</dt>
 									<dd>
 										<input class="btn yelo_btn" type="submit" value="Change Password" name="btn_response">
-		<!-- 									<input class="btn yelo_btn" type="submit" value="Save" name="btn_response"> -->
+										<!-- <input class="btn yelo_btn" type="submit" value="Save" name="btn_response"> -->
 									</dd>
 								</dl>
 								

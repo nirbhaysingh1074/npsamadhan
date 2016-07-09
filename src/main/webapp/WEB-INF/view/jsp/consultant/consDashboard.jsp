@@ -13,7 +13,15 @@
 <title>Uni Hyr</title>
 <style type="text/css">
 	.error{color: red;}
-	.report_sum{padding: 5px 0;}
+	.report_sum{padding: 5px 0;
+	border-radius: 3px;
+border-right: 4px solid rgb(220, 220, 220);
+border-bottom: 4px solid rgb(220, 220, 220);
+border-top: 1px solid rgb(220, 220, 220);
+border-left: 1px solid rgb(220, 220, 220);
+	background: white;
+	margin-right: 7px;
+	}
 </style>
 <script type="text/javascript">
 	function  loadconsdashboardposts(pn)
@@ -130,55 +138,74 @@ jQuery(document).ready(function() {
   <div class="container">
   	<div id="positions_info">
 		  	<div style="padding-bottom: 0" class="rightside_in new_table">
-			  	<%-- <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
-			        <div class="bottom-padding" style=" border: 2px solid gray; border-radius: 5px; margin-bottom: 10px; padding: 10px;">
-				        <div class="bottom-padding">
+			  	 <sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+			        <div class="bottom-padding" style="padding-bottom: 39px !important;">
 				        	
-				        	<div class="col-md-4 report_sum">
-					        	<div class="col-md-9">
-					        		My Active Positions
-					        	</div>
+				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;">
 					        	<div class="col-md-3">
-					        		${totalActive }
+					        		<img src="images/active.png"  width="17px">
+					        	</div>
+					        	<div class="col-md-9"  style="padding: 0px;">
+					        	${totalPosted} Published
 					        	</div>
 				        	</div>
-				        	<div class="col-md-4 report_sum">
-					        	<div class="col-md-9">
-					        		No of Profile Submitted
-					        	</div>
+				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >
 					        	<div class="col-md-3">
-					        		${totalprofiles }
+					        	<img src="images/inactive.png" width="17px">
+					        		
+					        	</div>
+					        	<div class="col-md-9"  style="padding: 0px;">
+					        		${totalActive} Signed Up
 					        	</div>
 				        	</div>
-				        	<div class="col-md-4 report_sum">
-					        	<div class="col-md-9">
-					        		No of Profile Shortlisted
-					        	</div>
+				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >
 					        	<div class="col-md-3">
-					        		${totalshortlist }
+					        	<img src="images/profiles.png" width="17px">
+					        		
+					        	</div>
+					        	<div class="col-md-9"  style="padding: 0px;">
+					        		${totalprofiles } Profile Submitted
+					        	</div>
+				        	</div>
+				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >
+					        	<div class="col-md-3">
+					        		<img src="images/check-cloud.png"  width="17px">
+					        	</div>
+					        	<div class="col-md-9"  style="padding: 0px;">
+									${totalshortlist} In Process
+					        	</div>
+				        	</div>
+				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >
+					        	<div class="col-md-3">
+					        		<img src="images/check-cloud.png"  width="17px">
+					        		
+					        	</div>
+					        	<div class="col-md-9"  style="padding: 0px;">
+									${offersent } Offered
+					        	</div>
+				        	</div>
+				        	<div class="col-md-2 report_sum" style="width: 16%;margin-right:0px;" >
+					        	<div class="col-md-3">
+					        		<img src="images/check-cloud.png"  width="17px">
+					        		
+					        	</div>
+					        	<div class="col-md-9"  style="padding: 0px;">
+									${totaljoin } Joined
 					        	</div>
 				        	</div>
 				        	
-				        	<div class="col-md-4 report_sum">
-					        	<div class="col-md-9">
-					        		No of Candidate Joined
-					        	</div>
-					        	<div class="col-md-3">
-					        		${totaljoin }
-					        	</div>
-				        	</div>
-				        	<div class="col-md-4 report_sum">
-					        	<div class="col-md-9">
-					        		No of Clients
-					        	</div>
-					        	<div class="col-md-3">
-					        		${totalpartner }
-					        	</div>
-				        	</div>
+<!-- 				        	<div class="col-md-2 report_sum" > -->
+<!-- 					        	<div class="col-md-10"> -->
+<!-- 					        		<img src="images/check-cloud.png"  width="20px"> -->
+<!-- 					        		No of Partners -->
+<!-- 					        	</div> -->
+<!-- 					        	<div class="col-md-3"> -->
+<%-- 					        		${totalpartner } --%> 
+<!-- 					        	</div> -->
+<!-- 				        	</div> -->
 				        	
 				        </div>
-			        </div>
-			    </sec:authorize> --%>
+			    </sec:authorize> 
 		       
 		        <div class="block consulting" style="padding: 0 8px;">
 		          <div  style="float: left;">

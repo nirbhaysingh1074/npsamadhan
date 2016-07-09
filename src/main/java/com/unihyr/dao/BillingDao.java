@@ -20,4 +20,6 @@ public interface BillingDao {
 
 	public BillingDetails getBillingDetailsById(long ppid);
 
+	public List<BillingDetails> getAllDetailsUnverified();
+
 }

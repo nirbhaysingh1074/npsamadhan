@@ -52,13 +52,13 @@
 				</div>
 				<div style="text-align: center;">
 				 <a style='position: relative;
-    bottom: 14px;
-    background: rgb(249, 185, 16) none repeat scroll 0% 0%;
-    border-radius: 3px;
-    font-size: 17px;
-    color: rgb(255, 255, 255);
-    padding: 3px 14px;
-    text-align: center;' href='index' >Ok</a>
+						    bottom: 14px;
+						    background: rgb(249, 185, 16) none repeat scroll 0% 0%;
+						    border-radius: 3px;
+						    font-size: 17px;
+						    color: rgb(255, 255, 255);
+						    padding: 3px 14px;
+						    text-align: center;' href='index' >OK</a>
 				</div>
 			</div>
 		</div>

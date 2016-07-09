@@ -64,16 +64,22 @@ jQuery(document).ready(function() {
 		{
 			$('.sel_posts:checkbox').prop("checked",false);
 		}
-		
 	});
-	
-	
-	
   });
 	
 </script>
 <style type="text/css">
-.report_sum{padding: 5px 0; background: #ededed;margin:10px;}
+.report_sum {
+	padding: 5px 0;
+background: #fff;
+margin-right: 18px;
+border-right: 5px solid #dcdcdc;
+border-bottom: 5px solid #dcdcdc;
+border-radius: 5px;
+width: 18% !important;
+border-top: 1px solid #ececec;
+border-left: 1px solid #ececec;
+}
 </style>
 </head>
 <body class="loading" onload="loadclientdashboardposts('1')">
@@ -82,53 +88,48 @@ jQuery(document).ready(function() {
   	<div id="positions_info">
 		  	<div style="padding-bottom: 0" class="rightside_in new_table">
 		  		 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-			        <div class="bottom-padding" >
-				        <div class="bottom-padding">
-				        	
+				        <div class="bottom-padding" style="padding-bottom: 42px !important;">
 				        	<div class="col-md-2 report_sum" >
-					        	<div class="col-md-11">
-					        		<img src="images/active.png"  width="20px">
+					        	<div class="col-md-3">
+					        		<img src="images/active.png"  width="17px">
+					        	</div>
+					        	<div class="col-md-9">
+					        	${totalposts} Published
+					        	</div>
+				        	</div>
+				        	<div class="col-md-2 report_sum" >
+					        	<div class="col-md-3">
+					        	<img src="images/inactive.png" width="17px">
 					        		
+					        	</div>
+					        	<div class="col-md-9">
 					        		${totalActive} Active Positions
 					        	</div>
-					        	<div class="col-md-3">
-					        	</div>
 				        	</div>
 				        	<div class="col-md-2 report_sum" >
-					        	<div class="col-md-11">
-					        	<img src="images/inactive.png" width="20px">
-					        		${totalposts - totalActive} Inactive Positions
-					        	</div>
 					        	<div class="col-md-3">
+					        	<img src="images/profiles.png" width="17px">
 					        		
 					        	</div>
+					        	<div class="col-md-9">
+					        		${totalInActive } Inactive Positions
+					        	</div>
 				        	</div>
 				        	<div class="col-md-2 report_sum" >
-					        	<div class="col-md-11">
-					        	<img src="images/profiles.png" width="20px">
-					        		${totalprofiles } Profiles Received
-					        	</div>
 					        	<div class="col-md-3">
+					        		<img src="images/check-cloud.png"  width="17px">
+					        	</div>
+					        	<div class="col-md-9">
+									${totalPending} Pending Verification
+					        	</div>
+				        	</div>
+				        	<div class="col-md-2 report_sum" >
+					        	<div class="col-md-3">
+					        		<img src="images/check-cloud.png"  width="17px">
 					        		
 					        	</div>
-				        	</div>
-				        	<div class="col-md-2 report_sum" >
-					        	<div class="col-md-11">
-					        		
-					        		<img src="images/check-cloud.png"  width="20px">
-					        		${totalposts} Published
-					        	</div>
-					        	<div class="col-md-3">
-<%-- 					        		${totalshortlist } --%>
-					        	</div>
-				        	</div>
-				        	<div class="col-md-2 report_sum" >
-					        	<div class="col-md-11">
-					        		<img src="images/check-cloud.png"  width="20px">
-					        		${totaljoin } Candidate Joined
-					        	</div>
-					        	<div class="col-md-3">
-<%-- 					        		${totaljoin } --%>
+					        	<div class="col-md-9">
+									${totalprofiles } Profiles Recieved
 					        	</div>
 				        	</div>
 <!-- 				        	<div class="col-md-2 report_sum" > -->
@@ -142,7 +143,6 @@ jQuery(document).ready(function() {
 <!-- 				        	</div> -->
 				        	
 				        </div>
-			        </div>
 			    </sec:authorize> 
 		        <div class="block consulting">
 		          <div style="    float: left;">

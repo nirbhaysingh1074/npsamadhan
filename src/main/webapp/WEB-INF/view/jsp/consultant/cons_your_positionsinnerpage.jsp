@@ -171,7 +171,6 @@
 										New Profile</strong></a>
 								<%
 									} else {
-										System.out.println("ggggggggggggggggggggggggggggggggggggg");
 								%>
 								<a style="padding: 5px 13px;" href="javascript:void(0)"
 									class="btn file_btn upload_new_profile"><strong>Upload
@@ -179,7 +178,6 @@
 								<%
 									}
 											} else {
-												System.out.println("gggddgggggggggggggggggggfggggggggggggggg");
 								%>
 								<a style="padding: 5px 13px;" href="javascript:void(0)"
 									class="btn file_btn btn_disabled"><strong>Upload
@@ -188,7 +186,6 @@
 									}
 										}
 									} else {
-										System.out.println("gggggggggggggffgggggggggfggggggggggggggg");
 								%>
 								<a style="padding: 5px 13px;" href="javascript:void(0)"
 									class="btn file_btn btn_disabled"><strong>Upload
@@ -223,7 +220,16 @@
 											You have already exhausted your weekly upload profile quota, please submit profile later.
 							</i>
 							</p> 
-							<%} %>
+							<%}else if(post.getCloseDate()==null&& post.getVerifyDate()!=null&& (!post.isActive())){
+								  %>
+					                 <p style="font-size: 10px;"><i>
+					                 
+													The position has been currently marked 'Inactive' by the employer hence new profiles cannot be uploaded. You will receive a notification when the position is made 'Active'
+									</i>
+									</p> 
+									<%
+							}
+			                  %>
 							<div class="" style="float: left;width: 65%;color: red;margin-left: 7px;line-height: 26px;">
 		                 	
 		                 	<%if(post!=null&&post.getUpdateInfo()!=null){
@@ -234,14 +240,10 @@
 							
 						</div>
 						<div class="candidate_profiles_for_cons">
-							
-<!-- 							--------------------           inner data ---------------------- -->
-							
 							<%
 								if(profileList != null)
 								{
 								%>
-								
 								<div class="filter">
 									<div class="col-md-6 pagi_summary">
 										<span>Showing <%=cc%> of <%=totalCount%></span>
@@ -357,7 +359,7 @@
 													{
 														%>
 						                  					<td style="text-align: left;">
-																<span>Join Dropped</span>
+																<span>Dropped</span>
 															</td>
 														<%
 														if( !pp.getPost().isActive())
@@ -447,15 +449,15 @@
 															%> 
 																<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																		<a style="cursor: pointer;" class="join_accept" title="Click to accept offer" 	onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')" >Join</a> 
+																		<a style="cursor: pointer;" class="join_accept" title="Click to accept offer" 	onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')" >Joined</a> 
 																		 | <a style="cursor:pointer;" class="btn-open" data-type="join_reject"  title="Click to reject offer" >Offer Drop</a>
 																	</p>
 																</td>
-																<td class="text-center" style="text-align: left;">
+																<%-- <td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
 																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
 																</p>
-																</td>
+																</td> --%>
 																
 															<%
 														}
@@ -511,7 +513,10 @@
 																
 																<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
+<%-- 																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="" ></a>  --%>
+																<a style="cursor:pointer;" class="btn-open" data-type="candidate_withdraw"  title="Click to withdraw candidature" >Withdraw</a>
+																
+																
 																</p>
 																</td>
 															<%
@@ -572,7 +577,9 @@
 																
 																<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
+															<%-- 																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="" ></a>  --%>
+																<a style="cursor:pointer;" class="btn-open" data-type="candidate_withdraw"  title="Click to withdraw candidature" >Withdraw</a>
+																
 																</p>
 																</td>
 															<%
@@ -602,7 +609,9 @@
 							                  					
 															<td class="text-center" style="text-align: left;">
 																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
+																<%-- 																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="" ></a>  --%>
+																<a style="cursor:pointer;" class="btn-open" data-type="candidate_withdraw"  title="Click to withdraw candidature" >Withdraw</a>
+																
 																</p>
 																</td>
 															<%
@@ -611,10 +620,9 @@
 													}
 												%>
 						<td>
-							<p style="width: 105px; border-radius: 2px;">
+							<p style="width: 90px; border-radius: 2px;">
 								<a style="line-height: 0.42857em; background: url(images/ic_12.png) no-repeat 3px 4px #f8b910; padding: 8px 18px 8px 18px;"
-								class="btn search_btn"  target="_blank" href="consapplicantinfo?ppid=<%=pp.getPpid()%>">View
-								Applicant</a>
+								class="btn search_btn"  target="_blank" href="consapplicantinfo?ppid=<%=pp.getPpid()%>">View Profile</a>
 							</p>
 						</td>
 					</tr>

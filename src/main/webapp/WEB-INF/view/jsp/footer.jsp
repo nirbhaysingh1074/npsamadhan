@@ -72,8 +72,8 @@
 		</div>
 		<div class="footer_botm Align_cent Light12 grey3">
 			<div class="container" style="background-color: #1f1e1e;">
-				<a href="">Terms of Use</a> | <a href="">Privacy Policy</a> | <a
-					href="">Sitemap</a> | <a href="">Work with Us</a>
+				<a href="">Terms of Use</a> | <a href="">Privacy Policy</a> 
+<!-- 				| <a href="">Sitemap</a> | <a href="">Work with Us</a> -->
 			</div>
 		</div>
 	</footer>

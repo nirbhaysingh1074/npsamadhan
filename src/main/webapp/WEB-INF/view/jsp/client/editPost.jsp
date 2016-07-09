@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.unihyr.domain.Qualification"%>
 <%@page import="com.unihyr.domain.Location"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.Registration"%>
@@ -113,9 +115,9 @@
 			$('.exp_min_error').html('Please select minimum expirence')
 			valid = false;
 		}
-		if(exp_max == ""  || isNaN(exp_max) || exp_min >= exp_max)
+		if(exp_max == ""  || isNaN(exp_max) || Number(exp_min) >= Number(exp_max))
 		{
-			$('.exp_max_error').html('Min cannot be greater than Max')
+			$('.exp_max_error').html('Min cannot be greater than or equal to Max')
 			valid = false;
 		}
 		if(ctc_min == ""  || isNaN(ctc_min))
@@ -123,9 +125,9 @@
 			$('.ctc_min_error').html('Please enter minimum ctc')
 			valid = false;
 		}
-		if(ctc_max == ""  || isNaN(ctc_max) || ctc_min >= ctc_max)
+		if(ctc_max == ""  || isNaN(ctc_max) || Number(ctc_min) >= Number(ctc_max))
 		{
-			$('.ctc_max_error').html('Min cannot be greater than Max')
+			$('.ctc_max_error').html('Min cannot be greater than or equal to Max')
 			valid = false;
 		}
 		if(select_jd == "" && additionDetail == "" && $('#uploadjd').val()=="")
@@ -133,9 +135,6 @@
 			$('.uploadjd_error').html('Please enter job discription or upload JD')
 			valid = false;
 		}
-		
-		
-
 		if(!valid)
 		{
 			return false;
@@ -281,14 +280,17 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		            <dd>
 		              <form:input path="title"  />
 		              <form:hidden path="postId"/>
-		              <span class='error title_error'><form:errors path="title" /></span>
+		              <span class='error title_error'>&nbsp;<form:errors path="title" /></span>
 		            </dd>
 		          </dl>
 		          <dl>
 					<dt>
-						<label>Upload JD<span title='Allowed doc type  : .docx, .doc, .pdf &#013Allowed doc size : 1MB '> (?)</span></label>
+						<label>Upload JD
+						<span title='Allowed doc type  : .docx, .doc, .pdf &#013Allowed doc size : 1MB '> (?)</span>
+						
+						</label>
 					</dt>
-					<dd style="height: 33px;">
+					<dd >
 						<div class="file_up" style="float: left;">
 							<form:input path="uploadjd" disabled = "true"/>
 							<div class="fileUpload">
@@ -296,16 +298,17 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 							    <input type="file" class="upload select_jd" name="uploadJdfile" />
 							</div>
 						   
+						    <span class="" style="font-size: 10px;">Supported Formats : doc, docx, pdf. Max size : 1MB</span>
 						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
 						    
 						</div>
 						<div style="float: left;">
 						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
-    border-radius: 0 5px 5px 0;
-    float: right;
-    height: 27px;
-    overflow: hidden;
-    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
+							    border-radius: 0 5px 5px 0;
+							    float: right;
+							    height: 27px;
+							    overflow: hidden;
+							    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
 					</div>
 					</dd>
 				</dl>
@@ -319,7 +322,7 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 	                    <form:option value="Team Leading">Team Leading</form:option>
 	            </form:select>
 <%-- 	              <form:input path="function" /> --%>
-	              <span class='error function_error'><form:errors path="function"/></span>
+	              <span class='error function_error'>&nbsp;<form:errors path="function"/></span>
 	            </dd>
 	          </dl>
 		          
@@ -350,12 +353,12 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 	                <div class="col-md-6">
 	                  <form:input path="exp_min" class="number_only" style="padding-right: 75px"  />
 	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Min in Years)</span>
-	                  <span class='error exp_min_error'><form:errors path="exp_min"/></span>
+	                  <span class='error exp_min_error'>&nbsp;<form:errors path="exp_min"/></span>
 	                </div>
 	                <div class="col-md-6">
 	                  <form:input path="exp_max" class="number_only" style="padding-right: 75px" />
 	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Max in Years)</span>
-	                  <span class='error exp_max_error'><form:errors path="exp_max"/></span>
+	                  <span class='error exp_max_error'>&nbsp;<form:errors path="exp_max"/></span>
 	                </div>
 	                
 	              </div>
@@ -370,12 +373,12 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		                <div class="col-md-6">
 		                  <form:input path="ctc_min" class="number_only" style="padding-right: 75px"  />
 		                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(INR Lacs)</span>
-		                  <span class='error ctc_min_error'><form:errors path="ctc_min"/></span>
+		                  <span class='error ctc_min_error'>&nbsp;<form:errors path="ctc_min"/></span>
 		                </div>
 		                <div class="col-md-6">
 		                  <form:input path="ctc_max" class="number_only" style="padding-right: 75px" />
 		                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(INR Lacs)</span>
-		                  <span class='error ctc_max_error'><form:errors path="ctc_max"/></span>
+		                  <span class='error ctc_max_error'>&nbsp;<form:errors path="ctc_max"/></span>
 		                </div>
 		              </div>
 		            </dd>
@@ -454,25 +457,37 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 	              <form:select path="location"  multiple="multiple" style="height: 111px;" >
 	              			<form:option value="">Select Location</form:option>
 	              	<%
+	              	
 	              		List<String> locList=GeneralConfig.topLocations;
 	              		for(String loc:locList){
+	              		if(post.getLocation().contains(loc)){
+	              			%>
+	              			  <form:option selected="selected" value="<%=loc %>"><%=loc %></form:option>
+	              			<%
+	              		}else{
 	              			%>
 						   <form:option value="<%=loc %>"><%=loc %></form:option>
 	              			<%
-	              		}
+	              		}}
 	              		List<Location> locList1=(List<Location>)request.getAttribute("locList");
 	              		for(Location loc:locList1)
 	              		{
 	              			if(!locList.contains(loc.getLocation())){
-	              		%>
-						   <form:option value="<%=loc.getLocation()%>"><%=loc.getLocation()%></form:option>
-	            		<%
+	              		if(post.getLocation().contains(loc.getLocation())){
+	              			%>
+	              			  <form:option selected="selected" value="<%=loc.getLocation() %>"><%=loc.getLocation() %></form:option>
+	              			<%
+	              		}else{
+	              			%>
+						   <form:option value="<%=loc.getLocation() %>"><%=loc.getLocation() %></form:option>
+	              			<%
+	              		}
 	            		}}
 	              		%>
 	            	</form:select>
 	              
 					<%--  <form:input path="location" /> --%>
-	              <span class='error location_error'><form:errors path="location"/></span>
+	              <span class='error location_error'>&nbsp;<form:errors path="location"/></span>
 	            </dd>
 	          </dl>
 	          <dl >
@@ -484,20 +499,39 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 	                <div class="col-md-6">
 	                  <form:select path="qualification_ug" multiple="multiple" style="height: 111px;" >
 	              	<form:option value="">Select Qualification</form:option>
-	            		<c:forEach var="item" items="${qListUg}">
-						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
-						</c:forEach>
+	            		<%
+	            		List<Qualification> gradList=(ArrayList<Qualification>)request.getAttribute("qListUg");
+	            		for(Qualification grad:gradList)
+	            			{
+	            			if(post.getQualification_ug()!=null&&post.getQualification_ug().contains(grad.getqTitle())){
+	            			%>
+							<%--	<c:forEach var="item" items="${qListUg}"> --%>
+						   	<form:option selected="selected" value="<%=grad.getqTitle() %>"><%=grad.getqTitle()%></form:option>
+							<%--  	</c:forEach> --%>
+							<%}else{ %>
+								<form:option value="<%=grad.getqTitle()%>"><%=grad.getqTitle()%></form:option>
+							<%}} %>
 	            	</form:select>
 	                  <span class='error qualification_ug_error'><form:errors path="qualification_ug"/></span>
 	                </div>
 	                <div class="col-md-6">
 	                  <form:select path="qualification_pg" multiple="multiple" style="height: 111px;" >
 	              	<form:option value="">Select Qualification</form:option>
-	            		<c:forEach var="item" items="${qListPg}">
-						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
-						</c:forEach>
+	              	<%
+	              	List<Qualification> postList=(ArrayList<Qualification>)request.getAttribute("qListPg");
+            		for(Qualification grad:postList)
+            			{
+            			if(post.getQualification_ug()!=null&&post.getQualification_pg().contains(grad.getqTitle())){
+	              	%>
+<%-- 	            		<c:forEach var="item" items="${qListPg}"> --%>
+						   <form:option selected="selected" value="<%=grad.getqTitle()%>"><%=grad.getqTitle()%></form:option>
+<%-- 						</c:forEach> --%>
+	            	<%}else{ %>
+	            	   <form:option value="<%=grad.getqTitle()%>"><%=grad.getqTitle()%></form:option>
+	            	<%} }%>
+	            	
 	            	</form:select>
-	                  <span class='error qualification_pg_error' ><form:errors path="qualification_pg"/></span>
+	                  <span class='error qualification_pg_error' >&nbsp;<form:errors path="qualification_pg"/></span>
 	                </div>
 	              </div>
 	            </dd>
@@ -509,7 +543,7 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		            </dt>
 		            <dd>
 		              <form:input path="noOfPosts" class="number_only number_pasitive" maxlength="5" />
-		              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
+		              <span class='error noOfPosts_error'>&nbsp;<form:errors path="noOfPosts"/></span>
 		            </dd>
 		          </dl>
 	       <dl   >
@@ -527,7 +561,7 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 				   
 	      <dd>
 	        <form:textarea path="variablePayComment"  style="height: 111px;"></form:textarea>
-             <span class='variablePayComment_error'><form:errors path="variablePayComment"/></span>
+             <span class='variablePayComment_error'>&nbsp;<form:errors path="variablePayComment"/></span>
 	      </dd>
 				</dl>
 				
@@ -552,7 +586,7 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
 						 <%} %>
 						</form:select>
-					<span class='error feePercent_error'><form:errors path="feePercent"/></span>
+					<span class='error feePercent_error'>&nbsp;<form:errors path="feePercent"/></span>
 	     </dd>
 				</dl>
 		           <%
@@ -600,6 +634,9 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		        <form:textarea path="editSummary" ></form:textarea>
 	             <span class='error editSummary_error'><form:errors path="editSummary"/></span>
 		      </div>
+		      <script type="text/javascript">
+		      $('#editSummary').val('');
+		      </script>
 		      <%
 		      if(post != null )
 		      %>

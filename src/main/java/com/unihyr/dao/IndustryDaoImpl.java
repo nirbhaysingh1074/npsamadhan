@@ -3,14 +3,18 @@ package com.unihyr.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.jpa.criteria.compile.CriteriaQueryTypeQueryAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.unihyr.constraints.Roles;
 import com.unihyr.domain.Industry;
 import com.unihyr.domain.Location;
+import com.unihyr.domain.Registration;
 
 @Repository
 public class IndustryDaoImpl implements IndustryDao
@@ -66,5 +70,30 @@ public class IndustryDaoImpl implements IndustryDao
 		return this.sessionFactory.getCurrentSession().createCriteria(Industry.class)
 				.add(Restrictions.eq("industry", industry).ignoreCase()).list();
 	}
+
+	@Override
+	public List<Registration> getClientsByIndustry(int industryId)
+	{
+//		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid INNER JOIN user_industry ui on reg.lid = ui.lid where ur.userrole =:role and ui.id =:industryId";
+//		return (List<Registration>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+//				.addEntity(Registration.class).setString("role", Roles.ROLE_CON_MANAGER.toString())
+//				.setParameterList("industryId", industryId).list();
+		return null;
+	}
+
+	@Override
+	public List<Registration> getConsultantsByIndustry(int industryId)
+	{
+		return null;
+	}
+
+	@Override
+	public void deleteIndustry(Industry industry)
+	{
+		this.sessionFactory.getCurrentSession().delete(industry);
+		
+	}
+	
+	
 
 }

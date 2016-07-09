@@ -38,27 +38,27 @@ jQuery(document).ready(function() {
 			});
 	});
 
-	$(document.body).on('click', '#offerjoinedpopup' ,function(){
-		var ppid =$('#postIdForAccept').val();
-		var joiningDate=$('#datepicker').val();
-
-		pleaseWait();
-			$.ajax({
-				type : "GET",
-				url : "consacceptoffer",
-				data : {'ppid':ppid,'ppstatus':'join_accept','joiningDate':joiningDate},
-				contentType : "application/json",
-				success : function(data) {
-					var obj = jQuery.parseJSON(data);
-					pleaseDontWait();
-					location.href="";	
-				},
-				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
-					pleaseDontWait();
-				}
-			});
-	});
+//	$(document.body).on('click', '#offerjoinedpopup' ,function(){
+//		var ppid =$('#postIdForAccept').val();
+//		var joiningDate=$('#datepicker').val();
+//
+//		pleaseWait();
+//			$.ajax({
+//				type : "GET",
+//				url : "consacceptoffer",
+//				data : {'ppid':ppid,'ppstatus':'join_accept','joiningDate':joiningDate},
+//				contentType : "application/json",
+//				success : function(data) {
+//					var obj = jQuery.parseJSON(data);
+//					pleaseDontWait();
+//					location.href="";	
+//				},
+//				error: function (xhr, ajaxOptions, thrownError) {
+//					alert(xhr.status);
+//					pleaseDontWait();
+//				}
+//			});
+//	});
 	
 	$(document.body).on('click', '#rejectModal .btn-ok' ,function(){
 
@@ -72,6 +72,11 @@ jQuery(document).ready(function() {
 		if(reject_type == "join_reject")
 		{
 			 ppstatus = "join_reject";
+			 rej_reason = $('.sel_rej_join').val();
+		}
+		if(reject_type == "candidate_withdraw")
+		{
+			 ppstatus = "candidate_withdraw";
 			 rej_reason = $('.sel_rej_join').val();
 		}
 		
@@ -95,6 +100,17 @@ jQuery(document).ready(function() {
 						{
 							location.reload();
 							selected.parent().parent().find('td:eq(7)').html("<span>Offer Droped</span>");
+							selected.html("")
+						}
+					}else if(obj.status == "candidate_withdraw"){
+						if(data_view != "table")
+						{
+							location.reload();
+						}
+						else
+						{
+							location.reload();
+							selected.parent().parent().find('td:eq(7)').html("<span>Withdrawn</span>");
 							selected.html("")
 						}
 					}

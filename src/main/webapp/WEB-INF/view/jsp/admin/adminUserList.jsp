@@ -76,6 +76,7 @@ jQuery(document).ready(function() {
 								<th>Contact</th>
 								<th>Registered</th>
 								<th class="text-center">Status</th>
+								<th>Action</th>
 								
 							</tr>
 						</thead>
@@ -92,11 +93,21 @@ jQuery(document).ready(function() {
 												
 												<td><input type="checkbox"  class="sel_user" value="<%= reg.getUserid()%>" name="selector[]"></td>
 												<td>
-												<%if(reg.getConsultName()!=null){ %>
-												Consultant
+												<%if(reg.getConsultName()!=null){ 
+												if(reg.getAdmin()!=null){
+													%>
+													Consultant(General)
+													<%
+												}else{
+												%>
+												Consultant(Admin)
+												<%}}else{ 
+													if(reg.getAdmin()!=null){
+														%>
+												Employer(General)
 												<%}else{ %>
-												Client
-												<%} %>
+												Employer(Admin)
+												<%} }%>
 												</td>
 												<td><a target="_blank" href="adminuserderail?userid=<%= reg.getUserid()%>"><%= reg.getUserid() %></a></td>
 												<td>
@@ -123,7 +134,7 @@ jQuery(document).ready(function() {
 															else
 															{
 																
-																%>Inctive
+																%>Inactive
 <!-- 																	<button class="btn btn-sm btn-success btn_enable">enable User</button> -->
 																<%
 															}
@@ -132,7 +143,7 @@ jQuery(document).ready(function() {
 													%>
 													
 												</td>
-												
+												<td><a target="_blank" href="admineditclient?userid=<%=reg.getUserid() %>" >Edit</a></td>
 											</tr>
 										<%
 									}}

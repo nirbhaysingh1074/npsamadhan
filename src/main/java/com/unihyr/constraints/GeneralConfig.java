@@ -17,11 +17,13 @@ public class GeneralConfig
 	public static final double CESS = 0.5;
 	public static final String UploadPath = "/var/unihyr/data/";
 	//public static final String UniHyrUrl = "http://localhost:8081/unihyr/";
-	//public static final String UniHyrUrl = "http://54.191.37.178/";
-	public static final String UniHyrUrl = "http://54.191.37.178/unihyr";
+	public static final String UniHyrUrl = "http://54.191.37.178/";
+	//public static final String UniHyrUrl = "http://54.191.37.178/unihyr/";
 	public static final long PostDaysOut = 25;
 	public static final long IdleCheckInterval = 86400000;
 	public static final String Add_Post_Submit_Button_Value = "Submit";
+	public static final String Delimeter = ",,,,,,";
+	public static final long BillDaysOut = 7;
 	//public static final String UploadPath = "D:/var/unihyr/data/";
 	public static double TAX = 14;
 	public static int NoOfRatingStaticParams = 2;

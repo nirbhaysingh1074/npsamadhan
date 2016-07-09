@@ -79,17 +79,11 @@ public class NotificationDaoImpl implements NotificationDao
 		Date startDate=cal2.getTime();
 		Date endDate= cal.getTime();
 		java.sql.Date start= new java.sql.Date(startDate.getTime());
-				java.sql.Date end= new java.sql.Date(endDate.getTime());
-		
-		
-		
-		   
-		
+		java.sql.Date end= new java.sql.Date(endDate.getTime());
 		return this.sessionFactory.getCurrentSession().createCriteria(Notifications.class)
 				.add(Restrictions.eq("userid",userid))
 				.addOrder(Order.desc("date"))/*.add(Restrictions.between("date", start , end ))*/
 				.list();
-		
 	}
 	
 	

@@ -601,19 +601,19 @@
 			                      </div>
 			                    </div>
 			                    <div class="clearfix"></div>
-			                    <div class="form-group col-sm-12" style="display: none;">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Empty Field</label>
+			                    <div class="form-group col-sm-12" >
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Placement Clause</label>
 			                      <div class="col-sm-8">
 			                      
 			                         <%
 			                      if(userDetail.getEmptyField()!=null&&userDetail.getEmptyField()!=""){
 			                      %>
 			                     
-			                        <input type="text" id="emptyField" name="emptyField" class="form-control" value="<%=userDetail.getEmptyField()%>">
+			                        <textarea id="emptyField" name="emptyField" class="form-control" value="<%=userDetail.getEmptyField()%>"></textarea>
 			                     
 			                     <%}else{ %>
 			                     
-			                     <input type="text" id="emptyField" name="emptyField" class="form-control">
+			                       <textarea id="emptyField" name="emptyField" class="form-control"></textarea>
 			                     
 			                     <%} %>
 			                     

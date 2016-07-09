@@ -52,6 +52,7 @@
 								<th>Notice Period</th>
 								<th>Experience</th>
 								<th>Submitted</th>
+								<th>Download CV</th>
 							</tr>
 						</thead>
 						<tbody  id="load_admin_consultant">
@@ -64,18 +65,21 @@
 										%>
 											<tr>
 												<td>
-													<a href="adminviewprofile?ppid=<%= pp.getPpid() %>" ><%= pp.getProfile().getName()%></a>
+													<a target="_blank" href="adminviewprofile?ppid=<%= pp.getPpid() %>" ><%= pp.getProfile().getName()%></a>
 												</td>
 												<td><%= pp.getProfile().getContact()%></td>
 												<td><%= pp.getProfile().getCurrentRole()%></td>
 												<td><%= pp.getProfile().getCurrentOrganization()%></td>
-												<td><%= pp.getProfile().getCurrentCTC()%></td>
-												<td><%= pp.getProfile().getEmail()%> Years</td>
+												<td><%= pp.getProfile().getCurrentCTC()%> lpa</td>
+												<td><%= pp.getProfile().getNoticePeriod()%> days</td>
 												<td>
-													<%= pp.getProfile().getNoticePeriod()%>
-												</td>
+												<%if(pp.getProfile().getExperience()!=null){ %>
+												 <%=pp.getProfile().getExperience() %> Years
+												 <%} %>
+												 </td>
 												<td><%= DateFormats.ddMMMMyyyy.format(pp.getSubmitted()) %></td>
-												
+												<td><label><a target="_blank" href="<%= "data/"+pp.getProfile().getResumePath()%>">Download JD</a></label>
+									</td>
 											</tr>
 										<%
 									}

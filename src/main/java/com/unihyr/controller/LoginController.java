@@ -1,6 +1,7 @@
 package com.unihyr.controller;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -76,10 +77,17 @@ public class LoginController
 			System.out.println("Princile : " + principal.getName());
 
 			Registration registration = registrationService.getRegistationByUserId(principal.getName());
+			map.addAttribute("registration",registration);
 			HttpSession session = request.getSession(true);
 			session.setAttribute("registration", registration);
-
 			System.out.println("Princile : " + request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString()));
+
+			LoginInfo li = loginInfoService.findUserById(registration.getUserid());
+			li.setIsLogin(true);
+			li.setLogin_date(new java.sql.Date(new Date().getTime()));
+			li.setLogout_date(null);
+			loginInfoService.updateLoginInfo(li);
+			
 			if (request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString())
 					|| request.isUserInRole(Roles.ROLE_EMP_USER.toString()))
 			{
@@ -100,20 +108,34 @@ public class LoginController
 	}
 
 	@RequestMapping(value = "/insertLogOut", method = RequestMethod.GET)
-	public @ResponseBody String insertLogOut(ModelMap map, HttpServletRequest request)
+	public @ResponseBody String insertLogOut(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		System.out.println("from logout page");
 		HttpSession hs=request.getSession(false);
+		if(principal!=null&&principal.getName()!=null){
+		LoginInfo li = loginInfoService.findUserById(principal.getName());
+		li.setIsLogin(false);
+		li.setLogin_date(null);
+		li.setLogout_date(new java.sql.Date(new Date().getTime()));
+		loginInfoService.updateLoginInfo(li);		
+		}
 		if(hs!=null)
 		request.getSession().invalidate();
 		return "logedOut";
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(ModelMap map, HttpServletRequest request)
+	public String logout(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		System.out.println("from logout successfull page");
 		HttpSession hs=request.getSession(false);
+		if(principal!=null&&principal.getName()!=null){
+		LoginInfo li = loginInfoService.findUserById(principal.getName());
+		li.setIsLogin(false);
+		li.setLogin_date(null);
+		li.setLogout_date(new java.sql.Date(new Date().getTime()));
+		loginInfoService.updateLoginInfo(li);		
+		}
 		if(hs!=null)
 		request.getSession().invalidate();
 		return "redirect:home";
@@ -141,14 +163,12 @@ public class LoginController
 
 			}
 		}
-
 		return "resetPassword";
 	}
 
 	@RequestMapping(value = "/regSuccess", method = RequestMethod.GET)
 	public String regSuccess(ModelMap map)
 	{
-
 		return "regSuccess";
 	}
 
@@ -160,6 +180,21 @@ public class LoginController
 		map.addAttribute("regForm", new ClientRegistrationModel());
 		return "registration";
 	}
+	@RequestMapping(value = "/admineditclient", method = RequestMethod.GET)
+	public String admineditclient(ModelMap map,@RequestParam String userid)
+	{
+		map.addAttribute("industryList", industryService.getIndustryList());
+		map.addAttribute("locList", locationService.getLocationList());
+		ClientRegistrationModel clModel=new ClientRegistrationModel();
+		Registration reg=registrationService.getRegistationByUserId(userid);
+		clModel.setAbout(reg.getAbout());
+		clModel.setContact(reg.getContact());
+		clModel.setDesignation(reg.getDesignation());
+		clModel.setHoAddress(reg.getHoAddress());
+		clModel.setIndustry(reg.getIndustries());
+		map.addAttribute("regForm", registrationService.getRegistationByUserId(userid));
+		return "adminEditClientRegistration";
+	}
 
 	@RequestMapping(value = "/clientregistration", method = RequestMethod.POST)
 	public String addUser(@ModelAttribute(value = "regForm") @Valid ClientRegistrationModel register,
@@ -167,8 +202,7 @@ public class LoginController
 			@ModelAttribute(value = "login") LoginInfo login, BindingResult loginResult,
 			@ModelAttribute(value = "urole") UserRole urole, BindingResult userroleResult,
 			@RequestParam("userid") String userid, ModelMap map, HttpServletRequest request)
-	{
-
+		{
 		System.out.println("userid in controller" + userid);
 		try
 		{
@@ -188,7 +222,6 @@ public class LoginController
 				return "registration";
 				
 			}
-			
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -201,25 +234,20 @@ public class LoginController
 			return "registration";
 		} else
 		{
-
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
-
 			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
 			login.setReg(reg);
-
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_EMP_MANAGER.toString());
 			Set<UserRole> roles = new HashSet<UserRole>();
 			roles.add(urole);
 			login.setRoles(roles);
 			login.setIsactive("false");
-
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("orgName", reg.getOrganizationName());
-			
 			return "redirect:/regSuccess";
 		}
 	}
@@ -441,4 +469,7 @@ public class LoginController
 		obj.put("uNameexist", false);
 		return obj.toJSONString();
 	}
+	
+	
+	
 }

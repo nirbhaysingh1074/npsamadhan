@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Registration"%>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -34,14 +35,23 @@ padding-right: 45px;
 </head>
 <body class="loading">
 <footer class="clearfix">
-  <div class="container" style="background: inherit;">
-    <ul class="ft_menu">
-      <li><a href="">Terms of Use</a> <span>|</span></li>
-      <li><a href="">Privacy Policy</a> <span>|</span></li>
-      <li><a href="">Sitemap</a> <span>|</span></li>
-      <li><a href="">Work with Us</a></li>
-    </ul>
-  </div>
+  <div class="footer_botm Align_cent Light12 grey3">
+			<div class="container" style="background-color: #1f1e1e;font-size: 12px;width: 400px;">
+				<div style="float: left;line-height: 44px;">
+				<a href="termsOfService">Terms of Use</a> | <a href="privacyPolicy">Privacy Policy</a> 
+				
+			<!-- 			|	<a	href="">Sitemap</a> | <a href="">Work with Us</a> -->
+			</div>
+			<div style="float: left;line-height:52px;">
+						<a  style="margin:8px;" href="https://www.facebook.com/UniHyr-491301114398011/" target="_blank"> 
+						<img style="width:8px;" src="images/fb.png" title="facebook" /></a> 
+						<a  style="margin:8px;"  href="https://twitter.com/unihyr" target="_blank"> 
+						<img style="width:15px;"  src="images/twitter.png" title="twitter" /></a> 
+						<a  style="margin:8px;"  target="_blank" href="https://in.linkedin.com/in/unihyr-admin-5aab60122"> 
+						<img style="width:14px;"  src="images/linkedin.png" title="linkedin" /></a>
+			</div>
+			</div> 
+			</div>
 </footer>
 
 <div class="help-desk">
@@ -207,5 +217,44 @@ if(request.getParameter("message")!=null){
 <%
 }
 %>
+
+<%
+Registration reg = (Registration)request.getAttribute("registration");
+
+System.out.println(reg+" first time login ");
+if(reg!=null&&(reg.getFirstTime()==null||!reg.getFirstTime())){
+%>
+
+<div class="firstTimeLoginPopup" style="border:1px solid #f8b910;">
+				<div class="login-header" style="padding: 3px 3px 3px 2px;
+line-height: 44px;
+height: 30px;">
+					<span class="close" title="close" style="top: -24px;"  onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')">
+					<img style="    height: 40px;" src="images/close.png"></span>
+					
+				</div>
+				<div class="login-wrap" style="padding: 10px;">
+				
+				Congratulations on signing up
+			with UniHyr. Now you can access our partner network to fulfill your
+			hiring mandates. Start by posting a new position from the Post a New
+			Job tab. Our user interface is intuitive and easy to use. In case of
+			any issues, please feel free to reach out to your Account Manager or
+			our Help Desk</div>
+			<div style="text-align: center;padding: 10px;" class="login-wrap">
+			<h2 style="color: #f8b910;font-weight: bold;">HAPPY HIRING!</h2>
+			<input style="margin-top: 15px;color: #fff;font-size: 14px;font-weight: bold;" type="button" value="Get started with UniHyr" class="profile_status_buttonGen" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')"  /> 
+			</div>
+			</div>
+
+<div class="bodyCover">
+
+</div>
+
+
+<%} %>
+
+
+
 </body>
 </html>

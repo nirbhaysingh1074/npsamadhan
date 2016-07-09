@@ -31,15 +31,47 @@ public class LoginInfo implements Serializable
 	
 	private Date modification_date;
 	
-	private String forgotpwdid;
+	private Date login_date;
 	
+	private Date logout_date;
+	
+	private String forgotpwdid;
+
 	private String isactive;
+	
+	private Boolean isLogin;
 	
 	private Registration reg;
 	
 	private Set<UserRole> roles = new HashSet<>();
 
-	
+	@Column
+	public Date getLogin_date()
+	{
+		return login_date;
+	}
+	public void setLogin_date(Date login_date)
+	{
+		this.login_date = login_date;
+	}
+	@Column
+	public Date getLogout_date()
+	{
+		return logout_date;
+	}
+	public void setLogout_date(Date logout_date)
+	{
+		this.logout_date = logout_date;
+	}
+	@Column
+	public Boolean getIsLogin()
+	{
+		return isLogin;
+	}
+	public void setIsLogin(Boolean isLogin)
+	{
+		this.isLogin = isLogin;
+	}
 	@Id
 	@Column(nullable=false)
 	@GeneratedValue(strategy=GenerationType.AUTO)

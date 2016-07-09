@@ -29,7 +29,7 @@
 	<%
 		Registration sel_client = (Registration)request.getAttribute("selClient");
 		List<Registration> clientList = (List<Registration>) request.getAttribute("clientList");
-		Registration reg = (Registration)request.getSession().getAttribute("registration");
+		Registration reg = (Registration)request.getAttribute("registration");
 	
        	List<Post> postList = (List)request.getAttribute("postList");
 		long totalCount = (Long)request.getAttribute("totalCount");
@@ -260,11 +260,11 @@
 						       						{
 						       							PostProfile pr = it.next();
 						       							
-						       							System.out.println(pr.getProfile().getRegistration().getUserid() + " VS " + reg.getUserid());
+						       							//System.out.println(pr.getProfile().getRegistration().getUserid() + " VS " + reg.getUserid());
 // 						       							System.out.println(pr.getProfile().getRegistration().getUserid() + " VS admin" + reg.getAdmin().getUserid());
 						       							
-						       							System.out.println(" Check user : "+ pr.getProfile().getRegistration().equals(reg));
-						       							System.out.println(" Check user in set : "+ reg.getSubuser().contains(pr.getProfile().getRegistration()));
+						       							//System.out.println(" Check user : "+ pr.getProfile().getRegistration().equals(reg));
+						       						//	System.out.println(" Check user in set : "+ reg.getSubuser().contains(pr.getProfile().getRegistration()));
 						       									
 						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()))
 						       							{

@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unihyr.domain.BillingDetails;
 import com.unihyr.domain.Post;
+import com.unihyr.domain.Registration;
 import com.unihyr.service.BillingService;
 import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
+import com.unihyr.service.RegistrationService;
 /**
  * Controls all the request of handling billing for both client and admin
  * @author Rohit Tiwari
@@ -31,6 +33,8 @@ public class BillingController
 {
 	@Autowired BillingService billingService;
 
+	@Autowired
+	private RegistrationService registrationService;
 	/**
 	 * used to handle request to generate billing details for client
 	 * @param map used to store response attribues
@@ -43,6 +47,9 @@ public class BillingController
 	{
 		List<BillingDetails> bills = billingService.getBillingDetailsByClientList(principal.getName(),"createDate");
 		request.setAttribute("bills",bills);
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
 		return "clientBillingDetails";
 	}
 	
@@ -58,6 +65,9 @@ public class BillingController
 	{
 		List<BillingDetails> bills = billingService.getBillingDetailsByConsList(principal.getName(),"createDate");
 		request.setAttribute("bills",bills);
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
 		return "consBillingDetails";
 	}
 	
@@ -76,6 +86,9 @@ public class BillingController
 		request.setAttribute("bill",bill);
 		request.setAttribute("clientId",principal.getName());
 		new ConsultantController().createBillInvoice(bill, principal.getName());
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
 		return "clientBillInvoice";
 	}
 
@@ -88,6 +101,9 @@ public class BillingController
 		billingService.updateBillingDetails(bill);
 		List<BillingDetails> bills = billingService.getBillingDetailsByClientList(principal.getName(),"createDate");
 		request.setAttribute("bills",bills);
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
 		return "clientBillingDetails";
 	}
 	@RequestMapping(value="/verifyBillingDetails",method=RequestMethod.GET)
@@ -97,6 +113,9 @@ public class BillingController
 		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
 		bill.setVerificationStatus(true);
 		billingService.updateBillingDetails(bill);
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		map.addAttribute("verifySuccess","true");
 		return "invoiceVerification";
 	}
 }

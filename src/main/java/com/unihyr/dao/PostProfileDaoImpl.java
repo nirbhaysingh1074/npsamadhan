@@ -648,10 +648,10 @@ public class PostProfileDaoImpl implements PostProfileDao
 		return (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	public long countJoinedProfileByClientOrConsultant(String client, String consultant)
+	public long countJoinedProfileByClientOrConsultant(String client, String consultant,String statusFilter)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
-				.add(Restrictions.isNotNull("joinDate"))
+				.add(Restrictions.isNotNull(statusFilter))
 				.createAlias("post", "postAlias")
 				.createAlias("postAlias.client", "clientAlias")
 				.createAlias("profile", "profileAlias")

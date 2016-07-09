@@ -1,5 +1,6 @@
 package com.unihyr.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.FetchMode;
@@ -72,6 +73,14 @@ public class LoginInfoDaoImpl implements LoginInfoDao
 		
 		}
 		return false;
+	}
+	@Override
+	public List<LoginInfo> getLoggedInUsers()
+	{
+		List<LoginInfo> logList = this.sessionFactory.getCurrentSession().createCriteria(LoginInfo.class)
+				.add(Restrictions.eq("isLogin", Boolean.TRUE))
+				.list();
+		return logList;
 	}
 	
 }
