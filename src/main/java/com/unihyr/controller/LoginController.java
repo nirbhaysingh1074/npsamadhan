@@ -1,8 +1,10 @@
 package com.unihyr.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -186,13 +188,32 @@ public class LoginController
 		map.addAttribute("industryList", industryService.getIndustryList());
 		map.addAttribute("locList", locationService.getLocationList());
 		ClientRegistrationModel clModel=new ClientRegistrationModel();
+		
+
 		Registration reg=registrationService.getRegistationByUserId(userid);
+
+		Iterator<Industry> inIterator = reg.getIndustries().iterator();
+		String selectedI="";
+		while (inIterator.hasNext())
+		{
+			selectedI+=(((Industry) inIterator.next()).getId())+GeneralConfig.Delimeter;
+		}
+		map.addAttribute("sel_inds", selectedI.split(GeneralConfig.Delimeter));
 		clModel.setAbout(reg.getAbout());
 		clModel.setContact(reg.getContact());
 		clModel.setDesignation(reg.getDesignation());
 		clModel.setHoAddress(reg.getHoAddress());
-		clModel.setIndustry(reg.getIndustries());
-		map.addAttribute("regForm", registrationService.getRegistationByUserId(userid));
+		clModel.setName(reg.getName());
+		clModel.setNoofpeoples(reg.getNoofpeoples());
+		clModel.setOfficeAddress(reg.getOfficeAddress());
+		clModel.setOfficeLocations(reg.getOfficeLocations());
+		clModel.setOrganizationName(reg.getOrganizationName());
+		clModel.setRevenue(reg.getRevenue());
+		clModel.setUserid(reg.getUserid());
+		clModel.setUsersRequired(reg.getUsersRequired());
+		clModel.setWebsiteUrl(reg.getWebsiteUrl());
+		
+		map.addAttribute("regForm", clModel);
 		return "adminEditClientRegistration";
 	}
 
@@ -204,6 +225,7 @@ public class LoginController
 			@RequestParam("userid") String userid, ModelMap map, HttpServletRequest request)
 		{
 		System.out.println("userid in controller" + userid);
+		String[] industries = request.getParameterValues("industries");
 		try
 		{
 			Registration user = registrationService.getRegistationByUserId(userid);
@@ -213,12 +235,14 @@ public class LoginController
 				map.addAttribute("industryList", industryService.getIndustryList());
 				map.addAttribute("locList", locationService.getLocationList());
 				map.addAttribute("uidex", "exist");
+				map.addAttribute("sel_inds", industries);
 				return "registration";
 			}
 			if(username!=null){
 				map.addAttribute("industryList", industryService.getIndustryList());
 				map.addAttribute("locList", locationService.getLocationList());
 				map.addAttribute("uNamedex", "exist");
+				map.addAttribute("sel_inds", industries);
 				return "registration";
 				
 			}
@@ -231,13 +255,25 @@ public class LoginController
 			System.out.println("in validation");
 			map.addAttribute("industryList", industryService.getIndustryList());
 			map.addAttribute("locList", locationService.getLocationList());
+			map.addAttribute("sel_inds", industries);
 			return "registration";
 		} else
 		{
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
-			reg.getIndustries().add(industryService.getIndustry(register.getIndustry().getId()));
+
+			Set<Industry> indset = new HashSet<>();
+			for (String ind : industries)
+			{
+				Industry inds = industryService.getIndustry(Integer.parseInt(ind));
+				if (inds != null)
+				{
+					indset.add(inds);
+				}
+			}
+
+			reg.setIndustries(indset);
 			login.setReg(reg);
 			reg.setLog(login);
 			urole.setUserrole(Roles.ROLE_EMP_MANAGER.toString());
@@ -246,6 +282,46 @@ public class LoginController
 			login.setRoles(roles);
 			login.setIsactive("false");
 			loginInfoService.addLoginInfo(login, null);
+			map.addAttribute("regSuccess", "true");
+			map.addAttribute("orgName", reg.getOrganizationName());
+			return "redirect:/regSuccess";
+		}
+	}
+
+	@RequestMapping(value = "/admineditclient", method = RequestMethod.POST)
+	public String admineditclient(@ModelAttribute(value = "regForm") @Valid ClientRegistrationModel register,
+			BindingResult result, @ModelAttribute(value = "reg") Registration reg, BindingResult regResult,
+			@ModelAttribute(value = "login") LoginInfo login, BindingResult loginResult,
+			@ModelAttribute(value = "urole") UserRole urole, BindingResult userroleResult,
+			@RequestParam("userid") String userid, ModelMap map, HttpServletRequest request)
+		{
+
+		String[] industries = request.getParameterValues("industries");
+		if (result.hasErrors())
+		{
+			map.addAttribute("industryList", industryService.getIndustryList());
+			map.addAttribute("locList", locationService.getLocationList());
+			map.addAttribute("userid",userid);
+			map.addAttribute("sel_inds", industries);
+			return "adminEditClientRegistration";
+		} else
+		{
+			java.util.Date dt = new java.util.Date();
+			java.sql.Date regdate = new java.sql.Date(dt.getTime());
+			reg.setRegdate(regdate);
+			
+			Set<Industry> indset = new HashSet<>();
+			for (String ind : industries)
+			{
+				Industry inds = industryService.getIndustry(Integer.parseInt(ind));
+				if (inds != null)
+				{
+					indset.add(inds);
+				}
+			}
+
+			reg.setIndustries(indset);
+			registrationService.update(reg);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("orgName", reg.getOrganizationName());
 			return "redirect:/regSuccess";

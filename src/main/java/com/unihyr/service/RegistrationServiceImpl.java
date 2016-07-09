@@ -111,4 +111,11 @@ public class RegistrationServiceImpl implements RegistrationService
 		// TODO Auto-generated method stub
 		return this.registrationDao.getRegistrationsByName(userName);
 	}
+
+	@Override
+	public void insertUserIndustryMap(int industryId, int registrationId)
+	{
+		this.registrationDao.insertUserIndustryMap(industryId, registrationId);
+		
+	}
 }

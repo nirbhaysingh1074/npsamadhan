@@ -1,19 +1,17 @@
 package com.unihyr.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.unihyr.domain.Industry;
+
 
 public class ConsultRegModel
 {
@@ -54,13 +52,27 @@ public class ConsultRegModel
 	@NumberFormat(style=Style.NUMBER)
 	private String contact;
 	
+//	private Set<Industry> industries = new HashSet<>();
 	
 	private String officeAddress;
 
 	private String firmType;
 
 	private String name;
+	
 	private int usersRequired;
+
+
+//	public Set<Industry> getIndustries()
+//	{
+//		return industries;
+//	}
+//
+//
+//	public void setIndustries(Set<Industry> industries)
+//	{
+//		this.industries = industries;
+//	}
 
 
 	public String getName()
