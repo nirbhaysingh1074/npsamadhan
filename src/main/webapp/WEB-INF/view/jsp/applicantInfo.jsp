@@ -236,7 +236,11 @@ unviewed=0;
 				                </td>
 				                </tr>
 				                <tr>
-				                <td>Date Of Birth</td><td><p><%= profile.getDateofbirth() %></p>
+				                <td>Date Of Birth</td><td><p>
+				                <%if(profile.getDateofbirth()!=null) {%>
+				                <%= profile.getDateofbirth() %>
+				                <%} %>
+				                </p>
 				                </td>
 				                </tr>
 				                <tr>
@@ -289,22 +293,16 @@ unviewed=0;
 				                if(pp.getJoinDropDate() != null||pp.getOfferDropDate() != null||pp.getDeclinedDate() != null||pp.getRejected() != null)
 			              		{
 			              			%>
-			              	<tr>
+			              		<tr>
 				                <td>Reject Reason :</td><td> <p> <%=pp.getRejectReason() %></p>
 		              			 </td>
 				                </tr>
 				              	<%
 			              		}
 				                %>
-				                 
 				                </table>
-				                
-					            <%-- <p><a href="data/<%= pp.getProfile().getResumePath()%>">Download CV</a>
-					            </p> --%>
 					              	<%
 					            		boolean rejected =false;
-					              		
-						              	
 						              	 if(pp.getOfferDate() != null)
 					              		{ 
 					              			%>
@@ -613,12 +611,7 @@ jQuery(document).ready(function() {
 		
 		
 		
-// 		alert("data-type : " + reject_type);
 	})
-	
-// 	$(document.body).on('click', '.modal-content .btn-ok' ,function(){
-
-// 	})
 	
 });
 
@@ -657,7 +650,7 @@ jQuery(document).ready(function() {
 					        			<script type="text/javascript">
 					        			 	var x = document.createElement("EMBED");
 					        			 	//path=path.replace(/\//g, "////");
-					        			    x.setAttribute("src", "data/<%=pathh%>");
+					        			    x.setAttribute("src", "/data/<%=pathh%>");
 					        			    x.setAttribute("height", "730px");
 					        			    x.setAttribute("width", "100%");
 					        				$('#tab-1').append(x);

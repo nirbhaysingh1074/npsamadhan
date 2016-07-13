@@ -45,18 +45,15 @@ $(document).ready(function() {
 	
 	$('input:radio[name=consultant_type]').change(function () {
 		
-// 		alert($(this).val());
 		var aa = $(this).val();
 	    if(aa == 'true') 
      	{
 	    	$('#noofpeoples').removeAttr('disabled');
-// 	        alert("true");
 	    }
 	    else
 	    {
 	    	$('#noofpeoples').val("0");
 	    	$('#noofpeoples').attr('disabled','disabled');
-// 	        alert("false");
 	    } 
 	});
 	
@@ -66,50 +63,45 @@ $(document).ready(function() {
 <script type="text/javascript">
 	$(document).ready(function() {
 		$(".btn_submit").click(function() {
-// 			alert("Hello")	;
 			var valid = true;
-			
-			
 			var cons = $('#consultName').val();
 			var userid = $('#userid').val();
 			var password = $('#password').val();
 			var repassword = $('#repassword').val();
 			var revenue = $('#revenue').val();
 			var yearsInIndusrty = $('#yearsInIndusrty').val();
-			
 			var industries = $('#industries').val();
-			
+			var panno = $('#panno').val();
+			var stno = $('#stno').val();
 			var noofpeoples = $('#noofpeoples').val();
 			var contact = $('#contact').val();
 			var officeLocations = $('#officeLocations').val();
 			
-// 			var about = $('#about').val();
-			
 			$('.error').html('&nbsp;');
-			
+
 			if(cons == "")
 			{
-				$('.cons_error').html('Please enter consultant name ')
+				$('.cons_error').html('Please enter consultant name ');
+				valid = false;
+			}
+
+			if(!panno)
+			{
+				$('.panno_error').html('Please enter pan number ');
+				valid = false;
+			}
+
+			if(!stno)
+			{
+				$('.stno_error').html('Please enter service tax number ');
 				valid = false;
 			}
 			
 			if(userid == "" || !isEmail(userid))
 			{
-				$('.userid_error').html("Please enter a valid email")
+				$('.userid_error').html("Please enter a valid email");
 				valid = false;
 			}
-			
-// 			if(password == "")
-// 			{
-// 				$('.password_error').html("please enter a valid password")
-// 				valid = false;
-// 			}
-			
-// 			if(repassword == "" || password != repassword)
-// 			{
-// 				$('.repassword_error').html("Password do not match. Please re-enter both passwords")
-// 				valid = false;
-// 			}
 			
 			if(revenue == "" || revenue == "0")
 			{
@@ -201,7 +193,6 @@ $(document).ready(function() {
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -232,7 +223,6 @@ $(document).ready(function() {
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -306,6 +296,22 @@ $(document).ready(function() {
 									path="repassword" /></span>
 						</div>
 					</div> --%>
+					
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Pan No<span class="req">*</span></label>
+							<form:input path="panno" onchange="checkUserExistance()" />
+							<span class="error panno_error">&nbsp;<form:errors path="panno" /> </span>
+						</div>
+					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Service Tax No<span class="req">*</span></label>
+							<form:input path="stno"  />
+							<span class="error stno_error">&nbsp;<form:errors path="stno" /> </span>
+						</div>
+					</div>
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div>

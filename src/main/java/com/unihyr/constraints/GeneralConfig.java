@@ -19,7 +19,8 @@ public class GeneralConfig
 	//public static final String UniHyrUrl = "http://localhost:8081/unihyr/";
 	public static final String UniHyrUrl = "http://54.191.37.178/";
 	//public static final String UniHyrUrl = "http://54.191.37.178/unihyr/";
-	public static final long PostDaysOut = 25;
+	public static final long PostDaysOut = 15;
+	public static final long PostDaysInactive = 25;
 	public static final long IdleCheckInterval = 86400000;
 	public static final String Add_Post_Submit_Button_Value = "Submit";
 	public static final String Delimeter = ",,,,,,";

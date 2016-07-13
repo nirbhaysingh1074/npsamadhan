@@ -83,19 +83,10 @@ public class RegistrationDaoImpl implements RegistrationDao
 	@Override
 	public void update(Registration registration)
 	{
-		Transaction tx = null;
-		Session s=this.sessionFactory.getCurrentSession();
-		try {
-		  tx = s.getTransaction();
-		s.saveOrUpdate(registration);
-		s.flush();
-		 tx.commit();
-		} catch(Exception e) {
-		  if (tx != null) {
-		    tx.rollback();
-		  }
-		} finally {}
-	}
+		this.sessionFactory.getCurrentSession().update(registration);
+		this.sessionFactory.getCurrentSession().flush();
+
+}
 
 	@Override
 	public List<Registration> getConsultantsByClient(String clientId)

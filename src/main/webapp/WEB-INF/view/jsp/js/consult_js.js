@@ -1,7 +1,6 @@
 jQuery(document).ready(function() {
 	
 	$(".length_check").keydown(function (e) {
-		alert($(this).val().length +"data-length : " + $(this).attr('data-length'));
 		var val = $(this).val().length;
 		var length = $(this).attr('data-length');
 		if(val < length)
@@ -32,7 +31,6 @@ jQuery(document).ready(function() {
 					location.href="";	
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 					pleaseDontWait();
 				}
 			});
@@ -54,7 +52,6 @@ jQuery(document).ready(function() {
 //					location.href="";	
 //				},
 //				error: function (xhr, ajaxOptions, thrownError) {
-//					alert(xhr.status);
 //					pleaseDontWait();
 //				}
 //			});
@@ -98,7 +95,7 @@ jQuery(document).ready(function() {
 						}
 						else
 						{
-							location.reload();
+							//location.reload();
 							selected.parent().parent().find('td:eq(7)').html("<span>Offer Droped</span>");
 							selected.html("")
 						}
@@ -109,7 +106,7 @@ jQuery(document).ready(function() {
 						}
 						else
 						{
-							location.reload();
+							//location.reload();
 							selected.parent().parent().find('td:eq(7)').html("<span>Withdrawn</span>");
 							selected.html("")
 						}
@@ -121,7 +118,6 @@ jQuery(document).ready(function() {
 					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 					pleaseDontWait();
 				}
 			}) ;
@@ -129,7 +125,6 @@ jQuery(document).ready(function() {
 	
 	
 	$(document.body).on('click', '.pre_check > .post_interest' ,function(){
-//		alert("Hello to all" + $(this).attr("id"));
 		var row = $(this);
 		var pid = $(this).attr("id");
 		alertify.confirm("Are you interested for this post ?", function (e, str) {
@@ -146,13 +141,11 @@ jQuery(document).ready(function() {
 						row.removeClass("post_interest");
 						row.html("<img src='images/int-icon.png' alt='interested'>");
 						row.prop('title','You have added this post to active postions.');
-						//alertify.success("Add interest for post "+obj.jobCode);
 						location.href="";
 					}
 					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.responseText);
 				}
 			}) ;
 		}
@@ -161,7 +154,6 @@ jQuery(document).ready(function() {
 	
 
 	$(document.body).on('click', '.filter  #show_interest' ,function(){
-//		alert("set Active");
 		
 		var val = [];
 		 $('.sel_newposts:checkbox:checked').each(function(i){
@@ -188,13 +180,11 @@ jQuery(document).ready(function() {
 							if(obj.status == "success")
 							{
 
-					//		alertify.success("Hi, Submitted Interest Successfully !");
 								pleaseDontWait();
 								location.href="";
 							}
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
 					      }
 				    }) ;
 				}
@@ -204,7 +194,6 @@ jQuery(document).ready(function() {
 
 	
 	$(document.body).on('click', '.filter  #close_request' ,function(){
-//		alert("set Inactive");
 		
 		var val = [];
 		 $('.sel_posts:checkbox:checked').each(function(i){
@@ -227,10 +216,8 @@ jQuery(document).ready(function() {
 					contentType : "application/json",
 					success : function(data) {
 						var obj = jQuery.parseJSON(data);
-//						alert(data);
 						if(obj.status == "success")
 						{
-				//			alertify.success("Hi, posts close request send successfully !");
 							
 						}
 						else
@@ -240,7 +227,6 @@ jQuery(document).ready(function() {
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -293,7 +279,6 @@ jQuery(document).ready(function() {
 	$(document.body).on('click', '.upload_new_profile' ,function(){
 		var clientId = $('#selectionOfClient').val();
 		var postId = $("#postsList > .active").attr("id");
-		//alert("clientId:"+clientId);
 		if( clientId != "" && clientId != "undefined" && postId != "" && postId != undefined)
 		{
 			window.open("uploadprofile?pid="+postId, '_blank');
@@ -333,9 +318,9 @@ jQuery(document).ready(function() {
 	    browser.safari = true;
 	}
 
-	jQuery.browser = browser;
-	 window.availableTags = [ '91','11' ];
-	$("#countryCode").autocomplete({source: availableTags});
+//	jQuery.browser = browser;
+//	 window.availableTags = [ '91','11' ];
+//	$("#countryCode").autocomplete({source: availableTags});
 });
 
 
@@ -356,7 +341,6 @@ function fillPosts(clientId)
 				$('#cons_leftside_postlist').html(data);
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
-				alert(xhr.status);
 			}
 		});
 	}
@@ -380,7 +364,6 @@ function consCloseRequest(pids){
 				contentType : "application/json",
 				success : function(data) {
 					var obj = jQuery.parseJSON(data);
-//					alert(data);
 					if(obj.status == "success")
 					{
 						alertify.success("Hi, posts close request send successfully !");
@@ -393,7 +376,6 @@ function consCloseRequest(pids){
 					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 		}
@@ -422,7 +404,6 @@ function consShowInterest(pids){
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-			        alert(xhr.status);
 			      }
 		    }) ;
 		}
@@ -444,10 +425,9 @@ function setCandidatureWithdraw(ppid){
 			success : function(data) {
 				var obj = jQuery.parseJSON(data);
 				pleaseDontWait();
-				location.href="";	
+			//	location.href="";	
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-				alert(xhr.status);
 				pleaseDontWait();
 			}
 		});

@@ -51,7 +51,6 @@ jQuery(document).ready(function() {
 <script type="text/javascript">
 	function  consnewposts(pn)
 	{
-// 		alert("hello");
 		var sortParam=$('#sortParam').val();
 		var sel_industry = $('#cons_db_sel_industry').val();
 		$.ajax({
@@ -60,11 +59,9 @@ jQuery(document).ready(function() {
 			data : {'pn':pn,'sel_industry':sel_industry,'sortParam':sortParam},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				$('.cons_new_posts').html(data);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}

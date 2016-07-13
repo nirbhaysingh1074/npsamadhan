@@ -2,9 +2,7 @@ package com.unihyr.controller;
 
 import java.security.Principal;
 import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.unihyr.constraints.GeneralConfig;
+import com.unihyr.domain.ContactUs;
 import com.unihyr.domain.HelpDesk;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Registration;
@@ -140,6 +138,7 @@ public String test(ModelMap map, HttpServletRequest request, Principal principal
 @RequestMapping(value = "/privacyPolicy", method = RequestMethod.GET)
 public String privacyPolicy(ModelMap map, HttpServletRequest request, Principal principal)
 {
+	map.addAttribute("contactusform", new ContactUs());
 	return "privacyPolicy";
 }			
 @RequestMapping(value = "/adminHelpMessages", method = RequestMethod.GET)
@@ -157,6 +156,7 @@ public String adminLoggedUsers(ModelMap map, HttpServletRequest request, Princip
 @RequestMapping(value = "/termsOfService", method = RequestMethod.GET)
 public String termsOfService(ModelMap map, HttpServletRequest request, Principal principal)
 {
+	map.addAttribute("contactusform", new ContactUs());
 	return "termsOfService";
 }
 	@RequestMapping(value = "/setFirstTimeFalse", method = RequestMethod.GET)

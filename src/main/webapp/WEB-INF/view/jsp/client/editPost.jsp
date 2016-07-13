@@ -47,113 +47,7 @@
 <script type="text/javascript">
 	function validateForm()
 	{
-		var title = $('#title').val();
-		var location = $('#location').val();
-		var fun = $('#function').val();
-		var noOfPosts = $('#noOfPosts').val();
-		/* var role = $('#role').val();
-		var designation = $('#designation').val(); */
-		var exp_min = $('#exp_min').val();
-		var exp_max = $('#exp_max').val();
-		var ctc_min = $('#ctc_min').val();
-		var ctc_max = $('#ctc_max').val();
-		var editSummary = $('#editSummary').val();
-		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); 
-		var select_jd = $('.select_jd').val();
 		
-		
-		$('.error').html('&nbsp;');
-		var valid = true;
-
-		var qug= $('#qualification_ug').val();
-		if(!qug||qug === null||qug==""){
-			$('.qualification_ug_error').html('Please specify undergraduate qualification');
-			valid = false;
-		}
-		var qpg= $('#qualification_pg').val();
-		if(!qpg||qpg === null||qpg==""){
-			$('.qualification_pg_error').html('Please specify postgraduate qualification');
-			valid = false;
-		}
-		if(title == "")
-		{
-			$('.title_error').html('Please enter post title')
-			valid = false;
-		}
-		if(location == "")
-		{
-			$('.location_error').html('Please select post location')
-			valid = false;
-		}
-		if(fun == "")
-		{
-			$('.function_error').html('Please enter post function')
-			valid = false;
-		}
-		if(noOfPosts == ""||noOfPosts == "0")
-		{
-			$('.noOfPosts_error').html('Please enter no of posts')
-			valid = false;
-		}
-		/* if(role == "")
-		{
-			$('.role_error').html('Please enter post role')
-			valid = false;
-		} */
-		if(editSummary == "")
-		{
-			$('.editSummary_error').html('Please enter edit summary');
-			valid = false;
-		}
-		/* if(designation == "")
-		{
-			$('.designation_error').html('Please enter post designation')
-			valid = false;
-		} */
-		if(exp_min == ""  || isNaN(exp_min))
-		{
-			$('.exp_min_error').html('Please select minimum expirence')
-			valid = false;
-		}
-		if(exp_max == ""  || isNaN(exp_max) || Number(exp_min) >= Number(exp_max))
-		{
-			$('.exp_max_error').html('Min cannot be greater than or equal to Max')
-			valid = false;
-		}
-		if(ctc_min == ""  || isNaN(ctc_min))
-		{
-			$('.ctc_min_error').html('Please enter minimum ctc')
-			valid = false;
-		}
-		if(ctc_max == ""  || isNaN(ctc_max) || Number(ctc_min) >= Number(ctc_max))
-		{
-			$('.ctc_max_error').html('Min cannot be greater than or equal to Max')
-			valid = false;
-		}
-		if(select_jd == "" && additionDetail == "" && $('#uploadjd').val()=="")
-		{
-			$('.uploadjd_error').html('Please enter job discription or upload JD')
-			valid = false;
-		}
-		if(!valid)
-		{
-			return false;
-		}
-		
-		/* alertify.confirm("Are you sure to edit this post ?", function (e, str) {
-			if (!e) {
-				alert("NO")
-				return false;
-			}
-			else
-			{
-				alert("YES")
-			}
-		}); */
-		
-		if (!confirm('Are you sure you want to make these changes to the Job Description?')) {
-		    return false;
-		} 
 	}
 function checkUpdateInfo(){
 	var updateInfo=$('#updateInfo').val();
@@ -167,6 +61,109 @@ function checkUpdateInfo(){
 </script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
+	var flagg=false;
+	$(document).on('submit', 'form#updatepost', function(e) {  
+		if(!flagg){
+		e.preventDefault();
+		
+		alertify.confirm("Are you sure you want to edit this post ?", function (e, str) {
+			if (e) {
+				var title = $('#title').val();
+				var location = $('#location').val();
+				var fun = $('#function').val();
+				var noOfPosts = $('#noOfPosts').val();
+				var exp_min = $('#exp_min').val();
+				var exp_max = $('#exp_max').val();
+				var ctc_min = $('#ctc_min').val();
+				var ctc_max = $('#ctc_max').val();
+				var editSummary = $('#editSummary').val();
+				var additionDetail = CKEDITOR.instances['additionDetail'].getData(); 
+				var select_jd = $('.select_jd').val();
+				
+				
+				$('.error').html('&nbsp;');
+				var valid = true;
+
+				var qug= $('#qualification_ug').val();
+				if(!qug||qug === null||qug==""){
+					$('.qualification_ug_error').html('Please specify undergraduate qualification');
+					valid = false;
+				}
+				var qpg= $('#qualification_pg').val();
+				if(!qpg||qpg === null||qpg==""){
+					$('.qualification_pg_error').html('Please specify postgraduate qualification');
+					valid = false;
+				}
+				if(title == "")
+				{
+					$('.title_error').html('Please enter post title')
+					valid = false;
+				}
+				if(location == "")
+				{
+					$('.location_error').html('Please select post location')
+					valid = false;
+				}
+				if(fun == "")
+				{
+					$('.function_error').html('Please enter post function')
+					valid = false;
+				}
+				if(noOfPosts == ""||noOfPosts == "0")
+				{
+					$('.noOfPosts_error').html('Please enter no of posts')
+					valid = false;
+				}
+				
+				if(editSummary == "")
+				{
+					$('.editSummary_error').html('Please enter edit summary');
+					valid = false;
+				}
+				
+				if(exp_min == ""  || isNaN(exp_min))
+				{
+					$('.exp_min_error').html('Please select minimum expirence')
+					valid = false;
+				}
+				if(exp_max == ""  || isNaN(exp_max) || Number(exp_min) >= Number(exp_max))
+				{
+					$('.exp_max_error').html('Min cannot be greater than or equal to Max')
+					valid = false;
+				}
+				if(ctc_min == ""  || isNaN(ctc_min))
+				{
+					$('.ctc_min_error').html('Please enter minimum ctc')
+					valid = false;
+				}
+				if(ctc_max == ""  || isNaN(ctc_max) || Number(ctc_min) >= Number(ctc_max))
+				{
+					$('.ctc_max_error').html('Min cannot be greater than or equal to Max')
+					valid = false;
+				}
+				if(select_jd == "" && additionDetail == "" && $('#uploadjd').val()=="")
+				{
+					$('.uploadjd_error').html('Please enter job discription or upload JD')
+					valid = false;
+				}
+				if(!valid)
+				{
+					return false;
+				}
+				else{
+					flagg=true;
+				$('form#updatepost').submit();
+				}
+		}
+			});
+		}
+	});
+	
+	
+	
+	
+	
+	
 	
 	$(document.body).on('change', '.select_jd' ,function(){
 		var valid = true;
@@ -202,10 +199,8 @@ jQuery(document).ready(function() {
 		
 		if(!valid)
 		{
-// 			$('.select_jd').val("");
 			$(this).val("");
 		}
-//			alert(extension);
 	});
 });
 </script>
@@ -266,7 +261,7 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 			             
 			            </div>
 	     -->
-          <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
+          <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()"  id="updatepost">
 		      <div class="block">
 		       <div style="margin-left: 20px;text-align: center;margin-top: 10px;" > 
 		       <h3 class="formHeading">Edit JD</h3>

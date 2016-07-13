@@ -203,7 +203,7 @@ public class ConsultantController
 		boolean email_st = postProfileService.checkPostProfileAvailability(model.getPost().getPostId(),
 				model.getEmail(), null);
 		boolean contact_st = postProfileService.checkPostProfileAvailability(model.getPost().getPostId(), null,
-				model.getContact());
+				model.getContact()+","+model.getCountryCode());
 		boolean dob = postProfileService.getPostProfileByContactAndDob(model.getPost().getPostId(), model.getEmail(),
 				model.getDateofbirth());
 		MultipartFile resumefile = model.getResumeFile();
@@ -222,6 +222,7 @@ public class ConsultantController
 
 		map.addAttribute("qListUg",qualificationService.getAllUGQualification());
 		map.addAttribute("qListPg",qualificationService.getAllPGQualification());
+		map.addAttribute("locList", locationService.getLocationList());
 		Post post = postService.getPost(model.getPost().getPostId());
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 		try
@@ -314,6 +315,11 @@ public class ConsultantController
 			profile.setRegistration(registrationService.getRegistationByUserId(loggedinUser));
 			profile.setDateofbirth(model.getDateofbirth());
 			profile.setCountryCode(model.getCountryCode());
+			if(model.getCurrentLocation().equals("other")){
+				profile.setCurrentLocation(request.getParameter("otherLocation"));
+			}else{
+				profile.setCurrentLocation(model.getCurrentLocation());
+			}
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
 			profile.setDate(dt);
@@ -945,6 +951,7 @@ e.printStackTrace();
 			Principal principal, @RequestParam long pid)
 	{
 		String contact = request.getParameter("contact");
+		
 		JSONObject obj = new JSONObject();
 		if (contact != null && contact.trim().length() > 0)
 		{

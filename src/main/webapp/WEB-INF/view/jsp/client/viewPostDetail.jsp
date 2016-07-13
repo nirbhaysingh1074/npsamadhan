@@ -357,18 +357,7 @@
 								<%
 							}
 						%>
-				<%-- 		<%
-							if(post.getUploadjd() != null)
-							{
-								%>
-									<dl>
-										<dt>
-											<label><a href="data/<%= post.getUploadjd()%>">Download JD</a></label>
-										</dt>
-									</dl>
-								<%
-							}
-						%> --%>
+				
 						<%if(post.getAdditionDetail()!=null&&post.getAdditionDetail().trim()!="") {%>
 						<div class="clearfix" style="padding: 15px">
 							<h3><b>Job Description</b></h3><br>
@@ -414,7 +403,7 @@
 					        			<script type="text/javascript">
 					        			 	var x = document.createElement("EMBED");
 					        			 	//path=path.replace(/\//g, "////");
-					        			    x.setAttribute("src", "data/<%=pathh%>");
+					        			    x.setAttribute("src", "/data/<%=pathh%>");
 					        			    x.setAttribute("height", "600px");
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);

@@ -46,7 +46,6 @@
 			var about = $('#about').val();
 			var officeAddress = $("#officeAddress").val();
 			var name = $("#name").val();
-			//alert(officeLocations);
 			
 			$('.error').html('&nbsp;');
 			if(org == "")
@@ -60,26 +59,6 @@
 				$('.userid_error').html("Please enter a valid email");
 				valid = false;
 			}
-			
-			/*
-			if(password == "")
-			{
-				$('.password_error').html("please enter a valid password");
-				valid = false;
-			}
-			if(repassword == "" || password != repassword)
-			{
-				$('.repassword_error').html("Password do not match. Please re-enter both passwords");
-				valid = false;
-			}
-			*/
-			/*
-			if(revenue == "")
-			{
-				$('.revenue_error').html("Please enter revenue");
-				valid = false;
-			}
-			*/
 			
 			if(noofpeoples == "")
 			{
@@ -131,8 +110,6 @@
 				valid = false;
 			}
 			
-			
-			
 			if(!valid)
 			{
 				return false;
@@ -176,7 +153,6 @@
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -205,7 +181,6 @@
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -263,7 +238,7 @@
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Email id<span class="req">*</span></label>
-							<form:input path="userid" type="email"  onchange="checkUserExistance()" />
+							<form:input disabled="disabled" path="userid" type="email"  onchange="checkUserExistance()" />
 							<span class="error userid_error">&nbsp;<form:errors path="userid" /> <%= usermsg %></span>
 						</div>
 					</div>

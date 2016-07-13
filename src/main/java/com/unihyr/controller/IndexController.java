@@ -40,7 +40,8 @@ public class IndexController
 		{
 			System.out.println("Princile : " + request.isUserInRole(Roles.ROLE_EMP_MANAGER.toString()));
 			
-		}map.addAttribute("contactusform", new ContactUs());
+		}
+		map.addAttribute("contactusform", new ContactUs());
         return "home";
     }
 	

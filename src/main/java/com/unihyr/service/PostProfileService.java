@@ -305,6 +305,5 @@ public interface PostProfileService
 	 * @param sortOrder
 	 * @return
 	 */
-	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String sortParam, String filterBy,
-			String excludeType, String sortOrder);
+	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String filterBy);
 }

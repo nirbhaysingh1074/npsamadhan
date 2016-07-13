@@ -88,6 +88,5 @@ public interface PostProfileDao
 
 	boolean getPostProfileByContactAndDob(long postId, String contactNo, String dob);
 
-	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String sortParam, String filterBy,
-			String excludeType, String sortOrder);
+	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String filterBy);
 }

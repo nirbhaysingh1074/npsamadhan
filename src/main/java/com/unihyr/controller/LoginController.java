@@ -70,6 +70,55 @@ public class LoginController
 	{
 		return "login";
 	}
+	@RequestMapping(value = "/forgetpassword", method = RequestMethod.GET)
+	public String forgetpassword(ModelMap map)
+	{
+		return "forgetpassword";
+	}
+	@RequestMapping(value = "/forgetpassword", method = RequestMethod.POST)
+	public String forgetpassword(ModelMap map,@RequestParam String emailid)
+	{
+		Registration registration = registrationService.getRegistrationsByName(emailid);
+		
+		
+		
+		if (registration != null)
+		{
+			map.addAttribute("uidex", "exist");
+			return "forgetpassword";
+		}else{
+			LoginInfo info = loginInfoService.findUserById(emailid);
+			String id = GeneralConfig.generatePassword();
+
+				if (info != null)
+				{
+					info.setIsactive("true");
+					loginInfoService.updateLoginInfo(info);
+					loginInfoService.updatePassword(info.getUserid(), null, id);
+				}
+				
+			String companyName = "";
+			if (registration.getConsultName() != null)
+			{
+				companyName = registration.getConsultName();
+			} else
+			{
+				companyName = registration.getOrganizationName();
+			}
+			String mailContent = "Dear " + registration.getName() + " (" + companyName + "),<br><br><br>" +
+
+
+			"Please find below your user credentials. Please login and change "
+					+ "password for security reasons. For any assistance, please feel free to reach out to us at help@unihyr.com<br><br>"
+					+ "Username - " + registration.getUserid() + "<br>" + "Password - " + id + "<br><br><br>" +
+
+			"Regards,<br>" + "UniHyr Admin Team";
+
+			mailService.sendMail(registration.getUserid(), "UniHyr - Forget Password", mailContent);
+			map.addAttribute("success", true);
+			return "regsuccess";
+		}
+	}
 
 	@RequestMapping(value = "/getLogedIn", method = RequestMethod.GET)
 	public String getLogedIn(ModelMap map, HttpServletRequest request, Principal principal)
@@ -212,9 +261,45 @@ public class LoginController
 		clModel.setUserid(reg.getUserid());
 		clModel.setUsersRequired(reg.getUsersRequired());
 		clModel.setWebsiteUrl(reg.getWebsiteUrl());
+		clModel.setPanno(reg.getPanno());
+		clModel.setStno(reg.getStno());
 		
 		map.addAttribute("regForm", clModel);
 		return "adminEditClientRegistration";
+	}
+	@RequestMapping(value = "/admineditconsultant", method = RequestMethod.GET)
+	public String admineditconsultant(ModelMap map,@RequestParam String userid)
+	{
+		map.addAttribute("industryList", industryService.getIndustryList());
+		map.addAttribute("locList", locationService.getLocationList());
+		ConsultRegModel clModel=new ConsultRegModel();
+		Registration register=registrationService.getRegistationByUserId(userid);
+		Iterator<Industry> inIterator = register.getIndustries().iterator();
+		String selectedI="";
+		while (inIterator.hasNext())
+		{
+			selectedI+=(((Industry) inIterator.next()).getId())+GeneralConfig.Delimeter;
+		}
+		map.addAttribute("sel_inds", selectedI.split(GeneralConfig.Delimeter));
+
+		clModel.setAbout(register.getAbout());
+		clModel.setConsultName(register.getConsultName());
+		clModel.setContact(register.getContact());
+		clModel.setFirmType(register.getFirmType());
+		clModel.setHoAddress(register.getHoAddress());
+		clModel.setContact(register.getContact());
+		clModel.setOfficeAddress(register.getOfficeAddress());
+		clModel.setOfficeLocations(register.getOfficeLocations());
+		clModel.setRevenue(register.getRevenue());
+		clModel.setUserid(register.getUserid());
+		clModel.setUsersRequired(register.getUsersRequired());
+		clModel.setName(register.getName());
+		clModel.setPanno(register.getPanno());
+		clModel.setStno(register.getStno());
+		clModel.setYearsInIndusrty(register.getYearsInIndusrty());
+		
+		map.addAttribute("regForm", clModel);
+		return "adminEditConsultRegistration";
 	}
 
 	@RequestMapping(value = "/clientregistration", method = RequestMethod.POST)
@@ -287,10 +372,79 @@ public class LoginController
 			return "redirect:/regSuccess";
 		}
 	}
+	
+	@RequestMapping(value = "/admineditconsultant", method = RequestMethod.POST)
+	public String admineditconsultant(@ModelAttribute(value = "regForm") @Valid ConsultRegModel register,
+			BindingResult result,  BindingResult regResult,
+			@ModelAttribute(value = "login") LoginInfo login, BindingResult loginResult,
+			@ModelAttribute(value = "urole") UserRole urole, BindingResult userroleResult,
+			@RequestParam("userid") String userid, ModelMap map, HttpServletRequest request)
+		{
+
+		String[] industries = request.getParameterValues("industries");
+		if (result.hasErrors())
+		{
+			map.addAttribute("industryList", industryService.getIndustryList());
+			map.addAttribute("locList", locationService.getLocationList());
+			map.addAttribute("userid",userid);
+			map.addAttribute("sel_inds", industries);
+			return "adminEditConsultRegistration";
+		} else
+		{
+			Registration reg=registrationService.getRegistationByUserId(userid);
+			
+			
+			reg.setAbout(register.getAbout());
+			reg.setConsultName(register.getConsultName());
+			reg.setContact(register.getContact());
+			reg.setFirmType(register.getFirmType());
+			reg.setHoAddress(register.getHoAddress());
+			reg.setContact(register.getContact());
+			reg.setOfficeAddress(register.getOfficeAddress());
+			reg.setOfficeLocations(register.getOfficeLocations());
+			reg.setRevenue(register.getRevenue());
+			reg.setUserid(register.getUserid());
+			reg.setUsersRequired(register.getUsersRequired());
+			reg.setName(register.getName());
+			reg.setPanno(register.getPanno());
+			reg.setStno(register.getStno());
+			reg.setYearsInIndusrty(register.getYearsInIndusrty());
+			
+			java.util.Date dt = new java.util.Date();
+			java.sql.Date regdate = new java.sql.Date(dt.getTime());
+			reg.setRegdate(regdate);
+			
+			for (String ind : industries)
+			{
+				Industry inds = industryService.getIndustry(Integer.parseInt(ind));
+				if (inds != null)
+				{
+					Set<Industry> industry=reg.getIndustries();
+					boolean flag=false;
+					for (Iterator iterator = industry.iterator(); iterator.hasNext();)
+					{
+						Industry industry2 = (Industry) iterator.next();
+						if(industry2.getId()==inds.getId()){
+							flag=true;
+						}
+					}
+					
+					if(flag){
+						
+					}else{
+						reg.getIndustries().add(inds);
+					}
+				}
+			}
+
+			registrationService.update(reg);
+			return "redirect:/adminuserlist";
+		}
+	}
 
 	@RequestMapping(value = "/admineditclient", method = RequestMethod.POST)
 	public String admineditclient(@ModelAttribute(value = "regForm") @Valid ClientRegistrationModel register,
-			BindingResult result, @ModelAttribute(value = "reg") Registration reg, BindingResult regResult,
+			BindingResult result,  BindingResult regResult,
 			@ModelAttribute(value = "login") LoginInfo login, BindingResult loginResult,
 			@ModelAttribute(value = "urole") UserRole urole, BindingResult userroleResult,
 			@RequestParam("userid") String userid, ModelMap map, HttpServletRequest request)
@@ -306,25 +460,54 @@ public class LoginController
 			return "adminEditClientRegistration";
 		} else
 		{
+			Registration reg=registrationService.getRegistationByUserId(userid);
+			reg.setAbout(register.getAbout());
+			reg.setContact(register.getContact());
+			reg.setDesignation(register.getDesignation());
+			reg.setHoAddress(register.getHoAddress());
+			reg.setName(register.getName());
+			reg.setNoofpeoples(register.getNoofpeoples());
+			reg.setOfficeAddress(register.getOfficeAddress());
+			reg.setOfficeLocations(register.getOfficeLocations());
+			reg.setOrganizationName(register.getOrganizationName());
+			reg.setRevenue(register.getRevenue());
+			reg.setUserid(register.getUserid());
+			reg.setUsersRequired(register.getUsersRequired());
+			reg.setWebsiteUrl(register.getWebsiteUrl());
+			reg.setPanno(register.getPanno());
+			reg.setStno(register.getStno());
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
 			
-			Set<Industry> indset = new HashSet<>();
+			
+			
+			
 			for (String ind : industries)
 			{
 				Industry inds = industryService.getIndustry(Integer.parseInt(ind));
 				if (inds != null)
 				{
-					indset.add(inds);
+					Set<Industry> industry=reg.getIndustries();
+					boolean flag=false;
+					for (Iterator iterator = industry.iterator(); iterator.hasNext();)
+					{
+						Industry industry2 = (Industry) iterator.next();
+						if(industry2.getId()==inds.getId()){
+							flag=true;
+						}
+					}
+					
+					if(flag){
+						
+					}else{
+						reg.getIndustries().add(inds);
+					}
 				}
 			}
 
-			reg.setIndustries(indset);
 			registrationService.update(reg);
-			map.addAttribute("regSuccess", "true");
-			map.addAttribute("orgName", reg.getOrganizationName());
-			return "redirect:/regSuccess";
+			return "redirect:/adminuserlist";
 		}
 	}
 

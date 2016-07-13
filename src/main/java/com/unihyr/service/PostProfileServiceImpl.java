@@ -59,9 +59,8 @@ public class PostProfileServiceImpl implements PostProfileService
 	}
 
 	@Override
-	public	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String sortParam, String filterBy,
-			String excludeType, String sortOrder){
-		return this.postProfileDao.getPostProfileByPostForStartup(postId, first, max,sortParam, filterBy,excludeType,sortOrder);
+	public	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String filterBy){
+		return this.postProfileDao.getPostProfileByPostForStartup(postId, first, max, filterBy);
 	}
 	
 	@Override

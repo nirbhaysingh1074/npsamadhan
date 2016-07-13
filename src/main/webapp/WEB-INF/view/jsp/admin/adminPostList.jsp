@@ -149,7 +149,7 @@
 								%>
 									<dl>
 										<dt>
-											<label><a target="_blank" href="<%= "data/"+post.getUploadjd()%>">Download JD</a></label>
+											<label><a target="_blank" href="<%= "/data/"+post.getUploadjd()%>">Download JD</a></label>
 										</dt>
 									</dl>
 								<%

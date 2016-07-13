@@ -11,7 +11,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" type="text/css" href="css/autocomplete.css" />
+<!-- <link rel="stylesheet" type="text/css" href="css/autocomplete.css" /> -->
 <title>UniHyr</title>
 <style type="text/css">
 	.req{color: red;}
@@ -40,9 +40,7 @@
     opacity: 0;
     filter: alpha(opacity=0);
 }
-select{
-width:auto !important;
-}
+
 #willingToRelocate{
 width:100% !important;
 }
@@ -53,7 +51,44 @@ width:100% !important;
 width:100% !important;
 }
 </style>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script>
+$( function() {
+  var availableTags = [
+    "91",
+    "11",
+    "22",
+    "33",
+    "44",
+    "55",
+    "66",
+    "77",
+   
+  ];
+  $( "#countryCode" ).autocomplete({
+    source: availableTags
+  });
+} );
+</script>
 
+
+<script type="text/javascript">
+function otherLocationInput(){
+	var locValue=$('#currentLocation').val();
+	if(locValue&&locValue=="other"){
+		$('#otherLocation').val("");
+		$('#otherLocation').css("display","block");
+	}else
+	{
+		$('#otherLocation').val("");
+		$('#otherLocation').css("display","none");
+	}
+		
+}
+</script>
 <script type="text/javascript">
 	function conscheckapplicantbyemail()
 	{
@@ -78,7 +113,6 @@ width:100% !important;
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.responseText);
 				}
 			}) ;
 		}
@@ -88,7 +122,10 @@ width:100% !important;
 	{
 		var pid = $('#postId').val();
 		var contact = $('#contact').val();
-		
+		var countryCode=$('#countryCode').val();
+		if(countryCode){
+			contact=contact+","+countryCode;
+		}
 		if(contact != "")
 		{
 			$.ajax({
@@ -107,7 +144,6 @@ width:100% !important;
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.responseText);
 				}
 			}) ;
 		}
@@ -115,135 +151,154 @@ width:100% !important;
 	
 </script>
 <script type="text/javascript">
-	function validateForm()
-	{
-// 		
-		var client = $('#cleintId').val();
-		var post = $('#postId').val();
-		var name = $('#name').val();
-		var email = $('#email').val();
-		var currentRole = $('#currentRole').val();
-		var noticePeriod = $('#noticePeriod').val();
-		var dob = $('#dateofbirth').val();
-		var contact = $('#contact').val();
-		var currentOrganization = $('#currentOrganization').val();
-		var currentLocation = $('#currentLocation').val();
-		var currentCTC = $('#currentCTC').val();
-		var expectedCTC = $('#expectedCTC').val();
-		var resumeText = CKEDITOR.instances['resumeText'].getData(); //$('#resumeText').val();
-		var select_jd = $('.select_jd').val();
-		
-		
-		
-		$('.error').html("&nbsp;");
 
-		var valid = true;
-
-		var qug= $('#qualification_ug').val();
-		if(!qug||qug === null||qug==""){
-			$('.qualification_ug_error').html('Please specify undergraduate qualification');
-			valid = false;
-		}
-		var qpg= $('#qualification_pg').val();
-		if(!qpg||qpg === null||qpg==""){
-			$('.qualification_pg_error').html('Please specify postgraduate qualification');
-			valid = false;
-		}
-		if(client == "")
-		{
-			$('.client_error').html("Please provide client name");
-			valid = false;
-		}
-		if(post == "")
-		{
-			$('.post_error').html("Please provide post name");
-			valid = false;
-		}
-		if(name == "")
-		{
-			$('.name_error').html("Please enter profile name");
-			valid = false;
-		}
-		if(email == "" || !isEmail(email))
-		{
-			$('.email_error').html("Please enter valid email");
-			valid = false;
-		}
-		if(currentRole == "")
-		{
-			$('.currentRole_error').html("Please enter current role");
-			valid = false;
-		}
-
-		if(currentOrganization == "")
-		{
-			$('.currentOrganization_error').html("Please enter current Organization");
-			valid = false;
-		}
-		if(currentLocation == "")
-		{
-			$('.currentLocation_error').html("Please enter current Location");
-			valid = false;
-		}
-		if(dob == "")
-		{
-			$('.dateofbirth_error').html("Please enter date of birth");
-			valid = false;
-		}
-		if(noticePeriod == "")
-		{
-			$('.noticePeriod_error').html("Please enter notice period");
-			valid = false;
-		}
-		if(contact == "" || contact.length != 10)
-		{
-			$('.contact_error').html("Please enter valid phone number");
-			valid = false;
-		}
-		if(currentCTC == "" || isNaN(currentCTC))
-		{
-			$('.currentCTC_error').html("Please enter current CTC");
-			valid = false;
-		}
-		if(expectedCTC == "" || isNaN(expectedCTC))
-		{
-			$('.expectedCTC_error').html("Please enter expected CTC");
-			valid = false;
-		}
-		
-		
-		if(select_jd == "" && (resumeText.length ==""))
-		{
-			$('.resumePath_error').html("Please select resume or enter resume text");
-			valid = false;
-		}
-		/* 
-		if(resumeText == "")
-		{
-			$('.resumeText_error').html("Please enter resume text");
-			valid = false;
-		} */
-		
-		if(!valid)
-		{
-			return false;
-		}
-		var r=confirm("Are you sure you want to upload "+name+" profile for "+$('#postName').html()+" at "+$('#clientName').html()+ "?");
-			if (r==true) 
-			{
-				return true;
-			}else{
-				return false;
-			}
-		
-		
-	}
 	function isEmail(email) {
 		  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		  return regex.test(email);
 		}
 	
 	jQuery(document).ready(function() {
+		
+			var flagg=false;
+			$(document).on('submit', 'form', function(e) {  
+				if(!flagg){
+				e.preventDefault();
+				
+				alertify.confirm("Are you interested for this post ?", function (e, str) {
+					if (e) {
+						var client = $('#cleintId').val();
+						var post = $('#postId').val();
+						var name = $('#name').val();
+						var email = $('#email').val();
+						var currentRole = $('#currentRole').val();
+						var noticePeriod = $('#noticePeriod').val();
+						var dob = $('#dateofbirth').val();
+						var contact = $('#contact').val();
+						var countryCode=$('#countryCode').val();
+						var currentOrganization = $('#currentOrganization').val();
+						var currentLocation = $('#currentLocation').val();
+						if(currentLocation&&currentLocation=="other"){
+							currentLocation=$('#otherLocation').val();
+						}
+						
+						
+						
+						var currentCTC = $('#currentCTC').val();
+						var expectedCTC = $('#expectedCTC').val();
+						var resumeText = CKEDITOR.instances['resumeText'].getData(); //$('#resumeText').val();
+						var select_jd = $('.select_jd').val();
+						
+						
+						
+						$('.error').html("&nbsp;");
+
+						var valid = true;
+
+						var qug= $('#qualification_ug').val();
+						if(!qug||qug === null||qug==""){
+							$('.qualification_ug_error').html('Please specify undergraduate qualification');
+							valid = false;
+						}
+						var qpg= $('#qualification_pg').val();
+						if(!qpg||qpg === null||qpg==""){
+							$('.qualification_pg_error').html('Please specify postgraduate qualification');
+							valid = false;
+						}
+						if(client == "")
+						{
+							$('.client_error').html("Please provide client name");
+							valid = false;
+						}
+						if(post == "")
+						{
+							$('.post_error').html("Please provide post name");
+							valid = false;
+						}
+						if(name == "")
+						{
+							$('.name_error').html("Please enter profile name");
+							valid = false;
+						}
+						if(email == "" || !isEmail(email))
+						{
+							$('.email_error').html("Please enter valid email");
+							valid = false;
+						}
+						if(currentRole == "")
+						{
+							$('.currentRole_error').html("Please enter current role");
+							valid = false;
+						}
+
+						if(currentOrganization == "")
+						{
+							$('.currentOrganization_error').html("Please enter current Organization");
+							valid = false;
+						}
+						if(currentLocation == "")
+						{
+							$('.currentLocation_error').html("Please enter current Location");
+							valid = false;
+						}
+						if(dob == "")
+						{
+							$('.dateofbirth_error').html("Please enter date of birth");
+							valid = false;
+						}
+						if(noticePeriod == "")
+						{
+							$('.noticePeriod_error').html("Please enter notice period");
+							valid = false;
+						}
+						if(contact == "" || contact.length != 10)
+						{
+							$('.contact_error').html("Please enter valid phone number");
+							valid = false;
+						}
+						if(!countryCode)
+						{
+							$('.countryCode_error').html("Please enter country code");
+							valid = false;
+						}
+						if(currentCTC == "" || isNaN(currentCTC))
+						{
+							$('.currentCTC_error').html("Please enter current CTC");
+							valid = false;
+						}
+						if(expectedCTC == "" || isNaN(expectedCTC))
+						{
+							$('.expectedCTC_error').html("Please enter expected CTC");
+							valid = false;
+						}
+						
+						
+						if(select_jd == "" && (resumeText.length ==""))
+						{
+							$('.resumePath_error').html("Please select resume or enter resume text");
+							valid = false;
+						}
+						/* 
+						if(resumeText == "")
+						{
+							$('.resumeText_error').html("Please enter resume text");
+							valid = false;
+						} */
+						
+						if(!valid)
+						{
+							return false;
+						}
+					else{
+						flagg=true;
+						$('form').submit();
+							}
+					}
+					
+				});
+				}
+				});
+		
+		
 		
 		$(document.body).on('change', '.select_jd' ,function(){
 			var valid = true;
@@ -282,7 +337,6 @@ width:100% !important;
 				
 				$(this).val("");
 			}
-// 			alert(extension);
 		});
 	});
 	
@@ -320,7 +374,7 @@ width:100% !important;
 	<div class="mid_wrapper">
 		<div class="container">
 			<div class="form_cont">
-				<form:form method="POST" action="uploadprofile"	commandName="uploadProfileForm"  enctype="multipart/form-data" onsubmit="return validateForm()">
+				<form:form method="POST" action="uploadprofile"	commandName="uploadProfileForm"  enctype="multipart/form-data" >
 					<div class="block">
 						<div class="form_col">
 							<%
@@ -389,7 +443,7 @@ width:100% !important;
 								</dt>
 								<dd>
 								
-									<form:input path="countryCode"  cssClass="number_only" style="position: relative;
+									<form:input path="countryCode"  cssClass="number_only" maxlength="2"  style="position: relative;
 										padding: 5px;
 										float: left;
 										width: 34px;"  />
@@ -397,6 +451,7 @@ width:100% !important;
 									 cssClass="number_only" maxlength="10" minlength="10"/>
 									
 									<span class="error contact_error">&nbsp;${profileExist_contact}<form:errors path="contact" /></span>
+									<span class="error countryCode_error"></span>
 								</dd>
 							</dl>
 							<dl>
@@ -413,8 +468,8 @@ width:100% !important;
 									<label>Current Location<span class="req">*</span></label>
 								</dt>
 								<dd>
-					<form:select path="currentLocation"  multiple="multiple" style="height: 111px;" >
-	              	<form:option value="">Select Location</form:option>
+					<form:select path="currentLocation" onchange="otherLocationInput()" >
+	              		<form:option value="">Select Location</form:option>
 	              		<%
 	              		List<String> locList=GeneralConfig.topLocations;
 	              		for(String loc:locList){
@@ -434,6 +489,7 @@ width:100% !important;
 	              		%>
 	              		<form:option value="other">Other</form:option>
 	            	</form:select>
+	            	<input type="text" style="display: none;" placeholder="Your Location" id="otherLocation" name="otherLocation" />
 	            	 <div id="div1"></div>
 	            	
 	            	<script type="text/javascript">
@@ -631,7 +687,7 @@ function showfield(name){
 	</div>
 <script src="ckeditor/ckeditor.js"></script>
 <script src="ckeditor/bootstrap3-wysihtml5.all.js"></script>
-<script src="js/jquery.autocomplete.js"></script>
+<!-- <script src="js/jquery.autocomplete.js"></script> -->
 <script>
       $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor

@@ -62,6 +62,10 @@
         <put-attribute name="title" value="UniHyr - Update Registration" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminEditClientRegistration.jsp" />
     </definition>
+    <definition name="adminEditConsultRegistration" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Update Registration" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminEditConsultRegistration.jsp" />
+    </definition>
     
     <definition name="adminLocations" extends="adminTemplate">
         <put-attribute name="title" value="UniHyr - Locations list" />

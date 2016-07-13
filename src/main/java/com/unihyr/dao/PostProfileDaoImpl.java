@@ -39,6 +39,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 	{
 		try
 		{
+			postProfile.setModificationDate(new Date());
 			this.sessionFactory.getCurrentSession().update(postProfile);
 			return true;
 			
@@ -161,7 +162,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 	 * @return
 	 */
 	@Override
-	public List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max,String sortParam,String filterBy,String excludeType,String sortOrder)
+	public List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max,String filterBy)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
 				.createAlias("post", "postAlias")
@@ -171,13 +172,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.setMaxResults(max);
 
 		criteria.add(Restrictions.isNotNull(filterBy));
-		if(!excludeType.equals("rejected")){
-			Criterion cn5 = Restrictions.isNull("rejected");
-			Criterion cn6 = Restrictions.isNull("declinedDate");
-			Criterion cn7 = Restrictions.isNull("joinDropDate");
-			Criterion cn8 = Restrictions.isNull("declinedDate");
-			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
-		}
+		criteria.addOrder(Order.desc(filterBy));
 	
 		
 		return criteria.list();
@@ -290,16 +285,25 @@ public class PostProfileDaoImpl implements PostProfileDao
 				if(filterBy.indexOf("pending")>=0){
 					criteria.add(Restrictions.isNull("accepted"));
 					criteria.add(Restrictions.isNull("rejected"));
+					criteria.add(Restrictions.isNull("withdrawDate"));
+					criteria.add(Restrictions.isNull("offerDropDate"));
+					criteria.add(Restrictions.isNull("declinedDate"));
+				}else if(filterBy.indexOf("accepted")>=0){
+					criteria.add(Restrictions.isNull("joinDate"));
+					criteria.add(Restrictions.isNull("rejected"));
+					criteria.add(Restrictions.isNull("withdrawDate"));
+					criteria.add(Restrictions.isNull("offerDropDate"));
+					criteria.add(Restrictions.isNull("declinedDate"));
 				}
-				else
+				else{
 				criteria.add(Restrictions.isNotNull(filterBy));
-			
+				}
 				if(!excludeType.equals("rejected")){
 				Criterion cn5 = Restrictions.isNull("rejected");
 				Criterion cn6 = Restrictions.isNull("declinedDate");
-				Criterion cn7 = Restrictions.isNull("joinDropDate");
-				Criterion cn8 = Restrictions.isNull("declinedDate");
-				criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+//				Criterion cn7 = Restrictions.isNull("joinDropDate");
+//				Criterion cn8 = Restrictions.isNull("withdrawDate");
+				criteria.add(Restrictions.and(cn5,cn6));
 				}
 				
 		 		if(sortParam.indexOf("submitted")>=0)
@@ -492,9 +496,15 @@ public class PostProfileDaoImpl implements PostProfileDao
 		}
 		if(contact != null && contact.length() > 0)
 		{
+			String[] cons=contact.split(",");
 //			Criterion contactcheck = Restrictions.eq("profileAlias.contact", contact);
-			criteria.add(Restrictions.eq("profileAlias.contact", contact));
-		}
+			try{
+			criteria.add(Restrictions.eq("profileAlias.countryCode", cons[1]));
+			criteria.add(Restrictions.eq("profileAlias.contact", cons[0]));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			}
 		
 		if((email != null && email.length() > 0) || (contact != null && contact.length() > 0))
 		{

@@ -48,7 +48,6 @@ jQuery(document).ready(function() {
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
 	}) ;
 	$.ajax({
@@ -64,7 +63,6 @@ jQuery(document).ready(function() {
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;
 });
@@ -99,7 +97,6 @@ function getMessages(){
 			pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
 	}) ;
 }
@@ -131,7 +128,6 @@ function getNotifications(){
 			pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;
 }

@@ -301,8 +301,6 @@ $.Autocompleter = function(input, options) {
 		// if the last user key pressed was backspace, don't autofill
 		if( options.autoFill && (lastWord($input.val()).toLowerCase() == q.toLowerCase()) && lastKeyPressCode != KEY.BACKSPACE ) {
 			// fill in the value (keep the case the user has typed)
-			//alert($input.val() + sValue.substring(lastWord(previousValue).length));
-			//alert("hi");
 			$input.val($input.val() + sValue.substring(lastWord(previousValue).length));
 			// select the portion of the value not typed by the user (so the next character will erase)
 			$(input).selection(previousValue.length, previousValue.length + sValue.length);

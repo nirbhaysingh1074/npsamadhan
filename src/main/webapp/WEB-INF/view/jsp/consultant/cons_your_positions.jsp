@@ -42,11 +42,9 @@ function fillProfiles(pageNo)
 			contentType : "application/json",
 			success : function(data) {
 				$('.right_side').html(data);
-			//	$('.candidate_profiles_def').hide();
 			pleaseDontWait();
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
-				alert(xhr.status);
 			}
 		});
 	}
@@ -396,10 +394,7 @@ jQuery(document).ready(function() {
 			$('.sel_rej_join').show();
 			$('#rejectModal').show();
 		}
-	// 	alert("data-type : " + reject_type);
 	})
-	// 	$(document.body).on('click', '.modal-content .btn-ok' ,function(){
-	// 	})
 });
 
 </script>

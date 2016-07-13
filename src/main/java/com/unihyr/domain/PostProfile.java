@@ -58,9 +58,12 @@ public class PostProfile
 
 	@Column
 	private Date joinDropDate;
-	
+
 	@Column
 	private Date withdrawDate;
+
+	@Column
+	private Date modificationDate;
 	
 	@Column
 	private String rejectReason;
@@ -71,6 +74,18 @@ public class PostProfile
 	@Column
 	private Boolean viewStatus;
 	
+	
+	
+	public Date getModificationDate()
+	{
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate)
+	{
+		this.modificationDate = modificationDate;
+	}
+
 	public Date getWithdrawDate()
 	{
 		return withdrawDate;

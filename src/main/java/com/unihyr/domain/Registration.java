@@ -123,9 +123,36 @@ public class Registration implements Serializable
 
 	private String emptyField;
 	
+	private String panno;
+	private String stno;
 	
 	
 	
+	@Column
+	public String getPanno()
+	{
+		return panno;
+	}
+
+
+	public void setPanno(String panno)
+	{
+		this.panno = panno;
+	}
+
+	@Column
+	public String getStno()
+	{
+		return stno;
+	}
+
+
+	public void setStno(String stno)
+	{
+		this.stno = stno;
+	}
+
+
 	@Column
 	public String getDesignation()
 	{

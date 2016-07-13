@@ -527,9 +527,6 @@ public class ClientController
 		else
 		{
 			System.out.println("form submitted successfully");
-			String btn_response = request.getParameter("btn_response");
-			System.out.println("btn_response : " + btn_response);
-			//post = postService.getPost(model.getPostId());
 			if (post != null)
 			{
 				post.setTitle(model.getTitle());
@@ -540,13 +537,8 @@ public class ClientController
 				post.setCtc_min(model.getCtc_min());
 				post.setCtc_max(model.getCtc_max());
 				post.setNoOfPosts(model.getNoOfPosts());
-				/*	
-				post.setRole(model.getRole());
-				post.setDesignation(model.getDesignation());
-				*/
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
-				
 				post.setProfileParDay(model.getProfileParDay());
 				post.setComment(model.getComment());
 				post.setAdditionDetail(model.getAdditionDetail());
@@ -558,10 +550,7 @@ public class ClientController
 				post.setVariablePayComment(model.getVariablePayComment());
 				post.setQualification_ug(model.getQualification_ug());
 				post.setQualification_pg(model.getQualification_pg());
-				if(btn_response.equals("Publish") && post.getPublished() == null)
-				{
-					post.setPublished(dt);
-				}
+				
 				post.setModifyDate(dt);
 				if(!post.getClient().getUserid().endsWith(loggedinUser))
 				{

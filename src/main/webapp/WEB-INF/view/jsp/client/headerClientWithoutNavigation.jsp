@@ -41,7 +41,6 @@
 		    	 if(x.readyState==4 && x.status==200)
 					{
 		    		 var res = x.responseText;
-// 		    		 alert(res);
 		    		 window.location.href="${pageContext.request.contextPath}/j_spring_security_logout";
 		    		}
 			}
@@ -79,7 +78,6 @@ $.ajax({
 		}
 	},
 	error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
       }
 }) ;
 
@@ -97,7 +95,6 @@ $.ajax({
 		}
 	},
 	error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
       }
 }) ;
 });
@@ -132,7 +129,6 @@ function getMessages(){
 			pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;
 }
@@ -164,7 +160,6 @@ function getNotifications(){
 		pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;
 }

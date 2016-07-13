@@ -12,8 +12,20 @@
 
 <script src="js/jquery.min.js"></script>
 <script src="js/contact.js"></script>
+
+<script src="js/jquery.bxSlider.js"></script>
+		<script type="text/javascript">
+  		$(document).ready(function(){
+     		$('#slider').bxSlider({
+    		ticker: true,
+    		tickerSpeed: 5000,
+			tickerHover: true
+  		});
+  		});
+		</script>
+
 <style>
-#slider {
+#slider1 {
 	position: relative;
 	overflow: hidden;
 	margin: 20px auto 0 auto;
@@ -25,7 +37,7 @@ color: #fff;
 #u_0_3{
 color: #fff;
 }
-#slider ul {
+#slider1 ul {
 	position: relative;
 	margin: 0;
 	padding: 0;
@@ -33,7 +45,7 @@ color: #fff;
 	list-style: none;
 }
 
-#slider ul li {
+#slider1 ul li {
 	position: relative;
 	display: block;
 	float: left;
@@ -88,13 +100,42 @@ a.control_next {
 	height: 100%;
 	width: 100%;
 }
+
+
+
+#slider {
+	list-style:none;
+	padding:0px
+}
+
+.slider-container { 
+	padding:10px; 
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px; 
+}
+
+#slider img { 
+	margin:0px; 
+	display:inline-block  
+}
+
+#slider li {
+	width:210px
+}
+.bx-wrapper{
+width: 1076px !important;
+}
+.bx-window{
+width: 1076px !important;
+}
 </style>
 <script>
-function ticker() {
-    $('#logoticker li:first').slideUp(function() {
-        $(this).appendTo($('#logoticker')).slideDown();
-    });
-}
+// function ticker() {
+//     $('#logoticker li:first').slideUp(function() {
+//         $(this).appendTo($('#logoticker')).slideDown(300);
+//     });
+// }
 	jQuery(document).ready(function($) {
 
 		setInterval(function() {
@@ -102,44 +143,44 @@ function ticker() {
 		}, 9000);
 
 		
-		setInterval(ticker, 3000);
+	//	setInterval(ticker, 3000);
 		
-		$('#slider ul li').css("width", $(window).width());
-		$('#slider ul li').css("top", -5);
+		$('#slider1 ul li').css("width", $(window).width());
+		$('#slider1 ul li').css("top", -5);
 
-		var slideCount = $('#slider ul li').length;
-		var slideWidth = $('#slider ul li').width();
-		var slideHeight = $('#slider ul li').height();
+		var slideCount = $('#slider1 ul li').length;
+		var slideWidth = $('#slider1 ul li').width();
+		var slideHeight = $('#slider1 ul li').height();
 		var sliderUlWidth = slideCount * slideWidth;
 
-		$('#slider').css({
+		$('#slider1').css({
 			width : slideWidth,
 			height : slideHeight
 		});
 
-		$('#slider ul').css({
+		$('#slider1 ul').css({
 			width : sliderUlWidth,
 			marginLeft : -slideWidth
 		});
 
-		$('#slider ul li:last-child').prependTo('#slider ul');
+		$('#slider1 ul li:last-child').prependTo('#slider1 ul');
 
 		function moveLeft() {
-			$('#slider ul').animate({
+			$('#slider1 ul').animate({
 				left : +slideWidth
 			}, 200, function() {
-				$('#slider ul li:last-child').prependTo('#slider ul');
-				$('#slider ul').css('left', '');
+				$('#slider1 ul li:last-child').prependTo('#slider1 ul');
+				$('#slider1 ul').css('left', '');
 			});
 		}
 		;
 
 		function moveRight() {
-			$('#slider ul').animate({
+			$('#slider1 ul').animate({
 				left : -slideWidth
 			}, 700, function() {
-				$('#slider ul li:first-child').appendTo('#slider ul');
-				$('#slider ul').css('left', '');
+				$('#slider1 ul li:first-child').appendTo('#slider1 ul');
+				$('#slider1 ul').css('left', '');
 			});
 		}
 		;
@@ -201,8 +242,8 @@ function ticker() {
 				</div>
 				<div class="home-nav">
 					<ul style="margin-bottom: 0px; margin-top: 27px;">
-						<li  onclick="$('html, body').animate({ scrollTop: 590 }, 'slow');" ><a href="home#howitworks" style="text-decoration: none;" >How It Works </a></li>
-						<li onclick="$('html, body').animate({ scrollTop: 920 }, 'slow');" ><a href="home#whyunihyr" style="text-decoration: none;">Why UniHyr</a></li>
+						<li  onclick="$('html, body').animate({ scrollTop: 540 }, 'slow');" ><a href="home#howitworks" style="text-decoration: none;" >How It Works </a></li>
+						<li onclick="$('html, body').animate({ scrollTop: 890 }, 'slow');" ><a href="home#whyunihyr" style="text-decoration: none;">Why UniHyr</a></li>
 <!-- 						<li onclick="$('html, body').animate({ scrollTop: 1000 }, 'slow');" ><a>Whats In It for</a></li> -->
 						<li onclick="$('html, body').animate({ scrollTop: 1940 }, 'slow');" ><a href="home#aboutus" style="text-decoration: none;">About</a></li>
 						<!-- <li><a style="color: #f8b910;font-weight: bold;">How It Works </a></li>
@@ -246,7 +287,7 @@ function ticker() {
 
 
 
-		<div id="slider" style="margin-top: 0px;">
+		<div id="slider1" style="margin-top: 0px;">
 			<a href="javascript:void(0)" class="control_next"><img
 				src="images/arw2.png" border="0" alt="img" style="height: 15px;width: 5px;"></a> <a
 				href="javascript:void(0)" class="control_prev"><img
@@ -388,49 +429,7 @@ function ticker() {
 			</div>
 		</div>
 		
-		<div class="feature_sec">
-			<div class="container">
-				<div class="title_rw">
-					<h2 id="howitworks" >How it works</h2>
-				</div>
-
-				<div class="howflow rw">
-					<ul id="logoticker">
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i5.png"
-								alt="img"></a>
-							<h4>Post your Job</h4>
-							<p>Employers provide a detailed description of the
-								requirements that would be made visble to the hiring partenrs on
-								the platform</p> </li>
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i1.png"
-								alt="img"></a>
-							<h4>Receive Profiles</h4>
-							<p>Based on ratings multiple hirng partners would conduct
-								search and submit profiles on the platform</p> </li>
-
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i2.png"
-								alt="img"></a>
-							<h4>Shortlist & Interview</h4>
-							<p>View profiles submitted by top partners based on their
-								ratings</p> </li>
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i4.png"
-								alt="img"></a>
-							<h4>Offer</h4>
-							<p>Profiles would move through various stages on the platform
-								from Shortlisted > Offered > Joined</p> </li>
-						<li></li>
-						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i3.png"
-								alt="img"></a>
-							<h4>Track Billing</h4>
-							<p>On joining, automatic invoice generation and payment
-								tracking as per the terms</p></li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		
 		<div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2  id="whyunihyr" >Why UniHyr</h2></div>
@@ -517,39 +516,19 @@ Analytics driven rating system of consultants
 
 							<h3 style="font-weight: bold; margin-bottom: 25px;">Employers</h3>
 							<div class="normalulli">
-								<ol>
+								<ul>
 									<li><h4>GET ALL UNDER ONE ROOF</h4>
-										<ul>
-											<li><p>One stop shop to engage with rated recruitment consulting/search firms without getting into the
-hassle for managing them</p></li>
-<!-- 											<li><p>It’s a lot less hassle than finding, -->
-<!-- 													negotiating with, and managing multiple recruitment -->
-<!-- 													agencies directly</p></li> -->
-										</ul></li>
+										<p>One stop shop to engage with rated recruitment consulting/search firms without getting into the
+													hassle for managing them</p></li>
 									<li><h4>UNIQUE RATING SYSTEM TO ENSURE YOU KNOW WHO IS THE BEST</h4>
-										<ul>
-											<li><p>Profiles from hiring partners with better ratings are shown first so that you get the best</p></li>
-<!-- 											<li><p>In a competitive environment, each consultant -->
-<!-- 													strives to get the best in the quickest possible time -->
-<!-- 													leading to amazing results in time to hire and quality of -->
-<!-- 													hire</p></li> -->
-										</ul></li>
+										<p>Profiles from hiring partners with better ratings are shown first so that you get the best</p></li>
 
 									<li><h4>HASSLE FREE AND TRANSPARENT</h4>
-										<ul>
-<!-- 											<li><p>Dedicated Account Manager and efficient -->
-<!-- 													Helpdesk to effectively service the clients</p></li> -->
-											<li><p>No hassle of managing multiple recruitment agency contracts – clients protected by a single contract with
-UniHyr outlining simple, transparent, and universal terms and conditions</p></li>
-										</ul></li>
+										<p>No hassle of managing multiple recruitment agency contracts – clients protected by a single contract with
+										UniHyr outlining simple, transparent, and universal terms and conditions</p></li>
 									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
-										<ul>
-											<li><p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
-<!-- 											<li><p>UniHyr would provide a single interface of -->
-<!-- 													payments to consultants Easy tracking of payables and -->
-<!-- 													status of candidates</p></li> -->
-										</ul></li>
-								</ol>
+										<p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
+								</ul>
 							</div> <!-- 						<a href="" class="readmore">Read More</a> -->
 						</li>
 						<li>
@@ -557,40 +536,17 @@ UniHyr outlining simple, transparent, and universal terms and conditions</p></li
 							<h3 style="font-weight: bold; margin-bottom: 25px;">Hiring
 								Partners</h3>
 							<div class="normalulli" style="border-left: 1px solid #f1b910;">
-								<ol>
+								<ul>
 									<li><h4>MORE BUSINESS!!</h4>
-										<ul>
-											<li><p>Significant increase in business - get to work for new clients without having to spend time & effort in
-acquiring them</p></li>
-<!-- 											<li><p>Business expansion at finger tips – basis -->
-<!-- 													capability and bandwidth take on more and more work through -->
-<!-- 													UniHyr</p></li> -->
-										</ul></li>
+										<p>Significant increase in business - get to work for new clients without having to spend time & effort in
+													acquiring them</p></li>
 									<li><h4>TRANSPARENT, PERFORMNCE DRIVEN</h4>
-										<ul>
-											<li><p>Performance rating rewards good performance and leads to transparency</p></li>
-<!-- 											<li><p>Rating based on quantitative inputs that are -->
-<!-- 													captured real time on the platform</p> -->
-<!-- 											<li><p>No judgment or qualitative inputs leading to -->
-<!-- 													transparency</p></li> -->
-										</ul></li>
-
+										<p>Performance rating rewards good performance and leads to transparency</p></li>
 									<li><h4>SIMPLE TO USE AND HASSLE FREE</h4>
-										<ul>
-											<li><p>Easy to use interface that lets you work on multiple client requirements at the same time</p></li>
-<!-- 											<li><p>No hassle of managing multiple client -->
-<!-- 													contracts –protected by a single contract with UniHyr -->
-<!-- 													outlining simple, transparent, and universal terms and -->
-<!-- 													conditions</p></li> -->
-										</ul></li>
+										<p>Easy to use interface that lets you work on multiple client requirements at the same time</p></li>
 									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
-										<ul>
-											<li><p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
-<!-- 											<li><p>Easy tracking of receivables and status of -->
-<!-- 													candidates</p></li> -->
-<!-- 											<li><p>Zero collection hassles</p></li> -->
-										</ul></li>
-								</ol>
+										<p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
+								</ul>
 							</div> <!-- 						<a href="" class="readmore">Read More</a> -->
 						</li>
 
@@ -607,9 +563,7 @@ acquiring them</p></li>
 				</div>
 			</div>
 		</div>
-		
-		
-<div class="feature_sec">
+		<div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2 id="aboutus"  >About Us</h2></div>
 		
@@ -628,10 +582,94 @@ acquiring them</p></li>
 			</div>
 		</div>
 	</div> 
+		<div  class="feature_sec">
+			<div class="container">
+				<div class="title_rw">
+					<h2 id="howitworks">Our Clients</h2>
+				</div>
+						<ul style="width: 999999px; position: relative; left: -1371.16px;"
+							id="slider">
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+						</ul>
+					</div>
+				</div>
 <!-- <div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2 >Featured Employers</h2></div>
-		
 			<div class="featserv rw">
 				<ul>
 					<li>
@@ -641,7 +679,6 @@ acquiring them</p></li>
 						<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo invtatis et quasi architecto beatae.</p> 
 						<a href="" class="readmore">Read More</a>
 					</li> 
-				
 					<li>
 						<a href="" class="thumbnl"><img src="images/img2.jpg" alt="img"></a> 
 						<h3>John Smith</h3>
@@ -649,8 +686,6 @@ acquiring them</p></li>
 						<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo invtatis et quasi architecto beatae.</p> 
 						<a href="" class="readmore">Read More</a>
 					</li> 
-				
-				
 					<li>
 						<a href="" class="thumbnl"><img src="images/img3.jpg" alt="img"></a> 
 						<h3> Mark COLLIS</h3>

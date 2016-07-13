@@ -141,7 +141,6 @@ $(".help-desk .submit").click(function(event){
 			pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-			alert(xhr.status);
 			pleaseDontWait();
 		}
 	}) ;
@@ -187,7 +186,6 @@ function getClosedCandidates(postId){
 			$('.profileClosed1').css('display','block');
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	       // alert(xhr.status);
 	      }
     }) ;	
 

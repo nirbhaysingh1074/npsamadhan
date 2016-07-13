@@ -150,9 +150,7 @@
 								System.out.println(post+"dfgsd"+request.getAttribute("quataExceed"));
 								
 								%>
-								<%-- <script type="text/javascript">
-									alert('<%=quataExceed%>');
-								</script> --%>
+								
 								<%
 									if (postConsList != null && !postConsList.isEmpty()) {
 
@@ -685,6 +683,7 @@
 		            <option value="accepted">In Process</option>
 		            <option value="rejected">Rejected</option>
 		            <option value="pending">Pending</option>
+		            <option value="withdrawDate">Withdraw</option>
 <!-- 		            <option value="recruited">Recruited</option> -->
 		          </select>
 		        </div> <%

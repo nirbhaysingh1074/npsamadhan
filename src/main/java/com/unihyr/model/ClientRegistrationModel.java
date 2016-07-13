@@ -61,7 +61,33 @@ public class ClientRegistrationModel
 	private String designation;
 	
 	
+
+	private String panno;
+	private String stno;
 	
+	
+	
+	public String getPanno()
+	{
+		return panno;
+	}
+
+
+	public void setPanno(String panno)
+	{
+		this.panno = panno;
+	}
+
+	public String getStno()
+	{
+		return stno;
+	}
+
+
+	public void setStno(String stno)
+	{
+		this.stno = stno;
+	}
 //	public Set<Industry> getIndustries()
 //	{
 //		return industries;

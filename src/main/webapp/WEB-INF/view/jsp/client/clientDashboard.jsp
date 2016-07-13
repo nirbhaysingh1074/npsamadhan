@@ -23,19 +23,16 @@
 		if(typeof sortParam != 'undefined'){}
 		else
 			sortParam='published';
-// 		alert("hello " + db_post_status);
 		$.ajax({
 			type : "GET",
 			url : "clientDashboardList",
 			data : {'pn':pn,'db_post_status':db_post_status,'sortParam':sortParam},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				$('.client_db_posts').html(data);
 			pleaseDontWait();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -76,7 +73,7 @@ margin-right: 18px;
 border-right: 5px solid #dcdcdc;
 border-bottom: 5px solid #dcdcdc;
 border-radius: 5px;
-width: 18% !important;
+width: 18.3% !important;
 border-top: 1px solid #ececec;
 border-left: 1px solid #ececec;
 }

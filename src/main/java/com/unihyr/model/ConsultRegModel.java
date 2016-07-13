@@ -3,6 +3,7 @@ package com.unihyr.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.validation.constraints.Min;
 import org.hibernate.validator.constraints.Length;
@@ -62,6 +63,29 @@ public class ConsultRegModel
 	
 	private int usersRequired;
 
+	private String panno;
+	
+	private String stno;
+	
+	public String getPanno()
+	{
+		return panno;
+	}
+
+	public void setPanno(String panno)
+	{
+		this.panno = panno;
+	}
+
+	public String getStno()
+	{
+		return stno;
+	}
+
+	public void setStno(String stno)
+	{
+		this.stno = stno;
+	}
 
 //	public Set<Industry> getIndustries()
 //	{

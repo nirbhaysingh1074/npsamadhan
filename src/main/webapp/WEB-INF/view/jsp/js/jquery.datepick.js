@@ -290,7 +290,6 @@
 			@example onShow: function(picker, inst) {
 	picker.append('&lt;button type="button">Hi&lt;/button>').
 		find('button:last').click(function() {
-			alert('Hi!');
 		});
  } */
 
@@ -299,7 +298,6 @@
 			@param year {number} The new year.
 			@param month {number} The new month (1 to 12).
 			@example onChangeMonthYear: function(year, month) {
-	alert('Now in ' + month + '-' + year);
  } */
 			
 		/** Datepicker on select callback.
@@ -307,7 +305,6 @@
 			@callback DatepickOnSelect
 			@param dates {Date[]} The selected date(s).
 			@example onSelect: function(dates) {
- 	alert('Selected ' + dates);
  } */
 			
 		/** Datepicker on close callback.
@@ -315,7 +312,6 @@
 			@callback DatepickOnClose
 			@param dates {Date[]} The selected date(s).
 			@example onClose: function(dates) {
- 	alert('Selected ' + dates);
  } */
 			
 		/** Default settings for the plugin.
@@ -1963,7 +1959,6 @@
 						self.showMonth(elem, year, inst.drawDate.getMonth() + 1, inst.drawDate.getDate());
 					}
 					catch (e) {
-						alert(e);
 					}
 				}).keydown(function(event) {
 					if (event.keyCode === 13) { // Enter

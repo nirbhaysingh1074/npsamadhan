@@ -89,7 +89,11 @@
 					%>
 					<tr>
 					<td><%=bill.getCandidatePerson() %></td>
-					<td><a href="clientpostapplicants?pid=<%=bill.getPostId()%>"><%=bill.getPosition() %></a></td>
+					<td>
+<%-- 					<a href="clientpostapplicants?pid=<%=bill.getPostId()%>"> --%>
+					<%=bill.getPosition() %>
+<!-- 					</a> -->
+					</td>
 					<td>
 					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 						<%=bill.getConsultantName()%> 

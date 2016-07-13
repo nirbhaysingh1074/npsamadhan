@@ -45,6 +45,8 @@
 						<thead class="bg-gray">
 							<tr>
 								<th>Name</th>
+								<th>Employer</th>
+								<th>Job Position</th>
 								<th>Phone</th>
 								<th>Current Role</th>
 								<th>Current Org</th>
@@ -67,6 +69,8 @@
 												<td>
 													<a target="_blank" href="adminviewprofile?ppid=<%= pp.getPpid() %>" ><%= pp.getProfile().getName()%></a>
 												</td>
+												<td><%= pp.getPost().getClient().getOrganizationName()%></td>
+												<td><%= pp.getPost().getTitle()%></td>
 												<td><%= pp.getProfile().getContact()%></td>
 												<td><%= pp.getProfile().getCurrentRole()%></td>
 												<td><%= pp.getProfile().getCurrentOrganization()%></td>
@@ -78,7 +82,7 @@
 												 <%} %>
 												 </td>
 												<td><%= DateFormats.ddMMMMyyyy.format(pp.getSubmitted()) %></td>
-												<td><label><a target="_blank" href="<%= "data/"+pp.getProfile().getResumePath()%>">Download JD</a></label>
+												<td><label><a target="_blank" href="<%= "/data/"+pp.getProfile().getResumePath()%>">Download JD</a></label>
 									</td>
 											</tr>
 										<%

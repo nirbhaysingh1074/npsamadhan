@@ -42,23 +42,23 @@
 </style>
 
 <script type="text/javascript">
+
+	
+	
+	
+	
+	
 	function validateForm()
 	{
+		
 		var title = $('#title').val();
 		var location = $('#location').val();
 		var fun = $('#function').val();
 		var noOfPosts = $('#noOfPosts').val();
-		/* var role = $('#role').val();
-		var designation = $('#designation').val(); */
 		var exp_min = $('#exp_min').val();
 		var exp_max = $('#exp_max').val();
 		var ctc_min = $('#ctc_min').val();
 		var ctc_max = $('#ctc_max').val();
-		
-		// 	var workHourStartHour = $('#workHourStartHour').val().split(":");
-		// 	var workHourStartMin = $('#workHourStartMin').val();
-		// 	var workHourEndHour = $('#workHourEndHour').val().split(":");
-		// 	var workHourEndMin = $('#workHourEndMin').val();
 		
 		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); //$('#additionDetail').val();
 		var select_jd = $('.select_jd').val();
@@ -98,16 +98,7 @@
 			$('.noOfPosts_error').html('Please enter no of posts')
 			valid = false;
 		}
-		/* if(role == "")
-		{
-			$('.role_error').html('Please enter post role')
-			valid = false;
-		} */
-		/* if(designation == "")
-		{
-			$('.designation_error').html('Please enter post designation')
-			valid = false;
-		} */
+		
 		if(exp_min == ""  || isNaN(exp_min))
 		{
 			$('.exp_min_error').html('Please select minimum expirence')
@@ -138,22 +129,7 @@
 			$('.feePercent_error').html("Please select a fee slab");
 			valid = false;
 		}
-		/* if(workHourStartHour[0] >= workHourEndHour[0])
-		{
-
-			$('.workHourStartHour_error').html("Start Hour should be greator than end hour");
-			valid = false;
-		} */
 		
-		
-		/* if(additionDetail == "")
-		{
-			$('.additionDetail_error').html('Please enter job discription')
-			valid = false;
-		} */
-		
-		
-
 		if(!valid)
 		{
 			return false;
@@ -165,11 +141,12 @@
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	
+	
+	
 	$(document.body).on('change', '.select_jd' ,function(){
 		var valid = true;
 		
 		var f=this.files[0];
-//			var size = f.size||f.fileSize;
 		$('.uploadjd_error').html("");
 		var extension = f.name.replace(/^.*\./, '');
 		if (extension == f.name) {
@@ -202,7 +179,6 @@ jQuery(document).ready(function() {
 			$('.select_jd').val("");
 			$(this).val("");
 		}
-//			alert(extension);
 	});
 });
 </script>
@@ -215,7 +191,7 @@ Registration registration=(Registration)request.getAttribute("registration");
 	<div class="mid_wrapper">
 	  <div class="container">
 	    <div class="form_cont">
-          <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
+          <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data">
 	      <div class="block">
 	     
 	        <div class="form_col">

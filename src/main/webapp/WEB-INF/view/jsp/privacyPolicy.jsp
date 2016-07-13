@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -9,13 +10,9 @@
 <div class="feature_sec">
 <div class="container">
 <div class="title_rw">
-					<h2>Privacy Policy</h2>
-				</div>
+					<p><strong>PRIVACY POLICY</strong></p>
 
-				<div class="howflow rw">
-				
-
-<p>We, ________<a href="#_msocom_1" id="_anchor_1" name="_msoanchor_1">[K1]</a>&nbsp;(hereinafter referred to as the &ldquo;<strong>Company</strong>&rdquo;) a private limited company incorporated under the Companies Act, 1956, having its registered office at <strong>M-161, 1st Floor, Blossoms - II (Near Artemis Hospital), Sector 51, Gurgaon, Haryana 122001, India, </strong>represented by its members, where such expression shall, unless repugnant to the context thereof, be deemed to include its respective legal heirs, representatives, administrators, permitted successors and assigns. The creator of this Privacy Policy ensures our steady commitment to Your privacy with regard to the protection of your invaluable information. This privacy policy contains information about an online website called <a href="http://www.unihyr.com">www.unihyr.com</a>(hereinafter referred to as the &ldquo;<strong>Website</strong>&rdquo;)<strong>.</strong> In order to provide You with Our uninterrupted use of services, We may collect and, in some circumstances, disclose information about you. To ensure better protection of Your privacy, We provide this notice explaining Our information collection and disclosure policies, and the choices You make about the way Your information is collected and used.</p>
+<p>We, UHYR Labs, a private limited company incorporated under the Companies Act, 1956, having its registered address at Unit No. 502, Fifth Floor, Tower A, Spaze ITech Park, Sector 49, Sohna Road, Gurgaon 122001 (Haryana), India (hereinafter referred to as the &ldquo;<strong>Company</strong>&rdquo;)<strong>, </strong>represented by its members, where such expression shall, unless repugnant to the context thereof, be deemed to include its respective legal heirs, representatives, administrators, permitted successors and assigns. The creator of this Privacy Policy ensures our steady commitment to Your privacy with regard to the protection of your invaluable information. This privacy policy contains information about an online website called <a href="http://www.unihyr.com">www.unihyr.com</a>(hereinafter referred to as the &ldquo;<strong>Website</strong>&rdquo;)<strong>.</strong> In order to provide You with Our uninterrupted use of services, We may collect and, in some circumstances, disclose information about you. To ensure better protection of Your privacy, We provide this notice explaining Our information collection and disclosure policies, and the choices You make about the way Your information is collected and used.</p>
 
 <p>ANY CAPITALIZED WORDS USED HENCEFORTH SHALL HAVE THE MEANING ACCORDED TO THEM UNDER THIS AGREEMENT. FURTHER, ALL HEADING USED HEREIN ARE ONLY FOR THE PURPOSE OF ARRANGING THE VARIOUS PROVISIONS OF THE AGREEMENT IN ANY MANNER. NEITHER THE USER NOR THE CREATERS OF THIS PRIVACY POLICY MAY USE THE HEADING TO INTERPRET THE PROVISIONS CONTAINED WITHIN IT IN ANY MANNER.</p>
 
@@ -38,7 +35,7 @@
 	<li><strong>INFORMATION COLLECTED</strong></li>
 </ol>
 
-<p>We are committed to respecting Your online privacy. We further recognize Your need for appropriate protection and management of any Personal Information You share with us. We may collect the following information<a href="#_msocom_2" id="_anchor_2" name="_msoanchor_2">[N2]</a>&nbsp;:</p>
+<p>We are committed to respecting Your online privacy. We further recognize Your need for appropriate protection and management of any Personal Information You share with us. We may collect the following information:</p>
 
 <ol>
 	<li>Personal data of the User such as, but not limited to, Name, Job Title, Email Address, Mobile number, Home Address, Demographic particulars including postal code, and Any other information required for providing the Services</li>
@@ -93,9 +90,9 @@
 	<li><strong>ACCESSING, REVIEWING AND CHANGING YOUR PROFILE</strong></li>
 </ol>
 
-<p>Following registration, You can review and change the information You submitted at the stage of registration, except Your display name/ user name. An option for facilitating such change shall be present on the home screen of the Website and such change can be facilitated by emailing us at _________<a href="#_msocom_3" id="_anchor_3" name="_msoanchor_3">[K3]</a>&nbsp;. If You change any information, We may keep track of Your old information.</p>
+<p>Following registration, You can review and change the information You submitted at the stage of registration, except Your display name/ user name. An option for facilitating such change shall be present on the home screen of the Website and such change can be facilitated by emailing us at admin@unihyr.com. If You change any information, We may keep track of Your old information.</p>
 
-<p>If you believe that any information we are holding on you is incorrect or incomplete, or to remove Your profile so that others cannot view it, please write to or email us as soon as possible, at _________<a href="#_msocom_4" id="_anchor_4" name="_msoanchor_4">[K4]</a>&nbsp;.We shall promptly correct any information found to be incorrect.</p>
+<p>If you believe that any information we are holding on you is incorrect or incomplete, or to remove Your profile so that others cannot view it, please write to or email us as soon as possible, at <a href="mailto:admin@unihyr.com">admin@unihyr.com</a> . We shall promptly correct any information found to be incorrect.</p>
 
 <p>We shall retain in Our files, information You have requested to remove for certain circumstances, such as to resolve disputes, troubleshoot problems and enforce Our terms and conditions. Further, such prior information is never completely removed from Our databases due to technical and legal constraints, including stored &#39;back up&#39; systems. Therefore, You should not expect that all of Your personally identifiable information shall be completely removed from our databases in response to Your requests.</p>
 
@@ -123,38 +120,6 @@
 
 <p>Our Privacy Policy may change from time to time. Hence we shall post any privacy policy changes on the homepage of the Website notify You by email.</p>
 
-<p>&nbsp;</p>
-
-<hr />
-<p><a name="_msocom_1"></a></p>
-
-<p>&nbsp;<a href="#_msoanchor_1">[K1]</a>Please provide the name of the Company</p>
-
-<p>&nbsp;</p>
-
-<p>Leave it blank, we will fill later</p>
-
-<p><a name="_msocom_2"></a></p>
-
-<p>&nbsp;<a href="#_msoanchor_2">[N2]</a>We will actually collect a lot of information around the requirements of the company&hellip;their hiring requirements, the Job Descriptions, salary bands, etc.</p>
-
-<p><a name="_msocom_3"></a></p>
-
-<p>&nbsp;<a href="#_msoanchor_3">[K3]</a>Please provide the email address</p>
-
-<p>&nbsp;</p>
-
-<p>admin@unihyr.com</p>
-
-<p><a name="_msocom_4"></a></p>
-
-<p>&nbsp;<a href="#_msoanchor_4">[K4]</a>Please provide the email address</p>
-
-<p>&nbsp;</p>
-
-<p>admin@unihyr.com</p>
-				
-				
 				</div>
 
 </div>

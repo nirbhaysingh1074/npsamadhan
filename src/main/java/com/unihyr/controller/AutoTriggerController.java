@@ -51,21 +51,31 @@ public class AutoTriggerController
 		List<Post> list = postService.getAllActivePosts();
 		for (Post post : list)
 		{
-			List<PostProfile> profileList = postProfileService.getPostProfileByPostForStartup(post.getPostId(), 0, 1, "submitted",
-					"submitted", "rejected", "desc");
+			List<PostProfile> profileList = postProfileService.getPostProfileByPostForStartup(post.getPostId(), 0, 1, "modificationDate");
 			Date today = new Date();
 			Date submitted = null;
 			if (profileList.isEmpty())
 				submitted = post.getVerifyDate();
 			else
-				submitted = profileList.get(0).getSubmitted();
+				submitted = profileList.get(0).getModificationDate();
 			long diff = today.getTime() - submitted.getTime();
-			if (diff > GeneralConfig.PostDaysOut)
+			diff=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+			if(diff>GeneralConfig.PostDaysInactive){
+				try{
+					post.setActive(false);
+					mailService.sendMail(post.getClient().getUserid(), "Reminder on post",
+							"Your post is idle for more than " + GeneralConfig.PostDaysInactive+" now it is deactivated by Unihyr");
+					System.out.println("Deactivated");
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+			}
+			else if (diff > GeneralConfig.PostDaysOut)
 			{
 				try{
 				mailService.sendMail(post.getClient().getUserid(), "Reminder on post",
-						"Your post is idle for more than " + GeneralConfig.PostDaysOut);
-				System.out.println("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+						"Your post is idle for more than " + GeneralConfig.PostDaysOut+" it will be deactivated by Unihyr");
+				System.out.println("reminded");
 				}catch(Exception e){
 					e.printStackTrace();
 				}

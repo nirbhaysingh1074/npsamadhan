@@ -49,19 +49,16 @@ border-left: 1px solid rgb(220, 220, 220);
 		}
 		
 		
-// 		alert("hello " + $('#cons_db_post_status').val());
 		$.ajax({
 			type : "GET",
 			url : "consDashboardList",
 			data : {'pn':pn,'db_post_status':db_post_status,'db_sel_client':db_sel_client,'db_sel_loc':db_sel_loc,'sortParam':sortParam},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				$('.cons_db_posts').html(data);
 			pleaseDontWait();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -83,7 +80,6 @@ jQuery(document).ready(function() {
         $(':checkbox:checked').each(function(i){
         val[i] = $(this).val();
       });
-       // alert(val);
         alertify.confirm("Are you sure to close this post ?", function (e, str) {
 			if (e) 
 			{
@@ -102,7 +98,6 @@ jQuery(document).ready(function() {
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -114,10 +109,8 @@ jQuery(document).ready(function() {
     });
 	
 	$(document.body).on('change', '#sel_all' ,function(){
-// 		alert("test");
 		if($('#sel_all').attr('checked'))
 		{
-// 			alert("checked");
 			$('.sel_posts:checkbox').attr('checked','checked')
 		}
 		else

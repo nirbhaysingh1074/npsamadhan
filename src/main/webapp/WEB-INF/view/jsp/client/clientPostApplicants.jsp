@@ -77,30 +77,23 @@ pleaseWait();
     			filterBy='submitted';
 			
         });
-      //  alert(filterBy);
         
         
         sortOrder =  $("input[name='sortOrder']:checked").val();           
         	
        
-		//alert(sortOrder);
-		
-        
-        
 		$.ajax({
 			type : "GET",
 			url : "postapplicantlist",
 			data : {'pn':pn,'pid':pid,'sortParam':sortParam,'excludeType':excludeType,'filterBy':filterBy,'sortOrder':sortOrder},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				$('#candidate_profiles').html(data);
 				$('#candidate_profiles').show();
 				$('#candidate_profiles_def').hide();
 			pleaseDontWait();	
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -117,64 +110,6 @@ pleaseWait();
 <body class="loading" <% if(ppList == null){%>onload="loadclientposts('1')"  <%} %>>
 	<div class="mid_wrapper">
 		<div class="container">
-			<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-    <div style="padding-bottom: 0" class="rightside_in new_table">
-        <div class="bottom-padding" style=" border: 2px solid gray; border-radius: 5px; margin-bottom: 10px;  padding: 10px;">
-	        <div class="bottom-padding">
-	        	
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		Active Positions
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalActive}
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		InActive Positions
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalposts - totalActive}
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Profile Recieved
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalprofiles }
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Profile Shortlisted
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalshortlist }
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Candidate Joined
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totaljoin }
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Partners
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalpartner }
-		        	</div>
-	        	</div>
-	        	
-	        </div>
-        </div>
-    </div>
-    </sec:authorize> --%>
     <%
 
 	int pn=1;
@@ -199,9 +134,6 @@ pleaseWait();
 		pn = (Integer) request.getAttribute("pn");
     	}
     %>
-    
-    
-    
     	 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
     <div style="padding-bottom: 0" class="rightside_in new_table">
         <div class="bottom-padding manageposthead" >
@@ -289,37 +221,7 @@ pleaseWait();
     </sec:authorize> 
     <%} %>
 			<div class="new_post_info">
-				<%-- <div class="left_side">
-        <div class="left_menu">
-          
-          <h2 style="background: #4e4e4e none repeat scroll 0 0; border-radius: 5px 5px 0 0;color: #fff;margin-top: 5px">Hiring Partners</h2>
-          <ul id="cons_list">
-            <%
-            	if(conslistHavingProfiles != null && !conslistHavingProfiles.isEmpty())
-            	{
-            		for(PostConsultant pp : conslistHavingProfiles)
-            		{
-            			%>
-				            <li id="<%= pp.getConsultant().getUserid()%>"><a><%= pp.getConsultant().getConsultName() %></a></li>
-            			<%		
-            		}
-            		
-            	}
-        	if(conslistHavingNoProfiles != null && !conslistHavingNoProfiles.isEmpty())
-        	{
-            		for(PostConsultant pp : conslistHavingNoProfiles)
-            		{
-            			%>
-				            <li id="<%= pp.getConsultant().getUserid()%>"><a><%= pp.getConsultant().getConsultName() %>
-				            <br><span style='font-size:10px;'>(No Profiles Submitted)</span></a></li>
-            			<%		
-            		}
-            	}
-            %>
-          </ul>
-          
-        </div>
-      </div> --%>
+			
 				<div class="right_side" style="width: 100%;">
 					<div class="profiles_col">
 
@@ -400,6 +302,7 @@ pleaseWait();
 		            
 		            <option value="joinDate">Joined</option>
 		            <option value="joinDropDate">Dropped</option>
+		            <option value="withdrawDate">Withdrawn</option>
 		          </select>
 		        </div>
 		       
@@ -917,7 +820,6 @@ pleaseWait();
 					$('#rejectModal').show();
 				}
 
-				// 		alert("data-type : " + reject_type);
 			})
 
 			$(document.body).on('click', '.btn-offer-open', function() {

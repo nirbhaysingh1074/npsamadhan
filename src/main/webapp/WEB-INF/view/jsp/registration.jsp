@@ -10,9 +10,7 @@
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	
 	<title>UniHyr</title>
-	
 	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 	<link rel="stylesheet" href="css/media.css" media="screen" />
     <link rel="stylesheet" href="css/style.css" media="screen" />
@@ -44,41 +42,29 @@
 			var about = $('#about').val();
 			var officeAddress = $("#officeAddress").val();
 			var name = $("#name").val();
-			//alert(officeLocations);
-			
+			var panno = $('#panno').val();
+			var stno = $('#stno').val();
 			$('.error').html('&nbsp;');
 			if(org == "")
 			{
 				$('.org_error').html('Please enter organization name ')
 				valid = false;
 			}
-			
 			if(userid == "" || !isEmail(userid))
 			{
 				$('.userid_error').html("Please enter a valid email");
 				valid = false;
 			}
-			
-			/*
-			if(password == "")
+			if(!panno)
 			{
-				$('.password_error').html("please enter a valid password");
+				$('.panno_error').html('Please enter pan number ');
 				valid = false;
 			}
-			if(repassword == "" || password != repassword)
+			if(!stno)
 			{
-				$('.repassword_error').html("Password do not match. Please re-enter both passwords");
+				$('.stno_error').html('Please enter service tax number ');
 				valid = false;
 			}
-			*/
-			/*
-			if(revenue == "")
-			{
-				$('.revenue_error').html("Please enter revenue");
-				valid = false;
-			}
-			*/
-			
 			if(noofpeoples == "")
 			{
 				$('.noofpeoples_error').html("Please enter no of employees");
@@ -109,38 +95,28 @@
 				$('.websiteUrl_error').html("Please enter a valid url");
 				valid = false;
 			}
-			
 			if(nooflocation == "" || !jQuery.isNumeric( nooflocation ))
 			{
 				$('#hoAddress').val('0');
 				$('.hoAddress_error').html("Please enter a valid no of locations");
 				valid = false;
 			}
-
 			if(officeAddress == "")
 			{
 				$('.officeAddress_error').html("Please enter office address");
 				valid = false;
 			}
-
 			if(name == "")
 			{
 				$('.name_error').html("Please enter your name");
 				valid = false;
 			}
-			
-			
-			
 			if(!valid)
 			{
 				return false;
 			}
-			
 		});
-
-		
 	});
-
 	
 	function isEmail(email) {
 		  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -174,7 +150,6 @@
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -203,7 +178,6 @@
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -271,6 +245,21 @@
 							<label>Designation<span class="req">*</span></label>
 							<form:input path="designation"  />
 							<span class="error designation_error">&nbsp;<form:errors path="designation" /> </span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Pan No<span class="req">*</span></label>
+							<form:input path="panno" onchange="checkUserExistance()" />
+							<span class="error panno_error">&nbsp;<form:errors path="panno" /> </span>
+						</div>
+					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Service Tax No<span class="req">*</span></label>
+							<form:input path="stno"  />
+							<span class="error stno_error">&nbsp;<form:errors path="stno" /> </span>
 						</div>
 					</div>
 					
