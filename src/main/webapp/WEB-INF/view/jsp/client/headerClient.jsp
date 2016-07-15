@@ -118,7 +118,7 @@ function getMessages(){
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<a href='clientapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
-							"<span class='post-title'>"+val.ptitle+"</span>.</div></a>");
+							"<span class='post-title'>"+val.ptitle+"</span>.</div></a> Date: "+val.msgdate);
 				});
 			}
 			else
@@ -152,7 +152,7 @@ function getNotifications(){
 			if(obj.mList.length > 0)
 			{
 				$.each(obj.mList , function(i, val) {
-					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+"</p></div>");
+					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+  "</p></div>Date: "+val.msgdate);
 				});
 			}
 			else

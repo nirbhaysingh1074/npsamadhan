@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.unihyr.constraints.DateFormats;
 import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.domain.BillingDetails;
 import com.unihyr.domain.CandidateProfile;
@@ -1622,6 +1624,7 @@ public class ClientController
 				jm.put("ptitle", m.getPostProfile().getPost().getTitle());
 				jm.put("message", m.getMessage());
 				jm.put("ppid", m.getPostProfile().getPpid());
+				jm.put("msgdate", DateFormats.getTimeValue(m.getCreateDate()));
 				array.add(jm);
 			}
 			object.put("mList", array);
@@ -1681,7 +1684,7 @@ public class ClientController
 			{
 				jm = new JSONObject();
 				jm.put("notification", m.getNotification());
-				
+				jm.put("msgdate", DateFormats.getTimeValue(m.getDate()));
 				array.add(jm);
 			}
 			object.put("mList", array);

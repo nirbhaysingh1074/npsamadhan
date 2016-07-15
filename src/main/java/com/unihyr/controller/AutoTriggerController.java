@@ -32,7 +32,6 @@ import com.unihyr.util.ApplicationContextProvider;
 @Component
 public class AutoTriggerController
 {
-
 	@Autowired 
 	private PostProfileService postProfileService;
 	@Autowired 
@@ -40,7 +39,6 @@ public class AutoTriggerController
 	@Autowired 
 	private MailService mailService;
 	@Autowired BillingService billingService;
-
 
 	/**
 	 * method to check that if any post is idle or not 
@@ -51,6 +49,7 @@ public class AutoTriggerController
 		List<Post> list = postService.getAllActivePosts();
 		for (Post post : list)
 		{
+			if(post.isActive()&&post.getCloseDate()==null){
 			if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()))
 			{
 				post.setCloseDate(new Date());
@@ -86,7 +85,7 @@ public class AutoTriggerController
 					e.printStackTrace();
 				}
 				}
-		}
+		}}
 		return false;
 	}
 
@@ -99,6 +98,7 @@ public class AutoTriggerController
 		List<BillingDetails> list = billingService.getAllDetailsUnverified();
 		for (BillingDetails bill : list)
 		{
+			if(!bill.getVerificationStatus()){
 			Date today = new Date();
 			Date submitted = null;
 			submitted = bill.getCreateDate();
@@ -114,6 +114,7 @@ public class AutoTriggerController
 					e.printStackTrace();
 				}
 				System.out.println("Days: " + TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS));
+			}
 			}
 		}
 		return false;

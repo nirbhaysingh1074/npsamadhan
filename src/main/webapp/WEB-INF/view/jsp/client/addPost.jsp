@@ -191,11 +191,9 @@ Registration registration=(Registration)request.getAttribute("registration");
 	<div class="mid_wrapper">
 	  <div class="container">
 	    <div class="form_cont">
-          <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data">
+          <form:form method="POST" action="clientaddpost" commandName="postForm" enctype="multipart/form-data" onsubmit="return validateForm()">
 	      <div class="block">
-	     
 	        <div class="form_col">
-	          
 	          <dl>
 	            <dt>
 	              <label>Title<span class='error'>*</span></label>
@@ -204,8 +202,8 @@ Registration registration=(Registration)request.getAttribute("registration");
 	              <form:input path="title"  />
 	              <span class='error title_error'>&nbsp;<form:errors path="title" /></span>
 	            </dd>
-	          </dl>
-	     <dl>
+	          	</dl>
+	     		<dl>
 					<dt>
 						<label>Upload JD <span title='Allowed doc type  : .docx, .doc, .pdf &#013Allowed doc size : 1MB '>(?)</span></label>
 					</dt>

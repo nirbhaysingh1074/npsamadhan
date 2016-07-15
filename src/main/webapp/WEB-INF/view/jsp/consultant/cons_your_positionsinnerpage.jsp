@@ -136,8 +136,6 @@
     </div>
     </sec:authorize>  --%>
     <%} %>
-	
-	
 				<div class="profiles_col">
 					<div class="rightside_in new_table" id="positions_info" style="padding-right: 0px;">
 						<div class="block consulting">
@@ -147,13 +145,9 @@
 								if(request.getAttribute("quataExceed")!=null){
 								quataExceed = (Boolean)request.getAttribute("quataExceed");
 								}
-								System.out.println(post+"dfgsd"+request.getAttribute("quataExceed"));
-								
 								%>
-								
 								<%
 									if (postConsList != null && !postConsList.isEmpty()) {
-
 										if (post.getCloseDate() != null) {
 								%>
 								<a style="padding: 5px 13px;" href="javascript:void(0)"
@@ -233,10 +227,21 @@
 		                 	<%if(post!=null&&post.getUpdateInfo()!=null){
 		                 		%>
 		                 <marquee width="100%"><%=post.getUpdateInfo() %></marquee>
-		                 	<%} %>
+		                 	<%} %>  
+		                 	
+		                 	 
+			                <%if(post.getCloseDate()!=null) {%>
+			             
+						<marquee>
+						<font color="red">This post has been closed. You can not submit profiles.</font>						
+						</marquee>
+						<%} %>
 			                 </div>
 							
 						</div>
+						
+						
+						
 						<div class="candidate_profiles_for_cons">
 							<%
 								if(profileList != null)

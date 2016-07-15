@@ -305,13 +305,17 @@ pleaseWait();
 		            <option value="withdrawDate">Withdrawn</option>
 		          </select>
 		        </div>
-		       
+		     
 		        <div style="float: right;margin-right: 20px;">
 							<label style="line-height: 27px;"><input onchange="loadclientposts('1');" type="checkbox" name="excludeType"   value="rejected"/> Include Rejected</label>
 							</div> <%} %>
 						</div>
 						
-						
+						<%if(post.getCloseDate()!=null) {%>
+						<marquee style="margin-left: 20px;margin-right: 20px;">
+						<font color="red">This post has been closed.</font>						
+						</marquee>
+						<%} %>
 						<div id="candidate_profiles" class="rightside_in new_table "
 							style="display: <%if (ppList == null) {%>none<%}%>">
 							<!--           ----------------------------  inner data start --------------------- -->
@@ -424,7 +428,7 @@ pleaseWait();
 									<td align="center"><%=pp.getProfile().getCurrentCTC()%></td>
 									<td align="center"><%=pp.getProfile().getNoticePeriod()%></td>
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
-<%
+									<%
 												String status = "";
 												if (pp.getWithdrawDate() != null) {
 													status = "Withdrawn";
