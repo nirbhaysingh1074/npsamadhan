@@ -30,15 +30,14 @@
 jQuery(document).ready(function() {
 	$.ajax({
 		type : "GET",
-		url : "consmessages",
-		 async: false,
+		url : "conscountmessages",
+		async: false,
 		data : {},
 		contentType : "application/json",
 		success : function(data) {
-			var obj = jQuery.parseJSON(data);
-			if(obj.mList.length > 0)
-			{
-				$('#messageCount').html(obj.mList.length);
+			if(data!='0'){
+				$('#messageCount').css("display","block");
+				$('#messageCount').html(data);
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
@@ -46,14 +45,13 @@ jQuery(document).ready(function() {
 	}) ;
 	$.ajax({
 		type : "GET",
-		url : "getUserNotifications",
+		url : "countUserNotifications",
 		data : {},
 		contentType : "application/json",
 		success : function(data) {
-			var obj = jQuery.parseJSON(data);
-			if(obj.mList.length > 0)
-			{
-				$('#notificationCount').html(obj.mList.length);
+			if(data!='0'){
+				$('#notificationCount').css("display","block");
+				$('#notificationCount').html(data);
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
@@ -77,7 +75,7 @@ function getMessages(){
 			{
 				$('.notification .noti_inner').html("");
 				$('.noti_title').html("Messages");
-				$('#messageCount').html(obj.mList.length);
+				$('#messageCount').css("display","none");
 				$.each(obj.mList , function(i, val) {
 				$('.notification .noti_inner').append("<a href='consapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
@@ -86,6 +84,7 @@ function getMessages(){
 			}
 			else
 			{
+				$('#messageCount').css("display","none");
 				$('.notification .noti_inner').append("<p>No message available</p>");
 			}
 			pleaseDontWait();
@@ -110,13 +109,14 @@ function getNotifications(){
 		$('.noti_title').html("Notifications");
 			if(obj.mList.length > 0)
 			{
-				$('#notificationCount').html(obj.mList.length);
+				$('#notificationCount').css("display","none");
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+"</p></div>");
 				});
 			}
 			else
 			{
+				$('#notificationCount').css("display","none");
 				$('.notification .noti_inner').append("<p>No notification available</p>");
 			}
 			pleaseDontWait();

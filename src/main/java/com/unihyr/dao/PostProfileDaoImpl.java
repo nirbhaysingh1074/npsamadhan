@@ -499,10 +499,12 @@ public class PostProfileDaoImpl implements PostProfileDao
 			String[] cons=contact.split(",");
 //			Criterion contactcheck = Restrictions.eq("profileAlias.contact", contact);
 			try{
+				if(cons.length==2)
 			criteria.add(Restrictions.eq("profileAlias.countryCode", cons[1]));
 			criteria.add(Restrictions.eq("profileAlias.contact", cons[0]));
 			}catch(Exception e){
 				e.printStackTrace();
+				return false;
 			}
 			}
 		

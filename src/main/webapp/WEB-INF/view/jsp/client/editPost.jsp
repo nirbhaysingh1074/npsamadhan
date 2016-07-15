@@ -66,8 +66,7 @@ jQuery(document).ready(function() {
 		if(!flagg){
 		e.preventDefault();
 		
-		alertify.confirm("Are you sure you want to edit this post ?", function (e, str) {
-			if (e) {
+		
 				var title = $('#title').val();
 				var location = $('#location').val();
 				var fun = $('#function').val();
@@ -151,11 +150,13 @@ jQuery(document).ready(function() {
 					return false;
 				}
 				else{
+					alertify.confirm("Are you sure you want to edit this post ?", function (e, str) {
+						if (e) {
 					flagg=true;
 				$('form#updatepost').submit();
-				}
+				}});
 		}
-			});
+			
 		}
 	});
 	

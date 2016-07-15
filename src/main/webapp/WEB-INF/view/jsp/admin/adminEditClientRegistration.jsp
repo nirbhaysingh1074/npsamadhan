@@ -344,13 +344,19 @@
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>City<span class="req">*</span></label>
 							<form:select path="officeLocations" >
-								<form:option value="">Select City</form:option>
 								<%
 	              				List<String> locList1=GeneralConfig.topLocations;
 	              				for(String loc:locList1){
+	              					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc) )
+	            					{
 	              					%>
-						   				<form:option value="<%=loc %>"><%=loc %></form:option>
+						   				<form:option value="<%=loc %>" selected="selected"><%=loc %></form:option>
 	              					<%
+	            					}else{
+	            						%>
+						   				<form:option value="<%=loc %>"><%=loc %></form:option>
+	            						<%
+	            					}
 	              				}
 	              				%>
 								
@@ -365,7 +371,8 @@
 			            						%>
 			            							<form:option value="<%= loc.getLocation() %>" selected = "selected"><%= loc.getLocation() %></form:option>
 			            						<%
-			            					}}
+			            					}
+			            						}
 			            					else
 			            					{
 			            						if(!locList1.contains(loc.getLocation())){
@@ -377,7 +384,7 @@
 			            				}
 			            			}
 			            		%>
-			            	</form:select>
+							</form:select>
 							
 <%-- 							<form:input path="officeLocations"   /> --%>
 							<span class="error officeLocations_error">&nbsp;<form:errors path="officeLocations"  /></span>
@@ -388,7 +395,7 @@
 					<div class="clearfix"></div>
 					<div class="login-footer bottom-padding clearfix">
 						<div class="form_submt bottom-padding10" class='clearfix'>
-					        <button type="submit" class="btn_submit btn-login btn yelo_btn" >Edit Details</button>
+					        <button type="submit" class="btn_submit btn-login btn yelo_btn" >Edit User Details</button>
 					    </div>
 					</div>
 				</form:form>

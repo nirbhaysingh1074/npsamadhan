@@ -47,4 +47,9 @@ public class NotificationServiceImpl implements NotificationService
 		return notificationDao.getNotificationByUserid(userid, first, max);
 	}
 
+	@Override
+	public Long countUserNotifications(String loggedinUser)
+	{
+		return this.notificationDao.countUserNotification(loggedinUser);
+	}
 }

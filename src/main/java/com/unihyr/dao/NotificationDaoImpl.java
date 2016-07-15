@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -59,17 +60,7 @@ public class NotificationDaoImpl implements NotificationDao
 	@SuppressWarnings("unchecked")
 	public List<Notifications> getNotificationByUserid(String userid, int first, int max)
 	{
-		/*
-		return this.sessionFactory.getCurrentSession().createCriteria(Notifications.class)
-				.createAlias("postProfile", "ppAlias")
-				.createAlias("ppAlias.post", "postAlias")
-				.createAlias("postAlias.client", "clientAlias")
-				.createAlias("ppAlias.profile", "prAlias")
-				.createAlias("prAlias.registration", "regAlias")
-				.add(Restrictions.or(Restrictions.eq("clientAlias.userid", userid),Restrictions.eq("regAlias.userid", userid),Restrictions.eq("userid","userid")))
-				.addOrder(Order.desc("createDate"))
-				.list();*/	
-		
+			
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MONTH, -1);
 		cal.add(Calendar.DAY_OF_MONTH, 1);
@@ -85,6 +76,14 @@ public class NotificationDaoImpl implements NotificationDao
 				.addOrder(Order.desc("date"))/*.add(Restrictions.between("date", start , end ))*/
 				.list();
 	}
-	
+
+	@Override
+	public Long countUserNotification(String loggedinUser)
+	{
+		return (Long)this.sessionFactory.getCurrentSession().createCriteria(Notifications.class)
+				.add(Restrictions.eq("userid",loggedinUser))
+				.add(Restrictions.eq("readStatus", false))
+				.setProjection(Projections.rowCount()).uniqueResult();
+	}
 	
 }

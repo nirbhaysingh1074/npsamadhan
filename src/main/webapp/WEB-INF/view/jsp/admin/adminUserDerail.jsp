@@ -257,7 +257,7 @@
 				                      </div>
 				                    </div>
 				                    <div class="form-group col-md-6 col-sm-12">
-				                      <label class="col-sm-4 control-label" for="inputEmail3">Office Address</label>
+				                      <label class="col-sm-4 control-label" for="inputEmail3">Locations</label>
 				                      <div class="col-sm-8">
 				                        <label   class="form-control" ><%= userDetail.getOfficeLocations()%></label>
 				                      </div>

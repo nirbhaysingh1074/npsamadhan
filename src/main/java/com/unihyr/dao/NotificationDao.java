@@ -13,7 +13,8 @@ public interface NotificationDao
 	public List<Notifications> getNotificationsByPostprofile(long ppid, int first, int max);
 	
 	public List<Notifications> getNotificationByUserid(String userid, int first, int max);
-	
+
+	public Long countUserNotification(String loggedinUser);
 	
 	
 }

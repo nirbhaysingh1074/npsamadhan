@@ -66,38 +66,36 @@ jQuery(document).ready(function() {
 </script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-$.ajax({
-	type : "GET",
-	url : "clientmessages",
-	data : {},
-	contentType : "application/json",
-	success : function(data) {
-		var obj = jQuery.parseJSON(data);
-		if(obj.mList.length > 0)
-		{
-			$('#messageCount').html(obj.mList.length);
-		}
-	},
-	error: function (xhr, ajaxOptions, thrownError) {
-      }
-}) ;
 
+	$.ajax({
+		type : "GET",
+		url : "clientcountmessages",
+		data : {},
+		contentType : "application/json",
+		success : function(data) {
+			if(data!='0'){
+				$('#messageCount').css("display","block");
+				$('#messageCount').html(data);
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	      }
+	}) ;
 
-$.ajax({
-	type : "GET",
-	url : "getUserNotifications",
-	data : {},
-	contentType : "application/json",
-	success : function(data) {
-		var obj = jQuery.parseJSON(data);
-		if(obj.mList.length > 0)
-		{
-			$('#notificationCount').html(obj.mList.length);
-		}
-	},
-	error: function (xhr, ajaxOptions, thrownError) {
-      }
-}) ;
+	$.ajax({
+		type : "GET",
+		url : "countUserNotifications",
+		data : {},
+		contentType : "application/json",
+		success : function(data) {
+			if(data!='0'){
+				$('#notificationCount').css("display","block");
+				$('#notificationCount').html(data);
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	      }
+	}) ;
 });
 
 
@@ -116,7 +114,7 @@ function getMessages(){
 		$('.noti_title').html("Messages");
 			if(obj.mList.length > 0)
 			{
-				$('#messageCount').html(obj.mList.length);
+				
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<a href='clientapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
@@ -132,6 +130,10 @@ function getMessages(){
 		error: function (xhr, ajaxOptions, thrownError) {
 	      }
     }) ;
+	
+
+				$('#messageCount').css("display","none");
+		
 }
 
 function getNotifications(){
@@ -149,7 +151,6 @@ function getNotifications(){
 		$('.noti_title').html("Notifications");
 			if(obj.mList.length > 0)
 			{
-				$('#notificationCount').html(obj.mList.length);
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+"</p></div>");
 				});
@@ -163,6 +164,10 @@ function getNotifications(){
 		error: function (xhr, ajaxOptions, thrownError) {
 	      }
     }) ;
+	
+
+			$('#notificationCount').css("display","none");
+	
 }
 </script>
 </head>
@@ -205,23 +210,20 @@ function getNotifications(){
 				<div class="icon "  >
 					<img class="messageIcon" src="images/mailbox.png">
 					
-					<span id="messageCount" class="messageCount" ></span>
+					<span id="messageCount" class="messageCount" style="display: none;"></span>
 				</div>
 			</div>
 			<div class="noti-icon more_product" onclick="getNotifications()">
 				<div class="icon "  >
-					<img style="" src="images/reminder.png">
+					<img  src="images/reminder.png">
 					
-					<span id="notificationCount" class="notificationCount" ></span>
+					<span id="notificationCount" class="notificationCount" style="display: none;" ></span>
 				</div>
 			</div>
 			<div class="user_noti_content arrow_box_1">
 				<div class="noti_title">Messages</div>
 				<div class="noti_inner ">
-					<!-- <div class="noti_row" title="text message ">
-						<span class="noti-cons">Uni Consultant</span> send a message on  
-						<span class="post-title">post title</span>.
-					</div> -->
+					
 				</div>
 			</div>
 		</div>

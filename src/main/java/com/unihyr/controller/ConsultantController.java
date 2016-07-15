@@ -190,6 +190,10 @@ public class ConsultantController
 			map.addAttribute("locList", locationService.getLocationList());
 			map.addAttribute("qListUg",qualificationService.getAllUGQualification());
 			map.addAttribute("qListPg",qualificationService.getAllPGQualification());
+			
+			
+			
+			
 			return "uploadprofile";
 		}
 		return "redirect:consdashboard";
@@ -358,6 +362,15 @@ public class ConsultantController
 				pp.setProfile(profile);
 				long ppid = postProfileService.addPostProfile(pp);
 				map.addAttribute("upload_success", true);
+				Notifications nser=new Notifications();
+				nser.setDate(new java.sql.Date(new Date().getTime()));
+				nser.setNotification("New profile of <a href='clientapplicantinfo?ppid="+pp.getProfile().getProfileId()+"' >"
+						+pp.getProfile().getName()+"</a> has been uploaded on  <a href='clientpostapplicants?pid="
+							+ post.getPostId() + "' >" + post.getTitle() + "</a> by "+pp.getProfile().getRegistration().getConsultName());
+				nser.setUserid(pp.getPost().getClient().getUserid());
+				notificationService.addNotification(nser);
+				
+				
 				return "redirect:consapplicantinfo?ppid=" + ppid;
 
 			} catch (IOException ie)
@@ -1060,10 +1073,7 @@ e.printStackTrace();
 	@RequestMapping(value = "/consacceptoffer", method = RequestMethod.GET)
 	public @ResponseBody String consacceptoffer(ModelMap map, HttpServletRequest request, Principal principal)
 	{
-
 		String subject = "Subject";
-		//String content = "Content";
-		boolean st = false;
 		JSONObject obj = new JSONObject();
 		try
 		{
@@ -1077,13 +1087,10 @@ e.printStackTrace();
 				reg =reg.getAdmin(); 
 			}
 			String loggedinUser=reg.getUserid();
-			
 			Post post = pp.getPost();
 			Registration consultant = registrationService.getRegistationByUserId(loggedinUser);
 			if (pp != null)
 			{
-				// Date date = new Date();
-				// java.sql.Date dt = new java.sql.Date(date.getTime());
 				pp.setActionPerformerId(principal.getName());
 				if (ppstatus.equals("join_accept"))
 				{
@@ -1109,77 +1116,42 @@ e.printStackTrace();
 						e.printStackTrace();
 					}
 					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
-					Set<Industry> industry = client.getIndustries();
-					Iterator<Industry> inIterator = industry.iterator();
-					Industry in = null;
-					while (inIterator.hasNext())
-					{
-						in = (Industry) inIterator.next();
-					}
 					billingService.updateBillingDetails(billingDetailscl);
-					/*
-					 * List<GlobalRatingPercentile>
-					 * gp=globalRatingPercentileService.
-					 * getGlobalRatingListByIndustryAndConsultant(in.getId(),
-					 * consultant.getUserid()); GlobalRatingPercentile
-					 * postConsultant=gp.get(0);
-					 * postConsultant.setOfferJoin(postConsultant.getOfferJoin()
-					 * +1); globalRatingPercentileService.updateGlobalRating(
-					 * postConsultant);
-					 */
 					String clientId = pp.getProfile().getRegistration().getUserid();
-				//	mailService.sendMail(clientId, subject, content);
-					// string variable to hold bill invoice html to send for
-					// verification purpose.
 					BillingDetails bill = billingService.getBillingDetailsById(ppid);
 					String billInvoiceHtml = createBillInvoice(bill, clientId);
 					bill.setInvoicePath(billInvoiceHtml);
 					billingService.updateBillingDetails(bill);
 					String mailContent="Dear Sir/Madam<br><br>"+
- 
 					"Congratulations on closing your position on UniHyr.<br><br>"+
-					 
 					"Please find below the details of the closed position. You can view the invoice <a href='" + GeneralConfig.UniHyrUrl + "data/" + billInvoiceHtml
-												+ "' >here</a>.Please click the following link to <a href='" + GeneralConfig.UniHyrUrl
-												+ "verifyBillingDetails?billId=" + bill.getBillId() + "' >verify</a> the invoice.<br><br>"
-														+ "In case of any errors, please reply to this mail. If there is no response for a period of 7 days, the invoice will be deemed as Verified."
-														+ "<br><br>"+
-					 
+					+ "' >here</a>.Please click the following link to <a href='" + GeneralConfig.UniHyrUrl
+					+ "verifyBillingDetails?billId=" + bill.getBillId() + "' >verify</a> the invoice.<br><br>"
+					+ "In case of any errors, please reply to this mail. If there is no response for a period of 7 days, the invoice will be deemed as Verified."
+					+ "<br><br>"+
 					"<h3>Details</h3><br>"+
-					 
 					"<table style='width:80%;border:1px solid #000;'><tr><td>Position Name</td><td>"+bill.getPosition()+"</td></tr>"+
-					 
 					"<tr><td>Candidate Name</td><td>"+bill.getCandidatePerson()+"</td></tr>"+
-					 
 					"<tr><td>Location of Joining</td><td>"+bill.getLocation()+"</td></tr>"+
-					 
 					"<tr><td>Total CTC (INR lacs)</td><td>"+bill.getTotalCTC()+"</td></tr>"+
-					 
 					"<tr><td>Billable CTC (INR lacs)</td><td>"+bill.getBillableCTC()+"</td></tr>"+
-					 
 					"<tr><td>Joining Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getJoiningDate())+"</td></tr>"+
-					 
 					"<tr><td>Recruitment Fee% (as per contract)</td><td>"+bill.getFeePercentForClient()+"</td></tr>"+
-					 
 					"<tr><td>Recruitment Fee (INR)</td><td>"+bill.getFee()+"</td></tr>"+
-					
 					"<tr><td>Service Tax @14%</td><td>"+GeneralConfig.TAX+"</td></tr>"+
-					 
 					"<tr><td>Swach Bharat Cess @ 0.5%</td><td>"+GeneralConfig.CESS+"</td></tr>"+
-					 
 					"<tr><td>Total Invoice Amount (INR)</td><td>"+bill.getTotalAmount()+"</td></tr>"+
-					 
 					"<tr><td>Payment Days (as per contract) (days)</td><td>"+payDay+"</td></tr>"+
-					 
 					"<tr><td>Payment Due Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForAd())+"</td></tr></table>";
 					mailContent+="<br><br> Best Regards,<br>"+
 					"UniHyr Admin Team";
 					mailService.sendMail(pp.getPost().getClient().getUserid(), "Bill Invoice verfication",mailContent);
-					String	content= pp.getProfile().getName() +" has accepted offer for the "+post.getTitle()+" ("+(client.getOrganizationName())+")" ;
+					String	content= pp.getProfile().getName() +" has accepted offer for the  <a href='clientpostapplicants?pid="
+							+ post.getPostId() + "' >" + post.getTitle() + "</a>  ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
 					nser.setDate(new java.sql.Date(new Date().getTime()));
 					nser.setNotification(content);
-					nser.setUserid(principal.getName());
+					nser.setUserid(pp.getPost().getClient().getUserid());
 					notificationService.addNotification(nser);
 					obj.put("status", "join_accept");
 				} 
@@ -1191,7 +1163,6 @@ e.printStackTrace();
 					pp.setJoinDropDate(dt);
 					pp.setRejectReason(rej_reason);
 					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
-
 					Set<Industry> industry = client.getIndustries();
 					Iterator<Industry> inIterator = industry.iterator();
 					Industry in = null;
@@ -1199,22 +1170,19 @@ e.printStackTrace();
 					{
 						in = (Industry) inIterator.next();
 					}
-
 					List<GlobalRatingPercentile> gp = globalRatingPercentileService
 							.getGlobalRatingListByIndustryAndConsultant(in.getId(), consultant.getUserid());
 					GlobalRatingPercentile postConsultant = gp.get(0);
 					postConsultant.setOfferDrop(postConsultant.getOfferDrop() + 1);
 					globalRatingPercentileService.updateGlobalRating(postConsultant);
-					
-					
 					closePost(client);
-					String	content= pp.getProfile().getName() +" has rejected offer for the "+post.getTitle()+" ("+(client.getOrganizationName())+")" ;
+					String	content= pp.getProfile().getName() +" has rejected offer for the  <a href='clientpostapplicants?pid="
+							+ post.getPostId() + "' >" + post.getTitle() + "</a>  ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
 					nser.setDate(new java.sql.Date(new Date().getTime()));
 					nser.setNotification(content);
-					nser.setUserid(principal.getName());
+					nser.setUserid(pp.getPost().getClient().getUserid());
 					notificationService.addNotification(nser);
-				
 					//st = mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_reject");
 				}else if (ppstatus.equals("candidate_withdraw")){
@@ -1224,20 +1192,17 @@ e.printStackTrace();
 					String rej_reason = request.getParameter("rej_reason");
 					pp.setRejectReason(rej_reason);
 					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
-
-					String	content= pp.getProfile().getName() +" had withdrawn candidature for the "+post.getTitle()+" ("+(client.getOrganizationName())+")" ;
+					String	content= pp.getProfile().getName() +" had withdrawn candidature for the  <a href='clientpostapplicants?pid="
+							+ post.getPostId() + "' >" + post.getTitle() + "</a>   ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
 					nser.setDate(new java.sql.Date(new Date().getTime()));
 					nser.setNotification(content);
-					nser.setUserid(principal.getName());
+					nser.setUserid(pp.getPost().getClient().getUserid());
 					notificationService.addNotification(nser);
 					String consultId=pp.getProfile().getRegistration().getUserid();
 					subject="UniHyr Alert : Candidature Withdrawn - "+consultId+"," +pp.getPost().getTitle();
-							
 					String mailContent="Dear Employer,<br><br>"+
- 
 					"Candidature of the following candidate has been withdrawn by the hiring partner.<br><br>"+
- 
 					"<table style='width:100%;border:1px solid #dcdcdc;'>"+
 					 "<tr><td>Candidate Name</td><td>"+consultId+"</td>"+
 					 "<tr><td>Position</td><td>"+pp.getPost().getTitle()+"</td>"+
@@ -1460,6 +1425,29 @@ e.printStackTrace();
 
 	}
 
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
+	@RequestMapping(value = "/conscountmessages", method = RequestMethod.GET)
+	public @ResponseBody String conscountmessages(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+		Long count = inboxService.countMessageByConsultant(loggedinUser);
+		
+		return ""+count;
+	}
+	
+	
 	@RequestMapping(value = "/consmessages", method = RequestMethod.GET)
 	public @ResponseBody String consmessages(ModelMap map, HttpServletRequest request, Principal principal)
 	{
@@ -1473,6 +1461,14 @@ e.printStackTrace();
 		String loggedinUser=reg.getUserid();
 		
 		List<Inbox> mList = inboxService.getMessageByConsultant(loggedinUser, 0, 100);
+		for (Inbox inbox : mList)
+		{
+			if (!inbox.isViewed())
+			{
+				inbox.setViewed(true);
+				inboxService.updateInboxMessage(inbox);
+			}
+		}
 		JSONArray array = new JSONArray();
 		JSONObject jm = null;
 		try

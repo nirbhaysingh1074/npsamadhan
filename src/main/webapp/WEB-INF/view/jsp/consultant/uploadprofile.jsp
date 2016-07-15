@@ -164,8 +164,6 @@ function otherLocationInput(){
 				if(!flagg){
 				e.preventDefault();
 				
-				alertify.confirm("Are you interested for this post ?", function (e, str) {
-					if (e) {
 						var client = $('#cleintId').val();
 						var post = $('#postId').val();
 						var name = $('#name').val();
@@ -289,12 +287,15 @@ function otherLocationInput(){
 							return false;
 						}
 					else{
+
+						alertify.confirm("Are you sure you want to upload candidate profile ?", function (e, str) {
+							if (e) {
 						flagg=true;
 						$('form').submit();
-							}
+							}});
 					}
 					
-				});
+				
 				}
 				});
 		

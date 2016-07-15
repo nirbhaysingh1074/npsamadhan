@@ -542,7 +542,11 @@ public class ClientController
 				post.setProfileParDay(model.getProfileParDay());
 				post.setComment(model.getComment());
 				post.setAdditionDetail(model.getAdditionDetail());
+				if(post.getEditSummary()!=null)
 				post.setEditSummary(post.getEditSummary()+GeneralConfig.Delimeter+model.getEditSummary()+" Edit Date: "+dt);
+				else
+				post.setEditSummary(model.getEditSummary()+" Edit Date: "+dt);
+					
 				post.setWorkHourStartHour(model.getWorkHourStartHour());
 				post.setWorkHourEndHour(model.getWorkHourEndHour());
 				post.setFeePercent(model.getFeePercent());
@@ -925,11 +929,7 @@ public class ClientController
 	public @ResponseBody String clientacceptreject(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 
-		String subject = "Subject";
 		String content = "Content";
-		boolean st = false;
-		
-		
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
 		map.addAttribute("registration",reg);
@@ -969,9 +969,9 @@ public class ClientController
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
 						postProfile.setViewStatus(true);
 						postProfileService.updatePostProfile(postProfile);}
-					content= candidate +" has been shortlited for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+						content = candidate + " has been shortlited for the <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a> (" + (reg.getOrganizationName())
+							+ ")";
 					obj.put("status", "accepted");
 				}
 				else if(ppstatus.equals("reject"))
@@ -981,40 +981,38 @@ public class ClientController
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
 						postProfile.setViewStatus(true);
 						postProfileService.updatePostProfile(postProfile);}
-					content= candidate +" has been rejected for the "+position+" ("+(reg.getOrganizationName())+")" ;
-						
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					content= candidate +" has been rejected for the <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "rejected");
 				}
 				else if(ppstatus.equals("recruit") && pp.getAccepted() != null)
 				{
 					pp.setRecruited(dt);
-					content= candidate +" has been offered for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					content= candidate +" has been offered for the <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "recruited");
 				}
 				else if(ppstatus.equals("reject_recruit") && pp.getAccepted() != null)
 				{
 					pp.setDeclinedDate(dt);
-					content= candidate +" has been rejected for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					content= candidate +" has been rejected for the  <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "reject_recruit");
 				}
 				else if(ppstatus.equals("offer_accept") && pp.getAccepted() != null)
 				{
+					if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()))
+					{}else{
 					pp.setOfferDate(dt);
 					double totalCTC=Double.parseDouble(request.getParameter("totalCTC"));
 					double billableCTC=Double.parseDouble(request.getParameter("billableCTC"));
 					List<BillingDetails> bill=fillBillingDetails(pp,loggedinUser,request.getParameter("joiningDate"), totalCTC,billableCTC);
 					billingService.addBillingDetails(bill.get(0));
-					
-					
 					try{
 						if(post.getNoOfPosts()==(post.getNoOfPostsFilled()+1))
 						{
 							post.setNoOfPostsFilled(post.getNoOfPosts());
+							post.setCloseDate(dt);
 							postService.updatePost(post);	
 							insertValues(post.getPostId());
 							closePost(reg);
@@ -1022,22 +1020,20 @@ public class ClientController
 							post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
 							postService.updatePost(post);	
 						}
-						content= candidate +" offer has been accepted for the "+position+" ("+(reg.getOrganizationName())+")" ;
-						
-//						st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+						content= candidate +" offer has been accepted for the  <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					}catch(Exception e){
 						e.printStackTrace();
 						obj.put("status", "failed");
 					}
-					
 					obj.put("status", "offer_accept");
+				}
 				}
 				else if(ppstatus.equals("offer_reject") && pp.getAccepted() != null)
 				{
 					pp.setOfferDropDate(dt);
-					content= candidate +" offer has been rejected for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					content= candidate +" offer has been rejected for the  <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "offer_reject");
 				}
 				else
@@ -1051,7 +1047,6 @@ public class ClientController
 				notificationService.addNotification(nser);
 				postProfileService.updatePostProfile(pp);
 				return obj.toJSONString();
-				
 			}
 			
 			
@@ -1568,16 +1563,37 @@ public class ClientController
 
 	
 	
-	
+
 	/**
 	 * @param map
 	 * @param request
 	 * @param principal
 	 * @return
 	 */
-	@RequestMapping(value = "/clientmessages", method = RequestMethod.GET)
-	public @ResponseBody String clientmessages(ModelMap map, HttpServletRequest request ,Principal principal)
+	@RequestMapping(value = "/clientcountmessages", method = RequestMethod.GET)
+	public @ResponseBody String clientcountmessages(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
+
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+		Long count = inboxService.countMessageByClient(loggedinUser);
+		
+		return ""+count;
+	}
+		/**
+		 * @param map
+		 * @param request
+		 * @param principal
+		 * @return
+		 */
+		@RequestMapping(value = "/clientmessages", method = RequestMethod.GET)
+		public @ResponseBody String clientmessages(ModelMap map, HttpServletRequest request ,Principal principal)
+		{
 		JSONObject object = new JSONObject();
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
 		map.addAttribute("registration",reg);
@@ -1587,6 +1603,14 @@ public class ClientController
 		}
 		String loggedinUser=reg.getUserid();
 		List<Inbox> mList = inboxService.getMessageByClient(loggedinUser, 0, 100);
+		for (Inbox inbox : mList)
+		{
+			if(!inbox.isViewed()){
+				inbox.setViewed(true);
+				inboxService.updateInboxMessage(inbox);
+		}}
+		
+		
 		JSONArray array = new JSONArray();
 		JSONObject jm = null;
 		try
@@ -1613,10 +1637,24 @@ public class ClientController
 
 	}
 
-	
-	@RequestMapping(value = "/getUserNotifications", method = RequestMethod.GET)
-	public @ResponseBody String getUserNotifications(ModelMap map, HttpServletRequest request ,Principal principal)
-	{
+
+		@RequestMapping(value = "/countUserNotifications", method = RequestMethod.GET)
+		public @ResponseBody String countUserNotifications(ModelMap map, HttpServletRequest request ,Principal principal)
+		{
+			Registration reg = registrationService.getRegistationByUserId(principal.getName());
+			map.addAttribute("registration",reg);
+			if(reg.getAdmin() != null)
+			{
+				reg =reg.getAdmin(); 
+			}
+			String loggedinUser=reg.getUserid();
+			Long count = notificationService.countUserNotifications(loggedinUser);
+			return ""+count;
+		}
+		
+		@RequestMapping(value = "/getUserNotifications", method = RequestMethod.GET)
+		public @ResponseBody String getUserNotifications(ModelMap map, HttpServletRequest request ,Principal principal)
+		{
 		JSONObject object = new JSONObject();
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
@@ -1629,6 +1667,12 @@ public class ClientController
 		
 		
 		List<Notifications> mList = notificationService.getNotificationByUserid(loggedinUser, 0, 100);
+		for (Notifications notifications : mList)
+		{
+			if(!notifications.isReadStatus()){
+			notifications.setReadStatus(true);
+			notificationService.updateNotification(notifications);
+		}}
 		JSONArray array = new JSONArray();
 		JSONObject jm = null;
 		try

@@ -70,6 +70,7 @@
 							</div>
 <!-- 							Create an account for <a href="clientregistration">Employer</a> or <a href="consultantregistration">Consultant</a> -->
 						</form>
+						<a href="forgetpassword">Forget Password ?</a> 
 				</div>
 			</div>
 		</div>

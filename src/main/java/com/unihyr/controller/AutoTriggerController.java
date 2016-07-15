@@ -51,6 +51,12 @@ public class AutoTriggerController
 		List<Post> list = postService.getAllActivePosts();
 		for (Post post : list)
 		{
+			if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()))
+			{
+				post.setCloseDate(new Date());
+				postService.updatePost(post);
+			}
+			
 			List<PostProfile> profileList = postProfileService.getPostProfileByPostForStartup(post.getPostId(), 0, 1, "modificationDate");
 			Date today = new Date();
 			Date submitted = null;

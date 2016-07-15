@@ -19,5 +19,10 @@ public interface InboxService
 	public List<Inbox> getMessageByClient(String userid, int first, int max);
 	
 	public List<Inbox> getMessageByConsultant(String userid, int first, int max);
+
+	public Long countMessageByClient(String loggedinUser);
+
+	public Long countMessageByConsultant(String loggedinUser);
+
 	
 }

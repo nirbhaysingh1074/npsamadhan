@@ -65,38 +65,36 @@ jQuery(document).ready(function() {
 </script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-$.ajax({
-	type : "GET",
-	url : "clientmessages",
-	data : {},
-	contentType : "application/json",
-	success : function(data) {
-		var obj = jQuery.parseJSON(data);
-		if(obj.mList.length > 0)
-		{
-			$('#messageCount').html(obj.mList.length);
-		}
-	},
-	error: function (xhr, ajaxOptions, thrownError) {
-      }
-}) ;
 
+	$.ajax({
+		type : "GET",
+		url : "clientcountmessages",
+		data : {},
+		contentType : "application/json",
+		success : function(data) {
+			if(data!='0'){
+				$('#messageCount').css("display","block");
+				$('#messageCount').html(data);
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	      }
+	}) ;
 
-$.ajax({
-	type : "GET",
-	url : "getUserNotifications",
-	data : {},
-	contentType : "application/json",
-	success : function(data) {
-		var obj = jQuery.parseJSON(data);
-		if(obj.mList.length > 0)
-		{
-			$('#notificationCount').html(obj.mList.length);
-		}
-	},
-	error: function (xhr, ajaxOptions, thrownError) {
-      }
-}) ;
+	$.ajax({
+		type : "GET",
+		url : "countUserNotifications",
+		data : {},
+		contentType : "application/json",
+		success : function(data) {
+			if(data!='0'){
+				$('#notificationCount').css("display","block");
+				$('#notificationCount').html(data);
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	      }
+	}) ;
 });
 
 
@@ -115,7 +113,7 @@ function getMessages(){
 		$('.noti_title').html("Messages");
 			if(obj.mList.length > 0)
 			{
-				$('#messageCount').html(obj.mList.length);
+				
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<a href='clientapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
@@ -131,6 +129,10 @@ function getMessages(){
 		error: function (xhr, ajaxOptions, thrownError) {
 	      }
     }) ;
+	
+
+				$('#messageCount').css("display","none");
+		
 }
 
 function getNotifications(){
@@ -148,7 +150,6 @@ function getNotifications(){
 		$('.noti_title').html("Notifications");
 			if(obj.mList.length > 0)
 			{
-				$('#notificationCount').html(obj.mList.length);
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+"</p></div>");
 				});
@@ -162,6 +163,10 @@ function getNotifications(){
 		error: function (xhr, ajaxOptions, thrownError) {
 	      }
     }) ;
+	
+
+			$('#notificationCount').css("display","none");
+	
 }
 </script>
 </head>

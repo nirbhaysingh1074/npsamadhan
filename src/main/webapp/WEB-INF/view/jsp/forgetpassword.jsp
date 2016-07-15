@@ -28,13 +28,13 @@
 				</div>
 				<div class="login-wrap">
 						<%
-							String regSuccess = (String) request.getParameter("regSuccess");
-							if (regSuccess != null && regSuccess.equals("true"))
+							String regSuccess = (String) request.getAttribute("forgetpasswordres");
+							if (regSuccess != null && regSuccess.equals("notexist"))
 							{
-								String org = (String) request.getParameter("orgName");
+								String org = (String) request.getParameter("emailid");
 								%>
-									<h3 style="color: green;">
-										<b><%=org%></b> registered successfully !
+									<h3 style="color: red;">
+										<b><%=org%></b> not exist !
 									</h3>
 									<br>
 								<%
@@ -42,24 +42,17 @@
 						%>
 						
 
-						<c:if test="${param.error}">
-						    <div class="error" style="height: auto;">
-						        Your login attempt was not successful, try again.<br />
-						        Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
-						    </div>
-						    <br>
-						</c:if>
 						
 												
 						<form class="form-box" method="POST" action="forgetpassword">
 							<div style="padding-bottom: 10px;" class='clearfix'>
 								<label>User Id</label>
-								<input name="email" id="email" type="email" required="required">
+								<input name="emailid" id="emailid" type="email" required="required">
 							</div>
 							
 							<div class="form_submt alin_cnt bottom-padding10"
 								class='clearfix'>
-								<button type="submit" class=" btn-login btn btn-block yelo_btn" style="margin-left: 0px;">Login</button>
+								<button type="submit" class=" btn-login btn btn-block yelo_btn" style="margin-left: 0px;">Send</button>
 							</div>
 						</form>
 				</div>

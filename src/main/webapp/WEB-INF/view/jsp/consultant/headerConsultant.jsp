@@ -17,9 +17,8 @@
 <link href="css/font-awesome.css" type="text/css" media="all"rel="stylesheet" />
 <link rel="stylesheet" href="css/alertify.core.css" />
 <link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
-   <script src="//code.jquery.com/jquery-1.10.2.js"></script> 
-   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
-
+<script src="//code.jquery.com/jquery-1.10.2.js"></script> 
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.IE.js"></script>
 <script type="text/javascript" src="js/consult_js.js"></script>
@@ -28,23 +27,19 @@
 <script src="js/jquery.plugin.js"></script>
 <script type="text/javascript" src="js/jquery.datepick.js"></script>
 <link rel="stylesheet" href="css/jquery.datepick.css" />
-
-
 <script src="js/alertify.min.js"></script>
-
 <script type="text/javascript">
 jQuery(document).ready(function() {
 	$.ajax({
 		type : "GET",
-		url : "consmessages",
-		 async: false,
+		url : "conscountmessages",
+		async: false,
 		data : {},
 		contentType : "application/json",
 		success : function(data) {
-			var obj = jQuery.parseJSON(data);
-			if(obj.mList.length > 0)
-			{
-				$('#messageCount').html(obj.mList.length);
+			if(data!='0'){
+				$('#messageCount').css("display","block");
+				$('#messageCount').html(data);
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
@@ -52,14 +47,13 @@ jQuery(document).ready(function() {
 	}) ;
 	$.ajax({
 		type : "GET",
-		url : "getUserNotifications",
+		url : "countUserNotifications",
 		data : {},
 		contentType : "application/json",
 		success : function(data) {
-			var obj = jQuery.parseJSON(data);
-			if(obj.mList.length > 0)
-			{
-				$('#notificationCount').html(obj.mList.length);
+			if(data!='0'){
+				$('#notificationCount').css("display","block");
+				$('#notificationCount').html(data);
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
@@ -83,7 +77,7 @@ function getMessages(){
 			{
 				$('.notification .noti_inner').html("");
 				$('.noti_title').html("Messages");
-				$('#messageCount').html(obj.mList.length);
+				$('#messageCount').css("display","none");
 				$.each(obj.mList , function(i, val) {
 				$('.notification .noti_inner').append("<a href='consapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
@@ -92,6 +86,7 @@ function getMessages(){
 			}
 			else
 			{
+				$('#messageCount').css("display","none");
 				$('.notification .noti_inner').append("<p>No message available</p>");
 			}
 			pleaseDontWait();
@@ -116,13 +111,14 @@ function getNotifications(){
 		$('.noti_title').html("Notifications");
 			if(obj.mList.length > 0)
 			{
-				$('#notificationCount').html(obj.mList.length);
+				$('#notificationCount').css("display","none");
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+"</p></div>");
 				});
 			}
 			else
 			{
+				$('#notificationCount').css("display","none");
 				$('.notification .noti_inner').append("<p>No notification available</p>");
 			}
 			pleaseDontWait();
@@ -186,14 +182,14 @@ Registration reg = (Registration)request.getAttribute("registration");
 				<div class="icon "  >
 					<img  class="messageIcon"  src="images/mailbox.png">
 					
-					<span id="messageCount" class="messageCount" ></span>
+					<span id="messageCount" class="messageCount" style="display: none;"  ></span>
 				</div>
 			</div>
 			<div class="noti-icon more_product" onclick="getNotifications()">
 				<div class="icon "  >
 					<img style="" src="images/reminder.png">
 					
-					<span id="notificationCount" class="notificationCount" ></span>
+					<span id="notificationCount" class="notificationCount" style="display: none;" ></span>
 				</div>
 			</div>
 			<div class="user_noti_content arrow_box_1">

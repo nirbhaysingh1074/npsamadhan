@@ -33,13 +33,21 @@
 				<div class="login-wrap bottom-padding">
 						
 						<%
-							String regSuccess = (String) request.getParameter("regSuccess");
- 							if (regSuccess != null && regSuccess.equals("true"))
-						{
+						String regSuccess = (String) request.getAttribute("forgetpasswordres");
+						//System.out.println("asdfasdfasd"+regSuccess);
+							if (regSuccess != null && regSuccess.equals("true"))
+						{%>
+							<p>
+								You new password has been sent to your mail id. 
+							</p>
+						<%}
+								 regSuccess = (String) request.getParameter("regSuccess");
+	 							if (regSuccess != null && regSuccess.equals("true"))
+								{
 								String org = (String) request.getParameter("orgName");
 								%>
 									<form class="form-box bottom-padding" method="POST" action="j_spring_security_check" style="padding-bottom: 0px !important;">
-									<p >
+									<p>
 										Thank You for showing interest in UniHyr. Our representative will get in touch with you within 24 business hours . For any other information, please write to register@unihyr.com
 									</p>	
 									</form>

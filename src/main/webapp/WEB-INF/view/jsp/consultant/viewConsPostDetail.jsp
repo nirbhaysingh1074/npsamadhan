@@ -336,6 +336,7 @@
 						</dl>
 						
 						 
+						 
 						<%
 							if(post.getEditSummary() != null)
 							{
@@ -344,10 +345,18 @@
 										<dt>
 											<label>Edit Summary</label>
 										</dt>
-										<dd>
-											<label><%= post.getEditSummary() %></label>
+										
+											<%
+											String[] summary=post.getEditSummary().split(GeneralConfig.Delimeter);
+											for(int i=0;i<summary.length;i++){
+												if(summary[i]!=null&&summary[i]!=""&&!summary[i].equals("null")){
+											%>
+											<dd><label><%=summary[i] %></label></dd><dt>&nbsp;</dt>
+											<%												
+											}}
+											%>
 											
-										</dd>
+										
 									</dl>
 								<%
 							}

@@ -76,15 +76,17 @@ public class LoginController
 		return "forgetpassword";
 	}
 	@RequestMapping(value = "/forgetpassword", method = RequestMethod.POST)
-	public String forgetpassword(ModelMap map,@RequestParam String emailid)
+	public String forgetpassword(ModelMap map,HttpServletRequest request)
 	{
-		Registration registration = registrationService.getRegistrationsByName(emailid);
+		String emailid=(String)request.getParameter("emailid");
+		Registration registration = registrationService.getRegistationByUserId(emailid);
 		
 		
 		
-		if (registration != null)
+		if (registration == null)
 		{
-			map.addAttribute("uidex", "exist");
+			map.addAttribute("forgetpasswordres", "notexist");
+			map.addAttribute("emailid", emailid);
 			return "forgetpassword";
 		}else{
 			LoginInfo info = loginInfoService.findUserById(emailid);
@@ -92,8 +94,6 @@ public class LoginController
 
 				if (info != null)
 				{
-					info.setIsactive("true");
-					loginInfoService.updateLoginInfo(info);
 					loginInfoService.updatePassword(info.getUserid(), null, id);
 				}
 				
@@ -113,10 +113,14 @@ public class LoginController
 					+ "Username - " + registration.getUserid() + "<br>" + "Password - " + id + "<br><br><br>" +
 
 			"Regards,<br>" + "UniHyr Admin Team";
-
+			try{
 			mailService.sendMail(registration.getUserid(), "UniHyr - Forget Password", mailContent);
-			map.addAttribute("success", true);
-			return "regsuccess";
+			}catch(Exception e ){
+				e.printStackTrace();
+			}
+			map.addAttribute("forgetpasswordres", "true");
+			map.addAttribute("emailid", emailid);
+			return "regSuccess";
 		}
 	}
 
@@ -369,7 +373,7 @@ public class LoginController
 			loginInfoService.addLoginInfo(login, null);
 			map.addAttribute("regSuccess", "true");
 			map.addAttribute("orgName", reg.getOrganizationName());
-			return "redirect:/regSuccess";
+			return "redirect:/adminuserderail?userid="+reg.getUserid();
 		}
 	}
 	
@@ -392,8 +396,6 @@ public class LoginController
 		} else
 		{
 			Registration reg=registrationService.getRegistationByUserId(userid);
-			
-			
 			reg.setAbout(register.getAbout());
 			reg.setConsultName(register.getConsultName());
 			reg.setContact(register.getContact());
@@ -409,7 +411,6 @@ public class LoginController
 			reg.setPanno(register.getPanno());
 			reg.setStno(register.getStno());
 			reg.setYearsInIndusrty(register.getYearsInIndusrty());
-			
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
@@ -436,7 +437,6 @@ public class LoginController
 					}
 				}
 			}
-
 			registrationService.update(reg);
 			return "redirect:/adminuserlist";
 		}
@@ -599,7 +599,9 @@ public class LoginController
 			/*	mailService.sendMail(register.getUserid(), "Sign Up info",
 						"Your've signed up with UniHyr sucessfully. UniHyr will contact you soon for further process. <br><br> Your password is : "
 								+ id + "<br> After first login please change this password.");*/
-				return "redirect:/regSuccess";
+
+				return "redirect:/adminuserderail?userid="+reg.getUserid();
+				//return "redirect:/regSuccess";
 			} catch (Exception e)
 			{
 				e.printStackTrace();

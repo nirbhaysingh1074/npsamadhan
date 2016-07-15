@@ -160,7 +160,7 @@ line-height: 30px;
 height: 29px;">
 					
 					<a href="javascript:void(0)"><span style="padding: 0px 9px;
-    top: -16px;" class="close" title="Close" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');"><img style="    height: 40px;" src="images/close.png" /></span></a>
+    top: -16px;" class="close" title="Close" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');"><img style="height: 40px;" src="images/close.png" /></span></a>
 				</div>
 				<div class="login-wrap" style="padding: 10px;" id="profileClosed">
 				
@@ -225,11 +225,10 @@ if(reg!=null&&(reg.getFirstTime()==null||!reg.getFirstTime())){
 
 <div class="firstTimeLoginPopup" style="border:1px solid #f8b910;">
 				<div class="login-header" style="padding: 3px 3px 3px 2px;
-line-height: 44px;
-height: 30px;">
+					line-height: 44px;
+					height: 30px;">
 					<span class="close" title="close" style="top: -24px;"  onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')">
 					<img style="    height: 40px;" src="images/close.png"></span>
-					
 				</div>
 				<div class="login-wrap" style="padding: 10px;">
 				

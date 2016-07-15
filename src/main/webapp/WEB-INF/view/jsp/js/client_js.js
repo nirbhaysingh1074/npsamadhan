@@ -333,34 +333,28 @@ pleaseWait();
 			}
 			try{
 				joiningDate=$('#datepicker').val();
-				
-				
-			           
 			            var EnteredDate = joiningDate; // For JQuery
-
 			            var date = EnteredDate.substring(8, 10);
 			            var month = EnteredDate.substring(5, 7);
 			            var year = EnteredDate.substring(0, 4);
-
 			            var myDate = new Date(year, month - 1, date);
-
 			            var today = new Date();
-
 			            if (myDate > today) {
 			                flag=true;
+			                $('#errorJoiningDate').css('display','none');
 			            }
 			            else {
 			            	flag=false;
-			            	
-			                alert("Joining date is less than offer accept's date.");
+			            	$('#errorJoiningDate').html("Joining date is less than offer accept's date.");
 			                $('#datepicker').val('');
 			            }
-				
-			            if(flag&&Number(billableCTC)<=Number(totalCTC)){
-			            	 alert("Billable CTC should be less than or equal to Total CTC.");
-			            }
-			            
-				
+			            if(flag&&Number(billableCTC)>=Number(totalCTC)){
+								flag=false;
+								$('#errorTotalCTC').html('Billable CTC should be less than or equal to Total CTC.');
+								$('#errorTotalCTC').css('display','block');
+								}else{
+									$('#errorTotalCTC').css('display','none');
+								}
 			}catch(e){
 				
 			}

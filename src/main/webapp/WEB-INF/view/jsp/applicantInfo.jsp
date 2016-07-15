@@ -301,7 +301,7 @@ unviewed=0;
 			              		}
 				                %>
 				                </table>
-					              	<%
+					              	<%-- <%
 					            		boolean rejected =false;
 						              	 if(pp.getOfferDate() != null)
 					              		{ 
@@ -372,7 +372,7 @@ unviewed=0;
 					              			<%
 					              		}
 					              		
-					              	%>
+					              	%> --%>
 					            
 					            
 					              
@@ -448,7 +448,7 @@ unviewed=0;
 
 								
 							</div>
-							<%if(!rejected){ %>
+							<%if(pp.getPost().isActive()){ %>
 							<div class="bar_in">
 								<div style=" float: left;width: 100%;margin-bottom: 10px;">
 									<textarea id="msg_text" rows="2" cols="" style="height: 30px;"></textarea>

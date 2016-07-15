@@ -367,9 +367,16 @@ $(document).ready(function() {
 								<%
 	              				List<String> locList1=GeneralConfig.topLocations;
 	              				for(String loc:locList1){
+	              					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc) )
+	            					{
 	              					%>
-						   				<form:option value="<%=loc %>"><%=loc %></form:option>
+						   				<form:option value="<%=loc %>" selected="selected"><%=loc %></form:option>
 	              					<%
+	            					}else{
+	            						%>
+						   				<form:option value="<%=loc %>"><%=loc %></form:option>
+	            						<%
+	            					}
 	              				}
 	              				%>
 								
@@ -384,7 +391,8 @@ $(document).ready(function() {
 			            						%>
 			            							<form:option value="<%= loc.getLocation() %>" selected = "selected"><%= loc.getLocation() %></form:option>
 			            						<%
-			            					}}
+			            					}
+			            						}
 			            					else
 			            					{
 			            						if(!locList1.contains(loc.getLocation())){
@@ -426,9 +434,8 @@ $(document).ready(function() {
 					<div class="clearfix"></div>
 					<div class="login-footer bottom-padding clearfix">
 						<div class="form_submt bottom-padding10">
-							<button type="submit" class=" btn-login btn yelo_btn btn_submit">Sign up</button>
+							<button type="submit" class=" btn-login btn yelo_btn btn_submit">Edit User Details</button>
 						</div>
-						<a href="login"> Already have an account ?</a>
 					</div>
 				</form:form>
 			</div>
