@@ -122,7 +122,7 @@ pleaseWait();
 		while(it.hasNext())
 		{
 			PostProfile pp = it.next();
-			if(pp.getAccepted() != null)
+			if(pp.getAccepted() != null&&pp.getOfferDate()==null&&pp.getWithdrawDate()==null&&pp.getDeclinedDate()==null&&pp.getOfferDropDate()==null)
 			{
 				shortListed.add(pp.getPpid());
 			}
@@ -207,7 +207,7 @@ pleaseWait();
 	        	
 	        	<div class="col-md-4 report_sum" >
 		        	<div class="col-md-5">
-		        		Shortlisted
+		        		In Process
 		        	</div>
 		        	<div class="col-md-7">
 		        		<%=shortListed.size() %>
@@ -274,10 +274,10 @@ pleaseWait();
 								</div>		
   				<div class="sort_by"  id="filterDiv" > <span>Filter by Status</span>
 		          <select id="filterBy"  onchange="loadclientposts('1')">
-		            <option value="submitted">Submitted</option>
-		            <option value="pending">Pending</option>
+		            <option value="all">All Submitted</option>
+		            <option value="submitted">Pending</option>
 		            
-		            <option value="accepted">Shortlisted</option>
+		            <option value="accepted">In Process</option>
 		            
 		            <option value="recruited">Offer Sent</option>
 		            
@@ -288,10 +288,10 @@ pleaseWait();
 		        </div>
   				<div class="sort_by" id="filterDivIncRej" style="display: none;"> <span>Filter by Status</span>
 		          <select id="filterByRej"  onchange="loadclientposts('1')">
-		            <option value="submitted" selected="selected">Submitted</option>
-		            <option value="pending">Pending</option>
+		            <option value="all" selected="selected">All Submitted</option>
+		            <option value="submitted">Pending</option>
 		            
-		            <option value="accepted">Shortlisted</option>
+		            <option value="accepted">In Process</option>
 		            <option value="rejected">CV Rejected</option>
 		            
 		            <option value="recruited">Offer Sent</option>
@@ -311,14 +311,13 @@ pleaseWait();
 							</div> <%} %>
 						</div>
 						
-						<%if(post.getCloseDate()!=null) {%>
+						<%if(post!=null&&post.getCloseDate()!=null) {%>
 						<marquee style="margin-left: 20px;margin-right: 20px;">
 						<font color="red">This post has been closed.</font>						
 						</marquee>
 						<%} %>
 						<div id="candidate_profiles" class="rightside_in new_table "
 							style="display: <%if (ppList == null) {%>none<%}%>">
-							<!--           ----------------------------  inner data start --------------------- -->
 							<%
 								if (ppList != null) {
 									Set<Registration> consultants = new HashSet<Registration>();
@@ -328,7 +327,6 @@ pleaseWait();
 										}
 									}
 									int totalCount =  ((Integer)request.getAttribute("totalCount"));
-									//int pn = (Integer) request.getAttribute("pn");
 									int rpp = (Integer) request.getAttribute("rpp");
 									int tp = 0;
 									String cc = "";

@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -1221,16 +1222,18 @@ public class PostDaoImpl implements PostDao
         {
         	if(status.equals("active"))
         	{
-        		criteria.add(Restrictions.eq("isActive", true));
+        		criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNull("closeDate"));
         	}
         	else if(status.equals("inactive"))
         	{
-        		criteria.add(Restrictions.eq("isActive", false));
+        		criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNull("closeDate"));
+        	}else if(!status.equals("all")){
+        		criteria.add(Restrictions.isNotNull(status));
         	}
         }
         if(location != null && location.trim().length() > 0 )
         {
-        	criteria.add(Restrictions.eq("location",location));
+        	criteria.add(Restrictions.like("location",location, MatchMode.ANYWHERE));
         }
         
         if(sortParam.indexOf("published")>=0)

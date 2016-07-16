@@ -80,9 +80,11 @@ public class Post implements Serializable
 	
 	@Column(nullable=false)
 	private boolean isActive;
-	
+
 	@Column
 	private Date closeDate;
+	@Column
+	private Date openAgainDate;
 
 	@Column(nullable=false)
 	private int noOfPosts;
@@ -127,6 +129,16 @@ public class Post implements Serializable
 	private String variablePayComment;
 	
 	
+
+	public Date getOpenAgainDate()
+	{
+		return openAgainDate;
+	}
+
+	public void setOpenAgainDate(Date openAgainDate)
+	{
+		this.openAgainDate = openAgainDate;
+	}
 
 	public String getQualification_ug()
 	{

@@ -1094,6 +1094,7 @@ e.printStackTrace();
 				pp.setActionPerformerId(principal.getName());
 				if (ppstatus.equals("join_accept"))
 				{
+					pp.setProcessStatus("joinDate");
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 					Date date1 = formatter.parse((String) request.getParameter("joiningDate"));
 					pp.setJoinDate(new java.sql.Date(date1.getTime()));
@@ -1157,6 +1158,8 @@ e.printStackTrace();
 				} 
 				else if (ppstatus.equals("join_reject"))
 				{
+
+					pp.setProcessStatus("joinDropDate");
 					Date date = new Date();
 					java.sql.Date dt = new java.sql.Date(date.getTime());
 					String rej_reason = request.getParameter("rej_reason");
@@ -1175,6 +1178,13 @@ e.printStackTrace();
 					GlobalRatingPercentile postConsultant = gp.get(0);
 					postConsultant.setOfferDrop(postConsultant.getOfferDrop() + 1);
 					globalRatingPercentileService.updateGlobalRating(postConsultant);
+					post.setNoOfPostsFilled(post.getNoOfPostsFilled()-1);
+					if(post.getCloseDate()!=null){
+						post.setCloseDate(null);
+						post.setActive(true);
+						post.setOpenAgainDate(new Date());
+					}
+					postService.updatePost(post);
 					closePost(client);
 					String	content= pp.getProfile().getName() +" has rejected offer for the  <a href='clientpostapplicants?pid="
 							+ post.getPostId() + "' >" + post.getTitle() + "</a>  ("+(client.getOrganizationName())+")" ;
@@ -1186,6 +1196,7 @@ e.printStackTrace();
 					//st = mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_reject");
 				}else if (ppstatus.equals("candidate_withdraw")){
+					pp.setProcessStatus("withdrawDate");
 					Date date = new Date();
 					java.sql.Date dt = new java.sql.Date(date.getTime());
 					pp.setWithdrawDate(dt);

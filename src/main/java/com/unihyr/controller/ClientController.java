@@ -733,8 +733,7 @@ public class ClientController
 		String filterby = request.getParameter("sortParam");
 		if(filterby == null)
 		{
-			filterby = "submitted";
-			
+			filterby = "all";
 		}
 			if(post != null)
 			{
@@ -814,7 +813,7 @@ public class ClientController
 		int totalCount=0;
 		if(filterby == null)
 		{
-			filterby = "submitted";
+			filterby = "all";
 		}
 		if(pid == 0 )
 		{
@@ -970,6 +969,7 @@ public class ClientController
 					PostProfile postProfile=pp;
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
 						postProfile.setViewStatus(true);
+						postProfile.setProcessStatus("accepted");
 						postProfileService.updatePostProfile(postProfile);}
 						content = candidate + " has been shortlited for the <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a> (" + (reg.getOrganizationName())
@@ -982,6 +982,7 @@ public class ClientController
 					PostProfile postProfile=pp;
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
 						postProfile.setViewStatus(true);
+						postProfile.setProcessStatus("rejected");
 						postProfileService.updatePostProfile(postProfile);}
 					content= candidate +" has been rejected for the <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
@@ -990,6 +991,7 @@ public class ClientController
 				else if(ppstatus.equals("recruit") && pp.getAccepted() != null)
 				{
 					pp.setRecruited(dt);
+					pp.setProcessStatus("recruited");
 					content= candidate +" has been offered for the <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "recruited");
@@ -997,6 +999,7 @@ public class ClientController
 				else if(ppstatus.equals("reject_recruit") && pp.getAccepted() != null)
 				{
 					pp.setDeclinedDate(dt);
+					pp.setProcessStatus("declineDate");
 					content= candidate +" has been rejected for the  <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "reject_recruit");
@@ -1006,6 +1009,7 @@ public class ClientController
 					if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()))
 					{}else{
 					pp.setOfferDate(dt);
+					pp.setProcessStatus("offerDate");
 					double totalCTC=Double.parseDouble(request.getParameter("totalCTC"));
 					double billableCTC=Double.parseDouble(request.getParameter("billableCTC"));
 					List<BillingDetails> bill=fillBillingDetails(pp,loggedinUser,request.getParameter("joiningDate"), totalCTC,billableCTC);
@@ -1016,8 +1020,10 @@ public class ClientController
 							post.setNoOfPostsFilled(post.getNoOfPosts());
 							post.setCloseDate(dt);
 							postService.updatePost(post);	
+							if(post.getOpenAgainDate()==null){
 							insertValues(post.getPostId());
 							closePost(reg);
+							}
 						}else if(post.getNoOfPosts()>(post.getNoOfPostsFilled()+1)){
 							post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
 							postService.updatePost(post);	
@@ -1034,6 +1040,7 @@ public class ClientController
 				else if(ppstatus.equals("offer_reject") && pp.getAccepted() != null)
 				{
 					pp.setOfferDropDate(dt);
+					pp.setProcessStatus("offerDropDate");
 					content= candidate +" offer has been rejected for the  <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "offer_reject");
@@ -1085,11 +1092,10 @@ public class ClientController
 		billingDetailscl.setConsultantName(consultant.getConsultName());
 		billingDetailscl.setLocation(post.getLocation());
 		billingDetailscl.setSubmittedDate(pp.getSubmitted());
-		billingDetailscl.setOfferAcceptedDate(pp.getAccepted());
+		billingDetailscl.setOfferAcceptedDate(pp.getOfferDate());
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				try{
 				Date date = formatter.parse(joiningDate);
-				System.out.println(date);
 				billingDetailscl.setExpectedJoiningDate(new java.sql.Date(date.getTime()));
 				}catch(Exception e){
 					e.printStackTrace();
@@ -1101,15 +1107,17 @@ public class ClientController
 		billingDetailscl.setClientAddress(client.getHoAddress());
 		billingDetailscl.setConsultantId(consultant.getUserid());
 		billingDetailscl.setCandidatePerson(profile.getName());
-			if(client.getOrganizationName()!=null){
-				billingDetailscl.setFeePercentForClient(post.getFeePercent());	
-			}
-			try{
-				billingDetailscl.setFee((billableCTC*post.getFeePercent())/100);
-				billingDetailscl.setFeePercentToAdmin(consultant.getFeeCommission());
-			}catch(Exception e){
-				billingDetailscl.setFee(0);
-			}
+		//if(client.getOrganizationName()!=null){
+		billingDetailscl.setFeePercentForClient(post.getFeePercent());	
+		//}else{
+		billingDetailscl.setFeePercentToAdmin(consultant.getFeeCommission());
+		//}
+		try{
+			billingDetailscl.setFee((billableCTC*post.getFeePercent())/100);
+		}catch(Exception e){
+			e.printStackTrace();
+			billingDetailscl.setFee(0);
+		}
 		Double total=billingDetailscl.getFee()+(GeneralConfig.TAX*billingDetailscl.getFee())/100+(GeneralConfig.CESS*billingDetailscl.getFee())/100;
 		billingDetailscl.setTotalAmount(total);
 		Date dt = new Date();

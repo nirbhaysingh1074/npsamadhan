@@ -346,18 +346,28 @@
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 						
 	                  							<%
-	                  							System.out.println("asddddddddddddddddddddd"+pp.getPpid());
 	                  							if(pp.getWithdrawDate()!=null){
 	                  								%>
 				                  					<td style="text-align: left;">
 														<span>Withdrawn</span>
 													</td>
-															
-														
+													<%	if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														{
+															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>None Required</span>
+																	<span>Post Inactive</span>
 																</td>
 															<%
+														}
+														else
+														{
+															%>
+															<td class="text-center" style="text-align: left;">
+																	<span>None Required</span>
+															</td>
+															<%
+															
+														}
 	                  							}else if(pp.getJoinDropDate() != null)
 													{
 														%>
@@ -365,7 +375,7 @@
 																<span>Dropped</span>
 															</td>
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -390,7 +400,7 @@
 																<span>Joined</span>
 															</td>
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -414,7 +424,7 @@
 																<span>Offer Declined</span>
 															</td>
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -438,7 +448,7 @@
 																<span>Offered</span>
 															</td>
 															<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center">
@@ -473,7 +483,7 @@
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -500,7 +510,7 @@
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -535,7 +545,7 @@
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -564,7 +574,7 @@
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -597,7 +607,7 @@
 															</td>
 																
 														<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -606,6 +616,7 @@
 																
 															<%
 														}
+														
 														else
 														{
 															%>
@@ -684,11 +695,22 @@
 									</div>
 									  <div class="sort_by"> <span>Filter by</span>
 		          <select id="sortParam"  onchange="fillProfiles('1')">
-		           <option value="submitted">Submitted</option>
+		          
+		            <option value="all" selected="selected">All Submitted</option>
+		            <option value="submitted">Pending</option>
+		            
 		            <option value="accepted">In Process</option>
-		            <option value="rejected">Rejected</option>
-		            <option value="pending">Pending</option>
-		            <option value="withdrawDate">Withdraw</option>
+		            <option value="rejected">CV Rejected</option>
+		            
+		            <option value="recruited">Offer Sent</option>
+		            <option value="declinedDate" >Interview Reject</option>
+		            
+		            <option value="offerDate">Offer Accepted</option>
+		            <option value="offerDropDate">Offer Declined</option>
+		            
+		            <option value="joinDate">Joined</option>
+		            <option value="joinDropDate">Dropped</option>
+		            <option value="withdrawDate">Withdrawn</option>
 <!-- 		            <option value="recruited">Recruited</option> -->
 		          </select>
 		        </div> <%

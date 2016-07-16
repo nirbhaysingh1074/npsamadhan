@@ -50,6 +50,10 @@
         <put-attribute name="title" value="UniHyr - Help Desk" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminHelpDeskMsges.jsp" />
     </definition>
+    <definition name="adminDemoRequests" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Demo Requests" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminDemoRequests.jsp" />
+    </definition>
     <definition name="adminLoggedUsers" extends="adminTemplate">
         <put-attribute name="title" value="UniHyr - Help Desk" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminLoggedUsers.jsp" />

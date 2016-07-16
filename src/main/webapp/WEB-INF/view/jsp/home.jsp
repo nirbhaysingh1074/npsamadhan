@@ -12,6 +12,7 @@
 
 <script src="js/jquery.min.js"></script>
 <script src="js/contact.js"></script>
+<script src="js/common_js.js"></script>
 
 <script src="js/jquery.bxSlider.js"></script>
 		<script type="text/javascript">
@@ -23,7 +24,18 @@
   		});
   		});
 		</script>
-
+<script type="text/javascript">
+function validateForm(){
+	var email=$('#email').val();
+	var valid=true;
+	if(email == "" || !isEmail(email))
+	{
+		$('#email').focus();
+		valid = false;
+	}
+	return valid;
+}
+</script>
 <style>
 #slider1 {
 	position: relative;
@@ -364,7 +376,7 @@ width: 1076px !important;
 
 		<div class="Scrlbr">
 			<div class="container" style="margin: 0px auto;">
-				<form:form action="requestfordemo" method="post"  commandName="contactusform">
+				<form:form action="requestfordemo" method="post"  commandName="contactusform" onsubmit="return validateForm()">
 					<form:select path="usertype" class="contactUsForm" >
 						<option value="emp">I am Employer</option>
 						<option value="cons">I am Consultant</option>
@@ -372,7 +384,7 @@ width: 1076px !important;
 					<form:input required="required" path="name"   class="contactUsForm" placeholder="Name*" />
 					<form:input required="required" path="email"  class="contactUsForm" placeholder="Email*" />
 					<form:input required="required" path="company"  class="contactUsForm" placeholder="Company*" />
-					<form:input required="required" path="phone"  class="contactUsForm" placeholder="Phone Number*" /> 
+					<form:input required="required"  path="phone"  class="contactUsForm number_only" placeholder="Phone Number*" /> 
 					<input   class="contactUsForm" type="submit" value="Request for demo" style="background: black;color : white;border: 1px solid black;" />
 				
 				</form:form>
@@ -734,7 +746,7 @@ Analytics driven rating system of consultants
 				<form:input required="required" path="name" type="text" class="col_4 contactfooter" placeholder="Name*" />
 				<form:input required="required" path="email"  type="text" class="col_4 contactfooter" placeholder="Email*" />
 				<form:input required="required" path="company" type="text" class="col_4 contactfooter" placeholder="Company*" />
-				<form:input required="required" path="phone" type="text" class="col_4 contactfooter" placeholder="Phone Number*" /> 	
+				<form:input required="required" path="phone" type="text" class="col_4 contactfooter  number_only" placeholder="Phone Number*" /> 	
 				
 				<br>
 				<input type="submit"   class="col_4 contactfooter" value="Submit Request" style="margin-bottom: 15px;margin-left:-1px;

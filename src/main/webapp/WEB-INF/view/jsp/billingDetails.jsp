@@ -57,23 +57,28 @@
 	       				<th align="left">Actual Joining Date</th>
 	       				<th align="left">Total CTC</th>
 	       				<th align="left">Billable CTC</th>
-	       				<th align="left">
-	       				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
-						Commission(%)
-						</sec:authorize>
-						<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-						Fee Percent(%)
-						</sec:authorize>
+	       				<th>
+	       				Recruitment Fee (%)
 	       				</th>
+	       				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+	       				<th align="left">
+						Commission(%)
+	       				</th>
+						</sec:authorize>
+	       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	       				<th align="left">			
 						Fee
 						</th>
-	       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	       				<th align="left">Tax(%)</th>
 						<th align="left">
 	       				CESS(%)
 	       				</th>
 	       				<th align="left">Total Amount</th>
+	       				</sec:authorize>
+	       				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+	       				<th>
+	       				Total Payment incl Tax
+	       				</th>
 	       				</sec:authorize>
 	       				<th align="left">Payment Due Date</th>
 	       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
@@ -90,9 +95,7 @@
 					<tr>
 					<td><%=bill.getCandidatePerson() %></td>
 					<td>
-<%-- 					<a href="clientpostapplicants?pid=<%=bill.getPostId()%>"> --%>
 					<%=bill.getPosition() %>
-<!-- 					</a> -->
 					</td>
 					<td>
 					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
@@ -123,23 +126,53 @@
 					<%=NumberUtils.convertNumberToCommoSeprated(bill.getTotalCTC()) %></td>
 					<td><%=NumberUtils.convertNumberToCommoSeprated(bill.getBillableCTC()) %></td>
 					<td>
+					<%=bill.getFeePercentForClient() %>
+					</td>
 					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+					<td>
 					<%=bill.getFeePercentToAdmin() %>
+					</td>
 					</sec:authorize>
 					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-					<%=bill.getFeePercentForClient() %>
-					</sec:authorize>
-					</td>
 					<td>
 					<%=NumberUtils.convertNumberToCommoSeprated(bill.getFee()) %>
 					</td>
-					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 					<td><%=bill.getTax()%></td>
 					<td>
 	       				<%=GeneralConfig.CESS %>
 	       			</td>
-					<td><%=NumberUtils.convertNumberToCommoSeprated(bill.getTotalAmount()) %></td>
+					<td>
+					<%
+					Double totalAmount=bill.getTotalAmount();
+					try{
+						totalAmount=bill.getFee()+(GeneralConfig.TAX*bill.getFee())/100+(GeneralConfig.CESS*bill.getFee())/100;
+					}catch(Exception e){
+						totalAmount=bill.getTotalAmount();
+						e.printStackTrace();
+					}
+					%>
+					<%=NumberUtils.convertNumberToCommoSeprated(totalAmount) %></td>
 					</sec:authorize>
+					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+	       				<td>
+	       				<%
+	       				Double recFee=bill.getFee();
+	       				Double totalCom=0.0;
+	       				try{
+	       				if(recFee>0){
+	       					totalCom=(recFee-(recFee*bill.getFeePercentToAdmin())/100);
+	       				}
+	       				if(totalCom>0){
+	       					totalCom=totalCom+(totalCom*(GeneralConfig.TAX+GeneralConfig.CESS))/100;
+	       				}
+	       				}catch(Exception e ){
+	       					e.printStackTrace();
+	       				}
+	       				%>
+	       				<%=NumberUtils.convertNumberToCommoSeprated(totalCom)%>
+	       				</td>
+	       				</sec:authorize>
+					
 					<td>
 					<%if(bill.getPaymentDueDateForAd()!=null){ %>
 					<%=DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForAd()) %>
@@ -153,14 +186,11 @@
 					%>
 					<a href="clientVerifyBillingDetails?billId=<%=bill.getBillId() %>" >Verify</a>
 					<%}else{ %>
-					<span>Verfied</span>
+					<span>Verified</span>
 					<%} }else{%>
 					<span>--</span>
 					<%} %>
 					</td>
-					
-					
-					
 					<td >
 					<%if(bill.getJoiningDate()!=null){ %>
 					<a target="_blank" href="clientBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>

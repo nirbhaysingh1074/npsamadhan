@@ -19,6 +19,7 @@
 <style type="text/css">
 	.error{color: red;}
 </style>
+
 <script type="text/javascript">
 var buttonst=$('#db_post_status').val();
 	if(buttonst=="isActive"){
@@ -162,7 +163,7 @@ var buttonst=$('#db_post_status').val();
 	       							while(it.hasNext())
 	       							{
 	       								PostProfile pp = it.next();
-	       								if(pp.getAccepted() != null)
+	       								if(pp.getAccepted() != null&&pp.getOfferDate()==null&&pp.getWithdrawDate()==null&&pp.getDeclinedDate()==null&&pp.getOfferDropDate()==null)
 	       								{
 	       									shortListed.add(pp.getPpid());
 	       								}
@@ -328,7 +329,14 @@ var buttonst=$('#db_post_status').val();
 						       				<td style="text-align: center;"><%= post.getPostConsultants().size() %></td>
 											<%-- <td style="text-align: center;"><%= post.getNoOfPostsFilled() %></td> --%>
 						       				<td style="text-align: left;"><%= post.getPostProfile().size() %> (<%=countRead %> new)</td>
-						       				<td style="text-align: center;"><%= shortListed.size() %></td>
+						       				<td style="text-align: center;">
+						       				<%if(post.getCloseDate()!=null) {%>
+						       					--
+						       					<%}else{ %>
+						       					<%= shortListed.size() %>
+						       					<%} %>
+						       				
+						       				</td>
 						       				<td  style="text-align: center;">
 						       					<sec:authorize access="hasRole('ROLE_EMP_USER')">
 						       					<div class="pre_check" style="float:none;padding: 0px;">

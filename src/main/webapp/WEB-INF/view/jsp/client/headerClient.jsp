@@ -114,7 +114,6 @@ function getMessages(){
 		$('.noti_title').html("Messages");
 			if(obj.mList.length > 0)
 			{
-				
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<a href='clientapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +

@@ -67,15 +67,28 @@ public class PostProfile
 	
 	@Column
 	private String rejectReason;
-	
+
 	@Column
 	private String actionPerformerId;
+	
+	@Column
+	private String processStatus;
 	
 	@Column
 	private Boolean viewStatus;
 	
 	
 	
+	public String getProcessStatus()
+	{
+		return processStatus;
+	}
+
+	public void setProcessStatus(String processStatus)
+	{
+		this.processStatus = processStatus;
+	}
+
 	public Date getModificationDate()
 	{
 		return modificationDate;

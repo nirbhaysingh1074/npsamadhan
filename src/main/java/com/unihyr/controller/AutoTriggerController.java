@@ -46,6 +46,36 @@ public class AutoTriggerController
 	 */
 	public boolean checkPostIdle()
 	{
+		
+		
+//		List<PostProfile> allpp=postProfileService.getAllPostProfile(0, 1000);
+//		for (PostProfile pp : allpp)
+//		{
+//			if(pp.getWithdrawDate()!=null){
+//				pp.setProcessStatus("withdrawDate");
+//			}else if(pp.getRejected()!=null){
+//				pp.setProcessStatus("rejected");
+//			}else if(pp.getDeclinedDate()!=null){
+//				pp.setProcessStatus("declineDate");
+//			}else if(pp.getOfferDropDate()!=null){
+//				pp.setProcessStatus("offerDropDate");
+//			}else if(pp.getJoinDropDate()!=null){
+//				pp.setProcessStatus("joinDropDate");
+//			}else if(pp.getJoinDate()!=null){
+//				pp.setProcessStatus("joinDate");
+//			}else if(pp.getOfferDate()!=null){
+//				pp.setProcessStatus("offerDate");
+//			}else if(pp.getRecruited()!=null){
+//				pp.setProcessStatus("recruited");
+//			}else if(pp.getAccepted()!=null){
+//				pp.setProcessStatus("accepted");
+//			}else if(pp.getSubmitted()!=null){
+//				pp.setProcessStatus("submitted");
+//			}
+//			postProfileService.updatePostProfile(pp);
+//		}
+		
+		
 		List<Post> list = postService.getAllActivePosts();
 		for (Post post : list)
 		{
@@ -98,7 +128,7 @@ public class AutoTriggerController
 		List<BillingDetails> list = billingService.getAllDetailsUnverified();
 		for (BillingDetails bill : list)
 		{
-			if(!bill.getVerificationStatus()){
+			if(bill.getVerificationStatus()==null||!bill.getVerificationStatus()){
 			Date today = new Date();
 			Date submitted = null;
 			submitted = bill.getCreateDate();

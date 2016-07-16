@@ -16,6 +16,7 @@ import com.unihyr.domain.ContactUs;
 import com.unihyr.domain.HelpDesk;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Registration;
+import com.unihyr.service.ContactUsService;
 import com.unihyr.service.HelpDeskService;
 import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.MailService;
@@ -34,6 +35,7 @@ public class CommonController
 	private LoginInfoService loginInfoService;
 	@Autowired
 	private HelpDeskService helpDeskService;
+	@Autowired ContactUsService contactUsService;
 	
 	@RequestMapping(value = "/helpDeskMessage", method = RequestMethod.GET)
 	public @ResponseBody String clientMailRejectProfile(ModelMap map, HttpServletRequest request, Principal principal)
@@ -146,6 +148,12 @@ public String adminHelpMessages(ModelMap map, HttpServletRequest request, Princi
 {
 	map.addAttribute("helpList",helpDeskService.getAllHelpDeskList("null"));
 	return "adminHelpMessages";
+}			
+@RequestMapping(value = "/adminDemoRequests", method = RequestMethod.GET)
+public String adminDemoRequests(ModelMap map, HttpServletRequest request, Principal principal)
+{
+	map.addAttribute("demorequests",contactUsService.getAllDemoRequest());
+	return "adminDemoRequests";
 }			
 @RequestMapping(value = "/adminLoggedUsers", method = RequestMethod.GET)
 public String adminLoggedUsers(ModelMap map, HttpServletRequest request, Principal principal)

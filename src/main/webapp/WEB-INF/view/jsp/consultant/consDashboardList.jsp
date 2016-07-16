@@ -23,6 +23,8 @@
 <style type="text/css">
 	.error{color: red;}
 </style>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 
 </head>
 <body class="loading">
@@ -129,6 +131,7 @@
 								               <option value="all"  >Status</option>
 											   <option value="active"  <%if(db_post_status.equals("active")){%>selected="selected"<%} %> >Active</option>
 											   <option value="inactive" <%if(db_post_status.equals("inactive")){%>selected="selected"<%} %>>Inactive</option>
+						            		   <option value="closeDate" <%if(db_post_status.equals("closeDate")){%>selected="selected"<%} %>>Closed</option>
 						            		<%
 					            		%>
 									</select>
@@ -161,19 +164,37 @@
 					        	</select>
 		       				</th>
 		       				<th  align="left">
+			       				<%
+			       				String db_sel_loc = (String)request.getAttribute("db_sel_loc");
+				       				
+			       				List<String> locList = (List)request.getAttribute("locList");
+			       				Set<String> uniqueLocs = new HashSet<String>();
+			       				for(String loc : locList)
+			       				{
+			       					String[] locs=loc.split(",");
+			       					for(int i=0;i<locs.length;i++){
+			       						uniqueLocs.add(locs[i]);
+			       					}
+			       				}
+										
+			       				
+			       				String locsList="";
+			       				for(String loc : uniqueLocs)
+			       				{
+		       					locsList+="'"+loc+"',";
+			       				}			       				
+			       				%>
+<!-- 								<label id="location" onclick="">Location</label>	       				 -->
+<!-- 	       						<input type="text" id="autofillloc" value=""/> -->
 			       				<select id="cons_db_sel_loc" style="width: 100px;height: 30px;background: #e3e3e3;font-weight: bold;border: 0px;">
 			       					<option value="">Location</option>
 				       				<%
-				       					String db_sel_loc = (String)request.getAttribute("db_sel_loc");
-					       				
-					       				
-					       				List<String> locList = (List)request.getAttribute("locList");
-					       				
-					       				for(String loc : locList)
-					       				{
-					       					
+						       				for(String loc : uniqueLocs)
+						       				{
+					       					locsList+="'"+loc+"',";
 					       					if(loc.equals(db_sel_loc))
 					       					{
+					       						
 							       				%>
 							       					<option value="<%=loc%>" selected="selected"><%=loc %></option>
 							       				<%
@@ -187,6 +208,17 @@
 					       				}
 		       						%>
 	       						</select>
+	       						
+	       						<script>
+$( function() {
+  var availableTags = [
+   <%=locsList%>
+  ];
+  $( "#autofillloc" ).autocomplete({
+    source: availableTags
+  });
+} );
+</script>
        						</th>
 		       				<th width="80px">Posted Date</th>
 		       				<th width="80px">Submitted</th>
@@ -287,7 +319,7 @@
 						       								}
 						       							}
 						       							
-						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getAccepted() != null)
+						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getAccepted() != null&&pr.getOfferDate()==null&&pr.getWithdrawDate()==null&&pr.getDeclinedDate()==null&&pr.getOfferDropDate()==null)
 						       							{
 						       								prshort++;
 						       							}
@@ -325,7 +357,13 @@
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prpending %></a>
 						       				</td> --%>
 					       					<td  align="center" title="No. of profiles In Process">
-						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prshort %></a>
+						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" >
+						       					<%if(post.getCloseDate()!=null) {%>
+						       					--
+						       					<%}else{ %>
+						       					<%= prshort %>
+						       					<%} %>
+						       					</a>
 						       				</td>
 						       				<%-- <td  align="center" title="No. of profiles In Process">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prjoined %></a>

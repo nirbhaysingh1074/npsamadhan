@@ -38,6 +38,7 @@
             <li><a href="adminQualificationList"><i class="fa fa-file-text"></i> <span>Qualifications</span></a></li>
             <li><a href="adminConfigurations"><i class="fa fa-file-text"></i> <span>General Configurations</span></a></li>
              <li><a href="adminHelpMessages"><i class="fa fa-file-text"></i> <span>Help Desk Messages</span></a></li>
+              <li><a href="adminDemoRequests"><i class="fa fa-file-text"></i> <span>Demo Requests</span></a></li>
              <li><a href="adminLoggedUsers"><i class="fa fa-file-text"></i> <span>Logged In Users</span></a></li>
             
             <li class="treeview">
