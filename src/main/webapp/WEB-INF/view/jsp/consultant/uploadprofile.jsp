@@ -1,12 +1,17 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Location"%>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
+<%@page import="com.unihyr.domain.Qualification"%>
 <%@page import="java.util.List"%>
 <%@page import="com.unihyr.domain.Post"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- <link rel="stylesheet" type="text/css" href="css/autocomplete.css" /> -->
 <title>UniHyr</title>
 <style type="text/css">
 	.req{color: red;}
@@ -35,8 +40,55 @@
     opacity: 0;
     filter: alpha(opacity=0);
 }
-</style>
 
+#willingToRelocate{
+width:100% !important;
+}
+#qualification_pg{
+width:100% !important;
+}
+#qualification_ug{
+width:100% !important;
+}
+</style>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script>
+$( function() {
+  var availableTags = [
+    "91",
+    "11",
+    "22",
+    "33",
+    "44",
+    "55",
+    "66",
+    "77",
+   
+  ];
+  $( "#countryCode" ).autocomplete({
+    source: availableTags
+  });
+} );
+</script>
+
+
+<script type="text/javascript">
+function otherLocationInput(){
+	var locValue=$('#currentLocation').val();
+	if(locValue&&locValue=="other"){
+		$('#otherLocation').val("");
+		$('#otherLocation').css("display","block");
+	}else
+	{
+		$('#otherLocation').val("");
+		$('#otherLocation').css("display","none");
+	}
+		
+}
+</script>
 <script type="text/javascript">
 	function conscheckapplicantbyemail()
 	{
@@ -61,7 +113,6 @@
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.responseText);
 				}
 			}) ;
 		}
@@ -71,7 +122,10 @@
 	{
 		var pid = $('#postId').val();
 		var contact = $('#contact').val();
-		
+		var countryCode=$('#countryCode').val();
+		if(countryCode){
+			contact=contact+","+countryCode;
+		}
 		if(contact != "")
 		{
 			$.ajax({
@@ -90,7 +144,6 @@
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.responseText);
 				}
 			}) ;
 		}
@@ -98,111 +151,155 @@
 	
 </script>
 <script type="text/javascript">
-	function validateForm()
-	{
-// 		
-		var client = $('#cleintId').val();
-		var post = $('#postId').val();
-		var name = $('#name').val();
-		var email = $('#email').val();
-		var currentRole = $('#currentRole').val();
-		var noticePeriod = $('#noticePeriod').val();
-		var contact = $('#contact').val();
-		var currentOrganization = $('#currentOrganization').val();
-		var currentCTC = $('#currentCTC').val();
-		var expectedCTC = $('#expectedCTC').val();
-		var resumeText = CKEDITOR.instances['resumeText'].getData(); //$('#resumeText').val();
-		var select_jd = $('.select_jd').val();
-		
-		
-		
-		$('.error').html("&nbsp;");
 
-		var valid = true;
-		
-		if(client == "")
-		{
-			$('.client_error').html("Please provide client name");
-			valid = false;
-		}
-		if(post == "")
-		{
-			$('.post_error').html("Please provide post name");
-			valid = false;
-		}
-		if(name == "")
-		{
-			$('.name_error').html("Please enter profile name");
-			valid = false;
-		}
-		if(email == "" || !isEmail(email))
-		{
-			$('.email_error').html("Please enter valid email");
-			valid = false;
-		}
-		if(currentRole == "")
-		{
-			$('.currentRole_error').html("Please enter current role");
-			valid = false;
-		}
-		
-		if(currentOrganization == "")
-		{
-			$('.currentOrganization_error').html("Please enter current Organization");
-			valid = false;
-		}
-		if(noticePeriod == "")
-		{
-			$('.noticePeriod_error').html("Please enter notice period");
-			valid = false;
-		}
-		if(contact == "" || contact.length != 10)
-		{
-			$('.contact_error').html("Please enter valid phone number");
-			valid = false;
-		}
-		if(currentCTC == "" || isNaN(currentCTC))
-		{
-			$('.currentCTC_error').html("Please enter current CTC");
-			valid = false;
-		}
-		if(expectedCTC == "" || isNaN(expectedCTC))
-		{
-			$('.expectedCTC_error').html("Please enter expected CTC");
-			valid = false;
-		}
-		
-		
-		if(select_jd == "" && (resumeText.length ==""))
-		{
-			$('.resumePath_error').html("Please select resume or enter resume text");
-			valid = false;
-		}
-		/* 
-		if(resumeText == "")
-		{
-			$('.resumeText_error').html("Please enter resume text");
-			valid = false;
-		} */
-		var r=confirm("Are you sure you want to upload "+name+" profile for "+$('#postName').html()+" at "+$('#clientName').html()+ "?");
-			if (r==true) 
-			{
-				return true;
-			}else{
-				return false;
-			}
-		if(!valid)
-		{
-			return false;
-		}
-		
-	}
 	function isEmail(email) {
 		  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 		  return regex.test(email);
 		}
 	
 	jQuery(document).ready(function() {
+		
+			var flagg=false;
+			$(document).on('submit', 'form', function(e) {  
+				if(!flagg){
+				e.preventDefault();
+				
+						var client = $('#cleintId').val();
+						var post = $('#postId').val();
+						var name = $('#name').val();
+						var email = $('#email').val();
+						var currentRole = $('#currentRole').val();
+						var noticePeriod = $('#noticePeriod').val();
+						var dob = $('#dateofbirth').val();
+						var contact = $('#contact').val();
+						var countryCode=$('#countryCode').val();
+						var currentOrganization = $('#currentOrganization').val();
+						var currentLocation = $('#currentLocation').val();
+						if(currentLocation&&currentLocation=="other"){
+							currentLocation=$('#otherLocation').val();
+						}
+						
+						
+						
+						var currentCTC = $('#currentCTC').val();
+						var expectedCTC = $('#expectedCTC').val();
+						var resumeText = CKEDITOR.instances['resumeText'].getData(); //$('#resumeText').val();
+						var select_jd = $('.select_jd').val();
+						
+						
+						
+						$('.error').html("&nbsp;");
+
+						var valid = true;
+
+						var qug= $('#qualification_ug').val();
+						if(!qug||qug === null||qug==""){
+							$('.qualification_ug_error').html('Please specify undergraduate qualification');
+							valid = false;
+						}
+						var qpg= $('#qualification_pg').val();
+						if(!qpg||qpg === null||qpg==""){
+							$('.qualification_pg_error').html('Please specify postgraduate qualification');
+							valid = false;
+						}
+						if(client == "")
+						{
+							$('.client_error').html("Please provide client name");
+							valid = false;
+						}
+						if(post == "")
+						{
+							$('.post_error').html("Please provide post name");
+							valid = false;
+						}
+						if(name == "")
+						{
+							$('.name_error').html("Please enter profile name");
+							valid = false;
+						}
+						if(email == "" || !isEmail(email))
+						{
+							$('.email_error').html("Please enter valid email");
+							valid = false;
+						}
+						if(currentRole == "")
+						{
+							$('.currentRole_error').html("Please enter current role");
+							valid = false;
+						}
+
+						if(currentOrganization == "")
+						{
+							$('.currentOrganization_error').html("Please enter current Organization");
+							valid = false;
+						}
+						if(currentLocation == "")
+						{
+							$('.currentLocation_error').html("Please enter current Location");
+							valid = false;
+						}
+						if(dob == "")
+						{
+							$('.dateofbirth_error').html("Please enter date of birth");
+							valid = false;
+						}
+						if(noticePeriod == "")
+						{
+							$('.noticePeriod_error').html("Please enter notice period");
+							valid = false;
+						}
+						if(contact == "" || contact.length != 10)
+						{
+							$('.contact_error').html("Please enter valid phone number");
+							valid = false;
+						}
+						if(!countryCode)
+						{
+							$('.countryCode_error').html("Please enter country code");
+							valid = false;
+						}
+						if(currentCTC == "" || isNaN(currentCTC))
+						{
+							$('.currentCTC_error').html("Please enter current CTC");
+							valid = false;
+						}
+						if(expectedCTC == "" || isNaN(expectedCTC))
+						{
+							$('.expectedCTC_error').html("Please enter expected CTC");
+							valid = false;
+						}
+						
+						
+						if(select_jd == "" && (resumeText.length ==""))
+						{
+							$('.resumePath_error').html("Please select resume or enter resume text");
+							valid = false;
+						}
+						/* 
+						if(resumeText == "")
+						{
+							$('.resumeText_error').html("Please enter resume text");
+							valid = false;
+						} */
+						
+						if(!valid)
+						{
+							return false;
+						}
+					else{
+
+						alertify.confirm("Are you sure you want to upload candidate profile ?", function (e, str) {
+							if (e) {
+						flagg=true;
+						$('form').submit();
+							}});
+					}
+					
+				
+				}
+				});
+		
+		
 		
 		$(document.body).on('change', '.select_jd' ,function(){
 			var valid = true;
@@ -241,7 +338,6 @@
 				
 				$(this).val("");
 			}
-// 			alert(extension);
 		});
 	});
 	
@@ -275,13 +371,11 @@
 </head>
 <body class="loading">
 <script type="text/javascript">
-
-alert('<%=quataExceed%>');
 </script>
 	<div class="mid_wrapper">
 		<div class="container">
 			<div class="form_cont">
-				<form:form method="POST" action="uploadprofile"	commandName="uploadProfileForm"  enctype="multipart/form-data" onsubmit="return validateForm()">
+				<form:form method="POST" action="uploadprofile"	commandName="uploadProfileForm"  enctype="multipart/form-data" >
 					<div class="block">
 						<div class="form_col">
 							<%
@@ -349,9 +443,16 @@ alert('<%=quataExceed%>');
 									<label>Phone<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:input path="contact"   onchange="conscheckapplicantbycontact()" cssStyle="padding-left:35px;" cssClass="number_only" maxlength="10" minlength="10"/>
-									<span style="position: relative; padding: 5px; border-right: 1px solid rgb(212, 212, 212); float: left; margin-top: -27px;font-size: 12px;"> +91 </span>
+								
+									<form:input path="countryCode"  cssClass="number_only" maxlength="2"  style="position: relative;
+										padding: 5px;
+										float: left;
+										width: 34px;"  />
+									<form:input path="contact"   onchange="conscheckapplicantbycontact()" style="float:left;width:90%;"
+									 cssClass="number_only" maxlength="10" minlength="10"/>
+									
 									<span class="error contact_error">&nbsp;${profileExist_contact}<form:errors path="contact" /></span>
+									<span class="error countryCode_error"></span>
 								</dd>
 							</dl>
 							<dl>
@@ -368,7 +469,37 @@ alert('<%=quataExceed%>');
 									<label>Current Location<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:input path="currentLocation" />
+					<form:select path="currentLocation" onchange="otherLocationInput()" >
+	              		<form:option value="">Select Location</form:option>
+	              		<%
+	              		List<String> locList=GeneralConfig.topLocations;
+	              		for(String loc:locList){
+	              			%>
+						   	<form:option value="<%=loc %>"><%=loc %></form:option>
+	              			<%
+	              			}
+		              		List<Location> locList1=(List<Location>)request.getAttribute("locList");
+		              		for(Location loc:locList1)
+		              		{
+		              			if(!locList.contains(loc.getLocation())){
+		              		%>
+							   <form:option value="<%=loc.getLocation()%>"><%=loc.getLocation()%></form:option>
+		            		<%
+		            		}
+	              		}
+	              		%>
+	              		<form:option value="other">Other</form:option>
+	            	</form:select>
+	            	<input type="text" style="display: none;" placeholder="Your Location" id="otherLocation" name="otherLocation" />
+	            	 <div id="div1"></div>
+	            	
+	            	<script type="text/javascript">
+function showfield(name){
+  if(name=='Other')document.getElementById('div1').innerHTML='Other: <form:input path="currentLocation"  />';
+  else document.getElementById('div1').innerHTML='';
+}
+</script>
+	            	
 									<span class='error currentLocation_error'>&nbsp;<form:errors path="currentLocation" /></span>
 								</dd>
 							</dl>
@@ -414,23 +545,32 @@ alert('<%=quataExceed%>');
 									<span class="error expectedCTC_error">&nbsp;<form:errors path="expectedCTC" /></span>
 								</dd>
 							</dl>
-							
 							<dl>
 								<dt>
-									<label>CTC Related Comments<!-- <span class="req">*</span> --></label>
+									<label>Date of Birth<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:textarea path="ctcComments" ></form:textarea>
-									<span class="error ctcComments_error">&nbsp;<form:errors path="ctcComments" /></span>
+									<form:input path="dateofbirth"  class="popupDatepicker"   style="padding-right: 150px" />
+									<span class='error dateofbirth_error'>&nbsp;${profileExist_dob}<form:errors path="dateofbirth" /></span>
 								</dd>
 							</dl>
 							
 							<dl>
 								<dt>
+									<label>Experience<span class="req">*</span></label>
+								</dt>
+								<dd>
+									<form:input path="experience" cssClass="number_only" maxlength="5"/>
+									<span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;"> (in years)</span>
+									<span class="error experience_error">&nbsp;<form:errors path="experience" /></span>
+								</dd>
+							</dl>
+							<dl style="clear: both;">
+								<dt>
 									<label>Willing to Relocate<span class="req">*</span></label>
 								</dt>
 								<dd>
-									<form:select path="willingToRelocate">
+									<form:select path="willingToRelocate" style="width:100%;">
 										<form:option value="Yes">Yes</form:option>
 										<form:option value="No">Not applicable</form:option>
 									</form:select>
@@ -447,41 +587,59 @@ alert('<%=quataExceed%>');
 									<span class='error noticePeriod_error'>&nbsp;<form:errors path="noticePeriod" /></span>
 								</dd>
 							</dl>
-							<dl>
+							
+							<dl style="clear: both;">
 								<dt>
-									<label>Date of Birth<span class="req">*</span></label>
+									<label>CTC Related Comments<!-- <span class="req">*</span> --></label>
 								</dt>
 								<dd>
-									<form:input path="dateofbirth"  maxlength="2"   style="padding-right: 150px" />
-									<span class='error dateofbirth_error'>&nbsp;${profileExist_dob}<form:errors path="dateofbirth" /></span>
+									<form:textarea path="ctcComments"  style="height: 111px !important;" ></form:textarea>
+									<span class="error ctcComments_error">&nbsp;<form:errors path="ctcComments" /></span>
 								</dd>
 							</dl>
-							<dl>
+							
+							<dl >
+	            <dt>
+	              <label>Qualification<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <div class="row">
+	                <div class="col-md-6">
+	                  <form:select path="qualification_ug" multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Qualification</form:option>
+	             
+	              		            		 <c:forEach var="item" items="${qListUg}">
+						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
+						</c:forEach> 
+	            	</form:select>
+	                  <span class='error qualification_ug_error'><form:errors path="qualification_ug"/></span>
+	                </div>
+	                <div class="col-md-6">
+	                  <form:select path="qualification_pg" multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Qualification</form:option>
+	            		 <c:forEach var="item" items="${qListPg}">
+						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
+						</c:forEach> 
+	            	</form:select>
+	                  </div>
+	              </div>
+	               <span class='error qualification_pg_error' >&nbsp;<form:errors path="qualification_pg"/></span>
+	               
+	            </dd>
+</dl>
+		<dl style="clear: both;">
 								<dt>
-									<label>Qualification<span class="req">*</span></label>
+									<label>Upload Resume<span title='Allowed doc type  : .docx, .doc, .pdf &#013Allowed doc size : 1MB '>(?)</span></label>
 								</dt>
 								<dd>
-									<form:select path="qualification">
-										<form:option value="bca">Bachelors of Computer Applications</form:option>
-										<form:option value="btech">Bachelors of Technology</form:option>
-										<form:option value="others">Others</form:option>
-									</form:select>
-									<span class='error qualification_error'>&nbsp;<form:errors path="qualification" /></span>
-								
-								
-								</dd>
-							</dl>
-							<dl>
-								<dt>
-									<label>Upload Resume</label>
-								</dt>
-								<dd>
-									<div class="file_up" style="float: left;">
+									<div class="file_up" style="float: left;width: 100%">
 										<form:input path="resumePath" disabled = "true"/>
 										<div class="fileUpload">
 										    <span>Browse</span>
 										    <input type="file" class="upload select_jd" name="resumeFile" />
 										</div>
+									    <span class="" style="font-size: 10px;">Supported Formats : doc, docx, pdf. Max size : 1MB</span>
+						   
 									    <span class="error resumePath_error">&nbsp;<form:errors path="resumePath" /></span>
 									</div>
 							<!-- 	<div style="float: left;">
@@ -494,7 +652,7 @@ alert('<%=quataExceed%>');
 									</div> 
 							-->
 								</dd>
-							</dl>
+							</dl>					
 							
 						</div>
 					</div>
@@ -530,6 +688,7 @@ alert('<%=quataExceed%>');
 	</div>
 <script src="ckeditor/ckeditor.js"></script>
 <script src="ckeditor/bootstrap3-wysihtml5.all.js"></script>
+<!-- <script src="js/jquery.autocomplete.js"></script> -->
 <script>
       $(function () {
         // Replace the <textarea id="editor1"> with a CKEditor
@@ -539,5 +698,20 @@ alert('<%=quataExceed%>');
         
       });
     </script>
+    
+    <script>
+    
+    $(document).ready(function(){ 
+    	$('.popupDatepicker').datepick();
+    });
+  /*   var $j = jQuery.noConflict();
+    $j(document).ready(function() {
+			$(function() {
+				$("#dateofbirth").datepicker({
+					dateFormat : 'yy-mm-dd'
+				});
+			});
+		}); */
+	</script>
 </body>
 </html>

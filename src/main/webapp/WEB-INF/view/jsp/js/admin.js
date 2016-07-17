@@ -11,7 +11,6 @@ function acceptPostCloseRequest(postId)
 			alertify.success(data);
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;	
 	}
@@ -47,7 +46,6 @@ jQuery(document).ready(function() {
 					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-			        alert(xhr.status);
 			      }
 		    }) ;	
 		}
@@ -74,7 +72,6 @@ jQuery(document).ready(function() {
 						data : {'userid':userid},
 						contentType : "application/json",
 						success : function(data) {
-//							alert("Userid + " + data);
 							
 							var obj = jQuery.parseJSON(data);
 							if(obj.status)
@@ -90,7 +87,6 @@ jQuery(document).ready(function() {
 							
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
 					      }
 				    }) ;	
 				}
@@ -130,7 +126,6 @@ jQuery(document).ready(function() {
 							
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
 					      }
 				    }) ;	
 				}
@@ -141,7 +136,6 @@ jQuery(document).ready(function() {
 	});
 	
 	$(document.body).on('click', '#admin_user_list  .btn_disable' ,function(){
-//		alert("userid " + $(this).parent().parent().attr("id"));
 		var userid = $(this).parent().parent().attr("id");
 		if( userid != "" )
 		{
@@ -166,7 +160,6 @@ jQuery(document).ready(function() {
 							}
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
 					      }
 				    }) ;	
 				}
@@ -174,7 +167,6 @@ jQuery(document).ready(function() {
 		}
 	});
 	$(document.body).on('click', '#admin_user_list  .btn_enable' ,function(){
-//		alert("userid " + $(this).parent().parent().attr("id"));
 		var userid = $(this).parent().parent().attr("id");
 		if( userid != "" )
 		{
@@ -199,7 +191,6 @@ jQuery(document).ready(function() {
 							}
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
 					      }
 				    }) ;	
 				}
@@ -210,6 +201,7 @@ jQuery(document).ready(function() {
 	
 	
 	$(document.body).on('click', '.verify_status .btn_verify' ,function(){
+		pleaseWait();
 		var pid= $(this).attr("verify-post");
 		$.ajax({
 			type : "GET",
@@ -227,9 +219,10 @@ jQuery(document).ready(function() {
 				{
 					alertify.error("Oops, Something wrong !");
 				}
+				pleaseDontWait();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
+		        pleaseDontWait();
 		      }
 	    }) ;	
 		
@@ -246,17 +239,17 @@ function contractSignUp(){
 	var contractNo = $('.user_account  #contractNo').val();
 	var paymentDays = $('.user_account  #paymentDays').val();
 	var emptyField = $('.user_account  #emptyField').val();
+	var feeCommission = $('#feeCommission').val();
 	
-/*	var ctcSlabs1Min = $('#ctcSlabs1Min').val();
-	var ctcSlabs1Max = $('#ctcSlabs1Max').val();
-	var ctcSlabs2Min = $('#ctcSlabs2Min').val();
-	var ctcSlabs2Max = $('#ctcSlabs2Max').val();
-	var ctcSlabs3Min = $('#ctcSlabs3Min').val();
-	var ctcSlabs3Max = $('#ctcSlabs3Max').val();
-	var ctcSlabs4Min = $('#ctcSlabs4Min').val();
-	var ctcSlabs4Max = $('#ctcSlabs4Max').val();
-	var ctcSlabs5Min = $('#ctcSlabs5Min').val();*/
-
+	if(feeCommission){
+		if(!contractNo||!paymentDays||(!$.isNumeric(paymentDays))){
+			
+			alertify.error("Please fill all fields correctly !!");
+			return false;
+	}else{
+	return true;
+	}
+	}else{
 	var feePercent1 = $('#feePercent1').val();
 	var feePercent2 = $('#feePercent2').val();
 	var feePercent3 = $('#feePercent3').val();
@@ -267,33 +260,21 @@ function contractSignUp(){
 	var slab3 = $('#slab3').val();
 	var slab4 = $('#slab4').val();
 	var slab5 = $('#slab5').val();
-	
-
 							if (feePercent1 == ""  ||(!$.isNumeric(feePercent1)) || 
-//								feePercent2 == ""  ||
-//								feePercent3 == ""  ||
-//								feePercent4 == ""  ||
-//								feePercent5 == ""  ||
 								(feePercent2 != ""&&!$.isNumeric(feePercent2)) || 
 								(feePercent3 != ""&&!$.isNumeric(feePercent3)) || 
 								(feePercent4 != ""&&!$.isNumeric(feePercent4)) || 
 								(feePercent5 != ""&&!$.isNumeric(feePercent5)) ||
 								slab1 == ""  ||
-//								slab2 == ""  ||
-//								slab3 == ""  ||
-//								slab4 == ""  ||
-//								slab5 == ""  ||
 							    paymentDays == ""  ||(!$.isNumeric(paymentDays)) ) {
-		
 			alertify.error("Please fill all fields correctly !!");
 			return false;
 	}else{
-	
 	return true;
-}
+}}
+	}
 
-
-}
+	
 function onBlueZero(){
 
 	var feePercent1 = $('#feePercent1').val();
@@ -348,11 +329,20 @@ function validateLocationForm(){
 			}
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;	
 	
 	
 	
 	
+}
+
+
+function pleaseWait(){
+
+	$('.bodyCoverWait').css('display','block');
+}
+function pleaseDontWait(){
+
+	$('.bodyCoverWait').css('display','none');
 }

@@ -58,19 +58,47 @@ public class PostProfile
 
 	@Column
 	private Date joinDropDate;
-	
+
 	@Column
 	private Date withdrawDate;
+
+	@Column
+	private Date modificationDate;
 	
 	@Column
 	private String rejectReason;
-	
+
 	@Column
 	private String actionPerformerId;
 	
 	@Column
+	private String processStatus;
+	
+	@Column
 	private Boolean viewStatus;
 	
+	
+	
+	public String getProcessStatus()
+	{
+		return processStatus;
+	}
+
+	public void setProcessStatus(String processStatus)
+	{
+		this.processStatus = processStatus;
+	}
+
+	public Date getModificationDate()
+	{
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate)
+	{
+		this.modificationDate = modificationDate;
+	}
+
 	public Date getWithdrawDate()
 	{
 		return withdrawDate;

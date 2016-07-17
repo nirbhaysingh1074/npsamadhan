@@ -18,7 +18,6 @@
 				$('#load_admin_post').parent().parent().siblings(".overlay").hide();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -36,7 +35,6 @@
 				$('#load_admin_profile').parent().parent().siblings(".overlay").hide();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -53,7 +51,6 @@
 				$('#load_admin_client').parent().parent().siblings(".overlay").hide();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -70,7 +67,6 @@
 				$('#load_admin_consultant').parent().parent().siblings(".overlay").hide();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}

@@ -48,10 +48,8 @@ jQuery(document).ready(function() {
 		{
 			$(this).val('0'); 
 		}
-//		alert("hello" );
 	});
 	$(document.body).on('click', '.pre_check > .1view_post' ,function(){
-//		alert("pid ");
 		var pid = $(this).attr("id");
 		if(pid != "")
 		{
@@ -61,15 +59,11 @@ jQuery(document).ready(function() {
 				data : {'pid':pid},
 				contentType : "application/json",
 				success : function(data) {
-//				alert(data);
 					$('#positions_info').hide();
 					$('#post_detail').html(data);
 					$('#post_detail').show();
-					
-					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 		}
@@ -77,7 +71,6 @@ jQuery(document).ready(function() {
 	
 
 	$(document.body).on('click', '.page_nav  .back_list_view' ,function(){
-//		alert("back");
 		$('#post_detail').html("");
 		$('#post_detail').hide();
 		$('#positions_info').show();
@@ -86,7 +79,6 @@ jQuery(document).ready(function() {
 	
 	$(document.body).on('click', '.applicant_msg .send_msg' ,function(){
 		var msg_text = $('#msg_text').val();
-//		alert("Hello to all :"+msg_text);
 		
 		
 		var ppid = $(this).attr("id");
@@ -109,7 +101,6 @@ jQuery(document).ready(function() {
 					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 		}
@@ -128,7 +119,6 @@ function setFirstTimeFalse(regid){
 			
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-			alert(xhr.status);
 		}
 	}) ;
 }

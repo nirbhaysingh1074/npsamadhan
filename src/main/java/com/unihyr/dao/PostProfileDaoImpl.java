@@ -39,6 +39,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 	{
 		try
 		{
+			postProfile.setModificationDate(new Date());
 			this.sessionFactory.getCurrentSession().update(postProfile);
 			return true;
 			
@@ -115,7 +116,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 		
 		return count;
 	}
-	
+
 	@Override
 	public List<PostProfile> getPostProfileByPost(long postId, int first, int max,String sortParam,String filterBy,String excludeType,String sortOrder)
 	{
@@ -126,21 +127,51 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
 				.setMaxResults(max);
-		if(filterBy.indexOf("pending")>=0){
-			criteria.add(Restrictions.isNull("accepted"));
-			criteria.add(Restrictions.isNull("rejected"));
+
+		if(filterBy.equals("all")){
+			//criteria.add(Restrictions.eq("processStatus","submitted"));
 		}
-		else
-		criteria.add(Restrictions.isNotNull(filterBy));
-		
+		else{
+		criteria.add(Restrictions.eq("processStatus",filterBy));
+		}
 		if(!excludeType.equals("rejected")){
-			Criterion cn5 = Restrictions.isNull("rejected");
-			Criterion cn6 = Restrictions.isNull("declinedDate");
-			Criterion cn7 = Restrictions.isNull("joinDropDate");
-			Criterion cn8 = Restrictions.isNull("declinedDate");
-			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+		Criterion cn5 = Restrictions.isNull("rejected");
+		Criterion cn6 = Restrictions.isNull("declinedDate");
+		Criterion cn7 = Restrictions.isNull("offerDropDate");
+		criteria.add(Restrictions.and(cn5,cn6,cn7));
 		}
 		criteria.createAlias("profile", "profileAlias");
+		if(sortOrder.indexOf("desc")>=0)
+	  		criteria.addOrder(Order.desc("profileAlias."+sortParam));
+	  		else if(sortOrder.indexOf("asc")>=0)
+	  		criteria.addOrder(Order.asc("profileAlias."+sortParam));
+		
+		return criteria.list();
+	}
+	
+	/**
+	 * a method to get last profile submitted over any post
+	 * @param postId
+	 * @param first
+	 * @param max
+	 * @param sortParam
+	 * @param filterBy
+	 * @param excludeType
+	 * @param sortOrder
+	 * @return
+	 */
+	@Override
+	public List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max,String filterBy)
+	{
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("post", "postAlias")
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+				.setFirstResult(first)
+				.setMaxResults(max);
+
+		criteria.add(Restrictions.isNotNull(filterBy));
+		criteria.addOrder(Order.desc(filterBy));
 	
 		
 		return criteria.list();
@@ -154,20 +185,18 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.isNull("postAlias.deleteDate"))
 				.add(Restrictions.eq("postAlias.postId", postId))
 				.add(Restrictions.isNull("postAlias.deleteDate"));
-		if(filterBy.indexOf("pending")>=0){
-			criteria.add(Restrictions.isNull("accepted"));
-			criteria.add(Restrictions.isNull("rejected"));
-		}
-		else
-		criteria.add(Restrictions.isNotNull(filterBy));
-		
 
+		if(filterBy.equals("all")){
+			//criteria.add(Restrictions.eq("processStatus","submitted"));
+		}
+		else{
+		criteria.add(Restrictions.eq("processStatus",filterBy));
+		}
 		if(!excludeType.equals("rejected")){
-			Criterion cn5 = Restrictions.isNull("rejected");
-			Criterion cn6 = Restrictions.isNull("declinedDate");
-			Criterion cn7 = Restrictions.isNull("joinDropDate");
-			Criterion cn8 = Restrictions.isNull("declinedDate");
-			criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+		Criterion cn5 = Restrictions.isNull("rejected");
+		Criterion cn6 = Restrictions.isNull("declinedDate");
+		Criterion cn7 = Restrictions.isNull("offerDropDate");
+		criteria.add(Restrictions.and(cn5,cn6,cn7));
 		}
 		long count=	(Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
 		return count;
@@ -218,7 +247,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 		
 		return count;
 	}
-	
+
 	
 	@Override
 	public List<PostProfile> getPostProfileByClientPostAndConsultant(String clientId, String consultantId, long postId, int first, int max,String sortParam,String filterBy,String excludeType)
@@ -227,50 +256,40 @@ public class PostProfileDaoImpl implements PostProfileDao
 		Criteria criteria=		this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
 				.createAlias("post", "postAlias")
 				.createAlias("postAlias.client", "clientAlias");
-//		criteria.add(Restrictions.eq("clientAlias.userid", clientId));
-		
 		Criterion cn1 = Restrictions.eq("clientAlias.userid", clientId);
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
-        
-				
 		criteria.add(Restrictions.isNull("postAlias.deleteDate"))
 				.add(Restrictions.isNotNull("postAlias.published"));
-				
 		criteria.createAlias("profile.registration", "consAlias");
-		//criteria.add(Restrictions.eq("consAlias.userid", consultantId));
-				
 		Criterion cn3 = Restrictions.eq("consAlias.userid", consultantId);
 		Criterion cn4 = Restrictions.eq("consAlias.admin.userid", consultantId);
 		criteria.add(Restrictions.or(cn3, cn4));
-		        
-				
 				criteria.add(Restrictions.eq("post.postId", postId))
 				.setFetchMode("messages", FetchMode.JOIN)
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setFirstResult(first)
 				.setMaxResults(max);
-				if(filterBy.indexOf("pending")>=0){
-					criteria.add(Restrictions.isNull("accepted"));
-					criteria.add(Restrictions.isNull("rejected"));
+				if(filterBy.equals("all")){
+					//criteria.add(Restrictions.eq("processStatus","submitted"));
 				}
-				else
-				criteria.add(Restrictions.isNotNull(filterBy));
-			
+				else{
+				criteria.add(Restrictions.eq("processStatus",filterBy));
+				}
 				if(!excludeType.equals("rejected")){
 				Criterion cn5 = Restrictions.isNull("rejected");
 				Criterion cn6 = Restrictions.isNull("declinedDate");
-				Criterion cn7 = Restrictions.isNull("joinDropDate");
-				Criterion cn8 = Restrictions.isNull("declinedDate");
-				criteria.add(Restrictions.and(cn5,cn6,cn7,cn8));
+				Criterion cn7 = Restrictions.isNull("offerDropDate");
+				criteria.add(Restrictions.and(cn5,cn6,cn7));
 				}
-				
 		 		if(sortParam.indexOf("submitted")>=0)
 	      		criteria.addOrder(Order.desc(sortParam));
 	      		else
 	      		criteria.addOrder(Order.asc(sortParam));
 		return criteria.list();
 	}
+
+	
 
 	
 	@Override
@@ -302,12 +321,12 @@ public class PostProfileDaoImpl implements PostProfileDao
 				
 		criteria.add(Restrictions.eq("post.postId", postId))
 				.add(Restrictions.isNull("postAlias.deleteDate"));
-		if(filterBy.indexOf("pending")>=0){
-			criteria.add(Restrictions.isNull("accepted"));
-			criteria.add(Restrictions.isNull("rejected"));
+		if(filterBy.equals("all")){
+			//criteria.add(Restrictions.eq("processStatus","submitted"));
 		}
-		else
-		criteria.add(Restrictions.isNotNull(filterBy));
+		else{
+		criteria.add(Restrictions.eq("processStatus",filterBy));
+		}
 		long count		=(Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
 		return count;
 	}
@@ -455,9 +474,17 @@ public class PostProfileDaoImpl implements PostProfileDao
 		}
 		if(contact != null && contact.length() > 0)
 		{
+			String[] cons=contact.split(",");
 //			Criterion contactcheck = Restrictions.eq("profileAlias.contact", contact);
-			criteria.add(Restrictions.eq("profileAlias.contact", contact));
-		}
+			try{
+				if(cons.length==2)
+			criteria.add(Restrictions.eq("profileAlias.countryCode", cons[1]));
+			criteria.add(Restrictions.eq("profileAlias.contact", cons[0]));
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+			}
 		
 		if((email != null && email.length() > 0) || (contact != null && contact.length() > 0))
 		{
@@ -590,8 +617,13 @@ public class PostProfileDaoImpl implements PostProfileDao
 	public long countShortListedProfileByClientOrConsultant(String client, String consultant)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
-				.add(Restrictions.isNotNull("recruited"))
+				.add(Restrictions.isNotNull("accepted"))
+				.add(Restrictions.isNull("declinedDate"))
+				.add(Restrictions.isNull("offerDropDate"))
+				.add(Restrictions.isNull("offerDate"))
+				.add(Restrictions.isNull("withdrawDate"))
 				.createAlias("post", "postAlias")
+				.add(Restrictions.isNull("postAlias.closeDate"))
 				.createAlias("postAlias.client", "clientAlias")
 				.createAlias("profile", "profileAlias")
 				.createAlias("profileAlias.registration", "consAlias");
@@ -611,10 +643,10 @@ public class PostProfileDaoImpl implements PostProfileDao
 		return (Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
 	}
 	
-	public long countJoinedProfileByClientOrConsultant(String client, String consultant)
+	public long countJoinedProfileByClientOrConsultant(String client, String consultant,String statusFilter)
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
-				.add(Restrictions.isNotNull("joinDate"))
+				.add(Restrictions.isNotNull(statusFilter))
 				.createAlias("post", "postAlias")
 				.createAlias("postAlias.client", "clientAlias")
 				.createAlias("profile", "profileAlias")
@@ -811,12 +843,13 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.isNull("postAlias.deleteDate"))
 				.add(Restrictions.eq("postAlias.postId", postId))
 				.add(Restrictions.isNotNull("offerDate"))
+				.add(Restrictions.isNull("joinDropDate"))
 				.addOrder(Order.desc("submitted"))
 				.list();
 		return list;
 	}
 	@Override
-	public boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob){
+	public boolean getPostProfileByContactAndDob(long postId, String contactNo, String dob){
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class);
 		criteria.createAlias("profile", "profileAlias");
 		criteria.createAlias("post", "postAlias");

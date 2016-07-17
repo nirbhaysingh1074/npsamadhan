@@ -9,7 +9,9 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
@@ -84,7 +86,7 @@ public class RegistrationDaoImpl implements RegistrationDao
 		this.sessionFactory.getCurrentSession().update(registration);
 		this.sessionFactory.getCurrentSession().flush();
 
-	}
+}
 
 	@Override
 	public List<Registration> getConsultantsByClient(String clientId)
@@ -235,6 +237,16 @@ public class RegistrationDaoImpl implements RegistrationDao
 		// .addEntity(Registration.class)
 		// .setFetchMode("log", FetchMode.JOIN)
 		// .list();
+	}
+
+	@Override
+	public void insertUserIndustryMap(int industryId, int registrationId)
+	{
+		String sql = "INSERT INTO `unihyr`.`user_industry` ("+
+					"`lid` ,`id`) VALUES (:industryId, :registrationId)";
+		this.sessionFactory.getCurrentSession().createSQLQuery(sql).setInteger("industryId", industryId)
+				.setInteger("registrationId", registrationId).executeUpdate();
+		
 	}
 
 }

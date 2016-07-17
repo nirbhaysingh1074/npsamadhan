@@ -4,9 +4,7 @@
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	
 	<title>UniHyr</title>
-	
 	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 	<link rel="stylesheet" href="css/media.css" media="screen" />
     <link rel="stylesheet" href="css/style.css" media="screen" />
@@ -29,14 +27,13 @@
 				</div>
 				<div class="login-wrap bottom-padding">
 						<%
-							String regSuccess = (String) request.getParameter("regSuccess");
+							String regSuccess = (String) request.getParameter("verifySuccess");
 							if (regSuccess != null && regSuccess.equals("true"))
 							{
-								String org = (String) request.getParameter("orgName");
 								%>
 									<form class="form-box bottom-padding" method="POST" action="j_spring_security_check">
 									<p style="font-weight: bold;">
-										Thank You for showing interest in UniHyr. Our representative will get in touch with you within 24 business hours . For any other information, please write to register@unihyr.com
+										Thank You for Verifying billing details.
 									</p>	
 									</form>
 									<sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -50,21 +47,7 @@
 		</div>
 	
 	</section>
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-	<script src="js/jquery.min.js"></script>
+<script src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

@@ -77,30 +77,23 @@ pleaseWait();
     			filterBy='submitted';
 			
         });
-      //  alert(filterBy);
         
         
         sortOrder =  $("input[name='sortOrder']:checked").val();           
         	
        
-		//alert(sortOrder);
-		
-        
-        
 		$.ajax({
 			type : "GET",
 			url : "postapplicantlist",
 			data : {'pn':pn,'pid':pid,'sortParam':sortParam,'excludeType':excludeType,'filterBy':filterBy,'sortOrder':sortOrder},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				$('#candidate_profiles').html(data);
 				$('#candidate_profiles').show();
 				$('#candidate_profiles_def').hide();
 			pleaseDontWait();	
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -117,64 +110,6 @@ pleaseWait();
 <body class="loading" <% if(ppList == null){%>onload="loadclientposts('1')"  <%} %>>
 	<div class="mid_wrapper">
 		<div class="container">
-			<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-    <div style="padding-bottom: 0" class="rightside_in new_table">
-        <div class="bottom-padding" style=" border: 2px solid gray; border-radius: 5px; margin-bottom: 10px;  padding: 10px;">
-	        <div class="bottom-padding">
-	        	
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		Active Positions
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalActive}
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		InActive Positions
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalposts - totalActive}
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Profile Recieved
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalprofiles }
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Profile Shortlisted
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalshortlist }
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Candidate Joined
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totaljoin }
-		        	</div>
-	        	</div>
-	        	<div class="col-md-4 report_sum" >
-		        	<div class="col-md-9">
-		        		No of Partners
-		        	</div>
-		        	<div class="col-md-3">
-		        		${totalpartner }
-		        	</div>
-	        	</div>
-	        	
-	        </div>
-        </div>
-    </div>
-    </sec:authorize> --%>
     <%
 
 	int pn=1;
@@ -187,7 +122,7 @@ pleaseWait();
 		while(it.hasNext())
 		{
 			PostProfile pp = it.next();
-			if(pp.getAccepted() != null)
+			if(pp.getAccepted() != null&&pp.getOfferDate()==null&&pp.getWithdrawDate()==null&&pp.getDeclinedDate()==null&&pp.getOfferDropDate()==null)
 			{
 				shortListed.add(pp.getPpid());
 			}
@@ -199,9 +134,6 @@ pleaseWait();
 		pn = (Integer) request.getAttribute("pn");
     	}
     %>
-    
-    
-    
     	 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
     <div style="padding-bottom: 0" class="rightside_in new_table">
         <div class="bottom-padding manageposthead" >
@@ -275,7 +207,7 @@ pleaseWait();
 	        	
 	        	<div class="col-md-4 report_sum" >
 		        	<div class="col-md-5">
-		        		Shortlisted
+		        		In Process
 		        	</div>
 		        	<div class="col-md-7">
 		        		<%=shortListed.size() %>
@@ -289,37 +221,7 @@ pleaseWait();
     </sec:authorize> 
     <%} %>
 			<div class="new_post_info">
-				<%-- <div class="left_side">
-        <div class="left_menu">
-          
-          <h2 style="background: #4e4e4e none repeat scroll 0 0; border-radius: 5px 5px 0 0;color: #fff;margin-top: 5px">Hiring Partners</h2>
-          <ul id="cons_list">
-            <%
-            	if(conslistHavingProfiles != null && !conslistHavingProfiles.isEmpty())
-            	{
-            		for(PostConsultant pp : conslistHavingProfiles)
-            		{
-            			%>
-				            <li id="<%= pp.getConsultant().getUserid()%>"><a><%= pp.getConsultant().getConsultName() %></a></li>
-            			<%		
-            		}
-            		
-            	}
-        	if(conslistHavingNoProfiles != null && !conslistHavingNoProfiles.isEmpty())
-        	{
-            		for(PostConsultant pp : conslistHavingNoProfiles)
-            		{
-            			%>
-				            <li id="<%= pp.getConsultant().getUserid()%>"><a><%= pp.getConsultant().getConsultName() %>
-				            <br><span style='font-size:10px;'>(No Profiles Submitted)</span></a></li>
-            			<%		
-            		}
-            	}
-            %>
-          </ul>
-          
-        </div>
-      </div> --%>
+			
 				<div class="right_side" style="width: 100%;">
 					<div class="profiles_col">
 
@@ -372,10 +274,10 @@ pleaseWait();
 								</div>		
   				<div class="sort_by"  id="filterDiv" > <span>Filter by Status</span>
 		          <select id="filterBy"  onchange="loadclientposts('1')">
-		            <option value="submitted">Submitted</option>
-		            <option value="pending">Pending</option>
+		            <option value="all">All Submitted</option>
+		            <option value="submitted">Pending</option>
 		            
-		            <option value="accepted">Shortlisted</option>
+		            <option value="accepted">In Process</option>
 		            
 		            <option value="recruited">Offer Sent</option>
 		            
@@ -386,10 +288,10 @@ pleaseWait();
 		        </div>
   				<div class="sort_by" id="filterDivIncRej" style="display: none;"> <span>Filter by Status</span>
 		          <select id="filterByRej"  onchange="loadclientposts('1')">
-		            <option value="submitted" selected="selected">Submitted</option>
-		            <option value="pending">Pending</option>
+		            <option value="all" selected="selected">All Submitted</option>
+		            <option value="submitted">Pending</option>
 		            
-		            <option value="accepted">Shortlisted</option>
+		            <option value="accepted">In Process</option>
 		            <option value="rejected">CV Rejected</option>
 		            
 		            <option value="recruited">Offer Sent</option>
@@ -400,18 +302,22 @@ pleaseWait();
 		            
 		            <option value="joinDate">Joined</option>
 		            <option value="joinDropDate">Dropped</option>
+		            <option value="withdrawDate">Withdrawn</option>
 		          </select>
 		        </div>
-		       
+		     
 		        <div style="float: right;margin-right: 20px;">
 							<label style="line-height: 27px;"><input onchange="loadclientposts('1');" type="checkbox" name="excludeType"   value="rejected"/> Include Rejected</label>
 							</div> <%} %>
 						</div>
 						
-						
+						<%if(post!=null&&post.getCloseDate()!=null) {%>
+						<marquee style="margin-left: 20px;margin-right: 20px;">
+						<font color="red">This post has been closed.</font>						
+						</marquee>
+						<%} %>
 						<div id="candidate_profiles" class="rightside_in new_table "
 							style="display: <%if (ppList == null) {%>none<%}%>">
-							<!--           ----------------------------  inner data start --------------------- -->
 							<%
 								if (ppList != null) {
 									Set<Registration> consultants = new HashSet<Registration>();
@@ -421,7 +327,6 @@ pleaseWait();
 										}
 									}
 									int totalCount =  ((Integer)request.getAttribute("totalCount"));
-									//int pn = (Integer) request.getAttribute("pn");
 									int rpp = (Integer) request.getAttribute("rpp");
 									int tp = 0;
 									String cc = "";
@@ -509,9 +414,9 @@ pleaseWait();
 									<td>
 									<%if(pp.getViewStatus()!=null&&pp.getViewStatus()){
 										 %>
-									<a style="color: #1a0dab" href="clientapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a>
+									<a style="color: purple;cursor: default;" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									<%}else{ %>
-									<a href="clientapplicantinfo?ppid=<%=pp.getPpid()%>"><%=pp.getProfile().getName()%></a>
+									<a style="cursor: default;" href="javascript:void(0)"><%=pp.getProfile().getName()%></a>
 									
 									<%} %>
 									</td>
@@ -521,36 +426,72 @@ pleaseWait();
 									<td align="center"><%=pp.getProfile().getCurrentCTC()%></td>
 									<td align="center"><%=pp.getProfile().getNoticePeriod()%></td>
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
-
 									<%
-										if (pp.getJoinDropDate() != null) {
+												String status = "";
+												if (pp.getWithdrawDate() != null) {
+													status = "Withdrawn";
+												} else if (pp.getJoinDropDate() != null) {
+													status = "Dropped";
+												} else if (pp.getJoinDate() != null) {
+													status = "Joined";
+												} else if (pp.getOfferDropDate() != null) {
+													status = "Offer Declined";
+												} else if (pp.getOfferDate() != null) {
+													status = "Offered";
+												} else if (pp.getDeclinedDate() != null) {
+													status = "Interview Reject";
+												} else if (pp.getRecruited() != null) {
+													status = "Offer Sent ";
+												} else if (pp.getRejected() != null) {
+													status = "CV Rejected";
+												} else if (pp.getAccepted() != null) {
+													status = "ShortListed";
+												} else {
+													status = "Pending";
+												}
+												if (pp.getPost().getCloseDate() != null) {
 									%>
-									<td><span>Dropped</span></td>
+									<td><span><%=status %></span></td>
+									<td class="text-center" style="text-align: left;"><span>Post Closed</span></td>
+									<%	
+										}else if(!pp.getPost().isActive()) {
+									%>
+									<td><span><%=status %></span></td>
+									<td class="text-center" style="text-align: left;"><span>Post Inactive</span></td>
+									<%
+										}else  if (pp.getWithdrawDate() != null) {
+									%>
+									<td><span><%=status %></span></td>
+									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<%
+										}else  if (pp.getJoinDropDate() != null) {
+									%>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getJoinDate() != null) {
 									%>
-									<td><span>Joined</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getOfferDropDate() != null) {
 									%>
-									<td><span>Offer Declined</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getOfferDate() != null) {
 									%>
-									<td><span>Offered</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getDeclinedDate() != null) {
 									%>
-									<td><span>Interview Reject</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
 										} else if (pp.getRecruited() != null) {
 									%>
-									<td><span>Offer Sent </span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -564,15 +505,14 @@ pleaseWait();
 									</td>
 									<%
 										}
-
-													else if (pp.getRejected() != null) {
+									else if (pp.getRejected() != null) {
 									%>
-									<td><span>CV Rejected</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
 									<%
-										} else if (pp.getAccepted() != null) {
+									} else if (pp.getAccepted() != null) {
 									%>
-									<td><span>ShortListed</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -588,7 +528,7 @@ pleaseWait();
 									<%
 										} else {
 									%>
-									<td><span>Pending</span></td>
+									<td><span><%=status %></span></td>
 									<td class="text-center">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -603,12 +543,12 @@ pleaseWait();
 										}
 									%>
 
-									<td><p style="width: 105px; border-radius: 2px;">
+
+									<td><p style="width: 90px; border-radius: 2px;">
 											<a
 												style="line-height: 0.42857em; background: url(images/ic_12.png) no-repeat 3px 4px #f8b910; padding: 8px 18px 8px 18px;"
 												class="btn search_btn" target="_blank"
-												href="clientapplicantinfo?ppid=<%=pp.getPpid()%>">View
-												Applicant</a>
+												href="clientapplicantinfo?ppid=<%=pp.getPpid()%>">View Profile</a>
 										</p></td>
 								</tr>
 
@@ -882,7 +822,6 @@ pleaseWait();
 					$('#rejectModal').show();
 				}
 
-				// 		alert("data-type : " + reject_type);
 			})
 
 			$(document.body).on('click', '.btn-offer-open', function() {

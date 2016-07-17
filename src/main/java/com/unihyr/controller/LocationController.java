@@ -86,8 +86,6 @@ public class LocationController
 			map.addAttribute("loc_error", "Please enter location name");
 			if(!locationService.getLocationByName(location.getLocation().trim()).isEmpty())
 			map.addAttribute("loc_error", "Location is already exist !");
-			
-			
 			return "adminAddLocation";
 		}
 		else

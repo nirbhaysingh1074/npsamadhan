@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,7 +33,6 @@ public class InboxDaoImpl implements InboxDao
 		catch (Exception e)
 		{
 			return false;
-			// TODO: handle exception
 		}
 		
 		
@@ -44,8 +44,6 @@ public class InboxDaoImpl implements InboxDao
 		return this.sessionFactory.getCurrentSession().createCriteria(Inbox.class)
 				.add(Restrictions.eq("postProfile.ppid", ppid))
 				.addOrder(Order.desc("createDate"))
-//				.setFirstResult(first)
-//				.setMaxResults(max)
 				.list();
 	}
 	
@@ -85,8 +83,9 @@ public class InboxDaoImpl implements InboxDao
 				.createAlias("postProfile", "ppAlias")
 				.createAlias("ppAlias.post", "postAlias")
 				.createAlias("postAlias.client", "clientAlias")
+				.add(Restrictions.isNull("client"))
 				.add(Restrictions.eq("clientAlias.userid", userid))
-				.add(Restrictions.eq("isViewed", false))
+//				.add(Restrictions.eq("isViewed", false))
 				.addOrder(Order.desc("createDate"))
 				.list();
 	}
@@ -98,9 +97,32 @@ public class InboxDaoImpl implements InboxDao
 				.createAlias("postProfile", "ppAlias")
 				.createAlias("ppAlias.profile", "prAlias")
 				.createAlias("prAlias.registration", "regAlias")
+				.add(Restrictions.isNull("consultant"))
 				.add(Restrictions.eq("regAlias.userid", userid))
-				.add(Restrictions.eq("isViewed", false))
+//				.add(Restrictions.eq("isViewed", false))
 				.addOrder(Order.desc("createDate"))
 				.list();
+	}
+	@Override
+	public Long countMessageByClient(String loggedinUser)
+	{
+		return (Long)this.sessionFactory.getCurrentSession().createCriteria(Inbox.class)
+				.createAlias("postProfile", "ppAlias")
+				.createAlias("ppAlias.post", "postAlias")
+				.createAlias("postAlias.client", "clientAlias")
+				.add(Restrictions.isNull("client"))
+				.add(Restrictions.eq("clientAlias.userid", loggedinUser)).add(Restrictions.eq("isViewed", false))
+				.setProjection(Projections.rowCount()).uniqueResult();
+	}
+	@Override
+	public Long countMessageByConsultant(String loggedinUser)
+	{
+		return (Long)this.sessionFactory.getCurrentSession().createCriteria(Inbox.class)
+				.createAlias("postProfile", "ppAlias")
+				.createAlias("ppAlias.profile", "prAlias")
+				.createAlias("prAlias.registration", "regAlias")
+				.add(Restrictions.isNull("consultant"))
+				.add(Restrictions.eq("regAlias.userid", loggedinUser)).add(Restrictions.eq("isViewed", false))
+				.setProjection(Projections.rowCount()).uniqueResult();
 	}
 }

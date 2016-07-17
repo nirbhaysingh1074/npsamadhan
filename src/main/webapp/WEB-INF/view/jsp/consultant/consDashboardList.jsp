@@ -23,13 +23,15 @@
 <style type="text/css">
 	.error{color: red;}
 </style>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 
 </head>
 <body class="loading">
 	<%
 		Registration sel_client = (Registration)request.getAttribute("selClient");
 		List<Registration> clientList = (List<Registration>) request.getAttribute("clientList");
-		Registration reg = (Registration)request.getSession().getAttribute("registration");
+		Registration reg = (Registration)request.getAttribute("registration");
 	
        	List<Post> postList = (List)request.getAttribute("postList");
 		long totalCount = (Long)request.getAttribute("totalCount");
@@ -129,6 +131,7 @@
 								               <option value="all"  >Status</option>
 											   <option value="active"  <%if(db_post_status.equals("active")){%>selected="selected"<%} %> >Active</option>
 											   <option value="inactive" <%if(db_post_status.equals("inactive")){%>selected="selected"<%} %>>Inactive</option>
+						            		   <option value="closeDate" <%if(db_post_status.equals("closeDate")){%>selected="selected"<%} %>>Closed</option>
 						            		<%
 					            		%>
 									</select>
@@ -161,19 +164,37 @@
 					        	</select>
 		       				</th>
 		       				<th  align="left">
+			       				<%
+			       				String db_sel_loc = (String)request.getAttribute("db_sel_loc");
+				       				
+			       				List<String> locList = (List)request.getAttribute("locList");
+			       				Set<String> uniqueLocs = new HashSet<String>();
+			       				for(String loc : locList)
+			       				{
+			       					String[] locs=loc.split(",");
+			       					for(int i=0;i<locs.length;i++){
+			       						uniqueLocs.add(locs[i]);
+			       					}
+			       				}
+										
+			       				
+			       				String locsList="";
+			       				for(String loc : uniqueLocs)
+			       				{
+		       					locsList+="'"+loc+"',";
+			       				}			       				
+			       				%>
+<!-- 								<label id="location" onclick="">Location</label>	       				 -->
+<!-- 	       						<input type="text" id="autofillloc" value=""/> -->
 			       				<select id="cons_db_sel_loc" style="width: 100px;height: 30px;background: #e3e3e3;font-weight: bold;border: 0px;">
 			       					<option value="">Location</option>
 				       				<%
-				       					String db_sel_loc = (String)request.getAttribute("db_sel_loc");
-					       				
-					       				
-					       				List<String> locList = (List)request.getAttribute("locList");
-					       				
-					       				for(String loc : locList)
-					       				{
-					       					
+						       				for(String loc : uniqueLocs)
+						       				{
+					       					locsList+="'"+loc+"',";
 					       					if(loc.equals(db_sel_loc))
 					       					{
+					       						
 							       				%>
 							       					<option value="<%=loc%>" selected="selected"><%=loc %></option>
 							       				<%
@@ -187,12 +208,23 @@
 					       				}
 		       						%>
 	       						</select>
+	       						
+	       						<script>
+$( function() {
+  var availableTags = [
+   <%=locsList%>
+  ];
+  $( "#autofillloc" ).autocomplete({
+    source: availableTags
+  });
+} );
+</script>
        						</th>
 		       				<th width="80px">Posted Date</th>
 		       				<th width="80px">Submitted</th>
-		       				<th width="50px">Pending</th>
-		       				<th width="80px">Shortlisted</th>
-		       				<th width="50px">Joined</th>
+<!-- 		       				<th width="50px">Pending</th> -->
+		       				<th width="80px">In Process</th>
+<!-- 		       				<th width="50px">Joined</th> -->
 		       				<th width="50px">View</th>
 		       			</tr>	
 	       			</thead>
@@ -260,11 +292,11 @@
 						       						{
 						       							PostProfile pr = it.next();
 						       							
-						       							System.out.println(pr.getProfile().getRegistration().getUserid() + " VS " + reg.getUserid());
-// 						       							System.out.println(pr.getProfile().getRegistration().getUserid() + " VS admin" + reg.getAdmin().getUserid());
+						       							//System.out.println(pr.getProfile().getRegistration().getUserid() + " VS " + reg.getUserid());
+														//System.out.println(pr.getProfile().getRegistration().getUserid() + " VS admin" + reg.getAdmin().getUserid());
 						       							
-						       							System.out.println(" Check user : "+ pr.getProfile().getRegistration().equals(reg));
-						       							System.out.println(" Check user in set : "+ reg.getSubuser().contains(pr.getProfile().getRegistration()));
+						       							//System.out.println(" Check user : "+ pr.getProfile().getRegistration().equals(reg));
+						       							//System.out.println(" Check user in set : "+ reg.getSubuser().contains(pr.getProfile().getRegistration()));
 						       									
 						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()))
 						       							{
@@ -287,7 +319,7 @@
 						       								}
 						       							}
 						       							
-						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getAccepted() != null)
+						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getAccepted() != null&&pr.getOfferDate()==null&&pr.getWithdrawDate()==null&&pr.getDeclinedDate()==null&&pr.getOfferDropDate()==null)
 						       							{
 						       								prshort++;
 						       							}
@@ -321,18 +353,21 @@
 						       					%>
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prsub %></a>
 					       					</td>
-					       					    					
-						       				
-					   
-						       				<td  align="center" title="No. of profiles shortlisted">
+						       				<%-- <td  align="center" title="No. of profiles In Process">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prpending %></a>
+						       				</td> --%>
+					       					<td  align="center" title="No. of profiles In Process">
+						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" >
+						       					<%if(post.getCloseDate()!=null) {%>
+						       					--
+						       					<%}else{ %>
+						       					<%= prshort %>
+						       					<%} %>
+						       					</a>
 						       				</td>
-					       					<td  align="center" title="No. of profiles shortlisted">
-						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prshort %></a>
-						       				</td>
-						       				<td  align="center" title="No. of profiles shortlisted">
+						       				<%-- <td  align="center" title="No. of profiles In Process">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prjoined %></a>
-						       				</td>
+						       				</td> --%>
 						       				<td align="center" >
 						       					<div class="pre_check" style="float: none;padding:0;">
 							                		<a href="consviewjd?pid=<%= post.getPostId() %>" target="_blank" class="view_post " title="Click to view post detail">
@@ -340,7 +375,6 @@
 						                			</a>
 							                	</div>
 						       				</td>
-						       				
 						        		</tr>
 	       							<%
 	       						}

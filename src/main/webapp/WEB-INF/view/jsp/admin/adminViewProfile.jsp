@@ -141,6 +141,15 @@
 			                        <label  class="form-control" ><%= pp.getProfile().getNoticePeriod()%></label>
 			                      </div>
 			                    </div> <!-- attribute end -->
+			                    <%if(pp.getProfile().getExperience()!=null){ %>
+			                    <div class="form-group col-md-6 col-sm-12">
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Experience</label>
+			                      <div class="col-sm-8">
+			                        <label  class="form-control" ><%= pp.getProfile().getExperience()%> Years</label>
+			                      </div>
+			                    </div> 
+			                    <%} %>
+			                    <!-- attribute end -->
 			                    <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Phone </label>
 			                      <div class="col-sm-8">

@@ -68,8 +68,9 @@
 								class='clearfix'>
 								<button type="submit" class=" btn-login btn btn-block yelo_btn" style="margin-left: 0px;">Login</button>
 							</div>
-							Create an account for <a href="clientregistration">Employer</a> or <a href="consultantregistration">Consultant</a>
+<!-- 							Create an account for <a href="clientregistration">Employer</a> or <a href="consultantregistration">Consultant</a> -->
 						</form>
+						<a href="forgetpassword">Forget Password ?</a> 
 				</div>
 			</div>
 		</div>

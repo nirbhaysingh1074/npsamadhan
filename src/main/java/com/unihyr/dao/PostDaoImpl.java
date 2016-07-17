@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -116,25 +117,25 @@ public class PostDaoImpl implements PostDao
 	{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Post.class);
 		criteria.setProjection(Projections.distinct((Projections.projectionList().add(Projections.id()).add(Projections.property("postId")))));
-//		criteria.add(Restrictions.eq("client.userid", clientId));
 		Criterion cn1 = Restrictions.eq("client.userid", clientId);
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
 		
 		if(filterBy.equals("isActive")){
-			criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNotNull("verifyDate"));
+			criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNotNull("verifyDate")).add(Restrictions.isNull("closeDate"));
 		}
 		else if(filterBy.equals("isNotActive")){
-			criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNotNull("verifyDate"));
+			criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNotNull("verifyDate")).add(Restrictions.isNull("closeDate"));
 		}
-			else if(filterBy.equals("saved")){
+		else if(filterBy.equals("saved")){
 			criteria.add(Restrictions.isNull("published"));
-		}else if(filterBy.equals("pending")){
+			}else if(filterBy.equals("pending")){
 			criteria.add(Restrictions.isNull("verifyDate")).add(Restrictions.isNotNull("published"));
-		}
-		else
-		criteria.add(Restrictions.isNotNull(filterBy)).add(Restrictions.isNotNull("verifyDate"));
+			criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNull("closeDate"));
+			}
+			else
+			criteria.add(Restrictions.isNotNull(filterBy)).add(Restrictions.isNotNull("verifyDate"));
 		//.add(Restrictions.eq("isActive", true))
 		criteria.add(Restrictions.isNull("deleteDate"));
 		//	.add(Restrictions.isNull("closeDate"));
@@ -192,16 +193,18 @@ public class PostDaoImpl implements PostDao
 		criteria.createAlias("client", "clientAlias");
 		Criterion cn2 = Restrictions.eq("clientAlias.admin.userid", clientId);
 		criteria.add(Restrictions.or(cn1, cn2));
+		
 		if(filterBy.equals("isActive")){
-		criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNotNull("verifyDate"));
+			criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNotNull("verifyDate")).add(Restrictions.isNull("closeDate"));
 		}
 		else if(filterBy.equals("isNotActive")){
-		criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNotNull("verifyDate"));
+			criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNotNull("verifyDate")).add(Restrictions.isNull("closeDate"));
 		}
 		else if(filterBy.equals("saved")){
 		criteria.add(Restrictions.isNull("published"));
 		}else if(filterBy.equals("pending")){
 		criteria.add(Restrictions.isNull("verifyDate")).add(Restrictions.isNotNull("published"));
+		criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNull("closeDate"));
 		}
 		else
 		criteria.add(Restrictions.isNotNull(filterBy)).add(Restrictions.isNotNull("verifyDate"));
@@ -1219,16 +1222,18 @@ public class PostDaoImpl implements PostDao
         {
         	if(status.equals("active"))
         	{
-        		criteria.add(Restrictions.eq("isActive", true));
+        		criteria.add(Restrictions.eq("isActive", true)).add(Restrictions.isNull("closeDate"));
         	}
         	else if(status.equals("inactive"))
         	{
-        		criteria.add(Restrictions.eq("isActive", false));
+        		criteria.add(Restrictions.eq("isActive", false)).add(Restrictions.isNull("closeDate"));
+        	}else if(!status.equals("all")){
+        		criteria.add(Restrictions.isNotNull(status));
         	}
         }
         if(location != null && location.trim().length() > 0 )
         {
-        	criteria.add(Restrictions.eq("location",location));
+        	criteria.add(Restrictions.like("location",location, MatchMode.ANYWHERE));
         }
         
         if(sortParam.indexOf("published")>=0)

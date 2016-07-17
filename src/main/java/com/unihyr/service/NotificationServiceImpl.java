@@ -2,7 +2,7 @@ package com.unihyr.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -47,4 +47,9 @@ public class NotificationServiceImpl implements NotificationService
 		return notificationDao.getNotificationByUserid(userid, first, max);
 	}
 
+	@Override
+	public Long countUserNotifications(String loggedinUser)
+	{
+		return this.notificationDao.countUserNotification(loggedinUser);
+	}
 }

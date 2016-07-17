@@ -39,6 +39,9 @@ public class CandidateProfileModel
 
 	private int noticePeriod;
 
+	@Column
+	private Integer experience;
+	
 	@NotBlank(message = "{NotBlank.consForm.contact}")
 	private String contact;
 
@@ -46,15 +49,19 @@ public class CandidateProfileModel
 	private String currentOrganization;
 
 	private Long currentCTC;
+
 	private Long expectedCTC;
+
 	@NotBlank(message = "{NotBlank.consForm.currentLocation}")
 	private String currentLocation;
 
 	private String ctcComments;
 
-	private Date dateofbirth;
+	private String dateofbirth;
 
-	private String qualification;
+	private String qualification_ug;
+
+	private String qualification_pg;
 
 	private String jdID;
 
@@ -62,26 +69,58 @@ public class CandidateProfileModel
 
 	private String consultantId;
 
+	private String countryCode;
+	
 	private MultipartFile resumeFile;
 
-	public Date getDateofbirth()
+	public Integer getExperience()
+	{
+		return experience;
+	}
+
+	public void setExperience(Integer experience)
+	{
+		this.experience = experience;
+	}
+
+	public String getCountryCode()
+	{
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode)
+	{
+		this.countryCode = countryCode;
+	}
+
+	public String getQualification_ug()
+	{
+		return qualification_ug;
+	}
+
+	public void setQualification_ug(String qualification_ug)
+	{
+		this.qualification_ug = qualification_ug;
+	}
+
+	public String getQualification_pg()
+	{
+		return qualification_pg;
+	}
+
+	public void setQualification_pg(String qualification_pg)
+	{
+		this.qualification_pg = qualification_pg;
+	}
+
+	public String getDateofbirth()
 	{
 		return dateofbirth;
 	}
 
-	public void setDateofbirth(Date dateofbirth)
+	public void setDateofbirth(String dateofbirth)
 	{
 		this.dateofbirth = dateofbirth;
-	}
-
-	public String getQualification()
-	{
-		return qualification;
-	}
-
-	public void setQualification(String qualification)
-	{
-		this.qualification = qualification;
 	}
 
 	public String getCtcComments()

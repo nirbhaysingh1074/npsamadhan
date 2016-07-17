@@ -1,10 +1,9 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
-
 <head>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="google-site-verification" content="2TLKAStrzYOfVRQYE-ULixk2twy9uHdoAxmZI3YTAVY" />
 <title>UniHyr</title>
 
 	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
@@ -12,8 +11,33 @@
 <link rel="stylesheet" href="css/style.css" media="screen" />
 
 <script src="js/jquery.min.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/common_js.js"></script>
+
+<script src="js/jquery.bxSlider.js"></script>
+		<script type="text/javascript">
+  		$(document).ready(function(){
+     		$('#slider').bxSlider({
+    		ticker: true,
+    		tickerSpeed: 5000,
+			tickerHover: true
+  		});
+  		});
+		</script>
+<script type="text/javascript">
+function validateForm(){
+	var email=$('#email').val();
+	var valid=true;
+	if(email == "" || !isEmail(email))
+	{
+		$('#email').focus();
+		valid = false;
+	}
+	return valid;
+}
+</script>
 <style>
-#slider {
+#slider1 {
 	position: relative;
 	overflow: hidden;
 	margin: 20px auto 0 auto;
@@ -25,7 +49,7 @@ color: #fff;
 #u_0_3{
 color: #fff;
 }
-#slider ul {
+#slider1 ul {
 	position: relative;
 	margin: 0;
 	padding: 0;
@@ -33,7 +57,7 @@ color: #fff;
 	list-style: none;
 }
 
-#slider ul li {
+#slider1 ul li {
 	position: relative;
 	display: block;
 	float: left;
@@ -88,50 +112,87 @@ a.control_next {
 	height: 100%;
 	width: 100%;
 }
+
+
+
+#slider {
+	list-style:none;
+	padding:0px
+}
+
+.slider-container { 
+	padding:10px; 
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px; 
+}
+
+#slider img { 
+	margin:0px; 
+	display:inline-block  
+}
+
+#slider li {
+	width:210px
+}
+.bx-wrapper{
+width: 1076px !important;
+}
+.bx-window{
+width: 1076px !important;
+}
 </style>
 <script>
+// function ticker() {
+//     $('#logoticker li:first').slideUp(function() {
+//         $(this).appendTo($('#logoticker')).slideDown(300);
+//     });
+// }
 	jQuery(document).ready(function($) {
 
 		setInterval(function() {
 			moveRight();
 		}, 9000);
 
-		$('#slider ul li').css("width", $(window).width());
-		$('#slider ul li').css("top", -5);
+		
+	//	setInterval(ticker, 3000);
+		
+		$('#slider1 ul li').css("width", $(window).width());
+		$('#slider1 ul li').css("top", -5);
 
-		var slideCount = $('#slider ul li').length;
-		var slideWidth = $('#slider ul li').width();
-		var slideHeight = $('#slider ul li').height();
+		var slideCount = $('#slider1 ul li').length;
+		var slideWidth = $('#slider1 ul li').width();
+		var slideHeight = $('#slider1 ul li').height();
 		var sliderUlWidth = slideCount * slideWidth;
 
-		$('#slider').css({
+		$('#slider1').css({
 			width : slideWidth,
 			height : slideHeight
 		});
 
-		$('#slider ul').css({
+		$('#slider1 ul').css({
 			width : sliderUlWidth,
 			marginLeft : -slideWidth
 		});
 
-		$('#slider ul li:last-child').prependTo('#slider ul');
+		$('#slider1 ul li:last-child').prependTo('#slider1 ul');
 
 		function moveLeft() {
-			$('#slider ul').animate({
+			$('#slider1 ul').animate({
 				left : +slideWidth
 			}, 200, function() {
-				$('#slider ul li:last-child').prependTo('#slider ul');
-				$('#slider ul').css('left', '');
+				$('#slider1 ul li:last-child').prependTo('#slider1 ul');
+				$('#slider1 ul').css('left', '');
 			});
 		}
 		;
 
 		function moveRight() {
-			$('#slider ul').animate({
+			$('#slider1 ul').animate({
 				left : -slideWidth
 			}, 700, function() {
-				$('#slider ul li:first-child').appendTo('#slider ul');
-				$('#slider ul').css('left', '');
+				$('#slider1 ul li:first-child').appendTo('#slider1 ul');
+				$('#slider1 ul').css('left', '');
 			});
 		}
 		;
@@ -173,10 +234,6 @@ a.control_next {
 	border-bottom: 5px solid #F8B910;
 }
 </style>
-
-
-
-
 </head>
 <body>
 <div id="fb-root"></div>
@@ -197,8 +254,8 @@ a.control_next {
 				</div>
 				<div class="home-nav">
 					<ul style="margin-bottom: 0px; margin-top: 27px;">
-						<li  onclick="$('html, body').animate({ scrollTop: 590 }, 'slow');" ><a href="home#howitworks" style="text-decoration: none;" >How It Works </a></li>
-						<li onclick="$('html, body').animate({ scrollTop: 920 }, 'slow');" ><a href="home#whyunihyr" style="text-decoration: none;">Why UniHyr</a></li>
+						<li  onclick="$('html, body').animate({ scrollTop: 540 }, 'slow');" ><a href="home#howitworks" style="text-decoration: none;" >How It Works </a></li>
+						<li onclick="$('html, body').animate({ scrollTop: 890 }, 'slow');" ><a href="home#whyunihyr" style="text-decoration: none;">Why UniHyr</a></li>
 <!-- 						<li onclick="$('html, body').animate({ scrollTop: 1000 }, 'slow');" ><a>Whats In It for</a></li> -->
 						<li onclick="$('html, body').animate({ scrollTop: 1940 }, 'slow');" ><a href="home#aboutus" style="text-decoration: none;">About</a></li>
 						<!-- <li><a style="color: #f8b910;font-weight: bold;">How It Works </a></li>
@@ -242,11 +299,11 @@ a.control_next {
 
 
 
-		<div id="slider" style="margin-top: 0px;">
+		<div id="slider1" style="margin-top: 0px;">
 			<a href="javascript:void(0)" class="control_next"><img
-				src="images/arw2.png" border="0" alt="img"></a> <a
+				src="images/arw2.png" border="0" alt="img" style="height: 15px;width: 5px;"></a> <a
 				href="javascript:void(0)" class="control_prev"><img
-				src="images/arw1.png" border="0" alt="img"></a>
+				src="images/arw1.png" border="0" alt="img" style="height: 15px;width: 5px;"></a>
 			<ul>
 				<li><div class="Slde_cent">
 						<div class="container">
@@ -319,12 +376,18 @@ a.control_next {
 
 		<div class="Scrlbr">
 			<div class="container" style="margin: 0px auto;">
-
-				<p class="Fl m_r_20 White font21 opnsbld sign_title">New to
-					UniHyr? Sign Up</p>
-				<a href="clientregistration" class="signup_btn">Employer</a> <a
-					href="consultantregistration" class="signup_btn">Hiring Partner
-				</a>
+				<form:form action="requestfordemo" method="post"  commandName="contactusform" onsubmit="return validateForm()">
+					<form:select path="usertype" class="contactUsForm" >
+						<option value="emp">I am Employer</option>
+						<option value="cons">I am Consultant</option>
+					</form:select>
+					<form:input required="required" path="name"   class="contactUsForm" placeholder="Name*" />
+					<form:input required="required" path="email"  class="contactUsForm" placeholder="Email*" />
+					<form:input required="required" path="company"  class="contactUsForm" placeholder="Company*" />
+					<form:input required="required"  path="phone"  class="contactUsForm number_only" placeholder="Phone Number*" /> 
+					<input   class="contactUsForm" type="submit" value="Request for demo" style="background: black;color : white;border: 1px solid black;" />
+				
+				</form:form>
 			</div>
 		</div>
 		<!-- <div class="Hwrk">
@@ -377,6 +440,8 @@ a.control_next {
 				</div>
 			</div>
 		</div>
+		
+		
 		<div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2  id="whyunihyr" >Why UniHyr</h2></div>
@@ -463,45 +528,19 @@ Analytics driven rating system of consultants
 
 							<h3 style="font-weight: bold; margin-bottom: 25px;">Employers</h3>
 							<div class="normalulli">
-								<ol>
+								<ul>
 									<li><h4>GET ALL UNDER ONE ROOF</h4>
-										<ul>
-											<li><p>One stop shop to engage with rated
-													recruitment consulting/search firms without getting into
-													the hassle for managing them</p></li>
-											<li><p>It’s a lot less hassle than finding,
-													negotiating with, and managing multiple recruitment
-													agencies directly</p></li>
-										</ul></li>
-									<li><h4>UNIQUE RATING SYSTEM TO ENSURE YOU KNOW WHO
-											IS THE BEST</h4>
-										<ul>
-											<li><p>Access more agencies, quickly, so you're more
-													likely to find a better candidate, faster</p></li>
-											<li><p>In a competitive environment, each consultant
-													strives to get the best in the quickest possible time
-													leading to amazing results in time to hire and quality of
-													hire</p></li>
-										</ul></li>
+										<p>One stop shop to engage with rated recruitment consulting/search firms without getting into the
+													hassle for managing them</p></li>
+									<li><h4>UNIQUE RATING SYSTEM TO ENSURE YOU KNOW WHO IS THE BEST</h4>
+										<p>Profiles from hiring partners with better ratings are shown first so that you get the best</p></li>
 
 									<li><h4>HASSLE FREE AND TRANSPARENT</h4>
-										<ul>
-											<li><p>Dedicated Account Manager and efficient
-													Helpdesk to effectively service the clients</p></li>
-											<li><p>No hassle of managing multiple recruitment
-													agency contracts – clients protected by a single contract
-													with UniHyr outlining simple, transparent, and universal
-													terms and conditions</p></li>
-										</ul></li>
-									<li><h4>FREE TO USE AND PAY ONLY ON OUTCOME</h4>
-										<ul>
-											<li><p>No signing up or usage charges. Payment to be
-													made only on the hiring outcome</p></li>
-											<li><p>UniHyr would provide a single interface of
-													payments to consultants Easy tracking of payables and
-													status of candidates</p></li>
-										</ul></li>
-								</ol>
+										<p>No hassle of managing multiple recruitment agency contracts – clients protected by a single contract with
+										UniHyr outlining simple, transparent, and universal terms and conditions</p></li>
+									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
+										<p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
+								</ul>
 							</div> <!-- 						<a href="" class="readmore">Read More</a> -->
 						</li>
 						<li>
@@ -509,45 +548,17 @@ Analytics driven rating system of consultants
 							<h3 style="font-weight: bold; margin-bottom: 25px;">Hiring
 								Partners</h3>
 							<div class="normalulli" style="border-left: 1px solid #f1b910;">
-								<ol>
+								<ul>
 									<li><h4>MORE BUSINESS!!</h4>
-										<ul>
-											<li><p>Significant increase in business - get to
-													work for new clients without having to spend time & effort
-													in acquiring them.</p></li>
-											<li><p>Business expansion at finger tips – basis
-													capability and bandwidth take on more and more work through
-													UniHyr</p></li>
-										</ul></li>
-									<li><h4>UNIQUE RATING SYSTEM TO ENSURE YOU KNOW WHO
-											IS THE BEST</h4>
-										<ul>
-											<li><p>Performance rating rewards good performance
-													and leads to transparency</p></li>
-											<li><p>Rating based on quantitative inputs that are
-													captured real time on the platform</p>
-											<li><p>No judgment or qualitative inputs leading to
-													transparency</p></li>
-										</ul></li>
-
+										<p>Significant increase in business - get to work for new clients without having to spend time & effort in
+													acquiring them</p></li>
+									<li><h4>TRANSPARENT, PERFORMNCE DRIVEN</h4>
+										<p>Performance rating rewards good performance and leads to transparency</p></li>
 									<li><h4>SIMPLE TO USE AND HASSLE FREE</h4>
-										<ul>
-											<li><p>Dedicated Account Manager and efficient
-													Helpdesk to effectively service the consultants</p></li>
-											<li><p>No hassle of managing multiple client
-													contracts –protected by a single contract with UniHyr
-													outlining simple, transparent, and universal terms and
-													conditions</p></li>
-										</ul></li>
-									<li><h4>FREE TO USE AND PAY ONLY ON OUTCOME</h4>
-										<ul>
-											<li><p>No signing up or usage charges. Payment to be
-													made only on the hiring outcome</p></li>
-											<li><p>Easy tracking of receivables and status of
-													candidates</p></li>
-											<li><p>Zero collection hassles</p></li>
-										</ul></li>
-								</ol>
+										<p>Easy to use interface that lets you work on multiple client requirements at the same time</p></li>
+									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
+										<p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
+								</ul>
 							</div> <!-- 						<a href="" class="readmore">Read More</a> -->
 						</li>
 
@@ -564,9 +575,7 @@ Analytics driven rating system of consultants
 				</div>
 			</div>
 		</div>
-		
-		
-<div class="feature_sec">
+		<div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2 id="aboutus"  >About Us</h2></div>
 		
@@ -585,10 +594,94 @@ Analytics driven rating system of consultants
 			</div>
 		</div>
 	</div> 
+		<div  class="feature_sec">
+			<div class="container">
+				<div class="title_rw">
+					<h2 id="howitworks">Our Clients</h2>
+				</div>
+						<ul style="width: 999999px; position: relative; left: -1371.16px;"
+							id="slider">
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li class="pager"
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks1.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks2.png"></a></li>
+							<li
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks3.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks4.png"></a></li>
+							<li 
+								style="width: 210px; float: left; list-style: outside none none;"><a
+								href="#"><img src="images/howitworks5.png"></a></li>
+						</ul>
+					</div>
+				</div>
 <!-- <div class="feature_sec">
 		<div class="container">
 			<div class="title_rw"><h2 >Featured Employers</h2></div>
-		
 			<div class="featserv rw">
 				<ul>
 					<li>
@@ -598,7 +691,6 @@ Analytics driven rating system of consultants
 						<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo invtatis et quasi architecto beatae.</p> 
 						<a href="" class="readmore">Read More</a>
 					</li> 
-				
 					<li>
 						<a href="" class="thumbnl"><img src="images/img2.jpg" alt="img"></a> 
 						<h3>John Smith</h3>
@@ -606,8 +698,6 @@ Analytics driven rating system of consultants
 						<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo invtatis et quasi architecto beatae.</p> 
 						<a href="" class="readmore">Read More</a>
 					</li> 
-				
-				
 					<li>
 						<a href="" class="thumbnl"><img src="images/img3.jpg" alt="img"></a> 
 						<h3> Mark COLLIS</h3>
@@ -635,64 +725,52 @@ Analytics driven rating system of consultants
 	<footer class="footer rw">
 		<div class="footer_top Light12 grey2">
 			<div class="container">
-				<div class="col_1">
+				<!--<div class="col_1">
 					<h3></h3>
-					<a style="margin-left: 22px;"
-						href="https://www.facebook.com/UniHyr-491301114398011/"
-						target="_blank"> <img style="height: 25px;"
-						src="images/fb.png" title="facebook" /></a> <a href="https://twitter.com/unihyr" target="_blank"> <img
-						style="height: 25px;" src="images/twitter.png" title="twitter" /></a> <a target="_blank" href="https://in.linkedin.com/in/unihyr-admin-5aab60122"> <img style="height: 25px;"
-						src="images/linkedin.png" title="linkedin" /></a>
-					<div style="margin-left: 22px; color: #fff !important;" class="fb-like" data-href="https://www.facebook.com/UniHyr-491301114398011/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+					
+ 					<div style="margin-left: 22px; color: #fff !important;" class="fb-like" data-href="https://www.facebook.com/UniHyr-491301114398011/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 				</div>
-<!--
-				 <div class="col_2">
-					<h3>News</h3>
+ -->
+				 <div class="col_2" style="text-align: center;margin-left: 0px;">
+					<h3>Contact Us</h3>
 
 					<div class="news rw">
 						<ul style="font-size: 12px;">
 							<li>
-								<div class="thumbnl">
-									<img src="images/img4.jpg" alt="img">
-								</div>
-								<div class="detail Light12 grey2">
-									<p class="Light14 Link2">
-										<a href="">30/09/2015</a>
-									</p>
-									<p>Vestibulum iaculis lacinia est. Proin dictum elementum
-										velit. Fusce euismod</p>
-									<p class="Link2">
-										<a href="">read more...</a>
-									</p>
-								</div>
-							</li>
-							<li>
-								<div class="thumbnl">
-									<img src="images/img5.jpg" alt="img">
-								</div>
-								<div class="detail Light12 grey2">
-									<p class="Light14 Link2">
-										<a href="">30/09/2015</a>
-									</p>
-									<p>Vestibulum iaculis lacinia est. Proin dictum elementum
-										velit. Fusce euismod</p>
-									<p class="Link2">
-										<a href="">read more...</a>
-									</p>
-								</div>
+					<form:form action="requestfordemo" method="post"  commandName="contactusform">
+					<form:select  class="col_4 contactfooter" path="usertype">
+				<form:option value="emp">I am Employer</form:option>
+				<form:option value="cons">I am Consultant</form:option>
+				</form:select>
+				<br>
+				<form:input required="required" path="name" type="text" class="col_4 contactfooter" placeholder="Name*" />
+				<form:input required="required" path="email"  type="text" class="col_4 contactfooter" placeholder="Email*" />
+				<form:input required="required" path="company" type="text" class="col_4 contactfooter" placeholder="Company*" />
+				<form:input required="required" path="phone" type="text" class="col_4 contactfooter  number_only" placeholder="Phone Number*" /> 	
+				
+				<br>
+				<input type="submit"   class="col_4 contactfooter" value="Submit Request" style="margin-bottom: 15px;margin-left:-1px;
+margin-right: 0px !important;
+background: black none repeat scroll 0% 0%;
+color: white;
+overflow: hidden;
+font-size: 14px;border: 1px solid black;" />
+				
+				</form:form>
+								
 							</li>
 						</ul>
 					</div>
-				</div> -->
+				</div> 
 				<div class="col_3">
-					<h3>Reach Us</h3>
+					
 					<div class="rw m_b_10 Light12 grey2" style="font-size: 11px;">
 						<!-- <div class="adrs_b_1 Lineheight1">
 							Unit 5/62 -64 West Ave<br /> Edinburgh Parks SA 5111<br /> PO
 							Box 3023<br /> Elizabeth East SA 5112
 						</div> -->
 
-						<div class="adrs_b_2" style="float: left;">
+						<div class="adrs_b_2"><h3>Reach Us</h3>
 							<p>
 								<img src="images/ic_3.jpg" alt="img"> 92 8283 3477
 							</p>
@@ -708,11 +786,22 @@ Analytics driven rating system of consultants
 			</div>
 		</div>
 		<div class="footer_botm Align_cent Light12 grey3">
-			<div class="container" style="background-color: #1f1e1e;">
-				<a href="termsOfService">Terms of Use</a> | <a href="privacyPolicy">Privacy Policy</a> | <a
-					href="">Sitemap</a> | <a href="">Work with Us</a>
+			<div class="container" style="background-color: #1f1e1e;font-size: 12px;width: 400px;">
+				<div style="float: left;line-height: 44px;">
+				<a href="termsOfService">Terms of Use</a> | <a href="privacyPolicy">Privacy Policy</a> 
+				
+			<!-- 			|	<a	href="">Sitemap</a> | <a href="">Work with Us</a> -->
 			</div>
-		</div>
+			<div style="float: left;line-height:52px;">
+						<a  style="margin:8px;" href="https://www.facebook.com/UniHyr-491301114398011/" target="_blank"> 
+						<img style="width:8px;" src="images/fb.png" title="facebook" /></a> 
+						<a  style="margin:8px;"  href="https://twitter.com/unihyr" target="_blank"> 
+						<img style="width:15px;"  src="images/twitter.png" title="twitter" /></a> 
+						<a  style="margin:8px;"  target="_blank" href="https://in.linkedin.com/in/unihyr-admin-5aab60122"> 
+						<img style="width:14px;"  src="images/linkedin.png" title="linkedin" /></a>
+			</div>
+			</div> 
+			</div>
 	</footer>
 	<div
 		style=" cursor: pointer;

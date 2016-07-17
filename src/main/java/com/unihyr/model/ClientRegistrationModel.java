@@ -25,7 +25,6 @@ public class ClientRegistrationModel
 	@NotBlank(message="{NotBlank.regForm.org}")
 	private String organizationName;
 	
-	
 //	@Pattern(regexp="(?=.*\\d)(?=.*[a-z]).{6,20}",message="{Pattern.regForm.password}")
 	private String password;
 	
@@ -44,23 +43,61 @@ public class ClientRegistrationModel
 	private int revenue;
 	
 	@Length(max=10,min=10,message="{Length.regForm.contact}")
-//    @NotEmpty(message="{NotEmpty.regForm.contact}")
+
+	//@NotEmpty(message="{NotEmpty.regForm.contact}")
 	@NumberFormat(style=Style.NUMBER)
 	private String contact;
 	
 	private String name;
 	
-	
-	private Industry industry ;
-	
+//	private Set<Industry> industries = new HashSet<>();
 	
 	private int usersRequired;
 
 	private String websiteUrl;
 
 	private String officeAddress;
+	
 	private String designation;
 	
+	
+
+	private String panno;
+	private String stno;
+	
+	
+	
+	public String getPanno()
+	{
+		return panno;
+	}
+
+
+	public void setPanno(String panno)
+	{
+		this.panno = panno;
+	}
+
+	public String getStno()
+	{
+		return stno;
+	}
+
+
+	public void setStno(String stno)
+	{
+		this.stno = stno;
+	}
+//	public Set<Industry> getIndustries()
+//	{
+//		return industries;
+//	}
+//
+//	public void setIndustries(Set<Industry> industries)
+//	{
+//		this.industries = industries;
+//	}
+
 	public String getDesignation()
 	{
 		return designation;
@@ -115,7 +152,6 @@ public class ClientRegistrationModel
 	    }
 	}
 	
-	
 	public String getOfficeLocations() {
 		return officeLocations;
 	}
@@ -146,16 +182,6 @@ public class ClientRegistrationModel
 
 	public void setContact(String contact) {
 		this.contact = contact;
-	}
-
-	
-
-	public Industry getIndustry() {
-		return industry;
-	}
-
-	public void setIndustry(Industry industry) {
-		this.industry = industry;
 	}
 
 	public String getOrganizationName() {

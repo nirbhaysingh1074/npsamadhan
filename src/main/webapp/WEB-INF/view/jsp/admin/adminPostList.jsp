@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.HashSet"%>
@@ -32,7 +33,7 @@
 
         <!-- Main content -->
         <section class="content">
-			<div class="row">
+		<!-- 	<div class="row">
 				<div class="col-md-3" style="margin-bottom: 10px;">
 					<select class="form-control">
 						<option value="Today">Today</option>
@@ -43,7 +44,7 @@
 						
 					</select>
 				</div>
-			</div>
+			</div> -->
 			<div class="row">
 				<div class="col-md-12">  
 				  <div class="box box-success" style="min-height: 200px">
@@ -64,16 +65,18 @@
 							<tr>
 								<th>Job Id</th>
 								<th>Title</th>
+								<th>Employer</th>
 								<th>Location</th>
 								<th>No of posts</th>
-								<th>Role</th>
 								<th>Experience</th>
+								<th>Salary Range</th>
+								<th>Fee Percent</th>
 								<th>Status</th>
+								<th>Pending Since</th>	
 								<th>Received</th>
-								<th>Shortlisted</th>
+								<th>In Process</th>
 								<th>Posted</th>
-								<th>Verified</th>
-								<th>Action</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody  id="load_admin_consultant">
@@ -94,58 +97,67 @@
 		       									shortListed.add(pp.getPpid());
 		       								}
 		       							}
-										
+										if(post.getPublished()!=null){
 										%>
 											<tr>
 												<td>
 													<a target="_blank" href="adminviewjd?pid=<%= post.getPostId()%>"><%= post.getJobCode()%></a>
 												</td>
 												<td><a target="_blank" href="adminviewjd?pid=<%= post.getPostId()%>"><%= post.getTitle() %></a></td>
+												<td><%=post.getClient().getOrganizationName() %></td>
 												<td><%= post.getLocation()%></td>
 												<td class="text-center"><%= post.getNoOfPosts()%></td>
-												<%-- <td><%= post.getRole()%></td> --%>
 												<td class="text-center"><%= post.getExp_min() +" - " + post.getExp_max()%> Years</td>
-												<td>
-													<%
-														if(post.getCloseDate() != null)
-														{
-															%><span class="label label-danger" title='Closed on <%=  DateFormats.ddMMMMyyyy.format(post.getCloseDate()) %>' >Closed</span><%
-														}
-														else if(post.isActive())
-														{
-															%><span class="label label-success">Active</span><%
-														}
-														else
-														{
-															%><span class="label label-danger">Inactive</span><%
-														}
-													%>
-												</td>
+												<td class="text-center"><%= post.getCtc_min() +" - " + post.getCtc_max()%> Lacs</td>
+												<td class="text-center"><%= post.getFeePercent() %> %</td>
 												
-												<td style="text-align: center;"><%= post.getPostProfile().size() %></td>
-						       					<td style="text-align: center;"><%= shortListed.size() %></td>
-						       					<td  class="text-center"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
-												<td><% if(post.getVerifyDate() != null){%><span class="label label-success">Verified</span><%}else{%><span class="label label-danger">Not Verified</span><%} %></td>
+												
+												
 												<td>
 													<%
 													if(post.getCloseDate() != null)
 													{
-														out.println("no action");
+														%><span class="label label-danger" title='Closed on <%=  DateFormats.ddMMMMyyyy.format(post.getCloseDate()) %>' >Closed</span><%
 													}
-													else
-													{
-														if(post.getCloseRequestClient()!=null||post.getCloseRequestConsultant()!=null)
-														{ 
-															%>
-																<button onclick="acceptPostCloseRequest('<%=post.getPostId()%>')">Close</button>
-															<%
+													else if(post.isActive())
+														{
+														if(post.getVerifyDate()!=null){
+															%><span class="label label-success" title='Verified on <%=  DateFormats.ddMMMMyyyy.format(post.getVerifyDate()) %>' >Active</span><%
+														}else{
+															%><span class="label label-danger" title='published on <%=  DateFormats.ddMMMMyyyy.format(post.getPublished()) %>' >Verification Pending</span><%
 														}
-													} 
+														}														
+														else
+														{
+															%><span class="label label-danger" title='published on <%=  DateFormats.ddMMMMyyyy.format(post.getPublished()) %>' >Inactive</span><%
+														}
 													%>
 												</td>
+												<td>
+												<%	if(post.getPublished()!=null&&post.getVerifyDate()==null){ %>
+												<%=DateFormats.getTimeValue(post.getPublished())%> 
+												<%} %>
+												</td>
+												<td style="text-align: center;"><%= post.getPostProfile().size() %></td>
+						       					<td style="text-align: center;"><%= shortListed.size() %></td>
+						       					<td  class="text-center"><%= DateFormats.ddMMMMyyyy.format(post.getCreateDate()) %></td>
+											<td>
+											
+											<%
+							if(post.getUploadjd() != null)
+							{
+								%>
+									<dl>
+										<dt>
+											<label><a target="_blank" href="<%= "/data/"+post.getUploadjd()%>">Download JD</a></label>
+										</dt>
+									</dl>
+								<%
+							}%>
+											</td>
 											</tr>
 										<%
-									}
+									}}
 								}
 							
 							%>

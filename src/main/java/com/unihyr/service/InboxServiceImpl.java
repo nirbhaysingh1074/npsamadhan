@@ -49,4 +49,17 @@ public class InboxServiceImpl implements InboxService
 	{
 		return this.inboxDao.getMessageByConsultant(userid, first, max);
 	}
+
+	@Override
+	public Long countMessageByClient(String loggedinUser)
+	{
+		return this.inboxDao.countMessageByClient(loggedinUser);
+	}
+
+	@Override
+	public Long countMessageByConsultant(String loggedinUser)
+	{
+		return this.inboxDao.countMessageByConsultant(loggedinUser);
+	}
+
 }

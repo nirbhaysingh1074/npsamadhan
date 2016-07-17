@@ -1,4 +1,7 @@
 
+<div class="bodyCoverWait" style="display: none;text-align: center; ">
+<img style="position: relative;top: 250px;" alt="Please wait..." src="images/pwait.gif" />
+</div>
     <!-- REQUIRED JS SCRIPTS -->
 
     <!-- jQuery 2.1.4 -->

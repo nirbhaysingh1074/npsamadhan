@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.domain.Industry"%>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.model.ClientRegistrationModel"%>
 <%@page import="com.unihyr.domain.Location"%>
 <%@page import="java.util.Arrays"%>
@@ -8,9 +10,7 @@
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	
 	<title>UniHyr</title>
-	
 	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 	<link rel="stylesheet" href="css/media.css" media="screen" />
     <link rel="stylesheet" href="css/style.css" media="screen" />
@@ -28,58 +28,53 @@
 	<script type="text/javascript">
 	$(document).ready(function() {
 		$(".btn_submit").click(function() {
-// 			alert("Hello")	;
 			var valid = true;
-			
-			
 			var org = $('#organizationName').val();
+			var designation = $('#designation').val();
 			var userid = $('#userid').val();
-			/* var password = $('#password').val();
-			var repassword = $('#repassword').val(); */
 			var revenue = $('#revenue').val();
 			var industry = $('#industry').val();
 			var noofpeoples = $('#noofpeoples').val();
 			var contact = $('#contact').val();
 			var officeLocations = $('#officeLocations').val();
-			
 			var websiteUrl = $('#websiteUrl').val();
 			var nooflocation = $('#hoAddress').val();
 			var about = $('#about').val();
 			var officeAddress = $("#officeAddress").val();
 			var name = $("#name").val();
-// 			alert(officeLocations);
-			
+			var panno = $('#panno').val();
+			var stno = $('#stno').val();
 			$('.error').html('&nbsp;');
 			if(org == "")
 			{
 				$('.org_error').html('Please enter organization name ')
 				valid = false;
 			}
-			
 			if(userid == "" || !isEmail(userid))
 			{
 				$('.userid_error').html("Please enter a valid email");
 				valid = false;
 			}
-			
-			/* if(password == "")
+			if(!panno)
 			{
-				$('.password_error').html("please enter a valid password");
+				$('.panno_error').html('Please enter pan number ');
 				valid = false;
 			}
-			
-			if(repassword == "" || password != repassword)
+			if(!stno)
 			{
-				$('.repassword_error').html("Password do not match. Please re-enter both passwords");
-				valid = false;
-			} */
-			
-			if(revenue == "")
-			{
-				$('.revenue_error').html("Please enter revenue");
+				$('.stno_error').html('Please enter service tax number ');
 				valid = false;
 			}
-			
+			if(noofpeoples == "")
+			{
+				$('.noofpeoples_error').html("Please enter no of employees");
+				valid = false;
+			}
+			if(designation == "")
+			{
+				$('.designation_error').html("Please enter designation");
+				valid = false;
+			}
 			if(industry == "" || industry =='0')
 			{
 				$('.industry_error').html("Please select an industry");
@@ -100,38 +95,28 @@
 				$('.websiteUrl_error').html("Please enter a valid url");
 				valid = false;
 			}
-			
 			if(nooflocation == "" || !jQuery.isNumeric( nooflocation ))
 			{
 				$('#hoAddress').val('0');
 				$('.hoAddress_error').html("Please enter a valid no of locations");
 				valid = false;
 			}
-
 			if(officeAddress == "")
 			{
 				$('.officeAddress_error').html("Please enter office address");
 				valid = false;
 			}
-
-			if(name== "")
+			if(name == "")
 			{
 				$('.name_error').html("Please enter your name");
 				valid = false;
 			}
-			
-			
-			
 			if(!valid)
 			{
 				return false;
 			}
-			
 		});
-
-		
 	});
-
 	
 	function isEmail(email) {
 		  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -165,7 +150,6 @@
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -194,7 +178,6 @@
 				
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -220,6 +203,7 @@
 	{
 		orgmsg = "Organization name aleady registered !";
 	}
+	ClientRegistrationModel model = (ClientRegistrationModel) request.getAttribute("regForm");
 	
 	%>
 
@@ -263,6 +247,21 @@
 							<span class="error designation_error">&nbsp;<form:errors path="designation" /> </span>
 						</div>
 					</div>
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Pan No<span class="req">*</span></label>
+							<form:input path="panno" onchange="checkUserExistance()" />
+							<span class="error panno_error">&nbsp;<form:errors path="panno" /> </span>
+						</div>
+					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Service Tax No<span class="req">*</span></label>
+							<form:input path="stno"  />
+							<span class="error stno_error">&nbsp;<form:errors path="stno" /> </span>
+						</div>
+					</div>
 					
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
@@ -292,21 +291,42 @@
 					<div class="reg-wrap" style="display: none;">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Revenue<span class="req">*</span></label>
-							<form:input path="revenue" cssClass="number_only" maxlength="10"   style="padding-right: 150px" />
+							<form:input path="revenue" cssClass="number_only" maxlength="10"   style="padding-right: 150px" value="10"/>
 							<span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">  INR (Millions)</span>
 							<span class="error revenue_error">&nbsp;<form:errors path="revenue" /></span>
 						</div>
 					</div>
+							<%
+							List<Location> locList = (List) request.getAttribute("locList");
+							List<Industry> industryList = (List) request.getAttribute("industryList");
+							String[] aa = (String[]) request.getAttribute("sel_inds");
+							List<String> sel_inds = null;
+							if (aa != null) {
+								sel_inds = Arrays.asList(aa);
+							}
+							System.out.println("<<<<<<<<<<<<<<< : " + sel_inds);
+					%>
 					<div class="reg-wrap">
-						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Industry<span class="req">*</span></label>
-							<form:select path="industry.id" id="industry">
-			            		<form:option value="0">Select Industry</form:option>
-			            		<c:forEach var="item" items="${industryList}">
-								   <form:option value="${item.id}">${item.industry }</form:option>
-								</c:forEach>
-			            	</form:select>
-			            	<span class="error industry_error">&nbsp;<form:errors path="industry.id" /></span>
+						<div>
+							<label>Industry<span class="req">*</span><span
+								style="font-size: 9px;">(press CTRL to select multiple)</span></label> <select
+								name="industries" id="industries" multiple="multiple" size="5">
+								<%
+									if (industryList != null && !industryList.isEmpty()) {
+											for (Industry ind : industryList) {
+												if (sel_inds != null && sel_inds.contains(String.valueOf(ind.getId()))) {
+								%>
+								<option value="<%=ind.getId()%>" selected="selected"><%=ind.getIndustry()%></option>
+								<%
+									} else {
+								%>
+								<option value="<%=ind.getId()%>"><%=ind.getIndustry()%></option>
+								<%
+									}
+									}
+									}
+								%>
+							</select> <span class="error industry_error">&nbsp; ${industry_req }</span>
 						</div>
 					</div>
 					<div class="clearfix"></div>
@@ -335,7 +355,7 @@
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
-							<label>Corporate Office + City<span class="req">*</span></label>
+							<label>Corporate Office<span class="req">*</span></label>
 							<form:textarea path="officeAddress" />
 							<span class="error officeAddress_error">&nbsp;<form:errors path="officeAddress" /></span>
 						</div>
@@ -348,38 +368,40 @@
 						</div>
 					</div>
 					<div class="clearfix"></div>
-					<%
-					ClientRegistrationModel model = (ClientRegistrationModel) request.getAttribute("regForm");
-					List<Location> locList = (List)request.getAttribute("locList");
-					String [] aa = (String[])request.getAttribute("sel_inds");
-					List<String> sel_inds = null;
-					if(aa != null)
-					{
-						sel_inds = Arrays.asList(aa);
-					}
-					%>
 					
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>City<span class="req">*</span></label>
 							<form:select path="officeLocations" >
 								<form:option value="">Select City</form:option>
+								<%
+	              				List<String> locList1=GeneralConfig.topLocations;
+	              				for(String loc:locList1){
+	              					%>
+						   				<form:option value="<%=loc %>"><%=loc %></form:option>
+	              					<%
+	              				}
+	              				%>
+								
 			            		<%
 			            			if(locList != null && !locList.isEmpty())
 			            			{
 			            				for(Location loc : locList)
 			            				{
-			            					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc.getLocation()))
+			            					if(model.getOfficeLocations() != null && model.getOfficeLocations().contains(loc.getLocation()) )
 			            					{
+			            						if(!locList1.contains(loc.getLocation())){
 			            						%>
 			            							<form:option value="<%= loc.getLocation() %>" selected = "selected"><%= loc.getLocation() %></form:option>
 			            						<%
-			            					}
+			            					}}
 			            					else
 			            					{
+			            						if(!locList1.contains(loc.getLocation())){
 			            						%>
 			            							<form:option value="<%= loc.getLocation() %>"><%= loc.getLocation() %></form:option>
 			            						<%
+			            						}
 			            					}
 			            				}
 			            			}

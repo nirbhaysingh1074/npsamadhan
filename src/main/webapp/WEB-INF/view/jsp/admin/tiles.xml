@@ -46,9 +46,29 @@
         <put-attribute name="title" value="UniHyr - Industries List" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminIndustries.jsp" />
     </definition>
+    <definition name="adminHelpMessages" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Help Desk" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminHelpDeskMsges.jsp" />
+    </definition>
+    <definition name="adminDemoRequests" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Demo Requests" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminDemoRequests.jsp" />
+    </definition>
+    <definition name="adminLoggedUsers" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Help Desk" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminLoggedUsers.jsp" />
+    </definition>
     <definition name="editIndustry" extends="adminTemplate">
         <put-attribute name="title" value="UniHyr - Update Industries" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/editIndustry.jsp" />
+    </definition>
+    <definition name="adminEditClientRegistration" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Update Registration" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminEditClientRegistration.jsp" />
+    </definition>
+    <definition name="adminEditConsultRegistration" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Update Registration" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminEditConsultRegistration.jsp" />
     </definition>
     
     <definition name="adminLocations" extends="adminTemplate">
@@ -78,6 +98,16 @@
     <definition name="adminConfigurations" extends="adminTemplate">
         <put-attribute name="title" value="UniHyr - Configurations" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminConfiguration.jsp" />
+    </definition>
+    <definition name="adminAddQualification" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Add Qualification" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminAddQualification.jsp" />
+    </definition>
+    
+    
+    <definition name="adminQualificationList" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Qualification List" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminQualificationList.jsp" />
     </definition>
     
     

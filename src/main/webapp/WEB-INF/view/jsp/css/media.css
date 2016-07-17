@@ -96,7 +96,7 @@ right: -27px;
 	
 }
 
-.table tbody tr:nth-child(even) {background: #CCC}
+.table tbody tr:nth-child(even) {background: #ececec}
 .table thead 
 {
 	background: #e5e5e5 none repeat scroll 0 0;
@@ -111,12 +111,6 @@ table {
 } 
 .no-margin {margin: 0}
 .no-padding{padding: 0}
- 
- 
- 
- 
- 
- 
  
 .clearfix {
   *zoom: 1;
@@ -184,11 +178,39 @@ p{ margin:0px; padding:0px; }
 .Slde_cent .grd .bx h2{ font-size:23px; color:#fff; text-transform:uppercase;font-weight: bold;} 
 .Slde_cent .grd .bx p{   color:#fff;} 
 
-.Scrlbr{ width:100%; float:left; height:58px; background:#f8b910;} 
+.Scrlbr{ width:100%; float:left; height:58px; background:rgba(0,0,0,.4);position: absolute;margin-top: -63px;} 
 .cont_btn{ display:block; width:156px; text-decoration:none;  height:58px; background:#000000; text-align:center; color:#fff;  text-transform:uppercase; padding:22px 5px 0; float:left; margin-right:30px;} .cont_btn:hover{ background:#333;} 
 .sign_title{ padding-top:18px;} 
 .signup_btn{ display:block; float:left; margin-right:20px; height:34px; border-radius:3px; background:#fff; text-decoration:none;   color:#000000; padding:6px 18px 0; margin-top:14px;} .signup_btn:hover{ background:#000; color:#fff;} 
-
+.contactUsForm{display: block;
+float: left;
+margin-right: 18px;
+height: 34px;
+border-radius: 3px;
+background: #fff;
+text-decoration: none;
+color: #000000;
+margin-top: 14px;
+width: 15%;
+padding: 6px;
+}
+input.contactUsForm:focus{
+	border:1px solid #f8b910;
+}
+select.contactUsForm:focus{
+	border:1px solid #f8b910;
+}
+input.contactfooter:focus{
+	border:1px solid #f8b910;
+}
+select.contactfooter:focus{
+	border:1px solid #f8b910;
+}
+.contactfooter{
+	width:46%;
+	padding :6px;
+	margin:4px;
+}
 .title_rw{ width:100%; float:left; text-align:center; margin-bottom:30px;} 
 .title_rw h2{ color:#000000;  background:url(../images/tle_botm.jpg) no-repeat center bottom; 
 text-transform:uppercase; padding-bottom:10px;} 

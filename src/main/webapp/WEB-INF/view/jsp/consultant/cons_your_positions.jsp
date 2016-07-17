@@ -42,11 +42,9 @@ function fillProfiles(pageNo)
 			contentType : "application/json",
 			success : function(data) {
 				$('.right_side').html(data);
-			//	$('.candidate_profiles_def').hide();
 			pleaseDontWait();
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
-				alert(xhr.status);
 			}
 		});
 	}
@@ -299,6 +297,44 @@ Post post=(Post)request.getAttribute("selectedPost");
 			</div>
 			
 <div class="right_side">
+
+<div class="candidate_profiles_def" style="margin-top: 11px;
+margin-left: 13px;" >
+							<div class="filter">
+								<div class="col-md-7 pagi_summary">
+									<span>Showing 0 - 0 of 0</span>
+								</div>
+								<div class="col-md-5">
+					                <ul class="page_nav unselectable">
+										<li class="disabled"><a>First</a></li>
+										<li class="disabled"><a><i class="fa fa-fw fa-angle-double-left"></i></a></li>
+										<li class="active current_page"><a>1</a></li>
+										<li class="disabled"><a><i class="fa fa-fw fa-angle-double-right"></i></a></li>
+										<li class="disabled"><a>Last</a></li>
+									</ul>
+					              </div>
+							</div>
+							<table class="table no-margin" style="border: 1px solid gray;">
+									<thead>
+										<tr>
+											<th align="left">Name</th>
+											<th align="left">Phone</th>
+											<th align="left">Current Role</th>
+											<th align="left">Organization</th>
+											<th align="left">Curent Salary (In Lacs)</th>
+											<th align="left">Notice Period (In Days)</th>
+											<th>Submitted</th>
+											<th>Status</th>
+										</tr>
+									</thead>
+									
+								</table>
+							
+							
+							
+<!-- 							--------------------           inner data ---------------------- -->
+							
+						</div>
 			</div>
 		</div>
 	</div>
@@ -334,50 +370,31 @@ Post post=(Post)request.getAttribute("selectedPost");
 		    	<option value="Got retained">Got retained</option>
 		    	<option value="Unfavorable feedback on new organization/role">Unfavorable feedback on new organization/role</option>
 		    	<option value="Personal Issues">Personal Issues</option>
-		    	
 		    </select>
-		    
 		    <input type="hidden" id="reject_type" value="">
 		    <input type="hidden" id="reject_for" value="">
-		     
 	    </div>
     	<div  class="model-footer">
 	    	<button class="btn btn-cancel">Cancel</button>
 	    	<button class="btn btn-ok">Ok</button>
     	</div>
-    	
     </div>
   </div>
-
 </div>
-
-
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	
 	$(document.body).on('click', '.btn-open' ,function(){
 		var reject_type = $(this).attr("data-type");
 		var reject_for = $(this).parent().attr("id");
 		$('.modal-body #reject_type').val(reject_type);
 		$('.modal-body #reject_for').val(reject_for);
-		
 		$('.modal-content select').hide();
-		if(reject_type == "join_reject")
+		if(reject_type == "join_reject"||reject_type == "candidate_withdraw")
 		{
 			$('.sel_rej_join').show();
 			$('#rejectModal').show();
 		}
-		
-		
-		
-// 		alert("data-type : " + reject_type);
 	})
-	
-// 	$(document.body).on('click', '.modal-content .btn-ok' ,function(){
-
-	
-// 	})
-	
 });
 
 </script>
@@ -393,7 +410,13 @@ jQuery(document).ready(function() {
 				<div class="modal-body">
 					<p>Please fill all details</p>
 					<br>
-					<input	type="hidden" id="postIdForAccept" />
+					<%if(post!=null){ %>
+					<input	type="hidden" id="postIdForAccept" value="<%=post.getPostId() %>" />
+					 <%}else{ %>
+					<input	type="hidden" id="postIdForAccept"  />
+					  
+					 <%} %>
+					 
 					 <!-- <label>Total CTC (INR): </label><span
 						style="color: green; font-weight: bold;" id="totalCTCinWords"></span>
 					<br>

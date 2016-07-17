@@ -1,7 +1,6 @@
 jQuery(document).ready(function() {
 	
 	$(".length_check").keydown(function (e) {
-		alert($(this).val().length +"data-length : " + $(this).attr('data-length'));
 		var val = $(this).val().length;
 		var length = $(this).attr('data-length');
 		if(val < length)
@@ -32,33 +31,31 @@ jQuery(document).ready(function() {
 					location.href="";	
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 					pleaseDontWait();
 				}
 			});
 	});
 
-	$(document.body).on('click', '#offerjoinedpopup' ,function(){
-		var ppid =$('#postIdForAccept').val();
-		var joiningDate=$('#datepicker').val();
-
-		pleaseWait();
-			$.ajax({
-				type : "GET",
-				url : "consacceptoffer",
-				data : {'ppid':ppid,'ppstatus':'join_accept','joiningDate':joiningDate},
-				contentType : "application/json",
-				success : function(data) {
-					var obj = jQuery.parseJSON(data);
-					pleaseDontWait();
-					location.href="";	
-				},
-				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
-					pleaseDontWait();
-				}
-			});
-	});
+//	$(document.body).on('click', '#offerjoinedpopup' ,function(){
+//		var ppid =$('#postIdForAccept').val();
+//		var joiningDate=$('#datepicker').val();
+//
+//		pleaseWait();
+//			$.ajax({
+//				type : "GET",
+//				url : "consacceptoffer",
+//				data : {'ppid':ppid,'ppstatus':'join_accept','joiningDate':joiningDate},
+//				contentType : "application/json",
+//				success : function(data) {
+//					var obj = jQuery.parseJSON(data);
+//					pleaseDontWait();
+//					location.href="";	
+//				},
+//				error: function (xhr, ajaxOptions, thrownError) {
+//					pleaseDontWait();
+//				}
+//			});
+//	});
 	
 	$(document.body).on('click', '#rejectModal .btn-ok' ,function(){
 
@@ -72,6 +69,11 @@ jQuery(document).ready(function() {
 		if(reject_type == "join_reject")
 		{
 			 ppstatus = "join_reject";
+			 rej_reason = $('.sel_rej_join').val();
+		}
+		if(reject_type == "candidate_withdraw")
+		{
+			 ppstatus = "candidate_withdraw";
 			 rej_reason = $('.sel_rej_join').val();
 		}
 		
@@ -93,8 +95,19 @@ jQuery(document).ready(function() {
 						}
 						else
 						{
-							location.reload();
+							//location.reload();
 							selected.parent().parent().find('td:eq(7)').html("<span>Offer Droped</span>");
+							selected.html("")
+						}
+					}else if(obj.status == "candidate_withdraw"){
+						if(data_view != "table")
+						{
+							location.reload();
+						}
+						else
+						{
+							//location.reload();
+							selected.parent().parent().find('td:eq(7)').html("<span>Withdrawn</span>");
 							selected.html("")
 						}
 					}
@@ -105,23 +118,17 @@ jQuery(document).ready(function() {
 					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 					pleaseDontWait();
 				}
 			}) ;
-		
 	});
 	
 	
 	$(document.body).on('click', '.pre_check > .post_interest' ,function(){
-//		alert("Hello to all" + $(this).attr("id"));
 		var row = $(this);
-		
 		var pid = $(this).attr("id");
-		
 		alertify.confirm("Are you interested for this post ?", function (e, str) {
 		if (e) {
-		
 			$.ajax({
 				type : "GET",
 				url : "consPostInterest",
@@ -134,26 +141,19 @@ jQuery(document).ready(function() {
 						row.removeClass("post_interest");
 						row.html("<img src='images/int-icon.png' alt='interested'>");
 						row.prop('title','You have added this post to active postions.');
-				//		alertify.success("Add interest for post "+obj.jobCode);
 						location.href="";
 					}
 					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.responseText);
 				}
 			}) ;
-			
 		}
-		
 		});
-		
-		
 	});
 	
 
 	$(document.body).on('click', '.filter  #show_interest' ,function(){
-//		alert("set Active");
 		
 		var val = [];
 		 $('.sel_newposts:checkbox:checked').each(function(i){
@@ -180,13 +180,11 @@ jQuery(document).ready(function() {
 							if(obj.status == "success")
 							{
 
-					//		alertify.success("Hi, Submitted Interest Successfully !");
 								pleaseDontWait();
 								location.href="";
 							}
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
 					      }
 				    }) ;
 				}
@@ -196,7 +194,6 @@ jQuery(document).ready(function() {
 
 	
 	$(document.body).on('click', '.filter  #close_request' ,function(){
-//		alert("set Inactive");
 		
 		var val = [];
 		 $('.sel_posts:checkbox:checked').each(function(i){
@@ -219,10 +216,8 @@ jQuery(document).ready(function() {
 					contentType : "application/json",
 					success : function(data) {
 						var obj = jQuery.parseJSON(data);
-//						alert(data);
 						if(obj.status == "success")
 						{
-				//			alertify.success("Hi, posts close request send successfully !");
 							
 						}
 						else
@@ -232,7 +227,6 @@ jQuery(document).ready(function() {
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -285,13 +279,48 @@ jQuery(document).ready(function() {
 	$(document.body).on('click', '.upload_new_profile' ,function(){
 		var clientId = $('#selectionOfClient').val();
 		var postId = $("#postsList > .active").attr("id");
-		//alert("clientId:"+clientId);
 		if( clientId != "" && clientId != "undefined" && postId != "" && postId != undefined)
 		{
 			window.open("uploadprofile?pid="+postId, '_blank');
 			
 		}
 	});
+	var matched, browser;
+
+	jQuery.uaMatch = function( ua ) {
+	    ua = ua.toLowerCase();
+
+	    var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+	        /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+	        /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+	        /(msie) ([\w.]+)/.exec( ua ) ||
+	        ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+	        [];
+
+	    return {
+	        browser: match[ 1 ] || "",
+	        version: match[ 2 ] || "0"
+	    };
+	};
+
+	matched = jQuery.uaMatch( navigator.userAgent );
+	browser = {};
+
+	if ( matched.browser ) {
+	    browser[ matched.browser ] = true;
+	    browser.version = matched.version;
+	}
+
+	// Chrome is Webkit, but Webkit is also Safari.
+	if ( browser.chrome ) {
+	    browser.webkit = true;
+	} else if ( browser.webkit ) {
+	    browser.safari = true;
+	}
+
+//	jQuery.browser = browser;
+//	 window.availableTags = [ '91','11' ];
+//	$("#countryCode").autocomplete({source: availableTags});
 });
 
 
@@ -312,7 +341,6 @@ function fillPosts(clientId)
 				$('#cons_leftside_postlist').html(data);
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
-				alert(xhr.status);
 			}
 		});
 	}
@@ -336,7 +364,6 @@ function consCloseRequest(pids){
 				contentType : "application/json",
 				success : function(data) {
 					var obj = jQuery.parseJSON(data);
-//					alert(data);
 					if(obj.status == "success")
 					{
 						alertify.success("Hi, posts close request send successfully !");
@@ -349,7 +376,6 @@ function consCloseRequest(pids){
 					
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 		}
@@ -378,9 +404,33 @@ function consShowInterest(pids){
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-			        alert(xhr.status);
 			      }
 		    }) ;
 		}
  	});
+}
+
+
+function setCandidatureWithdraw(ppid){
+//	var ppid =$('#postIdForAccept').val();
+	alertify.confirm("Are you sure you want to withdraw your candidature from this position ?", function (e, str) {
+		if (e) 
+		{
+	pleaseWait();
+		$.ajax({
+			type : "GET",
+			url : "consacceptoffer",
+			data : {'ppid':ppid,'ppstatus':'candidate_withdraw','joiningDate':''},
+			contentType : "application/json",
+			success : function(data) {
+				var obj = jQuery.parseJSON(data);
+				pleaseDontWait();
+			//	location.href="";	
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				pleaseDontWait();
+			}
+		});
+		}
+	});
 }

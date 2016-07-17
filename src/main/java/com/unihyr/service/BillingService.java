@@ -22,5 +22,7 @@ public interface BillingService
 
 	public BillingDetails getBillingDetailsById(long ppid);
 
+	public List<BillingDetails> getAllDetailsUnverified();
+
 
 }

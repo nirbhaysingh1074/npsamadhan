@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.HashSet"%>
@@ -77,10 +78,38 @@
 			                        <label  class="form-control" ><%= post.getTitle()%></label>
 			                      </div>
 			                    </div> <!-- attribute end -->
+			                    
+			                    
+			                    <div class="form-group col-md-6 col-sm-12">
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Salary</label>
+			                      <div class="col-sm-8">
+			                        <label  class="form-control" ><%= post.getCtc_min() + " - "+ post.getCtc_max() %> INR (Lacs)</label>
+			                      </div>
+			                    </div> <!-- attribute end -->
+			                    <div class="form-group col-md-6 col-sm-12">
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Experience</label>
+			                      <div class="col-sm-8">
+			                        <label  class="form-control" ><%= post.getExp_min() + " - "+ post.getExp_max() %> Years</label>
+			                      </div>
+			                    </div> <!-- attribute end -->
+			                    
 			                    <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Job Location</label>
 			                      <div class="col-sm-8">
 			                        <label  class="form-control" ><%= post.getLocation()%></label>
+			                      </div>
+			                    </div> <!-- attribute end -->
+			                    <div class="form-group col-md-6 col-sm-12">
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Qualification</label>
+			                      <div class="col-sm-8">
+			                        <label  class="form-control" >
+			                        <%if(post.getQualification_ug()!=null&&post.getQualification_ug()!=""){ %>
+								<%= post.getQualification_ug() %>
+								, <%} %>
+								<%if(post.getQualification_pg()!=null&&post.getQualification_pg()!=""){ %>
+									<%=post.getQualification_pg() %>
+								<%} %>
+								</label>
 			                      </div>
 			                    </div> <!-- attribute end -->
 			                    <div class="form-group col-md-6 col-sm-12">
@@ -90,18 +119,24 @@
 			                      </div>
 			                    </div> <!-- attribute end -->
 			                    <div class="form-group col-md-6 col-sm-12">
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Fee Percent</label>
+			                      <div class="col-sm-8">
+			                        <label  class="form-control" ><%= post.getFeePercent()%></label>
+			                      </div>
+			                    </div> <!-- attribute end -->
+			                    <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">No of posts</label>
 			                      <div class="col-sm-8">
-			                        <label  class="form-control" ><%= post.getNoOfPosts() %> Years</label>
+			                        <label  class="form-control" ><%= post.getNoOfPosts() %> </label>
 			                      </div>
 			                    </div> <!-- attribute end -->
 			                    
-			                    <div class="form-group col-md-6 col-sm-12">
+			                  <%--   <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Function</label>
 			                      <div class="col-sm-8">
 			                        <label  class="form-control" ><%= post.getFunction()%></label>
 			                      </div>
-			                    </div> <!-- attribute end -->
+			                    </div> --%> <!-- attribute end -->
 			                    <%-- <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Job Role</label>
 			                      <div class="col-sm-8">
@@ -134,19 +169,6 @@
 			                      </div>
 			                    </div> <!-- attribute end -->
 			                    
-			                    
-			                    <div class="form-group col-md-6 col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Salary</label>
-			                      <div class="col-sm-8">
-			                        <label  class="form-control" ><%= post.getCtc_min() + " - "+ post.getCtc_max() %> INR (Lacs)</label>
-			                      </div>
-			                    </div> <!-- attribute end -->
-			                    <div class="form-group col-md-6 col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Experience</label>
-			                      <div class="col-sm-8">
-			                        <label  class="form-control" ><%= post.getExp_min() + " - "+ post.getExp_max() %> Years</label>
-			                      </div>
-			                    </div> <!-- attribute end -->
 			                    <div class="form-group col-md-6 col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Status</label>
 			                      <div class="col-sm-8">
@@ -205,10 +227,31 @@
 												%>
 							                        <label  class="form-control label-danger" >Not  Verified
 							                        
-							                        <button class="btn btn-sm btn-primary pull-right btn_verify" verify-post="<%= post.getPostId() %>"  style="margin:-5px -12px">Verity</button>
+							                        <button class="btn btn-sm btn-primary pull-right btn_verify" verify-post="<%= post.getPostId() %>"  style="margin:-5px -12px">Verify</button>
 							                        </label>
 												<%
 											}
+										%>
+			                      </div>
+			                    </div> <!-- attribute end -->
+			                    <div class="form-group col-md-6 col-sm-12">
+			                      <label class="col-sm-4 control-label" for="inputEmail3"> Edit History</label>
+			                      <div class="col-sm-8 verify_status">
+										<%
+											if(post.getEditSummary() != null)
+											{
+												%>
+							                        <label  class="form-control" style="height: auto;" > 
+							                        <%String[] summary=post.getEditSummary().split(GeneralConfig.Delimeter);
+							                        for(int i=0;i<summary.length;i++){
+
+														if(summary[i]!=null&&summary[i]!=""&&!summary[i].equals("null")){
+							                        %>
+							                        <%=summary[i] %><br>
+							                        <% }}%></label>
+												<%
+											}
+											
 										%>
 			                      </div>
 			                    </div> <!-- attribute end -->

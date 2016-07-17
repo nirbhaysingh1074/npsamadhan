@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.unihyr.domain.Qualification"%>
+<%@page import="com.unihyr.domain.Location"%>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.Registration"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page import="java.text.NumberFormat"%>
@@ -43,106 +47,7 @@
 <script type="text/javascript">
 	function validateForm()
 	{
-		var title = $('#title').val();
-		var location = $('#location').val();
-		var fun = $('#function').val();
-		var noOfPosts = $('#noOfPosts').val();
-		/* var role = $('#role').val();
-		var designation = $('#designation').val(); */
-		var exp_min = $('#exp_min').val();
-		var exp_max = $('#exp_max').val();
-		var ctc_min = $('#ctc_min').val();
-		var ctc_max = $('#ctc_max').val();
-		var editSummary = $('#editSummary').val();
-		var additionDetail = CKEDITOR.instances['additionDetail'].getData(); 
-		var select_jd = $('.select_jd').val();
 		
-		
-		$('.error').html('&nbsp;');
-		var valid = true;
-		
-		if(title == "")
-		{
-			$('.title_error').html('Please enter post title')
-			valid = false;
-		}
-		if(location == "")
-		{
-			$('.location_error').html('Please select post location')
-			valid = false;
-		}
-		if(fun == "")
-		{
-			$('.function_error').html('Please enter post function')
-			valid = false;
-		}
-		if(noOfPosts == ""||noOfPosts == "0")
-		{
-			$('.noOfPosts_error').html('Please enter no of posts')
-			valid = false;
-		}
-		/* if(role == "")
-		{
-			$('.role_error').html('Please enter post role')
-			valid = false;
-		} */
-		if(editSummary == "")
-		{
-			$('.editSummary_error').html('Please enter edit summary');
-			valid = false;
-		}
-		/* if(designation == "")
-		{
-			$('.designation_error').html('Please enter post designation')
-			valid = false;
-		} */
-		if(exp_min == ""  || isNaN(exp_min))
-		{
-			$('.exp_min_error').html('Please select minimum expirence')
-			valid = false;
-		}
-		if(exp_max == ""  || isNaN(exp_max) || exp_min >= exp_max)
-		{
-			$('.exp_max_error').html('Min cannot be greater than Max')
-			valid = false;
-		}
-		if(ctc_min == ""  || isNaN(ctc_min))
-		{
-			$('.ctc_min_error').html('Please enter minimum ctc')
-			valid = false;
-		}
-		if(ctc_max == ""  || isNaN(ctc_max) || ctc_min >= ctc_max)
-		{
-			$('.ctc_max_error').html('Min cannot be greater than Max')
-			valid = false;
-		}
-		if(select_jd == "" && additionDetail == "" && $('#uploadjd').val()=="")
-		{
-			$('.uploadjd_error').html('Please enter job discription or upload JD')
-			valid = false;
-		}
-		
-		
-
-		if(!valid)
-		{
-			return false;
-		}
-		
-		/* alertify.confirm("Are you sure to edit this post ?", function (e, str) {
-			if (!e) {
-				alert("NO")
-				return false;
-			}
-			else
-			{
-				alert("YES")
-			}
-		}); */
-		
-		if (!confirm('Are you sure you want to make these changes to the Job Description?')) {
-		    return false;
-		} 
 	}
 function checkUpdateInfo(){
 	var updateInfo=$('#updateInfo').val();
@@ -156,6 +61,110 @@ function checkUpdateInfo(){
 </script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
+	var flagg=false;
+	$(document).on('submit', 'form#updatepost', function(e) {  
+		if(!flagg){
+		e.preventDefault();
+		
+		
+				var title = $('#title').val();
+				var location = $('#location').val();
+				var fun = $('#function').val();
+				var noOfPosts = $('#noOfPosts').val();
+				var exp_min = $('#exp_min').val();
+				var exp_max = $('#exp_max').val();
+				var ctc_min = $('#ctc_min').val();
+				var ctc_max = $('#ctc_max').val();
+				var editSummary = $('#editSummary').val();
+				var additionDetail = CKEDITOR.instances['additionDetail'].getData(); 
+				var select_jd = $('.select_jd').val();
+				
+				
+				$('.error').html('&nbsp;');
+				var valid = true;
+
+				var qug= $('#qualification_ug').val();
+				if(!qug||qug === null||qug==""){
+					$('.qualification_ug_error').html('Please specify undergraduate qualification');
+					valid = false;
+				}
+				var qpg= $('#qualification_pg').val();
+				if(!qpg||qpg === null||qpg==""){
+					$('.qualification_pg_error').html('Please specify postgraduate qualification');
+					valid = false;
+				}
+				if(title == "")
+				{
+					$('.title_error').html('Please enter post title')
+					valid = false;
+				}
+				if(location == "")
+				{
+					$('.location_error').html('Please select post location')
+					valid = false;
+				}
+				if(fun == "")
+				{
+					$('.function_error').html('Please enter post function')
+					valid = false;
+				}
+				if(noOfPosts == ""||noOfPosts == "0")
+				{
+					$('.noOfPosts_error').html('Please enter no of posts')
+					valid = false;
+				}
+				
+				if(editSummary == "")
+				{
+					$('.editSummary_error').html('Please enter edit summary');
+					valid = false;
+				}
+				
+				if(exp_min == ""  || isNaN(exp_min))
+				{
+					$('.exp_min_error').html('Please select minimum expirence')
+					valid = false;
+				}
+				if(exp_max == ""  || isNaN(exp_max) || Number(exp_min) >= Number(exp_max))
+				{
+					$('.exp_max_error').html('Min cannot be greater than or equal to Max')
+					valid = false;
+				}
+				if(ctc_min == ""  || isNaN(ctc_min))
+				{
+					$('.ctc_min_error').html('Please enter minimum ctc')
+					valid = false;
+				}
+				if(ctc_max == ""  || isNaN(ctc_max) || Number(ctc_min) >= Number(ctc_max))
+				{
+					$('.ctc_max_error').html('Min cannot be greater than or equal to Max')
+					valid = false;
+				}
+				if(select_jd == "" && additionDetail == "" && $('#uploadjd').val()=="")
+				{
+					$('.uploadjd_error').html('Please enter job discription or upload JD')
+					valid = false;
+				}
+				if(!valid)
+				{
+					return false;
+				}
+				else{
+					alertify.confirm("Are you sure you want to edit this post ?", function (e, str) {
+						if (e) {
+					flagg=true;
+				$('form#updatepost').submit();
+				}});
+		}
+			
+		}
+	});
+	
+	
+	
+	
+	
+	
 	
 	$(document.body).on('change', '.select_jd' ,function(){
 		var valid = true;
@@ -191,10 +200,8 @@ jQuery(document).ready(function() {
 		
 		if(!valid)
 		{
-// 			$('.select_jd').val("");
 			$(this).val("");
 		}
-//			alert(extension);
 	});
 });
 </script>
@@ -255,7 +262,7 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 			             
 			            </div>
 	     -->
-          <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()">
+          <form:form method="POST" action="clienteditpost" commandName="postForm" enctype="multipart/form-data" onsubmit=" return validateForm()"  id="updatepost">
 		      <div class="block">
 		       <div style="margin-left: 20px;text-align: center;margin-top: 10px;" > 
 		       <h3 class="formHeading">Edit JD</h3>
@@ -269,34 +276,39 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		            <dd>
 		              <form:input path="title"  />
 		              <form:hidden path="postId"/>
-		              <span class='error title_error'><form:errors path="title" /></span>
+		              <span class='error title_error'>&nbsp;<form:errors path="title" /></span>
 		            </dd>
 		          </dl>
-		          <dl >
-				<dt>
-						<label>Fee Slabs</label>
+		          <dl>
+					<dt>
+						<label>Upload JD
+						<span title='Allowed doc type  : .docx, .doc, .pdf &#013Allowed doc size : 1MB '> (?)</span>
+						
+						</label>
 					</dt>
-					<dd> 
-						<form:select path="feePercent">
-							 <form:option value='0'>Select Slab</form:option>
-						  <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
-						 <%if(registration.getFeePercent2()!=0&&registration.getSlab2()!=null&&registration.getSlab2()!=""){ %>
-						 <form:option value='<%=registration.getFeePercent2() %>'><%=registration.getSlab2() %>(<%=registration.getFeePercent2() %>)</form:option>
-						 <%} %>
-						 <%if(registration.getFeePercent3()!=0&&registration.getSlab3()!=null&&registration.getSlab3()!=""){ %>
-						 <form:option value='<%=registration.getFeePercent3() %>'><%=registration.getSlab3() %>(<%=registration.getFeePercent3() %>)</form:option>
-						 <%} %>
-						 <%if(registration.getFeePercent4()!=0&&registration.getSlab4()!=null&&registration.getSlab4()!=""){ %>
-						 <form:option value='<%=registration.getFeePercent4() %>'><%=registration.getSlab4() %>(<%=registration.getFeePercent4() %>)</form:option>
-						 <%} %>
-						 <%if(registration.getFeePercent5()!=0&&registration.getSlab5()!=null&&registration.getSlab5()!=""){ %>
-						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
-						 <%} %>
-						</form:select>
-					<span class='error feePercent_error'><form:errors path="feePercent"/></span>
-	     </dd>
+					<dd >
+						<div class="file_up" style="float: left;">
+							<form:input path="uploadjd" disabled = "true"/>
+							<div class="fileUpload">
+							    <span>Browse</span>
+							    <input type="file" class="upload select_jd" name="uploadJdfile" />
+							</div>
+						   
+						    <span class="" style="font-size: 10px;">Supported Formats : doc, docx, pdf. Max size : 1MB</span>
+						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
+						    
+						</div>
+						<div style="float: left;">
+						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
+							    border-radius: 0 5px 5px 0;
+							    float: right;
+							    height: 27px;
+							    overflow: hidden;
+							    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
+					</div>
+					</dd>
 				</dl>
-		          <dl style="clear: both;">
+		          <dl style="clear: both;display:none;">
 	            <dt>
 	              <label>Role Type<span class='error'>*</span></label>
 	            </dt>
@@ -306,18 +318,10 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 	                    <form:option value="Team Leading">Team Leading</form:option>
 	            </form:select>
 <%-- 	              <form:input path="function" /> --%>
-	              <span class='error function_error'><form:errors path="function"/></span>
+	              <span class='error function_error'>&nbsp;<form:errors path="function"/></span>
 	            </dd>
 	          </dl>
-		          <dl >
-		            <dt>
-		              <label>No of positions<span class='error'>*</span></label>
-		            </dt>
-		            <dd>
-		              <form:input path="noOfPosts" class="number_only number_pasitive" maxlength="5" />
-		              <span class='error noOfPosts_error'><form:errors path="noOfPosts"/></span>
-		            </dd>
-		          </dl>
+		          
 		          <%-- <dl style="clear: both;">
 		            <dt>
 		              <label>Role<span class='error'>*</span></label>
@@ -340,36 +344,21 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		            <dt>
 		              <label>Experience<span class='error'>*</span></label>
 		            </dt>
-		            <dd>
-		              <div class="row">
-		                <div class="col-md-6">
-		                  <form:select path="exp_min">
-		                    <form:option value="0">0 Years</form:option>
-		                    <form:option value="1">1 Years</form:option>
-		                    <form:option value="2">2 Years</form:option>
-		                    <form:option value="3">3 Years</form:option>
-		                    <form:option value="4">4 Years</form:option>
-		                    <form:option value="5">5 Years</form:option>
-		                    <form:option value="6">6 Years</form:option>
-		                    <form:option value="7">7 Years</form:option>
-		                  </form:select>
-		                  <span class='error exp_min_error'><form:errors path="exp_min"/></span>
-		                </div>
-		                <div class="col-md-6">
-		                  <form:select path="exp_max">
-		                    <form:option value="0">0 Years</form:option>
-		                    <form:option value="1">1 Years</form:option>
-		                    <form:option value="2">2 Years</form:option>
-		                    <form:option value="3">3 Years</form:option>
-		                    <form:option value="4">4 Years</form:option>
-		                    <form:option value="5">5 Years</form:option>
-		                    <form:option value="6">6 Years</form:option>
-		                    <form:option value="7">7 Years</form:option>
-		                  </form:select>
-		                  <span class='error exp_max_error' ><form:errors path="exp_max"/></span>
-		                </div>
-		              </div>
-		            </dd>
+		              <dd>
+	              <div class="row">
+	                <div class="col-md-6">
+	                  <form:input path="exp_min" class="number_only" style="padding-right: 75px"  />
+	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Min in Years)</span>
+	                  <span class='error exp_min_error'>&nbsp;<form:errors path="exp_min"/></span>
+	                </div>
+	                <div class="col-md-6">
+	                  <form:input path="exp_max" class="number_only" style="padding-right: 75px" />
+	                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(Max in Years)</span>
+	                  <span class='error exp_max_error'>&nbsp;<form:errors path="exp_max"/></span>
+	                </div>
+	                
+	              </div>
+	            </dd>
 		          </dl>
 		          <dl>
 		            <dt>
@@ -380,12 +369,12 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		                <div class="col-md-6">
 		                  <form:input path="ctc_min" class="number_only" style="padding-right: 75px"  />
 		                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(INR Lacs)</span>
-		                  <span class='error ctc_min_error'><form:errors path="ctc_min"/></span>
+		                  <span class='error ctc_min_error'>&nbsp;<form:errors path="ctc_min"/></span>
 		                </div>
 		                <div class="col-md-6">
 		                  <form:input path="ctc_max" class="number_only" style="padding-right: 75px" />
 		                  <span style="position: relative; padding: 5px; border-left: 1px solid rgb(212, 212, 212); float: right; margin-top: -27px;">(INR Lacs)</span>
-		                  <span class='error ctc_max_error'><form:errors path="ctc_max"/></span>
+		                  <span class='error ctc_max_error'>&nbsp;<form:errors path="ctc_max"/></span>
 		                </div>
 		              </div>
 		            </dd>
@@ -454,7 +443,106 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 	            </dd>
 	          </dl>
 	        
-	       <dl   style="clear: both;">
+	          
+	          
+				<dl style="clear:both;">
+	            <dt>
+	              <label>Location<span style="font-style: italic;font-weight: normal;font-size: 10px;">(To select multiple locations, press CTRL and select)</span><span class='error'>*</span> </label>
+	            </dt>
+	            <dd>
+	              <form:select path="location"  multiple="multiple" style="height: 111px;" >
+	              			<form:option value="">Select Location</form:option>
+	              	<%
+	              	
+	              		List<String> locList=GeneralConfig.topLocations;
+	              		for(String loc:locList){
+	              		if(post.getLocation().contains(loc)){
+	              			%>
+	              			  <form:option selected="selected" value="<%=loc %>"><%=loc %></form:option>
+	              			<%
+	              		}else{
+	              			%>
+						   <form:option value="<%=loc %>"><%=loc %></form:option>
+	              			<%
+	              		}}
+	              		List<Location> locList1=(List<Location>)request.getAttribute("locList");
+	              		for(Location loc:locList1)
+	              		{
+	              			if(!locList.contains(loc.getLocation())){
+	              		if(post.getLocation().contains(loc.getLocation())){
+	              			%>
+	              			  <form:option selected="selected" value="<%=loc.getLocation() %>"><%=loc.getLocation() %></form:option>
+	              			<%
+	              		}else{
+	              			%>
+						   <form:option value="<%=loc.getLocation() %>"><%=loc.getLocation() %></form:option>
+	              			<%
+	              		}
+	            		}}
+	              		%>
+	            	</form:select>
+	              
+					<%--  <form:input path="location" /> --%>
+	              <span class='error location_error'>&nbsp;<form:errors path="location"/></span>
+	            </dd>
+	          </dl>
+	          <dl >
+	            <dt>
+	              <label>Qualification<span class='error'>*</span></label>
+	            </dt>
+	            <dd>
+	              <div class="row">
+	                <div class="col-md-6">
+	                  <form:select path="qualification_ug" multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Qualification</form:option>
+	            		<%
+	            		List<Qualification> gradList=(ArrayList<Qualification>)request.getAttribute("qListUg");
+	            		for(Qualification grad:gradList)
+	            			{
+	            			if(post.getQualification_ug()!=null&&post.getQualification_ug().contains(grad.getqTitle())){
+	            			%>
+							<%--	<c:forEach var="item" items="${qListUg}"> --%>
+						   	<form:option selected="selected" value="<%=grad.getqTitle() %>"><%=grad.getqTitle()%></form:option>
+							<%--  	</c:forEach> --%>
+							<%}else{ %>
+								<form:option value="<%=grad.getqTitle()%>"><%=grad.getqTitle()%></form:option>
+							<%}} %>
+	            	</form:select>
+	                  <span class='error qualification_ug_error'><form:errors path="qualification_ug"/></span>
+	                </div>
+	                <div class="col-md-6">
+	                  <form:select path="qualification_pg" multiple="multiple" style="height: 111px;" >
+	              	<form:option value="">Select Qualification</form:option>
+	              	<%
+	              	List<Qualification> postList=(ArrayList<Qualification>)request.getAttribute("qListPg");
+            		for(Qualification grad:postList)
+            			{
+            			if(post.getQualification_ug()!=null&&post.getQualification_pg().contains(grad.getqTitle())){
+	              	%>
+<%-- 	            		<c:forEach var="item" items="${qListPg}"> --%>
+						   <form:option selected="selected" value="<%=grad.getqTitle()%>"><%=grad.getqTitle()%></form:option>
+<%-- 						</c:forEach> --%>
+	            	<%}else{ %>
+	            	   <form:option value="<%=grad.getqTitle()%>"><%=grad.getqTitle()%></form:option>
+	            	<%} }%>
+	            	
+	            	</form:select>
+	                  <span class='error qualification_pg_error' >&nbsp;<form:errors path="qualification_pg"/></span>
+	                </div>
+	              </div>
+	            </dd>
+</dl>
+	          
+	          <dl style="clear: both;" >
+		            <dt>
+		              <label>No of positions<span class='error'>*</span></label>
+		            </dt>
+		            <dd>
+		              <form:input path="noOfPosts" class="number_only number_pasitive" maxlength="5" />
+		              <span class='error noOfPosts_error'>&nbsp;<form:errors path="noOfPosts"/></span>
+		            </dd>
+		          </dl>
+	       <dl   >
 					<dt>
 						<label>Profile Quota</label>
 					</dt>
@@ -463,56 +551,40 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 						<span class="error profileParDay_error">&nbsp;<form:errors path="profileParDay" /></span>
 					</dd>
 			  </dl>
-	          <dl>
-					<dt>
-						<label>Upload JD</label>
-					</dt>
-					<dd>
-						<div class="file_up" style="float: left;">
-							<form:input path="uploadjd" disabled = "true"/>
-							<div class="fileUpload">
-							    <span>Browse</span>
-							    <input type="file" class="upload select_jd" name="uploadJdfile" />
-							</div>
-						    <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
-						    
-						</div>
-						<div style="float: left;">
-						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;
-    border-radius: 0 5px 5px 0;
-    float: right;
-    height: 27px;
-    overflow: hidden;
-    position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
-					</div>
-					</dd>
-				</dl>
-				<dl style="clear:both;">
-	            <dt>
-	              <label>Location<span style="font-style: italic;font-weight: normal;font-size: 10px;">(To select multiple locations, press CTRL and select)</span><span class='error'>*</span> </label>
-	            </dt>
-	            <dd>
-	              <form:select path="location"  multiple="multiple" style="height: 111px;" >
-	              	<form:option value="">Select Location</form:option>
-	            		<c:forEach var="item" items="${locList}">
-						   <form:option value="${item.location}">${item.location}</form:option>
-						</c:forEach>
-	            	</form:select>
-	              
-					<%--  <form:input path="location" /> --%>
-	              <span class='error location_error'><form:errors path="location"/></span>
-	            </dd>
-	          </dl>
-				<dl>
+	         
+				<dl style="clear: both;">
 	          <dt>Variable Pay Related Comments</dt>
 				   
 	      <dd>
 	        <form:textarea path="variablePayComment"  style="height: 111px;"></form:textarea>
-             <span class='variablePayComment_error'><form:errors path="variablePayComment"/></span>
+             <span class='variablePayComment_error'>&nbsp;<form:errors path="variablePayComment"/></span>
 	      </dd>
 				</dl>
 				
-		          
+		           <dl>
+				<dt>
+						<label>Fee Slabs</label>
+					</dt>
+					<dd> 
+						<form:select path="feePercent">
+							 <form:option value='0'>Select Slab</form:option>
+						  <form:option value='<%=registration.getFeePercent1() %>'><%=registration.getSlab1() %>(<%=registration.getFeePercent1() %>)</form:option>
+						 <%if(registration.getFeePercent2()!=0&&registration.getSlab2()!=null&&registration.getSlab2()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent2() %>'><%=registration.getSlab2() %>(<%=registration.getFeePercent2() %>)</form:option>
+						 <%} %>
+						 <%if(registration.getFeePercent3()!=0&&registration.getSlab3()!=null&&registration.getSlab3()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent3() %>'><%=registration.getSlab3() %>(<%=registration.getFeePercent3() %>)</form:option>
+						 <%} %>
+						 <%if(registration.getFeePercent4()!=0&&registration.getSlab4()!=null&&registration.getSlab4()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent4() %>'><%=registration.getSlab4() %>(<%=registration.getFeePercent4() %>)</form:option>
+						 <%} %>
+						 <%if(registration.getFeePercent5()!=0&&registration.getSlab5()!=null&&registration.getSlab5()!=""){ %>
+						 <form:option value='<%=registration.getFeePercent5() %>'><%=registration.getSlab5() %>(<%=registration.getFeePercent5() %>)</form:option>
+						 <%} %>
+						</form:select>
+					<span class='error feePercent_error'>&nbsp;<form:errors path="feePercent"/></span>
+	     </dd>
+				</dl>
 		           <%
 					String fileuploaderror = (String)request.getAttribute("fileuploaderror");
 					if(fileuploaderror != null && fileuploaderror.equals("true"))
@@ -558,6 +630,9 @@ border: 15px solid #fff;border-radius: 22px;text-align: center;" >
 		        <form:textarea path="editSummary" ></form:textarea>
 	             <span class='error editSummary_error'><form:errors path="editSummary"/></span>
 		      </div>
+		      <script type="text/javascript">
+		      $('#editSummary').val('');
+		      </script>
 		      <%
 		      if(post != null )
 		      %>

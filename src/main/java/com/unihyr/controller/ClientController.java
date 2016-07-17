@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.unihyr.constraints.DateFormats;
 import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.domain.BillingDetails;
 import com.unihyr.domain.CandidateProfile;
@@ -65,6 +67,7 @@ import com.unihyr.service.PostConsultnatService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.ProfileService;
+import com.unihyr.service.QualificationService;
 import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
@@ -115,6 +118,8 @@ public class ClientController
 	private PostConsultnatService postConsultantService;
 	@Autowired
 	private NotificationService notificationService;
+	@Autowired
+	private QualificationService qualificationService;
 	
 	/**
 	 * @param map
@@ -126,6 +131,7 @@ public class ClientController
 	{
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
@@ -140,12 +146,14 @@ public class ClientController
 				reg =reg.getAdmin(); 
 			}
 			map.addAttribute("totalposts", postService.countAllPostByClient(reg.getUserid()));
-			map.addAttribute("totalActive", postService.countActivePostByClient(reg.getUserid(),"verifyDate"));
+			map.addAttribute("totalActive", postService.countActivePostByClient(reg.getUserid(),"isActive"));
+			map.addAttribute("totalInActive", postService.countActivePostByClient(reg.getUserid(),"isNotActive"));
+			map.addAttribute("totalPending", postService.countActivePostByClient(reg.getUserid(),"pending"));
 			map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(reg.getUserid(), null));
-			map.addAttribute("totalshortlist", postProfileService.countShortListedProfileByClientOrConsultant(reg.getUserid(), null));
-			map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null));
+/*			map.addAttribute("totalshortlist", postProfileService.countShortListedProfileByClientOrConsultant(reg.getUserid(), null));
+			map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null,"joinDate"));
 			map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(reg.getUserid(), null));
-
+*/
 			return "clientDashboard";
 		}
 				
@@ -167,13 +175,12 @@ public class ClientController
 		String db_post_status = request.getParameter("db_post_status");
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
-		
-		String userid=reg.getUserid();
 		if(db_post_status.equals("all"))
 		{
 			map.addAttribute("postList", postService.getAllPostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam));
@@ -183,12 +190,9 @@ public class ClientController
 			map.addAttribute("postList", postService.getActivePostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam,db_post_status));
 			map.addAttribute("totalCount", postService.countActivePostByClient(loggedinUser,db_post_status));
 		}
-		
 		map.addAttribute("rpp", rpp);
 		map.addAttribute("pn", pn);
-
 		map.addAttribute("sortParam", sortParam);
-
 		return "clientDashboardList";
 	}
 
@@ -200,24 +204,55 @@ public class ClientController
 	 * @return
 	 */
 	@RequestMapping(value = "/clientaddpost", method = RequestMethod.GET)
-	public String addPost(ModelMap map,Principal principal)
+	public String addPost(ModelMap map,Principal principal,HttpServletRequest request)
 	{
 		map.addAttribute("locList", locationService.getLocationList());
+		map.addAttribute("qListUg",qualificationService.getAllUGQualification());
+		map.addAttribute("qListPg",qualificationService.getAllPGQualification());
 		map.addAttribute("postForm", new PostModel());
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
 		
+		map.addAttribute("message", request.getAttribute("message"));
 		map.addAttribute("registration", registrationService.getRegistationByUserId(loggedinUser));
 	
 		return "addPost";
 	}
-
 	/**
+	 * @param map
+	 * @param principal
+	 * @return
+	 */
+	@RequestMapping(value = "/clientsavedpost", method = RequestMethod.GET)
+	public String clientsavedpost(ModelMap map,Principal principal,HttpServletRequest request, @RequestParam long pid)
+	{
+		map.addAttribute("locList", locationService.getLocationList());
+		map.addAttribute("qListUg",qualificationService.getAllUGQualification());
+		map.addAttribute("qListPg",qualificationService.getAllPGQualification());
+
+		Post post = postService.getPost(pid);
+		map.addAttribute("postForm", post);
+
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+		map.addAttribute("message", request.getAttribute("message"));
+		map.addAttribute("registration", registrationService.getRegistationByUserId(loggedinUser));
+		return "addPost";
+	}
+
+	/** 
 	 * @param model
 	 * @param result
 	 * @param map
@@ -235,7 +270,17 @@ public class ClientController
 		MultipartFile resumefile = model.getUploadJdfile();
 	    String resumefilename=resumefile.getOriginalFilename();
 	    String resumeNewfilename=null;
-	    
+
+		map.addAttribute("qListUg",qualificationService.getAllUGQualification());
+		map.addAttribute("qListPg",qualificationService.getAllPGQualification());
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
+		
 	    
 	    if(!(resumefilename.equals("")))
 		{
@@ -268,11 +313,11 @@ public class ClientController
 				result.addError(new FieldError("postForm", "ctc_max", model.getCtc_max() , false, new String[1],new String[1], "Min cannot be greater than Max"));// ("postForm", "ctc_max", "Please provide valid ctc"));
 			}
 			map.addAttribute("locList", locationService.getLocationList());
+			map.addAttribute("registration", registrationService.getRegistationByUserId(loggedinUser));
 			return "addPost";
 		} else
 		{
 			System.out.println("form submitted successfully");
-
 			Post post = new Post();
 			post.setTitle(model.getTitle());
 			post.setLocation(model.getLocation());
@@ -282,7 +327,7 @@ public class ClientController
 			post.setCtc_min(model.getCtc_min());
 			post.setCtc_max(model.getCtc_max());
 			post.setNoOfPosts(model.getNoOfPosts());
-		/*	post.setRole(model.getRole());
+			/*	post.setRole(model.getRole());
 			post.setDesignation(model.getDesignation());*/
 			post.setProfileParDay(model.getProfileParDay());
 			post.setComment(model.getComment());
@@ -290,10 +335,13 @@ public class ClientController
 			post.setAdditionDetail(model.getAdditionDetail());
 			post.setWorkHourStartHour(model.getWorkHourStartHour());
 			post.setWorkHourEndHour(model.getWorkHourEndHour());
-			//post.setActive(true);
+			post.setVariablePayComment(model.getVariablePayComment());
+			post.setQualification_ug(model.getQualification_ug());
+			post.setQualification_pg(model.getQualification_pg());
+			post.setFeePercent(model.getFeePercent());
+			post.setActive(true);
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
-			
 			String btn_response = request.getParameter("btn_response");
 			if(btn_response.equals(GeneralConfig.Add_Post_Submit_Button_Value))
 			{
@@ -328,6 +376,8 @@ public class ClientController
 		    catch (IOException ie)
 	        {
 				ie.printStackTrace();
+				map.addAttribute("locList", locationService.getLocationList());
+				map.addAttribute("registration", registrationService.getRegistationByUserId(loggedinUser));
 				return "addPost";
 			}
 			
@@ -357,7 +407,9 @@ public class ClientController
 			postService.updatePost(post);
 			
 		}
-		return "redirect:clientdashboard";
+		map.addAttribute("message","Thanks for posting your new requirement on UniHyr.<br><br>"
+						+"We have received details of your new posting. It will be published post verification. The verification would take a maximum of 2 business hours.");
+		return "redirect:clientaddpost";
 	}
 
 	/**
@@ -366,10 +418,17 @@ public class ClientController
 	 * @return
 	 */
 	@RequestMapping(value = "/clienteditpost", method = RequestMethod.GET)
-	public String editPost(ModelMap map, @RequestParam long pid)
+	public String editPost(ModelMap map, @RequestParam long pid,Principal principal)
 	{
 		Post post = postService.getPost(pid);
-		if (post != null)
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		map.addAttribute("registration",reg);
+		if (post != null)	
 		{
 			PostModel model = new PostModel();
 			model.setPostId(post.getPostId());
@@ -392,6 +451,10 @@ public class ClientController
 			model.setWorkHourEndHour(post.getWorkHourEndHour());
 			model.setFeePercent(post.getFeePercent());
 			model.setVariablePayComment(post.getVariablePayComment());
+			map.addAttribute("qListUg",qualificationService.getAllUGQualification());
+			map.addAttribute("qListPg",qualificationService.getAllPGQualification());
+			model.setQualification_ug(post.getQualification_ug());
+			model.setQualification_pg(post.getQualification_pg());
 			map.addAttribute("postForm", model);
 			map.addAttribute("post", post);
 			map.addAttribute("locList", locationService.getLocationList());
@@ -415,11 +478,13 @@ public class ClientController
 		boolean valid = true;
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		Post post = postService.getPost(model.getPostId());
 		List<String> uploadMsg = new ArrayList<>();
 		MultipartFile resumefile = model.getUploadJdfile();
@@ -457,14 +522,13 @@ public class ClientController
 			map.addAttribute("locList", locationService.getLocationList());
 			map.addAttribute("post", post);
 			map.addAttribute("postForm", model);
+			map.addAttribute("qListUg",qualificationService.getAllUGQualification());
+			map.addAttribute("qListPg",qualificationService.getAllPGQualification());
 			return "editPost";
 		} 
 		else
 		{
 			System.out.println("form submitted successfully");
-			String btn_response = request.getParameter("btn_response");
-			System.out.println("btn_response : " + btn_response);
-			//post = postService.getPost(model.getPostId());
 			if (post != null)
 			{
 				post.setTitle(model.getTitle());
@@ -475,22 +539,24 @@ public class ClientController
 				post.setCtc_min(model.getCtc_min());
 				post.setCtc_max(model.getCtc_max());
 				post.setNoOfPosts(model.getNoOfPosts());
-			/*	post.setRole(model.getRole());
-				post.setDesignation(model.getDesignation());*/
+				Date date = new Date();
+				java.sql.Date dt = new java.sql.Date(date.getTime());
 				post.setProfileParDay(model.getProfileParDay());
 				post.setComment(model.getComment());
 				post.setAdditionDetail(model.getAdditionDetail());
-				post.setEditSummary(model.getEditSummary());
+				if(post.getEditSummary()!=null)
+				post.setEditSummary(post.getEditSummary()+GeneralConfig.Delimeter+model.getEditSummary()+" Edit Date: "+dt);
+				else
+				post.setEditSummary(model.getEditSummary()+" Edit Date: "+dt);
+					
 				post.setWorkHourStartHour(model.getWorkHourStartHour());
 				post.setWorkHourEndHour(model.getWorkHourEndHour());
 				post.setFeePercent(model.getFeePercent());
 				post.setLocation(model.getLocation());
-				Date date = new Date();
-				java.sql.Date dt = new java.sql.Date(date.getTime());
-				if(btn_response.equals("Publish") && post.getPublished() == null)
-				{
-					post.setPublished(dt);
-				}
+				post.setVariablePayComment(model.getVariablePayComment());
+				post.setQualification_ug(model.getQualification_ug());
+				post.setQualification_pg(model.getQualification_pg());
+				
 				post.setModifyDate(dt);
 				if(!post.getClient().getUserid().endsWith(loggedinUser))
 				{
@@ -516,7 +582,7 @@ public class ClientController
 			    catch (IOException ie)
 		        {
 					ie.printStackTrace();
-					return "addPost";
+					return "editPost";
 				}
 				
 				
@@ -598,8 +664,11 @@ public class ClientController
 	 * @return
 	 */
 	@RequestMapping(value = "/clientyourpost", method = RequestMethod.GET)
-	public String yourPost(ModelMap map, HttpServletRequest request)
+	public String yourPost(ModelMap map, HttpServletRequest request,Principal principal)
 	{
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
 		return "yourPosts";
 	}
 
@@ -617,11 +686,13 @@ public class ClientController
 		String sortParam = request.getParameter("sortParam");
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		
 		map.addAttribute("postList", postService.getAllPostsByClient(loggedinUser, (pn - 1) * rpp, rpp,sortParam));
 		map.addAttribute("totalCount", postService.countAllPostByClient(loggedinUser));
@@ -641,11 +712,13 @@ public class ClientController
 	public String clientpostapplicants(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		
 		boolean flag1=false;
 		String pidd = request.getParameter("pid");
@@ -660,8 +733,7 @@ public class ClientController
 		String filterby = request.getParameter("sortParam");
 		if(filterby == null)
 		{
-			filterby = "submitted";
-			
+			filterby = "all";
 		}
 			if(post != null)
 			{
@@ -706,7 +778,7 @@ public class ClientController
 		map.addAttribute("totalposts", postService.countAllVerifiedPostByClient(reg.getUserid()));
 		map.addAttribute("totalActive", postService.countActiveVerifiedPostByClient(reg.getUserid()));
 		map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(reg.getUserid(), null));
-		map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null));
+		map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null,"joinDate"));
 		return "clientPostApplicants";
 	}
 
@@ -720,11 +792,13 @@ public class ClientController
 	public String postApplicantList(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		
 		int rpp = GeneralConfig.rpp;
 		int pn=1;
@@ -739,7 +813,7 @@ public class ClientController
 		int totalCount=0;
 		if(filterby == null)
 		{
-			filterby = "submitted";
+			filterby = "all";
 		}
 		if(pid == 0 )
 		{
@@ -800,6 +874,10 @@ public class ClientController
 	@RequestMapping(value = "/clientprofilecenter", method = RequestMethod.GET)
 	public String clientProfileCenter(ModelMap map, HttpServletRequest request, Principal principal)
 	{
+
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
 		return "clientProfileCenter";
 	}
 	
@@ -825,11 +903,13 @@ public class ClientController
 		}
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		
 		map.addAttribute("ppList", postProfileService.getPostProfileByClientForCenter(loggedinUser, (pn-1)*GeneralConfig.rpp, GeneralConfig.rpp));
 		map.addAttribute("totalCount", postProfileService.countPostProfileByClientForCenter(loggedinUser));
@@ -850,18 +930,16 @@ public class ClientController
 	public @ResponseBody String clientacceptreject(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 
-		String subject = "Subject";
 		String content = "Content";
-		boolean st = false;
-		
-		
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		
 		
 		JSONObject obj = new JSONObject();
 		try
@@ -891,10 +969,11 @@ public class ClientController
 					PostProfile postProfile=pp;
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
 						postProfile.setViewStatus(true);
+						postProfile.setProcessStatus("accepted");
 						postProfileService.updatePostProfile(postProfile);}
-					content= candidate +" has been shortlited for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+						content = candidate + " has been shortlited for the <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a> (" + (reg.getOrganizationName())
+							+ ")";
 					obj.put("status", "accepted");
 				}
 				else if(ppstatus.equals("reject"))
@@ -903,64 +982,67 @@ public class ClientController
 					PostProfile postProfile=pp;
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
 						postProfile.setViewStatus(true);
+						postProfile.setProcessStatus("rejected");
 						postProfileService.updatePostProfile(postProfile);}
-					content= candidate +" has been rejected for the "+position+" ("+(reg.getOrganizationName())+")" ;
-						
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					content= candidate +" has been rejected for the <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "rejected");
 				}
 				else if(ppstatus.equals("recruit") && pp.getAccepted() != null)
 				{
 					pp.setRecruited(dt);
-					content= candidate +" has been offered for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					pp.setProcessStatus("recruited");
+					content= candidate +" has been offered for the <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "recruited");
 				}
 				else if(ppstatus.equals("reject_recruit") && pp.getAccepted() != null)
 				{
 					pp.setDeclinedDate(dt);
-					content= candidate +" has been rejected for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					pp.setProcessStatus("declineDate");
+					content= candidate +" has been rejected for the  <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "reject_recruit");
 				}
 				else if(ppstatus.equals("offer_accept") && pp.getAccepted() != null)
 				{
+					if(post.getNoOfPosts()<=(post.getNoOfPostsFilled()))
+					{}else{
 					pp.setOfferDate(dt);
+					pp.setProcessStatus("offerDate");
 					double totalCTC=Double.parseDouble(request.getParameter("totalCTC"));
 					double billableCTC=Double.parseDouble(request.getParameter("billableCTC"));
 					List<BillingDetails> bill=fillBillingDetails(pp,loggedinUser,request.getParameter("joiningDate"), totalCTC,billableCTC);
 					billingService.addBillingDetails(bill.get(0));
-					
-					
 					try{
 						if(post.getNoOfPosts()==(post.getNoOfPostsFilled()+1))
 						{
 							post.setNoOfPostsFilled(post.getNoOfPosts());
+							post.setCloseDate(dt);
 							postService.updatePost(post);	
+							if(post.getOpenAgainDate()==null){
 							insertValues(post.getPostId());
 							closePost(reg);
+							}
 						}else if(post.getNoOfPosts()>(post.getNoOfPostsFilled()+1)){
 							post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
 							postService.updatePost(post);	
 						}
-						content= candidate +" offer has been accepted for the "+position+" ("+(reg.getOrganizationName())+")" ;
-						
-//						st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+						content= candidate +" offer has been accepted for the  <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					}catch(Exception e){
 						e.printStackTrace();
 						obj.put("status", "failed");
 					}
-					
 					obj.put("status", "offer_accept");
+				}
 				}
 				else if(ppstatus.equals("offer_reject") && pp.getAccepted() != null)
 				{
 					pp.setOfferDropDate(dt);
-					content= candidate +" offer has been rejected for the "+position+" ("+(reg.getOrganizationName())+")" ;
-					
-//					st=mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
+					pp.setProcessStatus("offerDropDate");
+					content= candidate +" offer has been rejected for the  <a href='cons_your_position?pid="
+							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "offer_reject");
 				}
 				else
@@ -974,7 +1056,6 @@ public class ClientController
 				notificationService.addNotification(nser);
 				postProfileService.updatePostProfile(pp);
 				return obj.toJSONString();
-				
 			}
 			
 			
@@ -1002,23 +1083,19 @@ public class ClientController
 		List<BillingDetails> bills = new ArrayList<BillingDetails>();
 		BillingDetails billingDetailscl = new BillingDetails();
 		Post post = pp.getPost();
-		
 		CandidateProfile profile = pp.getProfile();
 		Registration client=post.getClient();
 		Registration consultant=profile.getRegistration();
-		
 		billingDetailscl.setPostId(post.getPostId());
 		billingDetailscl.setPosition(post.getTitle());
 		billingDetailscl.setClientName(client.getOrganizationName());
 		billingDetailscl.setConsultantName(consultant.getConsultName());
 		billingDetailscl.setLocation(post.getLocation());
 		billingDetailscl.setSubmittedDate(pp.getSubmitted());
-		billingDetailscl.setOfferAcceptedDate(pp.getAccepted());
-		
+		billingDetailscl.setOfferAcceptedDate(pp.getOfferDate());
 				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 				try{
 				Date date = formatter.parse(joiningDate);
-				System.out.println(date);
 				billingDetailscl.setExpectedJoiningDate(new java.sql.Date(date.getTime()));
 				}catch(Exception e){
 					e.printStackTrace();
@@ -1030,88 +1107,18 @@ public class ClientController
 		billingDetailscl.setClientAddress(client.getHoAddress());
 		billingDetailscl.setConsultantId(consultant.getUserid());
 		billingDetailscl.setCandidatePerson(profile.getName());
-		
-		//if(billableCTC>=client.getCtcSlabs1Min()&&billableCTC<=client.getCtcSlabs1Max()){
-			
-			if(client.getOrganizationName()!=null){
-				billingDetailscl.setFeePercentForClient(post.getFeePercent());	
-			}
-			try{
-				billingDetailscl.setFee((billableCTC*post.getFeePercent())/100);
-				billingDetailscl.setFeePercentToAdmin(consultant.getFeeCommission());
-			}catch(Exception e){
-				billingDetailscl.setFee(0);
-			}
-			
-		/*}else if(billableCTC>=client.getCtcSlabs2Min()&&billableCTC<=client.getCtcSlabs2Max()){
-			billingDetailscl.setFeePercentForClient(client.getFeePercent2());	
-			
-			try{
-				
-				billingDetailscl.setFee((billableCTC*client.getFeePercent2())/100);
-			}catch(Exception e){
-				billingDetailscl.setFee(0);
-					
-			}
-			
-		}else if(billableCTC>=client.getCtcSlabs3Min()&&billableCTC<=client.getCtcSlabs3Max()){
-			billingDetailscl.setFeePercentForClient(client.getFeePercent3());	
-			
-			try{
-				
-				billingDetailscl.setFee((billableCTC*client.getFeePercent3())/100);
-			}catch(Exception e){
-				billingDetailscl.setFee(0);
-					
-			}
-			
-		}else if(billableCTC>=client.getCtcSlabs4Min()&&billableCTC<=client.getCtcSlabs4Max()){
-			billingDetailscl.setFeePercentForClient(client.getFeePercent4());	
-			
-			try{
-				
-				billingDetailscl.setFee((billableCTC*client.getFeePercent4())/100);
-			}catch(Exception e){
-				billingDetailscl.setFee(0);
-					
-			}
-			
-		}else if(billableCTC>=client.getCtcSlabs5Min()){
-			billingDetailscl.setFeePercentForClient(client.getFeePercent5());	
-			try{
-				
-				billingDetailscl.setFee((billableCTC*client.getFeePercent5())/100);
-			}catch(Exception e){
-				billingDetailscl.setFee(0);
-					
-			}
-			
-		}*/
-		
-
-		/*if(billableCTC>=consultant.getCtcSlabs1Min()&&billableCTC<=consultant.getCtcSlabs1Max()){
-			
-			billingDetailscl.setFeePercentToAdmin(consultant.getFeePercent1());
-			
-		}else if(billableCTC>=consultant.getCtcSlabs2Min()&&billableCTC<=consultant.getCtcSlabs2Max()){
-			
-			billingDetailscl.setFeePercentToAdmin(consultant.getFeePercent2());
-			
-		}else if(billableCTC>=consultant.getCtcSlabs3Min()&&billableCTC<=consultant.getCtcSlabs3Max()){
-			
-			billingDetailscl.setFeePercentToAdmin(consultant.getFeePercent3());
-			
-		}else if(billableCTC>=consultant.getCtcSlabs4Min()&&billableCTC<=consultant.getCtcSlabs4Max()){
-			
-			billingDetailscl.setFeePercentToAdmin(consultant.getFeePercent4());
-			
-		}else if(billableCTC>=consultant.getCtcSlabs5Min()){
-			
-			billingDetailscl.setFeePercentToAdmin(consultant.getFeePercent5());
-			
-		}*/
+		//if(client.getOrganizationName()!=null){
+		billingDetailscl.setFeePercentForClient(post.getFeePercent());	
+		//}else{
+		billingDetailscl.setFeePercentToAdmin(consultant.getFeeCommission());
+		//}
+		try{
+			billingDetailscl.setFee((billableCTC*post.getFeePercent())/100);
+		}catch(Exception e){
+			e.printStackTrace();
+			billingDetailscl.setFee(0);
+		}
 		Double total=billingDetailscl.getFee()+(GeneralConfig.TAX*billingDetailscl.getFee())/100+(GeneralConfig.CESS*billingDetailscl.getFee())/100;
-			
 		billingDetailscl.setTotalAmount(total);
 		Date dt = new Date();
 		java.sql.Date date = new java.sql.Date(dt.getTime());
@@ -1120,7 +1127,6 @@ public class ClientController
 		billingDetailscl.setClientPaidStatus(false);
 		billingDetailscl.setTax(GeneralConfig.TAX);
 		billingDetailscl.setPostProfileId(pp.getPpid());
-		
 		bills.add(billingDetailscl);
 		return bills;
 	}
@@ -1270,6 +1276,13 @@ public class ClientController
 	@RequestMapping(value = "/viewPostDetail", method = RequestMethod.GET)
 	public String viewPostDetail(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		
 		String pid = request.getParameter("pid");
 		if(pid != null && pid.trim().length() > 0)
 		{
@@ -1296,6 +1309,10 @@ public class ClientController
 		map.addAttribute("registration", registrationService.getRegistationByUserId(principal.getName()));
 		map.addAttribute("co-users", registrationService.getCoUsersByUserid(principal.getName()));
 		map.addAttribute("status", request.getParameter("status"));
+
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
 		return "clientAccount";
 	}
 	
@@ -1314,6 +1331,13 @@ public class ClientController
 		postProfile.setViewStatus(true);
 		postProfileService.updatePostProfile(postProfile);}
 		map.addAttribute("postProfile", postProfile);
+
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
 		
 		inboxService.setViewedByClient(ppid);
 		map.addAttribute("msgList", inboxService.getInboxMessages(ppid, 0, 10));
@@ -1549,27 +1573,54 @@ public class ClientController
 
 	
 	
-	
+
 	/**
 	 * @param map
 	 * @param request
 	 * @param principal
 	 * @return
 	 */
-	@RequestMapping(value = "/clientmessages", method = RequestMethod.GET)
-	public @ResponseBody String clientmessages(ModelMap map, HttpServletRequest request ,Principal principal)
+	@RequestMapping(value = "/clientcountmessages", method = RequestMethod.GET)
+	public @ResponseBody String clientcountmessages(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
-		JSONObject object = new JSONObject();
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
+		Long count = inboxService.countMessageByClient(loggedinUser);
 		
-		
+		return ""+count;
+	}
+		/**
+		 * @param map
+		 * @param request
+		 * @param principal
+		 * @return
+		 */
+		@RequestMapping(value = "/clientmessages", method = RequestMethod.GET)
+		public @ResponseBody String clientmessages(ModelMap map, HttpServletRequest request ,Principal principal)
+		{
+		JSONObject object = new JSONObject();
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		if(reg.getAdmin() != null)
+		{
+			reg =reg.getAdmin(); 
+		}
+		String loggedinUser=reg.getUserid();
 		List<Inbox> mList = inboxService.getMessageByClient(loggedinUser, 0, 100);
+		for (Inbox inbox : mList)
+		{
+			if(!inbox.isViewed()){
+				inbox.setViewed(true);
+				inboxService.updateInboxMessage(inbox);
+		}}
+		
+		
 		JSONArray array = new JSONArray();
 		JSONObject jm = null;
 		try
@@ -1577,17 +1628,16 @@ public class ClientController
 			for(Inbox m : mList)
 			{
 				jm = new JSONObject();
-				jm.put("cons", m.getPostProfile().getProfile().getRegistration().getConsultName());
+				jm.put("cons", loggedinUser);
 				jm.put("ptitle", m.getPostProfile().getPost().getTitle());
 				jm.put("message", m.getMessage());
 				jm.put("ppid", m.getPostProfile().getPpid());
-				
+				jm.put("msgdate", DateFormats.getTimeValue(m.getCreateDate()));
 				array.add(jm);
 			}
 			object.put("mList", array);
 			object.put("status", true);
 			return object.toJSONString();
-			
 		} 
 		catch (Exception e)
 		{
@@ -1598,20 +1648,42 @@ public class ClientController
 
 	}
 
-	
-	@RequestMapping(value = "/getUserNotifications", method = RequestMethod.GET)
-	public @ResponseBody String getUserNotifications(ModelMap map, HttpServletRequest request ,Principal principal)
-	{
+
+		@RequestMapping(value = "/countUserNotifications", method = RequestMethod.GET)
+		public @ResponseBody String countUserNotifications(ModelMap map, HttpServletRequest request ,Principal principal)
+		{
+			Registration reg = registrationService.getRegistationByUserId(principal.getName());
+			map.addAttribute("registration",reg);
+			if(reg.getAdmin() != null)
+			{
+				reg =reg.getAdmin(); 
+			}
+			String loggedinUser=reg.getUserid();
+			Long count = notificationService.countUserNotifications(loggedinUser);
+			return ""+count;
+		}
+		
+		@RequestMapping(value = "/getUserNotifications", method = RequestMethod.GET)
+		public @ResponseBody String getUserNotifications(ModelMap map, HttpServletRequest request ,Principal principal)
+		{
 		JSONObject object = new JSONObject();
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
 		if(reg.getAdmin() != null)
 		{
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
 		
+		
 		List<Notifications> mList = notificationService.getNotificationByUserid(loggedinUser, 0, 100);
+		for (Notifications notifications : mList)
+		{
+			if(!notifications.isReadStatus()){
+			notifications.setReadStatus(true);
+			notificationService.updateNotification(notifications);
+		}}
 		JSONArray array = new JSONArray();
 		JSONObject jm = null;
 		try
@@ -1620,7 +1692,7 @@ public class ClientController
 			{
 				jm = new JSONObject();
 				jm.put("notification", m.getNotification());
-				
+				jm.put("msgdate", DateFormats.getTimeValue(m.getDate()));
 				array.add(jm);
 			}
 			object.put("mList", array);
@@ -1648,7 +1720,7 @@ public class ClientController
 	 * @throws ServletException
 	 */
 	@RequestMapping(value = "/client.uploadLogo", method = RequestMethod.POST)
-    public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req, Principal principal)throws ServletException
+    public @ResponseBody String ajaxFileUpload(MultipartHttpServletRequest request, HttpServletRequest req, Principal principal,ModelMap map)throws ServletException
     {   
 		
 		this.allowedImageExtensions = new HashSet<String>();
@@ -1696,7 +1768,7 @@ public class ClientController
 				mpf.transferTo(dl);
 				Registration registration = registrationService.getRegistationByUserId(principal.getName());
 				registration.setLogo(filename);
-				request.getSession().setAttribute("registration", registration);
+				map.addAttribute("registration", registration);
 				registrationService.update(registration);
 			}
 			catch(IOException e)
@@ -2005,9 +2077,7 @@ public class ClientController
 		Post post=postService.getPost(Long.parseLong(postId));
 		post.setUpdateInfo(updateInfo);
 		postService.updatePost(post);
-		
-		
-	/*	List<PostConsultant> list=postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc");
+		/*	List<PostConsultant> list=postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc");
 		for (PostConsultant pp : list)
 		{
 			mailService.sendMail(pp.getConsultant().getUserid(), "Job Post Update Info", updateInfo);
@@ -2018,7 +2088,6 @@ public class ClientController
 	
 	@RequestMapping(value="profileClosures", method = RequestMethod.GET)
 	public String profileClosures(ModelMap map, HttpServletRequest request ,Principal principal){
-		
 		String postId=(String)request.getParameter("postId");
 		List<ClosedProfileDetails> profileDetails=new ArrayList<ClosedProfileDetails>();
 		List<PostProfile> postProfiles=postProfileService.getPostProfileOfferedByPost(Long.parseLong(postId));
@@ -2033,12 +2102,9 @@ public class ClientController
 			profileDetails.add(details);
 			i++;
 		}
-		
-		
-				
-				
-				map.addAttribute("profileList", profileDetails);
-		
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+		map.addAttribute("profileList", profileDetails);
 		return  "profileClosures";
 	}
 }

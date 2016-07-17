@@ -37,4 +37,6 @@ public interface RegistrationService
 	public List<Registration> getClientAndConsultantAdminList(int first, int max);
 	
 	Registration getRegistrationsByName(String userName);
+	
+	public void insertUserIndustryMap(int industryId, int registrationId);
 }

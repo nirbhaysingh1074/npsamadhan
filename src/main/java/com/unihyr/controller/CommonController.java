@@ -1,9 +1,8 @@
 package com.unihyr.controller;
 
 import java.security.Principal;
-
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
-
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.unihyr.constraints.GeneralConfig;
+import com.unihyr.domain.ContactUs;
+import com.unihyr.domain.HelpDesk;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Registration;
+import com.unihyr.service.ContactUsService;
+import com.unihyr.service.HelpDeskService;
 import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.MailService;
 import com.unihyr.service.RegistrationService;
@@ -31,6 +33,9 @@ public class CommonController
 	 */
 	@Autowired
 	private LoginInfoService loginInfoService;
+	@Autowired
+	private HelpDeskService helpDeskService;
+	@Autowired ContactUsService contactUsService;
 	
 	@RequestMapping(value = "/helpDeskMessage", method = RequestMethod.GET)
 	public @ResponseBody String clientMailRejectProfile(ModelMap map, HttpServletRequest request, Principal principal)
@@ -86,7 +91,7 @@ public class CommonController
 					+ "<p></p>"
 					+ "<p>Best Regards,</p>"
 					+ "<p></p>"
-//					+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"/images/logo.png' width='63'> </p>"
+					//+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"/images/logo.png' width='63'> </p>"
 					+ "<p><strong>Admin Team</strong></p><p></p>"
 					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 					+ "</div>"
@@ -95,15 +100,25 @@ public class CommonController
 					+ "</tbody>"
 					+ "</table>";
 			
+			try{
 			boolean st = mailService.sendMail(GeneralConfig.admin_email, subject, content);
 			mailService.sendMail(email, subject, "Thanks for contacting us. We will revert you back soon.");
+			}catch(Exception e ){
+				e.printStackTrace();
+			}
+			HelpDesk helpDesk=new HelpDesk();
+			helpDesk.setName(name);
+			helpDesk.setEmail(email);
+			helpDesk.setMessage(msg);
+			helpDesk.setSubject(subject);
+			helpDesk.setMsgDate(new java.sql.Date(new Date().getTime()));
+			helpDeskService.addHelpDesk(helpDesk);
 			System.out.println("sending mail......");
-			if(st)
-			{
+//			if(st)
+//			{
 				obj.put("status", true);
 				return obj.toJSONString();
-			}
-			
+//			}
 		}
 		obj.put("status", false);
 		return obj.toJSONString();
@@ -125,11 +140,31 @@ public String test(ModelMap map, HttpServletRequest request, Principal principal
 @RequestMapping(value = "/privacyPolicy", method = RequestMethod.GET)
 public String privacyPolicy(ModelMap map, HttpServletRequest request, Principal principal)
 {
+	map.addAttribute("contactusform", new ContactUs());
 	return "privacyPolicy";
+}			
+@RequestMapping(value = "/adminHelpMessages", method = RequestMethod.GET)
+public String adminHelpMessages(ModelMap map, HttpServletRequest request, Principal principal)
+{
+	map.addAttribute("helpList",helpDeskService.getAllHelpDeskList("null"));
+	return "adminHelpMessages";
+}			
+@RequestMapping(value = "/adminDemoRequests", method = RequestMethod.GET)
+public String adminDemoRequests(ModelMap map, HttpServletRequest request, Principal principal)
+{
+	map.addAttribute("demorequests",contactUsService.getAllDemoRequest());
+	return "adminDemoRequests";
+}			
+@RequestMapping(value = "/adminLoggedUsers", method = RequestMethod.GET)
+public String adminLoggedUsers(ModelMap map, HttpServletRequest request, Principal principal)
+{
+	map.addAttribute("userList",loginInfoService.getLoggedInUsers());
+	return "adminLoggedUsers";
 }		
 @RequestMapping(value = "/termsOfService", method = RequestMethod.GET)
 public String termsOfService(ModelMap map, HttpServletRequest request, Principal principal)
 {
+	map.addAttribute("contactusform", new ContactUs());
 	return "termsOfService";
 }
 	@RequestMapping(value = "/setFirstTimeFalse", method = RequestMethod.GET)

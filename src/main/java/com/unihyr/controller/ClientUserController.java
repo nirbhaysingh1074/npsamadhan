@@ -45,6 +45,11 @@ public class ClientUserController
 	public String clientNewUser(ModelMap map, Principal principal)
 	{
 		map.addAttribute("cuForm", new ClientUserModel());
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		if(reg != null)
+		{
+			map.addAttribute("registration", reg);
+		}
 		return "clientNewUser";
 	}
 
@@ -57,6 +62,12 @@ public class ClientUserController
 	{
 
 		boolean valid = true; 
+		
+		Registration reg1 = registrationService.getRegistationByUserId(principal.getName());
+		if(reg1 != null)
+		{
+			map.addAttribute("registration", reg1);
+		}
 		try
 		{
 			Registration user = registrationService.getRegistationByUserId(userid);
@@ -144,10 +155,17 @@ public class ClientUserController
 	public String clientViewUser(ModelMap map, HttpServletRequest request, Principal principal, @RequestParam String uid)
 	{
 		map.addAttribute("status", request.getParameter("status"));
-		Registration reg = registrationService.getRegistationByUserId(uid);
+		
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
 		if(reg != null)
 		{
 			map.addAttribute("registration", reg);
+		}
+		
+		Registration reg1 = registrationService.getRegistationByUserId(uid);
+		if(reg != null)
+		{
+			map.addAttribute("userdetails", reg1);
 			return "clientViewUser";
 		}
 		return "redirect:clientdashboard";

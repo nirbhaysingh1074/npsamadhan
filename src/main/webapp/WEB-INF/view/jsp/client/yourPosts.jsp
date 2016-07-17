@@ -15,7 +15,6 @@
 <script type="text/javascript">
 	function  loadclientposts(pn)
 	{
-// 		alert("hello");
 var sortParam=$('#sortParam').val();
 if(typeof sortParam != 'undefined'){}
 else
@@ -26,11 +25,9 @@ else
 			data : {'pn':pn,'sortParam':sortParam},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				$('#positions_info').html(data);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}

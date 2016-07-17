@@ -23,19 +23,16 @@
 		if(typeof sortParam != 'undefined'){}
 		else
 			sortParam='published';
-// 		alert("hello " + db_post_status);
 		$.ajax({
 			type : "GET",
 			url : "clientDashboardList",
 			data : {'pn':pn,'db_post_status':db_post_status,'sortParam':sortParam},
 			contentType : "application/json",
 			success : function(data) {
-//				alert(data);
 				$('.client_db_posts').html(data);
 			pleaseDontWait();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}
@@ -46,34 +43,40 @@ jQuery(document).ready(function() {
 	  var val = [];
 	  if($('.sel_posts:checkbox').length > $('.sel_posts:checkbox:checked').length)
 	  {
-		  $('#sel_all').removeAttr("checked");
+		  $('#sel_all').prop("checked",false);
 	  }
 	  else
 	  {
-	  	$('#sel_all').attr("checked","checked");
+	  	$('#sel_all').prop("checked",true);
 	  }
 
     });
 	
 	$(document.body).on('change', '#sel_all' ,function(){
-		if($('#sel_all').attr('checked'))
+		if($("input[name='sel_all']").is(':checked'))
 		{
-			$('.sel_posts:checkbox').attr('checked','checked')
+			$('.sel_posts:checkbox').prop("checked",true);
 		}
 		else
 		{
-			$('.sel_posts:checkbox').removeAttr('checked')
+			$('.sel_posts:checkbox').prop("checked",false);
 		}
-		
 	});
-	
-	
-	
   });
 	
 </script>
 <style type="text/css">
-.report_sum{padding: 5px 0;}
+.report_sum {
+	padding: 5px 0;
+background: #fff;
+margin-right: 18px;
+border-right: 5px solid #dcdcdc;
+border-bottom: 5px solid #dcdcdc;
+border-radius: 5px;
+width: 18.3% !important;
+border-top: 1px solid #ececec;
+border-left: 1px solid #ececec;
+}
 </style>
 </head>
 <body class="loading" onload="loadclientdashboardposts('1')">
@@ -81,62 +84,63 @@ jQuery(document).ready(function() {
   <div class="container">
   	<div id="positions_info">
 		  	<div style="padding-bottom: 0" class="rightside_in new_table">
-		  		<%-- <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-			        <div class="bottom-padding" style=" border: 2px solid gray; border-radius: 5px; margin-bottom: 10px;  padding: 10px;">
-				        <div class="bottom-padding">
-				        	
-				        	<div class="col-md-4 report_sum" >
-					        	<div class="col-md-9">
-					        		Active Positions
-					        	</div>
+		  		 <sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
+				        <div class="bottom-padding" style="padding-bottom: 42px !important;">
+				        	<div class="col-md-2 report_sum" >
 					        	<div class="col-md-3">
-					        		${totalActive}
+					        		<img src="images/active.png"  width="17px">
+					        	</div>
+					        	<div class="col-md-9">
+					        	${totalposts} Published
 					        	</div>
 				        	</div>
-				        	<div class="col-md-4 report_sum" >
-					        	<div class="col-md-9">
-					        		InActive Positions
-					        	</div>
+				        	<div class="col-md-2 report_sum" >
 					        	<div class="col-md-3">
-					        		${totalposts - totalActive}
+					        	<img src="images/inactive.png" width="17px">
+					        		
+					        	</div>
+					        	<div class="col-md-9">
+					        		${totalActive} Active Positions
 					        	</div>
 				        	</div>
-				        	<div class="col-md-4 report_sum" >
-					        	<div class="col-md-9">
-					        		No of Profile Recieved
-					        	</div>
+				        	<div class="col-md-2 report_sum" >
 					        	<div class="col-md-3">
-					        		${totalprofiles }
+					        	<img src="images/profiles.png" width="17px">
+					        		
+					        	</div>
+					        	<div class="col-md-9">
+					        		${totalInActive } Inactive Positions
 					        	</div>
 				        	</div>
-				        	<div class="col-md-4 report_sum" >
-					        	<div class="col-md-9">
-					        		No of Profile Shortlisted
-					        	</div>
+				        	<div class="col-md-2 report_sum" >
 					        	<div class="col-md-3">
-					        		${totalshortlist }
+					        		<img src="images/check-cloud.png"  width="17px">
+					        	</div>
+					        	<div class="col-md-9">
+									${totalPending} Pending Verification
 					        	</div>
 				        	</div>
-				        	<div class="col-md-4 report_sum" >
-					        	<div class="col-md-9">
-					        		No of Candidate Joined
-					        	</div>
+				        	<div class="col-md-2 report_sum" >
 					        	<div class="col-md-3">
-					        		${totaljoin }
+					        		<img src="images/check-cloud.png"  width="17px">
+					        		
+					        	</div>
+					        	<div class="col-md-9">
+									${totalprofiles } Profiles Recieved
 					        	</div>
 				        	</div>
-				        	<div class="col-md-4 report_sum" >
-					        	<div class="col-md-9">
-					        		No of Partners
-					        	</div>
-					        	<div class="col-md-3">
-					        		${totalpartner }
-					        	</div>
-				        	</div>
+<!-- 				        	<div class="col-md-2 report_sum" > -->
+<!-- 					        	<div class="col-md-10"> -->
+<!-- 					        		<img src="images/check-cloud.png"  width="20px"> -->
+<!-- 					        		No of Partners -->
+<!-- 					        	</div> -->
+<!-- 					        	<div class="col-md-3"> -->
+<%-- 					        		${totalpartner } --%> 
+<!-- 					        	</div> -->
+<!-- 				        	</div> -->
 				        	
 				        </div>
-			        </div>
-			    </sec:authorize> --%>
+			    </sec:authorize> 
 		        <div class="block consulting">
 		          <div style="    float: left;">
 		            <select id="db_post_status">

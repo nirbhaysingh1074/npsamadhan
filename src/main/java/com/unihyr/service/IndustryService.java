@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.unihyr.domain.Industry;
+import com.unihyr.domain.Registration;
 
 public interface IndustryService 
 {
@@ -19,4 +20,9 @@ public interface IndustryService
 
 	public List<Industry> getIndustryByName(String industry);
 
+	public List<Registration> getClientsByIndustry(int industryId);
+	
+	public List<Registration> getConsultantsByIndustry(int industryId);
+
+	public void deleteIndustry(Industry industry);
 }

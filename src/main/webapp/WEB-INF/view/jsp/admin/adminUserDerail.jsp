@@ -93,17 +93,31 @@
 					                      </div>
 					                    </div>
 					                    <div class="form-group col-md-6 col-sm-12">
-					                      <label class="col-sm-4 control-label" for="inputEmail3">Revenue</label>
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Pan No</label>
 					                      <div class="col-sm-8">
-					                        <label  class="form-control"><%= userDetail.getRevenue()%> INR (Millions)</label>
+					                        <label  class="form-control">
+					                        <%if(userDetail.getPanno()!=null){ %>
+					                        <%= userDetail.getPanno()%> 
+					                        <%} %>
+					                        </label>
 					                      </div>
 					                    </div>
 					                    <div class="form-group col-md-6 col-sm-12">
-					                      <label class="col-sm-4 control-label" for="inputEmail3">Org Size</label>
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Service Tax No</label>
 					                      <div class="col-sm-8">
-					                        <label  class="form-control"><%= userDetail.getNoofpeoples()%></label>
+					                        <label  class="form-control">
+					                        <%if(userDetail.getStno()!=null){ %>
+					                        <%= userDetail.getStno()%> 
+					                        <%} %>
+					                        </label>
 					                      </div>
 					                    </div>
+<!-- 					                    <div class="form-group col-md-6 col-sm-12"> -->
+<!-- 					                      <label class="col-sm-4 control-label" for="inputEmail3">Org Size</label> -->
+<!-- 					                      <div class="col-sm-8"> -->
+<%-- 					                        <label  class="form-control"><%= userDetail.getNoofpeoples()%></label> --%>
+<!-- 					                      </div> -->
+<!-- 					                    </div> -->
 					                    <div class="form-group col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label" for="inputEmail3">Contact Address</label>
 					                      <div class="col-sm-8">
@@ -217,11 +231,25 @@
 				                      </div>
 				                    </div>
 				                    <div class="form-group col-md-6 col-sm-12">
-				                      <label class="col-sm-4 control-label" for="inputEmail3">Revenue</label>
-				                      <div class="col-sm-8">
-				                        <label  class="form-control"><%= userDetail.getRevenue()%> INR (Millions)</label>
-				                      </div>
-				                    </div>
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Pan No</label>
+					                      <div class="col-sm-8">
+					                        <label  class="form-control">
+					                        <%if(userDetail.getPanno()!=null){ %>
+					                        <%= userDetail.getPanno()%> 
+					                        <%} %>
+					                        </label>
+					                      </div>
+					                    </div>
+					                    <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Service Tax No</label>
+					                      <div class="col-sm-8">
+					                        <label  class="form-control">
+					                        <%if(userDetail.getStno()!=null){ %>
+					                        <%= userDetail.getStno()%> 
+					                        <%} %>
+					                        </label>
+					                      </div>
+					                    </div>
 				                    <div class="form-group col-md-6 col-sm-12">
 				                      <label class="col-sm-4 control-label" for="inputEmail3">Years in Industry</label>
 				                      <div class="col-sm-8">
@@ -229,7 +257,7 @@
 				                      </div>
 				                    </div>
 				                    <div class="form-group col-md-6 col-sm-12">
-				                      <label class="col-sm-4 control-label" for="inputEmail3">Office Address</label>
+				                      <label class="col-sm-4 control-label" for="inputEmail3">Locations</label>
 				                      <div class="col-sm-8">
 				                        <label   class="form-control" ><%= userDetail.getOfficeLocations()%></label>
 				                      </div>
@@ -406,35 +434,35 @@
 		             			if(loginInfo.getIsactive().equals("true"))
 		             			{
 		             				%>
-					             		<!-- <div class="form-group disable_user col-md-6 col-sm-12">
+					             		<div class="form-group disable_user col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label" for="inputEmail3">&nbsp;</label>
 					                      <div class="col-sm-8">
 					                        <button class="btn btn-danger btn-disable">Disable User</button>
 					                      </div>
-					                    </div> -->
+					                    </div> 
 		             				<%
 		             			}
 		             			else
 		             			{
 		             				%>
-					             		<!-- <div class="form-group disable_user col-md-6 col-sm-12">
+					             		 <div class="form-group disable_user col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label" for="inputEmail3">&nbsp;</label>
 					                      <div class="col-sm-8">
 					                        <button class="btn btn-success btn-enable">Enable User</button>
 					                      </div>
-					                    </div> -->
+					                    </div> 
 		             				<%
 		             			}
 		             			if(userRole.getUserrole().equals(Roles.ROLE_EMP_MANAGER.toString()) || userRole.getUserrole().equals(Roles.ROLE_CON_MANAGER.toString()))
 			             		{
 		             				if(loginInfo.getIsactive().equals("true")&&false){
 			             			%>
-					             		<%-- <div class="form-group disable_user col-md-6 col-sm-12">
+					             		 <div class="form-group disable_user col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label"  >&nbsp;</label>
 					                      <div class="col-sm-8">
 					                        <a href="adminuserchild?userid=<%= userDetail.getUserid() %>"><button class="btn btn-sm btn-info ">Add User</button></a>
 					                      </div>
-					                    </div> --%>
+					                    </div> 
 			             			<%
 			             		}}
 		             		%>
@@ -491,7 +519,13 @@
 			                      <div class="col-sm-8">
 <%-- 			                        <input required   type="text" id="ctcSlabs1Min" name="ctcSlabs1Min" class="form-control" value="<%=userDetail.getCtcSlabs1Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs1Max" name="ctcSlabs1Max" class="form-control" value="<%=userDetail.getCtcSlabs1Max()%>"  /> --%>
+			                       <%if(userDetail.getSlab1()!=null){ %>
+			                       
 			                        <input required   type="text" id="slab1" name="slab1" class="form-control" value="<%=userDetail.getSlab1()%>"  />
+			                      <%}else{ %>
+			                        <input required   type="text" id="slab1" name="slab1" class="form-control"   />
+			                      
+			                      <%} %>
 			                      </div>
 			                    </div>
 			                    
@@ -499,6 +533,7 @@
 			                    <div class="form-group col-sm-12">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Fee Percentage</label>
 			                      <div class="col-sm-8">
+			                       
 			                        <input required  onblur="onBlueZero()" type="text" id="feePercent1" name="feePercent1" class="form-control" value="<%=userDetail.getFeePercent1()%>" />
 			                      </div>
 			                    </div>
@@ -508,7 +543,13 @@
 			                      <div class="col-sm-8">
 <%-- 			                         <input required   type="text" id="ctcSlabs2Min" name="ctcSlabs2Min" class="form-control" value="<%=userDetail.getCtcSlabs2Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs2Max" name="ctcSlabs2Max" class="form-control" value="<%=userDetail.getCtcSlabs2Max()%>"  /> --%>
+			                                <%if(userDetail.getSlab2()!=null){ %>
+			                      
 			                       <input    type="text" id="slab2" name="slab2" class="form-control" value="<%=userDetail.getSlab2()%>"  />
+			                      <%}else{ %>
+			                       <input    type="text" id="slab2" name="slab2" class="form-control"   />
+			                      
+			                      <%} %>
 			                      </div>
 			                    </div>
 			                    <div class="clearfix"></div>
@@ -524,7 +565,12 @@
 			                      <div class="col-sm-8">
 <%-- 			                        <input required   type="text" id="ctcSlabs3Min" name="ctcSlabs3Min" class="form-control" value="<%=userDetail.getCtcSlabs3Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs3Max" name="ctcSlabs3Max" class="form-control" value="<%=userDetail.getCtcSlabs3Max()%>"  /> --%>
+			                                <%if(userDetail.getSlab3()!=null){ %>
 			                       <input    type="text" id="slab3" name="slab3" class="form-control" value="<%=userDetail.getSlab3()%>"  />
+			                       <%}else{ %>
+			                       <input    type="text" id="slab3" name="slab3" class="form-control"   />
+			                       
+			                       <%} %>
 			                      </div>
 			                    </div>
 			                    <div class="clearfix"></div>
@@ -540,7 +586,12 @@
 			                      <div class="col-sm-8">
 <%-- 			                        <input required   type="text" id="ctcSlabs4Min" name="ctcSlabs4Min" class="form-control" value="<%=userDetail.getCtcSlabs4Min()%>"  /> --%>
 <%-- 			                        <input required   type="text" id="ctcSlabs4Max" name="ctcSlabs4Max" class="form-control" value="<%=userDetail.getCtcSlabs4Max()%>"  /> --%>
+			                                <%if(userDetail.getSlab4()!=null){ %>
 			                       <input    type="text" id="slab4" name="slab4" class="form-control" value="<%=userDetail.getSlab4()%>"  />
+			                       <%}else{ %>
+			                       <input    type="text" id="slab4" name="slab4" class="form-control"   />
+			                       
+			                       <%} %>
 			                      </div>
 			                    </div>
 			                    <div class="clearfix"></div>
@@ -556,10 +607,14 @@
 			                      <div class="col-sm-8">
 <%-- 			                        <input required   type="text" id="ctcSlabs5Min" name="ctcSlabs5Min" class="form-control" value="<%=userDetail.getCtcSlabs5Min()%>"  /> --%>
 <!-- 			                        <input required   type="text" id="ctcSlabs5Max" class="form-control" value="no limit" disabled="disabled"  /> -->
+			                              <%if(userDetail.getSlab5()!=null){ %>
 			                     <input    type="text" id="slab5" name="slab5" class="form-control" value="<%=userDetail.getSlab5()%>"  />
-			                        
-			                       
+			                        <%}else{ %>
+			                     <input    type="text" id="slab5" name="slab5" class="form-control"   />
+			                         
+			                      <%} %>
 			                      </div>
+			                      
 			                    </div>
 			                    
 			                    <div class="clearfix"></div>
@@ -601,19 +656,19 @@
 			                      </div>
 			                    </div>
 			                    <div class="clearfix"></div>
-			                    <div class="form-group col-sm-12" style="display: none;">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Empty Field</label>
+			                    <div class="form-group col-sm-12" >
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Placement Clause</label>
 			                      <div class="col-sm-8">
 			                      
 			                         <%
 			                      if(userDetail.getEmptyField()!=null&&userDetail.getEmptyField()!=""){
 			                      %>
 			                     
-			                        <input type="text" id="emptyField" name="emptyField" class="form-control" value="<%=userDetail.getEmptyField()%>">
+			                        <textarea id="emptyField" name="emptyField" class="form-control"><%=userDetail.getEmptyField()%></textarea>
 			                     
 			                     <%}else{ %>
 			                     
-			                     <input type="text" id="emptyField" name="emptyField" class="form-control">
+			                       <textarea id="emptyField" name="emptyField" class="form-control"></textarea>
 			                     
 			                     <%} %>
 			                     

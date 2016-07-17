@@ -67,7 +67,7 @@ public interface PostProfileDao
 	
 	public long countShortListedProfileByClientOrConsultant(String client, String consultant);
 	
-	public long countJoinedProfileByClientOrConsultant(String client, String consultant);
+	public long countJoinedProfileByClientOrConsultant(String client, String consultant, String statusFilter);
 	
 	public long countPartnerByClientOrConsultant(String client, String consultant);
 	
@@ -86,5 +86,7 @@ public interface PostProfileDao
 
 	long countShortlistedProfileListPostId(long postId,String status);
 
-	boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob);
+	boolean getPostProfileByContactAndDob(long postId, String contactNo, String dob);
+
+	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String filterBy);
 }

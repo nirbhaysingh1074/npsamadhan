@@ -237,9 +237,10 @@ public interface PostProfileService
 	 * 
 	 * @param client
 	 * @param consultant
+	 * @param statusFilter 
 	 * @return
 	 */
-	public long countJoinedProfileByClientOrConsultant(String client, String consultant);
+	public long countJoinedProfileByClientOrConsultant(String client, String consultant, String statusFilter);
 	
 	/**
 	 * 
@@ -292,5 +293,17 @@ public interface PostProfileService
 	long countShortlistedProfileListPostId(long postId,String status);
 	
 	
-	boolean getPostProfileByContactAndDob(long postId, String contactNo, Date dob);
+	boolean getPostProfileByContactAndDob(long postId, String contactNo, String string);
+	/**
+	 * a method to get last profile submitted over any post
+	 * @param postId
+	 * @param first
+	 * @param max
+	 * @param sortParam
+	 * @param filterBy
+	 * @param excludeType
+	 * @param sortOrder
+	 * @return
+	 */
+	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String filterBy);
 }

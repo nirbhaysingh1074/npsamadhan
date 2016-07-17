@@ -1,7 +1,6 @@
 jQuery(document).ready(function() {
 	
 	$(".length_check").keydown(function (e) {
-		alert($(this).val().length +"data-length : " + $(this).attr('data-length'));
 		var val = $(this).val().length;
 		var length = $(this).attr('data-length');
 		if(val < length)
@@ -22,13 +21,11 @@ jQuery(document).ready(function() {
 		
 	});
 	$(document.body).on('change', '#selected_post' ,function(){
-	//	alert("Hello to aLL" + $(this).val());
 		
 		$('#candidate_profiles').hide();
 		$('#candidate_profiles_def').show();
 		
 		$('#cons_list > li').removeClass("active");
-//		alert(" text :"+$(this).find('option:selected').text());
 		var pid = $(this).val();
 		if(pid != "" && pid != "0")
 		{
@@ -47,27 +44,7 @@ jQuery(document).ready(function() {
 		$('#view_jd .view_consultant').attr('target',"");
 		$('#view_jd .view_consultant').addClass('btn_disabled');
 		location.href="clientpostapplicants?pid="+pid;
-		/*	$.ajax({
-			type : "GET",
-			url : "postConsultantList",
-			data : {'pid':pid},
-			contentType : "application/json",
-			success : function(data) {
-				var obj = jQuery.parseJSON(data);
-				var consList = obj.consList;
-				$('#cons_list').html("");
-				$.each(consList , function(i, val) { 
-					if(val.submissionStatus!="")
-				  $('#cons_list').append("<li title='"+val.aboutcons+"' id='"+val.conid+"'><a>"+val.cname+" <br><span style='font-size:10px;'>("+val.submissionStatus+")</span> </a></li>");
-					else
-				  $('#cons_list').append("<li title='"+val.aboutcons+"' id='"+val.conid+"'><a>"+val.cname+" </a></li>");
-						
-				});
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
-		      }
-	    }) ;*/
+		
 		
 	});
 	
@@ -98,7 +75,6 @@ jQuery(document).ready(function() {
 	});
 	
 	$(document.body).on('click', '.profile_status > .accept_profile' ,function(){
-//		alert("Hello to all accept"+$(this).parent().attr("id"));
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
 		var data_view = $(this).parent().attr("data-view");
@@ -137,8 +113,6 @@ jQuery(document).ready(function() {
 					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
-
 					pleaseDontWait();
 				}
 			}) ;
@@ -170,11 +144,6 @@ jQuery(document).ready(function() {
 			 rej_reason = $('.sel_rej_offer').val();
 		}
 		var selected = $('.proile_row #'+reject_for);
-//		alert(" Hello to all js " + selected.html());
-		
-//		return false;
-//		var selected = $(this).parent();
-//		var ppid = $(this).parent().attr("id");
 		var data_view = selected.attr("data-view");
 
 		pleaseWait();
@@ -237,8 +206,6 @@ jQuery(document).ready(function() {
 				}
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-				alert(xhr.status);
-
 				pleaseDontWait();
 			}
 		}) ;
@@ -248,7 +215,6 @@ jQuery(document).ready(function() {
 	});
 	
 	$(document.body).on('click', '.profile_status > .recruit_profile' ,function(){
-//		alert("Hello to all accept"+$(this).parent().attr("id"));
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
 		var data_view = $(this).parent().attr("data-view");
@@ -290,7 +256,6 @@ pleaseWait();
 				pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 					pleaseDontWait();
 				}
 			}) ;
@@ -301,7 +266,6 @@ pleaseWait();
 	
 	$(document.body).on('click', '.btn-offer-open' ,function()
 	{
-//		alert($(this).parent().attr("id"));
 		$('#postIdForAccept').val($(this).parent().attr("id"));
 	});
 	
@@ -325,7 +289,6 @@ pleaseWait();
 					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 		
@@ -335,7 +298,6 @@ pleaseWait();
 	});
 	
 	$(document.body).on('click', '#offerModal .btn-ok' ,function(){
-//		alert("Hello to all accept"+$(this).parent().attr("id"));
 		var ppid =$('#postIdForAccept').val();
 		var totalCTC=0.0;
 		var billableCTC=0.0;
@@ -371,44 +333,30 @@ pleaseWait();
 			}
 			try{
 				joiningDate=$('#datepicker').val();
-				
-				
-			           
 			            var EnteredDate = joiningDate; // For JQuery
-
 			            var date = EnteredDate.substring(8, 10);
 			            var month = EnteredDate.substring(5, 7);
 			            var year = EnteredDate.substring(0, 4);
-
 			            var myDate = new Date(year, month - 1, date);
-
 			            var today = new Date();
-
 			            if (myDate > today) {
 			                flag=true;
+			                $('#errorJoiningDate').css('display','none');
 			            }
 			            else {
 			            	flag=false;
-			            	
-			                alert("Joining date is less than offer accept's date.");
+			            	$('#errorJoiningDate').html("Joining date is less than offer accept's date.");
 			                $('#datepicker').val('');
 			            }
-				
-			            if(flag&&billableCTC<=totalCTC){
-			            	 alert("Billable CTC should be less than or equal to Total CTC.");
-			            }
-			            
-				/*if(joiningDate=="")
-				{
-					flag=false;
-				$('#errorJoiningDate').html('Please enter valid value');
-				$('#errorJoiningDate').css('display','block');
-				}else{
-					$('#errorJoiningDate').css('display','none');
-				}*/
+			            if(flag&&Number(billableCTC)>=Number(totalCTC)){
+								flag=false;
+								$('#errorTotalCTC').html('Billable CTC should be less than or equal to Total CTC.');
+								$('#errorTotalCTC').css('display','block');
+								}else{
+									$('#errorTotalCTC').css('display','none');
+								}
 			}catch(e){
-				/*flag=false;
-				$('#errorJoiningDate').html('Please enter valid date');*/
+				
 			}
 		if(flag){
 
@@ -428,32 +376,13 @@ pleaseWait();
 						if(data_view != "table")
 						{
 							location.href="";
-							//selected.parent().html("<div class='block btn_row no-margin' style='text-align: left;'><a class='btn check_btn'>Offered</a></div>")
 						}
 						else
 						{
 							selected.parent().parent().find('td:eq(7)').html("<span>Offered</span>");
 							selected.html("")
 						}
-						//alertify.success("Profile Offered Successfilly !");
 						
-						/*$.ajax({
-							type : "GET",
-							url : "clientMailRecruitProfile",
-							data : {'ppid':ppid},
-							contentType : "application/json",
-							success : function(data) {
-								var obj = jQuery.parseJSON(data);
-								if(!obj.status)
-								{
-									alertify.error("Oops, mail not send !");
-								}
-								
-							},
-							error: function (xhr, ajaxOptions, thrownError) {
-								alertify.error("Oops, mail not send !");
-							}
-						}) ;*/
 					}
 					else
 					{
@@ -461,7 +390,6 @@ pleaseWait();
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 		
@@ -469,7 +397,6 @@ pleaseWait();
 		}
 	});
 	$(document.body).on('click', '.profile_status > .offer_reject' ,function(){
-//		alert("Hello to all accept"+$(this).parent().attr("id"));
 		var selected = $(this).parent();
 		var ppid = $(this).parent().attr("id");
 		var data_view = $(this).parent().attr("data-view");
@@ -489,7 +416,6 @@ pleaseWait();
 					pleaseDontWait();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 					
 				}
 			}) ;
@@ -524,7 +450,6 @@ pleaseWait();
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 			
@@ -561,7 +486,6 @@ pleaseWait();
 					}
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.status);
 				}
 			}) ;
 			
@@ -571,20 +495,29 @@ pleaseWait();
 	
 	
 	$(document.body).on('click', '.filter  #act_post' ,function(){
-//		alert("set Active");
 		
 		var val = [];
+		var valida=true;
 		 $('.sel_posts:checkbox:checked').each(function(i){
 	        val[i] = $(this).val();
+	        var valsplit=val[i].split(',');
+	        if(valsplit[1]=='active'){
+				 valida=false;
+	        }
+	        val[i]=valsplit[0];
 	      });
-	 
+		 if(valida==false){
+        	 alertify.error("Oops, you have selected already active post !");
+			 return false;
+		 }
+		 
 		 if(! val.length > 0)
 		 {
 			 alertify.error("Oops, please select any post !");
 			 return false;
 		 }
 
-		 	alertify.confirm("Are you sure you want to activate this post ?", function (e, str) {
+		 alertify.confirm("Are you sure you want to activate this post ?", function (e, str) {
 				if (e) 
 				{
 					pleaseWait();
@@ -599,7 +532,6 @@ pleaseWait();
 							{
 								loadclientdashboardposts($('.page_nav .current_page').attr("id"));
 								alertify.success("Hi, post activate successfully !");
-								
 								$.ajax({
 									type : "GET",
 									url : "clientMailActive",
@@ -611,8 +543,8 @@ pleaseWait();
 										{
 											alertify.error("Oops, mail not send !");
 										}
-								pleaseDontWait();		
-								location.href="";
+										pleaseDontWait();		
+									//	location.href="";
 									},
 									error: function (xhr, ajaxOptions, thrownError) {
 										alertify.error("Oops, mail not send !");
@@ -621,7 +553,6 @@ pleaseWait();
 							}
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
-					        alert(xhr.status);
 					      }
 				    }) ;
 				}
@@ -632,11 +563,22 @@ pleaseWait();
 	$(document.body).on('click', '.filter  #inact_post' ,function(){
 
 		var val = [];
+		var valida=true;
 		 $('.sel_posts:checkbox:checked').each(function(i){
 	        val[i] = $(this).val();
-	     
-		 });
-		 if(! val.length > 0)
+	        var valsplit=val[i].split(',');
+	        if(valsplit[1]=='inactive'){
+	        	 valida=false;
+	        }
+
+	        val[i]=valsplit[0];
+	      });
+		 if(valida==false){
+			 alertify.error("Oops, you have selected already inactive post !");
+			 return false;
+		 }
+		 
+		 if(!(val.length > 0))
 		 {
 			 alertify.error("Oops, please select any post !");
 			 return false;
@@ -670,7 +612,7 @@ pleaseWait();
 										alertify.error("Oops, mail not send !");
 									}
 									pleaseDontWait();
-									location.href="";
+									//location.href="";
 								},
 								error: function (xhr, ajaxOptions, thrownError) {
 									pleaseDontWait();
@@ -681,7 +623,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -690,7 +631,6 @@ pleaseWait();
 	});
 	
 	$(document.body).on('click', '.filter  #del_post' ,function(){
-//		alert("set Inactive");
 		
 		var val = [];
 		 $('.sel_posts:checkbox:checked').each(function(i){
@@ -721,7 +661,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -770,7 +709,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -818,7 +756,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -867,7 +804,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -897,7 +833,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -910,7 +845,6 @@ pleaseWait();
 	
 	
 	$(document.body).on('click', '.filter  #close_post' ,function(){
-//		alert("set Inactive");
 		
 		var val = [];
 		 $('.sel_posts:checkbox:checked').each(function(i){
@@ -933,7 +867,6 @@ pleaseWait();
 					contentType : "application/json",
 					success : function(data) {
 						var obj = jQuery.parseJSON(data);
-//						alert(data);
 						if(obj.status == "success")
 						{
 							alertify.success("Hi, posts close request send successfully !");
@@ -946,7 +879,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -962,7 +894,6 @@ pleaseWait();
 		var pid = $(this).parent().parent().attr("id");
 		pids[0]= pid; 
 		var sel_val = $(this).val();
-//		alert(pid + " : Hello to alll changes : "+ $(this).val());
 		var url = "";
 		var msg = "";
 		var mailurl = "";
@@ -989,7 +920,6 @@ pleaseWait();
 					data : {'pids':pids.toString()},
 					contentType : "application/json",
 					success : function(data) {
-//						alert(data);
 						var obj = jQuery.parseJSON(data);
 						if(obj.status == "success")
 						{
@@ -1019,7 +949,6 @@ pleaseWait();
 						
 					},
 					error: function (xhr, ajaxOptions, thrownError) {
-						alert(xhr.status);
 					}
 				}) ;
 			}
@@ -1043,11 +972,9 @@ function getAmountInWords(num,idd){
 			$('#'+idd).html(data +" only.");
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;	
 	}else{
-		alert("wrong input");
 	}
 	
 	

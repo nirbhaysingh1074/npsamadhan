@@ -15,18 +15,15 @@
 	function  loadclientprofilecneter(pn)
 	{
 		
-// 		alert("hello " + $('#cons_db_post_status').val());
 		$.ajax({
 			type : "GET",
 			url : "consprofilecenterlist",
 			data : {'pn':pn},
 			contentType : "application/json",
 			success : function(data) {
-// 				alert(data);
 				$('.client_pro_center').html(data);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-		        alert(xhr.status);
 		      }
 	    }) ;
 	}

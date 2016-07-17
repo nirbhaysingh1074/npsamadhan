@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unihyr.dao.IndustryDao;
 import com.unihyr.domain.Industry;
+import com.unihyr.domain.Registration;
 
 @Service
 @Transactional
@@ -51,6 +52,25 @@ public class IndustryServiceImpl implements IndustryService
 	public List<Industry> getIndustryByName(String industry)
 	{
 		return  this.industryDao.getIndustryByName(industry);
+	}
+
+	@Override
+	public List<Registration> getClientsByIndustry(int industryId)
+	{
+		return this.industryDao.getClientsByIndustry(industryId);
+	}
+
+	@Override
+	public List<Registration> getConsultantsByIndustry(int industryId)
+	{
+		return this.industryDao.getConsultantsByIndustry(industryId);
+	}
+
+	@Override
+	public void deleteIndustry(Industry industry)
+	{
+		this.industryDao.deleteIndustry(industry);
+		
 	}
 	
 }

@@ -1,6 +1,8 @@
 package com.unihyr.model;
 
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.validation.constraints.Min;
@@ -69,6 +71,41 @@ public class PostModel
 	private MultipartFile uploadJdfile;
 
 	private double feePercent;
+
+	private Date openAgainDate;
+
+	private String qualification_ug;
+	private String qualification_pg;
+
+	public Date getOpenAgainDate()
+	{
+		return openAgainDate;
+	}
+
+	public void setOpenAgainDate(Date openAgainDate)
+	{
+		this.openAgainDate = openAgainDate;
+	}
+
+	public String getQualification_ug()
+	{
+		return qualification_ug;
+	}
+
+	public void setQualification_ug(String qualification_ug)
+	{
+		this.qualification_ug = qualification_ug;
+	}
+
+	public String getQualification_pg()
+	{
+		return qualification_pg;
+	}
+
+	public void setQualification_pg(String qualification_pg)
+	{
+		this.qualification_pg = qualification_pg;
+	}
 
 	public String getVariablePayComment()
 	{

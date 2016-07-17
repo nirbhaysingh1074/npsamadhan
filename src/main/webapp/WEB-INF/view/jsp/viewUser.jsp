@@ -23,7 +23,7 @@
     <div class="positions_info">
 
 	<%
-		Registration reg = (Registration)request.getAttribute("registration");
+		Registration reg = (Registration)request.getAttribute("userdetails");
 		if(reg != null)
 		{
 			
@@ -54,7 +54,7 @@
 			         )</span> 
 			        </div>
 			      </div>
-			      <div class="positions_tab" style="border: 1px solid gray;background: #fff5db none repeat scroll 0 0;">
+			      <div class="positions_tab" >
 			        <div class="form_cont">
 				        <div class="form_col">
 							

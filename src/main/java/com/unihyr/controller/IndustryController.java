@@ -53,8 +53,6 @@ public class IndustryController
 			
 			industry.setCreateDate(dt);
 			industry.setUserid("admin@silvereye.co");
-//		industry.setUserid(principal.getName());
-			
 			industryService.addIndustry(industry);
 			return "redirect:admindashboard";
 		}
@@ -66,7 +64,7 @@ public class IndustryController
 		map.addAttribute("indList", industryService.getIndustryList());
 		return "adminIndustries";
 	}
-	
+
 	@RequestMapping(value = "/admineditindustry", method = RequestMethod.GET)
 	public String editIndustry(ModelMap map, HttpServletRequest request, Principal principal, @RequestParam int industryId)
 	{
@@ -75,6 +73,18 @@ public class IndustryController
 		{
 			map.addAttribute("indForm", industry);
 			return "editIndustry";
+		}
+		return "redirect:adminindustries";
+	}
+
+	@RequestMapping(value = "/admindeleteindustry", method = RequestMethod.GET)
+	public String admindeleteindustry(ModelMap map, HttpServletRequest request, Principal principal, @RequestParam int industryId)
+	{
+		Industry industry = industryService.getIndustry(industryId);
+		if(industry != null)
+		{
+			industry.setDeleteDate(new Date());
+			industryService.updateIndustry(industry);
 		}
 		return "redirect:adminindustries";
 	}

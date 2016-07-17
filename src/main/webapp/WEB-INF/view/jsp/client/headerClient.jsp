@@ -66,40 +66,36 @@ jQuery(document).ready(function() {
 </script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
-$.ajax({
-	type : "GET",
-	url : "clientmessages",
-	data : {},
-	contentType : "application/json",
-	success : function(data) {
-		var obj = jQuery.parseJSON(data);
-		if(obj.mList.length > 0)
-		{
-			$('#messageCount').html(obj.mList.length);
-		}
-	},
-	error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
-      }
-}) ;
 
+	$.ajax({
+		type : "GET",
+		url : "clientcountmessages",
+		data : {},
+		contentType : "application/json",
+		success : function(data) {
+			if(data!='0'){
+				$('#messageCount').css("display","block");
+				$('#messageCount').html(data);
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	      }
+	}) ;
 
-$.ajax({
-	type : "GET",
-	url : "getUserNotifications",
-	data : {},
-	contentType : "application/json",
-	success : function(data) {
-		var obj = jQuery.parseJSON(data);
-		if(obj.mList.length > 0)
-		{
-			$('#notificationCount').html(obj.mList.length);
-		}
-	},
-	error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status);
-      }
-}) ;
+	$.ajax({
+		type : "GET",
+		url : "countUserNotifications",
+		data : {},
+		contentType : "application/json",
+		success : function(data) {
+			if(data!='0'){
+				$('#notificationCount').css("display","block");
+				$('#notificationCount').html(data);
+			}
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	      }
+	}) ;
 });
 
 
@@ -118,11 +114,10 @@ function getMessages(){
 		$('.noti_title').html("Messages");
 			if(obj.mList.length > 0)
 			{
-				$('#messageCount').html(obj.mList.length);
 				$.each(obj.mList , function(i, val) {
 					$('.notification .noti_inner').append("<a href='clientapplicantinfo?ppid="+val.ppid+"'><div class='noti_row' title='"+val.message+"' postprofile='"+val.ppid+"'>" +
 							"<span class='noti-cons'>"+val.cons+"</span> send a message on " +
-							"<span class='post-title'>"+val.ptitle+"</span>.</div></a>");
+							"<span class='post-title'>"+val.ptitle+"</span>.</div></a> Date: "+val.msgdate);
 				});
 			}
 			else
@@ -132,9 +127,12 @@ function getMessages(){
 			pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;
+	
+
+				$('#messageCount').css("display","none");
+		
 }
 
 function getNotifications(){
@@ -152,9 +150,8 @@ function getNotifications(){
 		$('.noti_title').html("Notifications");
 			if(obj.mList.length > 0)
 			{
-				$('#notificationCount').html(obj.mList.length);
 				$.each(obj.mList , function(i, val) {
-					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+"</p></div>");
+					$('.notification .noti_inner').append("<div class='noti_row'><p>"+val.notification+  "</p></div>Date: "+val.msgdate);
 				});
 			}
 			else
@@ -164,9 +161,12 @@ function getNotifications(){
 		pleaseDontWait();
 		},
 		error: function (xhr, ajaxOptions, thrownError) {
-	        alert(xhr.status);
 	      }
     }) ;
+	
+
+			$('#notificationCount').css("display","none");
+	
 }
 </script>
 </head>
@@ -175,7 +175,7 @@ function getNotifications(){
 <tilesx:useAttribute name="currentpage"/>
 <header>
 <%
-	Registration reg = (Registration)request.getSession().getAttribute("registration");
+	Registration reg = (Registration)request.getAttribute("registration");
 
 %>
 <div class="container">
@@ -209,23 +209,20 @@ function getNotifications(){
 				<div class="icon "  >
 					<img class="messageIcon" src="images/mailbox.png">
 					
-					<span id="messageCount" class="messageCount" ></span>
+					<span id="messageCount" class="messageCount" style="display: none;"></span>
 				</div>
 			</div>
 			<div class="noti-icon more_product" onclick="getNotifications()">
 				<div class="icon "  >
-					<img style="" src="images/reminder.png">
+					<img  src="images/reminder.png">
 					
-					<span id="notificationCount" class="notificationCount" ></span>
+					<span id="notificationCount" class="notificationCount" style="display: none;" ></span>
 				</div>
 			</div>
 			<div class="user_noti_content arrow_box_1">
 				<div class="noti_title">Messages</div>
 				<div class="noti_inner ">
-					<!-- <div class="noti_row" title="text message ">
-						<span class="noti-cons">Uni Consultant</span> send a message on  
-						<span class="post-title">post title</span>.
-					</div> -->
+					
 				</div>
 			</div>
 		</div>
@@ -245,42 +242,6 @@ function getNotifications(){
 	  </nav>
 </div>
 </header>
-
-<%
-if(reg!=null&&reg.getFirstTime()!=null){
-	
-	if(!reg.getFirstTime()){
-
-	System.out.println(reg.getFirstTime());
-%>
-
-<div class="firstTimeLoginPopup" style="border:1px solid #f8b910;">
-				<div class="login-header" style="padding: 3px 3px 3px 2px;
-line-height: 44px;
-height: 30px;">
-					
-					<a href="javascript:void(0)"><span style="padding: 0px 16px;top: 22px;" class="close" title="Close" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')"><img style="    height: 40px;" src="images/close.png" /></span></a>
-				</div>
-				<div class="login-wrap" style="padding: 10px;">
-				
-				Congratulations on signing up
-			with UniHyr. Now you can access our partner network to fulfill your
-			hiring mandates. Start by posting a new position from the Post a New
-			Job tab. Our user interface is intuitive and easy to use. In case of
-			any issues, please feel free to reach out to your Account Manager or
-			our Help Desk</div>
-			<div style="text-align: center;padding: 10px;" class="login-wrap">
-			<h2 style="color: #f8b910;font-weight: bold;">HAPPY HIRING!</h2>
-			<input style="margin-top: 15px;color: #fff;font-size: 14px;font-weight: bold;" type="button" value="Get started with UniHyr" class="profile_status_buttonGen" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')"  /> 
-			</div>
-			</div>
-
-<div class="bodyCover">
-
-</div>
-
-
-<%}} %>
 
 
 

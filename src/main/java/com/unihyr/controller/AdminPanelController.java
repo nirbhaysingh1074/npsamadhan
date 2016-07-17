@@ -269,8 +269,9 @@ public class AdminPanelController
 	 * @return
 	 */
 	@RequestMapping(value = "/adminuserderail", method = RequestMethod.GET)
-	public String adminUserDerail(ModelMap map, HttpServletRequest request ,Principal principal , @RequestParam String userid)
+	public String adminUserDerail(ModelMap map, HttpServletRequest request ,Principal principal )
 	{
+		String userid=request.getParameter("userid");
 		Registration user = registrationService.getRegistationByUserId(userid);
 		if(user != null)
 		{
