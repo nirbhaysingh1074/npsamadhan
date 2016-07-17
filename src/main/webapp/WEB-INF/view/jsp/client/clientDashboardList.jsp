@@ -144,7 +144,7 @@ var buttonst=$('#db_post_status').val();
 		       				<th >Posted Date</th>
 		       				<th >No of Partners</th> 
 		       				<th style="width:80px;" align="left">Received</th>
-		       				<th >In Process</th>
+		       				<th ><%=GeneralConfig.Shortlist %></th>
 		       				<th  width="10%" style="text-align: right;">View JD</th>
 		       			</tr>
 	       			</thead>
@@ -163,7 +163,7 @@ var buttonst=$('#db_post_status').val();
 	       							while(it.hasNext())
 	       							{
 	       								PostProfile pp = it.next();
-	       								if(pp.getAccepted() != null&&pp.getOfferDate()==null&&pp.getWithdrawDate()==null&&pp.getDeclinedDate()==null&&pp.getOfferDropDate()==null)
+	       								if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("accepted"))
 	       								{
 	       									shortListed.add(pp.getPpid());
 	       								}

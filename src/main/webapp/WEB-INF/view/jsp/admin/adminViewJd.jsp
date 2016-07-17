@@ -1,3 +1,7 @@
+<%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
+<%@page import="com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection"%>
+<%@page import="com.artofsolving.jodconverter.DocumentConverter"%>
+<%@page import="com.artofsolving.jodconverter.openoffice.connection.OpenOfficeConnection"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
@@ -25,7 +29,7 @@
 		while(it.hasNext())
 		{
 			PostProfile pp = it.next();
-			if(pp.getAccepted() != null)
+			if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("accepted"))
 			{
 				shortListed.add(pp.getPpid());
 			}
@@ -207,7 +211,7 @@
 			                      </div>
 			                    </div> <!-- attribute end -->
 			                    <div class="form-group col-md-6 col-sm-12">
-			                      <label class="col-sm-4 control-label" for="inputEmail3"> Shortlisted</label>
+			                      <label class="col-sm-4 control-label" for="inputEmail3"> <%=GeneralConfig.Shortlist %></label>
 			                      <div class="col-sm-8">
 			                        <label  class="form-control" ><%= shortListed.size()%> Profiles</label>
 			                      </div>
@@ -258,22 +262,43 @@
 			                    
 		                  </div>
 		                </div>
+		                <%
+		                if(post.getUploadjd() == null)
+	           			{
+		                %>
 		           		<div class="form-horizontal">
 	           				<div class="box-header with-border bg-gray">
-				            	<h3 class="box-title">Additional Description</h3>
+				            	<h3 class="box-title">Job Description</h3>
 				            </div>
 	           				<div  style="padding: 10px;">
 		                      <%= post.getAdditionDetail()%>
 		                    </div> <!-- attribute end -->
 		           		</div>
+		           		<%}else
+	           			{
+	           				%>
+				           		<div class="form-horizontal">
+			           				<div class="box-header with-border bg-gray ">
+						            	<h3 class="box-title">Job Description</h3>
+						            </div>
+			           				<div class="form-group col-md-12 col-sm-12">
+				                     <div id="jobDescription">
+	        
+	    </div>
+				                        </div> <!-- attribute end -->
+				           		</div>
+	           				<%
+		           			
+	           			}
+		           		%>
 		           		<div class='clearfix'></div>
 		           		<%
-		           			if(post.getComment() != null)
+		           			if(post.getComment() != null&&post.getComment()!="")
 		           			{
 		           				%>
 					           		<div class="form-horizontal">
 				           				<div class="box-header with-border bg-gray ">
-							            	<h3 class="box-title">Comment</h3>
+							            	<h3 class="box-title">Additional Comment</h3>
 							            </div>
 				           				<div class="form-group col-md-12 col-sm-12">
 					                      <label  class="form-control" style="height: auto;overflow: auto;"><%= post.getComment()%></label>
@@ -282,28 +307,21 @@
 		           				<%
 		           			}
 		           		
-			           		if(post.getEditSummary() != null)
-		           			{
-		           				%>
-					           		<div class="form-horizontal">
-				           				<div class="box-header with-border bg-gray ">
-							            	<h3 class="box-title">Edit Summary</h3>
-							            </div>
-				           				<div class="form-group col-md-12 col-sm-12">
-					                      <label  class="form-control" style="height: auto;overflow: auto;"><%= post.getEditSummary()%></label>
-					                    </div> <!-- attribute end -->
-					           		</div>
-		           				<%
-			           			
-		           			}
+			      
 		           		%>
-		           		
+		           		  
+		           		  
 		       		</div>      
 		           <div class="overlay">
 		              <i class="fa fa-refresh fa-spin"></i>
 		            </div>
 		           <!-- /.box-body -->
 	      		</div>
+	      		
+	      		
+	      		  
+	      		
+	      		
 	          </div>  
 	        </div>  
         </section><!-- /.content -->
@@ -316,5 +334,42 @@ jQuery(document).ready(function() {
 	$('.overlay').hide();
 });
 </script>    
+  <%
+							 if(post.getUploadjd()!=null){
+					            String scheme = request.getScheme();
+							    String serverName = request.getServerName();
+							    int serverPort = request.getServerPort();
+					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
+					            String pathh="";
+					            if(!inPath.toLowerCase().contains(".pdf"))
+					         	{  try {
+					            String otp=post.getUploadjd().substring(0,post.getUploadjd().lastIndexOf("."));
+					         	String outPath=GeneralConfig.UploadPath+otp+".pdf";
+					        	java.io.File inputFile = new java.io.File(inPath); //
+					        	java.io.File outputFile = new java.io.File(outPath); //
+					        	OpenOfficeConnection connection = new SocketOpenOfficeConnection("127.0.0.1",8100);
+					        	
+				        			connection.connect();
+					        	  	DocumentConverter	 converter = new  OpenOfficeDocumentConverter(connection);
+					        	  	converter.convert(inputFile, outputFile); 
+					        	  	connection.disconnect(); 
+					        		pathh=outputFile.getName();
+						        	} catch (Exception e) {
+						        		e.printStackTrace();
+						        	} 
+						         }else{
+						        	 pathh=post.getUploadjd();
+						         }
+					        	%>
+					        			<script type="text/javascript">
+					        			 	var x = document.createElement("EMBED");
+					        			 	//path=path.replace(/\//g, "////");
+					        			    x.setAttribute("src", "/data/<%=pathh%>");
+					        			    x.setAttribute("height", "600px");
+					        			    x.setAttribute("width", "100%");
+					        				$('#jobDescription').append(x);
+					        			</script>
+						<%}%>   
+					
   </body>
 </html>

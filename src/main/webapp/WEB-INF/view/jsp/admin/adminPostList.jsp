@@ -74,7 +74,7 @@
 								<th>Status</th>
 								<th>Pending Since</th>	
 								<th>Received</th>
-								<th>In Process</th>
+								<th><%=GeneralConfig.Shortlist %></th>
 								<th>Posted</th>
 								<th></th>
 							</tr>
@@ -92,7 +92,7 @@
 		       							while(it.hasNext())
 		       							{
 		       								PostProfile pp = it.next();
-		       								if(pp.getAccepted() != null)
+		       								if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("accepted"))
 		       								{
 		       									shortListed.add(pp.getPpid());
 		       								}

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostConsultant"%>
 <%@page import="com.unihyr.domain.Post"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
@@ -122,7 +123,7 @@ pleaseWait();
 		while(it.hasNext())
 		{
 			PostProfile pp = it.next();
-			if(pp.getAccepted() != null&&pp.getOfferDate()==null&&pp.getWithdrawDate()==null&&pp.getDeclinedDate()==null&&pp.getOfferDropDate()==null)
+			if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("accepted"))
 			{
 				shortListed.add(pp.getPpid());
 			}
@@ -207,7 +208,7 @@ pleaseWait();
 	        	
 	        	<div class="col-md-4 report_sum" >
 		        	<div class="col-md-5">
-		        		In Process
+		        		<%=GeneralConfig.Shortlist %>
 		        	</div>
 		        	<div class="col-md-7">
 		        		<%=shortListed.size() %>
@@ -275,34 +276,36 @@ pleaseWait();
   				<div class="sort_by"  id="filterDiv" > <span>Filter by Status</span>
 		          <select id="filterBy"  onchange="loadclientposts('1')">
 		            <option value="all">All Submitted</option>
-		            <option value="submitted">Pending</option>
+		             <option value="submitted"><%=GeneralConfig.SubmittedOnly%></option>
 		            
-		            <option value="accepted">In Process</option>
+		            <option value="accepted"><%=GeneralConfig.Shortlist %></option>
 		            
-		            <option value="recruited">Offer Sent</option>
+		            <option value="recruited"><%=GeneralConfig.SendOffer %></option>
 		            
-		            <option value="offerDate">Offer Accepted</option>
+		            <option value="offerDate"><%=GeneralConfig.OfferAccept %></option>
 		            
-		            <option value="joinDate">Joined</option>
+		            <option value="joinDate"><%=GeneralConfig.OfferJoin %></option>
+		          
 		          </select>
 		        </div>
   				<div class="sort_by" id="filterDivIncRej" style="display: none;"> <span>Filter by Status</span>
 		          <select id="filterByRej"  onchange="loadclientposts('1')">
 		            <option value="all" selected="selected">All Submitted</option>
-		            <option value="submitted">Pending</option>
+		             <option value="submitted"><%=GeneralConfig.SubmittedOnly%></option>
 		            
-		            <option value="accepted">In Process</option>
-		            <option value="rejected">CV Rejected</option>
+		            <option value="accepted"><%=GeneralConfig.Shortlist %></option>
+		            <option value="rejected"><%=GeneralConfig.ShortlistRejected %></option>
 		            
-		            <option value="recruited">Offer Sent</option>
-		            <option value="declinedDate" >Interview Reject</option>
+		            <option value="recruited"><%=GeneralConfig.SendOffer %></option>
+		            <option value="declinedDate" ><%=GeneralConfig.SendOfferReject %></option>
 		            
-		            <option value="offerDate">Offer Accepted</option>
-		            <option value="offerDropDate">Offer Declined</option>
+		            <option value="offerDate"><%=GeneralConfig.OfferAccept %></option>
+		            <option value="offerDropDate"><%=GeneralConfig.OfferAcceptReject %></option>
 		            
-		            <option value="joinDate">Joined</option>
-		            <option value="joinDropDate">Dropped</option>
-		            <option value="withdrawDate">Withdrawn</option>
+		            <option value="joinDate"><%=GeneralConfig.OfferJoin %></option>
+		            <option value="joinDropDate"><%=GeneralConfig.OfferDrop %></option>
+		          
+		            <option value="withdrawDate"><%=GeneralConfig.Withdraw %></option>
 		          </select>
 		        </div>
 		     
@@ -427,28 +430,29 @@ pleaseWait();
 									<td align="center"><%=pp.getProfile().getNoticePeriod()%></td>
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 									<%
-												String status = "";
-												if (pp.getWithdrawDate() != null) {
-													status = "Withdrawn";
-												} else if (pp.getJoinDropDate() != null) {
-													status = "Dropped";
-												} else if (pp.getJoinDate() != null) {
-													status = "Joined";
-												} else if (pp.getOfferDropDate() != null) {
-													status = "Offer Declined";
-												} else if (pp.getOfferDate() != null) {
-													status = "Offered";
-												} else if (pp.getDeclinedDate() != null) {
-													status = "Interview Reject";
-												} else if (pp.getRecruited() != null) {
-													status = "Offer Sent ";
-												} else if (pp.getRejected() != null) {
-													status = "CV Rejected";
-												} else if (pp.getAccepted() != null) {
-													status = "ShortListed";
-												} else {
-													status = "Pending";
-												}
+
+									String status = "";
+									if (pp.getWithdrawDate() != null) {
+										status = GeneralConfig.Withdraw;
+									} else if (pp.getRejected() != null) {
+										status = GeneralConfig.ShortlistRejected;
+									} else if (pp.getDeclinedDate() != null) {
+										status = GeneralConfig.SendOfferReject;
+									} else if (pp.getOfferDropDate() != null) {
+										status = GeneralConfig.OfferAcceptReject;
+									} else if (pp.getJoinDropDate() != null) {
+										status = GeneralConfig.OfferDrop;
+									} else if (pp.getJoinDate() != null) {
+										status = GeneralConfig.OfferJoin;
+									}  else if (pp.getOfferDate() != null) {
+										status = GeneralConfig.OfferAccept;
+									}else if (pp.getRecruited() != null) {
+										status = GeneralConfig.SendOffer;
+									}else if (pp.getAccepted() != null) {
+										status = GeneralConfig.Shortlist;
+									} else {
+										status = GeneralConfig.SubmittedOnly;
+									}
 												if (pp.getPost().getCloseDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
@@ -497,7 +501,7 @@ pleaseWait();
 											data-view="table">
 											<a  style="float: left;cursor: pointer;"  class="btn-offer-open "
 												data-type="offer_accept" title="Click to accept offer"
-												onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')">Offer
+												onclick="$('#postIdForAccept').val('<%=pp.getPpid()%>')">Offered
 												Accept </a><span style="float: left;margin-right: 2px;margin-left: 2px;">|</span>
 											<a  style="float: left;cursor: pointer;"  class="btn-open "
 												data-type="offer_reject" title="Click to reject offer">Reject</a>

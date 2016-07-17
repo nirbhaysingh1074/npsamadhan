@@ -559,16 +559,21 @@ public class AdminPanelController
 			
 			for(Registration cons : consList)
 			{
-				ids += cons.getUserid()+","; 
-				String userid=cons.getUserid();
-				String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
+			ids += cons.getUserid()+","; 
+			String userid=cons.getUserid();
+			String	content1=post.getClient().getOrganizationName()+" have added new position "+position;
 			Notifications nser=new Notifications();
 			nser.setDate(new java.sql.Date(new Date().getTime()));
 			nser.setNotification(content1);
 			nser.setUserid(userid);
 			notificationService.addNotification(nser);
 			}
-			
+			String	content1="Your "+post.getTitle()+" has been verified";
+			Notifications nser=new Notifications();
+			nser.setDate(new java.sql.Date(new Date().getTime()));
+			nser.setNotification(content1);
+			nser.setUserid(post.getClient().getUserid());
+			notificationService.addNotification(nser);
 			String subject = "UniHyr Alert: "+post.getClient().getOrganizationName()+" - "+post.getTitle()+" - "+post.getLocation();
 			
 			String content = "<table cellspacing='0' cellpadding='8' border='0' style='width: 100%; font-family: Arial, Sans-serif;  background-color: #fff' summary=''>"

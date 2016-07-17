@@ -22,7 +22,7 @@ function fillProfiles(pageNo)
 	var sortParam=$('#sortParam').val();
 	if(typeof sortParam != 'undefined'){}
 	else
-		sortParam='submitted';
+		sortParam='all';
 	if (sel_con) 
 	{
 		postId = $('#postsList  .active').attr("id");

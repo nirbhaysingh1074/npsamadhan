@@ -46,7 +46,9 @@
 			var about = $('#about').val();
 			var officeAddress = $("#officeAddress").val();
 			var name = $("#name").val();
-			
+
+			var panno = $('#panno').val();
+			var stno = $('#stno').val();
 			$('.error').html('&nbsp;');
 			if(org == "")
 			{
@@ -59,7 +61,17 @@
 				$('.userid_error').html("Please enter a valid email");
 				valid = false;
 			}
-			
+
+			if(!panno)
+			{
+				$('.panno_error').html('Please enter pan number ');
+				valid = false;
+			}
+			if(!stno)
+			{
+				$('.stno_error').html('Please enter service tax number ');
+				valid = false;
+			}
 			if(noofpeoples == "")
 			{
 				$('.noofpeoples_error').html("Please enter no of employees");
@@ -258,6 +270,21 @@
 						</div>
 					</div>
 					
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Pan No<span class="req">*</span></label>
+							<form:input path="panno" onchange="checkUserExistance()" />
+							<span class="error panno_error">&nbsp;<form:errors path="panno" /> </span>
+						</div>
+					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Service Tax No<span class="req">*</span></label>
+							<form:input path="stno"  />
+							<span class="error stno_error">&nbsp;<form:errors path="stno" /> </span>
+						</div>
+					</div>
 					<div class="reg-wrap" style="display: none;">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Revenue<span class="req">*</span></label>

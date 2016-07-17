@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostConsultant"%>
 <%@page import="java.util.Set"%>
 <%@page import="java.util.HashSet"%>
@@ -41,7 +42,7 @@
 		while(it.hasNext())
 		{
 			PostProfile pp = it.next();
-			if(pp.getAccepted() != null)
+			if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("accepted"))
 			{
 				shortListed.add(pp.getPpid());
 			}
@@ -346,12 +347,43 @@
 									<td><%=DateFormats.ddMMMMyyyy.format(pp.getSubmitted())%></td>
 						
 	                  							<%
+	                  							
+	                  							
+	                  							
+	                  							String status = "";
+	                							if (pp.getWithdrawDate() != null) {
+	                								status = GeneralConfig.Withdraw;
+	                							} else if (pp.getRejected() != null) {
+	                								status = GeneralConfig.ShortlistRejected;
+	                							} else if (pp.getDeclinedDate() != null) {
+	                								status = GeneralConfig.SendOfferReject;
+	                							} else if (pp.getOfferDropDate() != null) {
+	                								status = GeneralConfig.OfferAcceptReject;
+	                							} else if (pp.getJoinDropDate() != null) {
+	                								status = GeneralConfig.OfferDrop;
+	                							} else if (pp.getJoinDate() != null) {
+	                								status = GeneralConfig.OfferJoin;
+	                							}  else if (pp.getOfferDate() != null) {
+	                								status = GeneralConfig.OfferAccept;
+	                							}else if (pp.getRecruited() != null) {
+	                								status = GeneralConfig.SendOffer;
+	                							}else if (pp.getAccepted() != null) {
+	                								status = GeneralConfig.Shortlist;
+	                							} else {
+	                								status = GeneralConfig.SubmittedOnly;
+	                							}
+	                					             
+	                  							
+	                  							
+	                  							
+	                  							
+	                  							
 	                  							if(pp.getWithdrawDate()!=null){
 	                  								%>
 				                  					<td style="text-align: left;">
-														<span>Withdrawn</span>
+														<span><%=status %></span>
 													</td>
-													<%	if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+													<%	if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -372,10 +404,10 @@
 													{
 														%>
 						                  					<td style="text-align: left;">
-																<span>Dropped</span>
+																<span><%=status %></span>
 															</td>
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -397,10 +429,10 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>Joined</span>
+																<span><%=status %></span>
 															</td>
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -421,10 +453,10 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>Offer Declined</span>
+																<span><%=status %></span>
 															</td>
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -445,13 +477,13 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>Offered</span>
+																<span><%=status %></span>
 															</td>
 															<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
-							                  					<td class="text-center">
+							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
@@ -479,11 +511,11 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>Declined</span>
+																<span><%=status %></span>
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -506,11 +538,11 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>Offer</span>
+																<span><%=status %></span>
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()||pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -541,11 +573,11 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>CV Rejected</span>
+																<span><%=status %></span>
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -566,15 +598,15 @@
 															
 														}
 													}
-													else if(pp.getAccepted() != null)
+													else if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("accepted"))
 													{
 														%>
 															<td style="text-align: left;">
-																<span>In Process</span>
+																<span><%=status %></span>
 															</td>
 															
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -603,11 +635,11 @@
 													{
 														%>
 															<td style="text-align: left;">
-																<span>Pending</span>
+																<span><%=status %></span>
 															</td>
 																
 														<%
-														if( !pp.getPost().isActive()&& pp.getPost().getCloseDate()==null)
+														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
@@ -697,21 +729,21 @@
 		          <select id="sortParam"  onchange="fillProfiles('1')">
 		          
 		            <option value="all" selected="selected">All Submitted</option>
-		            <option value="submitted">Pending</option>
+		            <option value="submitted"><%=GeneralConfig.SubmittedOnly%></option>
 		            
-		            <option value="accepted">In Process</option>
-		            <option value="rejected">CV Rejected</option>
+		            <option value="accepted"><%=GeneralConfig.Shortlist %></option>
+		            <option value="rejected"><%=GeneralConfig.ShortlistRejected %></option>
 		            
-		            <option value="recruited">Offer Sent</option>
-		            <option value="declinedDate" >Interview Reject</option>
+		            <option value="recruited"><%=GeneralConfig.SendOffer %></option>
+		            <option value="declinedDate" ><%=GeneralConfig.SendOfferReject %></option>
 		            
-		            <option value="offerDate">Offer Accepted</option>
-		            <option value="offerDropDate">Offer Declined</option>
+		            <option value="offerDate"><%=GeneralConfig.OfferAccept %></option>
+		            <option value="offerDropDate"><%=GeneralConfig.OfferAcceptReject %></option>
 		            
-		            <option value="joinDate">Joined</option>
-		            <option value="joinDropDate">Dropped</option>
-		            <option value="withdrawDate">Withdrawn</option>
-<!-- 		            <option value="recruited">Recruited</option> -->
+		            <option value="joinDate"><%=GeneralConfig.OfferJoin %></option>
+		            <option value="joinDropDate"><%=GeneralConfig.OfferDrop %></option>
+		          
+		            <option value="withdrawDate"><%=GeneralConfig.Withdraw %></option>
 		          </select>
 		        </div> <%
         String sortParam=(String)request.getAttribute("sortParam");

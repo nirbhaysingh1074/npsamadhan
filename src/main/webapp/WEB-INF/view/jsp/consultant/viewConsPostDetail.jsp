@@ -410,7 +410,7 @@
 					        			<script type="text/javascript">
 					        			 	var x = document.createElement("EMBED");
 					        			 	//path=path.replace(/\//g, "////");
-					        			    x.setAttribute("src", "data/<%=pathh%>");
+					        			    x.setAttribute("src", "/data/<%=pathh%>");
 					        			    x.setAttribute("height", "600px");
 					        			    x.setAttribute("width", "100%");
 					        				$('#jobDescription').append(x);

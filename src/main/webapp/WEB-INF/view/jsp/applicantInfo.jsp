@@ -113,105 +113,46 @@ unviewed=0;
 			              <span style="font-weight: bold;font-size: 15px;"><%=pp.getProfile().getName()  %></span>
 			              <span style="float:right;font-weight: bold;">
 			              	<%
-					              		
-						              	if(pp.getJoinDropDate() != null)
-					              		{
-					              			%>
-					              				 Offer Drop 
-				              				<%
-					              		}
-						              	else if(pp.getJoinDate() != null)
-					              		{
-					              			%>
-					              					 Joined
-				              				<%
-					              		}
-						              	else if(pp.getOfferDropDate() != null)
-					              		{
-					              			%>
-					              					 Offer Decline
-				              				<%
-					              		}
-						              	else if(pp.getOfferDate() != null)
-					              		{ 
-					              			%>
-					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
-					              					 Offered
-					              				</sec:authorize>
-					              				<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-					              					Offered
-					              				</sec:authorize>
-				              				<%
-					              		}
-						              	else if(pp.getDeclinedDate() != null)
-					              		{
-					              			%>
-					              					 Declined
-				              				<%
-					              		}
-					              		else if(pp.getRecruited() != null)
-					              		{
-					              			%>
-					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
-														 Recruited
-												</sec:authorize>
-												<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-					              					 Offer Accepted 
-												</sec:authorize>
-					              				
-				              				<%
-					              		}
-					              		else if(pp.getRejected() != null)
-						              	{
-						              		%>
-					              					 CV Rejected
-						              		<%	
-						              	}
-					              		else if(pp.getAccepted() != null)
-					              		{
-					              			%>
-					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
-													<div class="block btn_row no-margin" style="text-align: left;">
-														In Progress
-													</div>
-												</sec:authorize>
-												<sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-					              					 In Process
-												</sec:authorize>
-				              				<%
-					              		}
-					              		else
-					              		{
-					              			%>
-					              				<sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
-									              <div class="unch_check btn_row no-margin" style="text-align: left;">
-									                <div id="<%= pp.getPpid() %>" class="profile_status">
-									                	<%
-										                	if(pp.getPost().getCloseDate()!=null )
-										                	{
-											                	%>
-												                	Post Status:   Closed
-											                	<%
-										                	}
-										                	else
-										                	{
-										                		%>
-										                			 Pending
-												                		<%
-												     	   	}
-								                		%>
-									                </div>
-									              </div>
-								                </sec:authorize>
-								                <sec:authorize access="hasRole('ROLE_CON_MANAGER') or hasRole('ROLE_CON_USER')">
-					              					 Pending
-										        </sec:authorize>
-					              			<%
-					              		}
-					              		
-					              	%>
-					   
-			              
+							String status = "";
+							if (pp.getWithdrawDate() != null) {
+								status = GeneralConfig.Withdraw;
+							} else if (pp.getRejected() != null) {
+								status = GeneralConfig.ShortlistRejected;
+							} else if (pp.getDeclinedDate() != null) {
+								status = GeneralConfig.SendOfferReject;
+							} else if (pp.getOfferDropDate() != null) {
+								status = GeneralConfig.OfferAcceptReject;
+							} else if (pp.getJoinDropDate() != null) {
+								status = GeneralConfig.OfferDrop;
+							} else if (pp.getJoinDate() != null) {
+								status = GeneralConfig.OfferJoin;
+							}  else if (pp.getOfferDate() != null) {
+								status = GeneralConfig.OfferAccept;
+							}else if (pp.getRecruited() != null) {
+								status = GeneralConfig.SendOffer;
+							}else if (pp.getAccepted() != null) {
+								status = GeneralConfig.Shortlist;
+							} else {
+								status = GeneralConfig.SubmittedOnly;
+							}
+					              		%>
+					   <%=status %>
+			              <%
+			              if(pp.getPost().getCloseDate()!=null )
+		                	{
+			                	%>
+				                	Post Status:   Closed
+			                	<%
+		                	}else if(pp.getPost().isActive()){
+		                		%>
+			                	Post Status:   Active
+		                	<%
+		                	}else if(!pp.getPost().isActive()){
+		                		%>
+			                	Post Status:   Inactive
+		                	<%
+		                	}
+			              %>
 			              
 			              </span>
 			            </div>

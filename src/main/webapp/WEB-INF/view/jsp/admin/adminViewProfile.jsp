@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostProfile"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.HashSet"%>
@@ -80,19 +81,30 @@
 			                      <div class="col-sm-8">
 			                        <label  class="form-control" >
 			                        	<%
-			                        		if(pp.getAccepted() != null)
-			                        		{
-			                        			out.println("Shortlisted");
-			                        		}
-			                        		else if(pp.getRejected() != null)
-			                        		{
-			                        			out.println("Rejected");
-			                        		}
-			                        		else 
-			                        		{
-			                        			out.println("In Progress");
-			                        		}
-			                        		 
+
+										String status = "";
+										if (pp.getWithdrawDate() != null) {
+											status = GeneralConfig.Withdraw;
+										} else if (pp.getRejected() != null) {
+											status = GeneralConfig.ShortlistRejected;
+										} else if (pp.getDeclinedDate() != null) {
+											status = GeneralConfig.SendOfferReject;
+										} else if (pp.getOfferDropDate() != null) {
+											status = GeneralConfig.OfferAcceptReject;
+										} else if (pp.getJoinDropDate() != null) {
+											status = GeneralConfig.OfferDrop;
+										} else if (pp.getJoinDate() != null) {
+											status = GeneralConfig.OfferJoin;
+										}  else if (pp.getOfferDate() != null) {
+											status = GeneralConfig.OfferAccept;
+										}else if (pp.getRecruited() != null) {
+											status = GeneralConfig.SendOffer;
+										}else if (pp.getAccepted() != null) {
+											status = GeneralConfig.Shortlist;
+										} else {
+											status = GeneralConfig.SubmittedOnly;
+										}
+			                        		 out.println(status);
 			                        	%>
 		                        	</label>
 			                      </div>

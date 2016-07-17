@@ -95,16 +95,7 @@ jQuery(document).ready(function() {
 						
 					var pn=	$('.active current_page > a').html();
 					loadclientposts(pn);	
-					/*	if(data_view !="table")
-						{
-							selected.html("<p>Status : Shortlisted - In Progress</p><a class='recruit_profile profile_status_button' title='Click to offer'>Send Offer</a><a class='btn-open' data-type='reject_recruit' title='Click to decline'>Decline</a>");
-						}
-						else
-						{
-							selected.parent().parent().find('td:eq(7)').html("<span>ShortListed</span>");
-							selected.html("<button class='recruit_profile profile_status_button' title='Click to offer'>Send Offer</button><button class='btn-open profile_status_button' data-type='reject_recruit' title='Click to decline'>Decline</button>");
-						}*/
-				//		alertify.success("Profile shortlisted successfilly !");
+				
 					}
 					else
 					{
@@ -311,11 +302,13 @@ pleaseWait();
 					$('#errorTotalCTC').html('Please enter valid value');
 					$('#errorTotalCTC').css('display','block');
 					}else{
+						$('#errorTotalCTC').html('');
 						$('#errorTotalCTC').css('display','none');
 					}
 			}catch(e){
 				flag=false;
 				$('#errorTotalCTC').html('Please enter valid value');
+				$('#errorTotalCTC').css('display','block');
 			}
 			try{
 				billableCTC=$('#billableCTC').val();
@@ -325,14 +318,16 @@ pleaseWait();
 				$('#errorBillableCTC').html('Please enter valid value');
 				$('#errorBillableCTC').css('display','block');
 				}else{
+					$('#errorBillableCTC').html('');
 					$('#errorBillableCTC').css('display','none');
 				}
 			}catch(e){
 				flag=false;
 				$('#errorBillableCTC').html('Please enter valid value');
+				$('#errorBillableCTC').css('display','block');
 			}
 			try{
-				joiningDate=$('#datepicker').val();
+						joiningDate=$('#datepicker').val();
 			            var EnteredDate = joiningDate; // For JQuery
 			            var date = EnteredDate.substring(8, 10);
 			            var month = EnteredDate.substring(5, 7);
@@ -340,19 +335,20 @@ pleaseWait();
 			            var myDate = new Date(year, month - 1, date);
 			            var today = new Date();
 			            if (myDate > today) {
-			                flag=true;
 			                $('#errorJoiningDate').css('display','none');
 			            }
 			            else {
 			            	flag=false;
 			            	$('#errorJoiningDate').html("Joining date is less than offer accept's date.");
+			                $('#errorJoiningDate').css('display','block');
 			                $('#datepicker').val('');
 			            }
-			            if(flag&&Number(billableCTC)>=Number(totalCTC)){
+			            if(Number(billableCTC)>Number(totalCTC)){
 								flag=false;
 								$('#errorTotalCTC').html('Billable CTC should be less than or equal to Total CTC.');
 								$('#errorTotalCTC').css('display','block');
 								}else{
+									$('#errorTotalCTC').html('');
 									$('#errorTotalCTC').css('display','none');
 								}
 			}catch(e){

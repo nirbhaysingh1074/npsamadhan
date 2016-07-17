@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.Registration"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.domain.Post"%>
@@ -165,7 +166,7 @@ jQuery(document).ready(function() {
 					        		<img src="images/check-cloud.png"  width="17px">
 					        	</div>
 					        	<div class="col-md-9"  style="padding: 0px;">
-									${totalshortlist} In Process
+									${totalshortlist} <%=GeneralConfig.Shortlist %>
 					        	</div>
 				        	</div>
 				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >

@@ -119,7 +119,7 @@
 <!-- 					                      </div> -->
 <!-- 					                    </div> -->
 					                    <div class="form-group col-md-6 col-sm-12">
-					                      <label class="col-sm-4 control-label" for="inputEmail3">Contact Address</label>
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Location</label>
 					                      <div class="col-sm-8">
 					                        <label   class="form-control" ><%= userDetail.getOfficeLocations()%></label>
 					                      </div>
@@ -128,12 +128,6 @@
 					                      <label class="col-sm-4 control-label" for="inputEmail3">Website URL</label>
 					                      <div class="col-sm-8">
 					                        <label   class="form-control" ><%= userDetail.getWebsiteUrl()%></label>
-					                      </div>
-					                    </div>
-					                    <div class="form-group col-md-6 col-sm-12">
-					                      <label class="col-sm-4 control-label" for="inputEmail3">No of Locations</label>
-					                      <div class="col-sm-8">
-					                        <label   class="form-control" ><%= userDetail.getHoAddress()%></label>
 					                      </div>
 					                    </div>
 					                    <div class="form-group col-md-6 col-sm-12">
@@ -176,6 +170,18 @@
 					                      <label class="col-sm-4 control-label" for="inputEmail3">User Roles</label>
 					                      <div class="col-sm-8">
 					                        <label   class="form-control" >Client Admin</label>
+					                      </div>
+					                    </div>
+					                    <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">User Name</label>
+					                      <div class="col-sm-8">
+					                        <label   class="form-control" >
+					                        <%
+					                        if(userDetail.getName()!=null){
+					                        	out.println(userDetail.getName());
+					                        }
+					                        %>
+					                        </label>
 					                      </div>
 					                    </div>
 		             			<%
@@ -297,7 +303,18 @@
 				                        <label   class="form-control" >Consultant ADMIN</label>
 				                      </div>
 				                    </div>
-				                    
+				                      <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">User Name</label>
+					                      <div class="col-sm-8">
+					                        <label   class="form-control" >
+					                        <%
+					                        if(userDetail.getName()!=null){
+					                        	out.println(userDetail.getName());
+					                        }
+					                        %>
+					                        </label>
+					                      </div>
+					                    </div>
 	             			<%
 			             	}
 			             	else if(userRole.getUserrole().equals(Roles.ROLE_CON_USER.toString()))

@@ -16,6 +16,16 @@ public class GeneralConfig
 {
 	public static final double CESS = 0.5;
 	public static final String UploadPath = "/var/unihyr/data/";
+	public static final String SubmittedOnly = "Pending";
+	public static final String Withdraw = "Withdrawn";
+	public static final String Shortlist = "In Process";
+	public static final String ShortlistRejected = "CV Rejected";
+	public static final String SendOffer = "Offer Sent";
+	public static final String SendOfferReject = "Interview Reject";
+	public static final String OfferAccept = "Offered";
+	public static final String OfferAcceptReject = "Offer Declined";
+	public static final String OfferJoin = "Joined";
+	public static final String OfferDrop = "Dropped";
 	//public static final String UniHyrUrl = "http://localhost:8081/unihyr/";
 	public static final String UniHyrUrl = "http://54.191.37.178/";
 	//public static final String UniHyrUrl = "http://54.191.37.178/unihyr/";

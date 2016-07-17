@@ -223,7 +223,7 @@ $( function() {
 		       				<th width="80px">Posted Date</th>
 		       				<th width="80px">Submitted</th>
 <!-- 		       				<th width="50px">Pending</th> -->
-		       				<th width="80px">In Process</th>
+		       				<th width="80px"><%=GeneralConfig.Shortlist %></th>
 <!-- 		       				<th width="50px">Joined</th> -->
 		       				<th width="50px">View</th>
 		       			</tr>	
@@ -319,11 +319,11 @@ $( function() {
 						       								}
 						       							}
 						       							
-						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getAccepted() != null&&pr.getOfferDate()==null&&pr.getWithdrawDate()==null&&pr.getDeclinedDate()==null&&pr.getOfferDropDate()==null)
+						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getProcessStatus() != null&&pr.getProcessStatus().equals("accepted"))
 						       							{
 						       								prshort++;
 						       							}
-						       							else if(reg.getAdmin() != null &&  pr.getProfile().getRegistration().getUserid().equals(reg.getAdmin().getUserid()) && pr.getAccepted() != null)
+						       							else if(reg.getAdmin() != null &&  pr.getProfile().getRegistration().getUserid().equals(reg.getAdmin().getUserid()) && pr.getProcessStatus() != null&&pr.getProcessStatus().equals("accepted"))
 						       							{
 						       								prshort++;
 						       							}
@@ -353,10 +353,8 @@ $( function() {
 						       					%>
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prsub %></a>
 					       					</td>
-						       				<%-- <td  align="center" title="No. of profiles In Process">
-						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prpending %></a>
-						       				</td> --%>
-					       					<td  align="center" title="No. of profiles In Process">
+						       				
+					       					<td  align="center" title="No. of profiles <%=GeneralConfig.Shortlist%>">
 						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" >
 						       					<%if(post.getCloseDate()!=null) {%>
 						       					--
@@ -365,9 +363,7 @@ $( function() {
 						       					<%} %>
 						       					</a>
 						       				</td>
-						       				<%-- <td  align="center" title="No. of profiles In Process">
-						       					<a title="Click to view your positions" href="cons_your_positions?pid=<%= post.getPostId()%>" ><%= prjoined %></a>
-						       				</td> --%>
+						       				
 						       				<td align="center" >
 						       					<div class="pre_check" style="float: none;padding:0;">
 							                		<a href="consviewjd?pid=<%= post.getPostId() %>" target="_blank" class="view_post " title="Click to view post detail">

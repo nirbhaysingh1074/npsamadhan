@@ -319,6 +319,7 @@ public class ConsultantController
 			profile.setRegistration(registrationService.getRegistationByUserId(loggedinUser));
 			profile.setDateofbirth(model.getDateofbirth());
 			profile.setCountryCode(model.getCountryCode());
+			
 			if(model.getCurrentLocation().equals("other")){
 				profile.setCurrentLocation(request.getParameter("otherLocation"));
 			}else{
@@ -360,6 +361,7 @@ public class ConsultantController
 
 				profile.setProfileId(prid);
 				pp.setProfile(profile);
+				pp.setProcessStatus("submitted");
 				long ppid = postProfileService.addPostProfile(pp);
 				map.addAttribute("upload_success", true);
 				Notifications nser=new Notifications();
@@ -1491,6 +1493,7 @@ e.printStackTrace();
 				jm.put("ptitle", m.getPostProfile().getPost().getTitle());
 				jm.put("message", m.getMessage());
 				jm.put("ppid", m.getPostProfile().getPpid());
+				jm.put("msgdate", DateFormats.getTimeValue(m.getCreateDate()));
 				array.add(jm);
 			}
 			object.put("mList", array);
