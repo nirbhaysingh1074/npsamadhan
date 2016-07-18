@@ -1,5 +1,7 @@
 package com.unihyr.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +32,33 @@ public class ContactUs
 	
 	@Column(nullable=false)
 	private String phone;
+
+
+	@Column
+	private Date seenDate;
+	
+	@Column Date msgDate;
+	
+	
+	public Date getSeenDate()
+	{
+		return seenDate;
+	}
+
+	public void setSeenDate(Date seenDate)
+	{
+		this.seenDate = seenDate;
+	}
+
+	public Date getMsgDate()
+	{
+		return msgDate;
+	}
+
+	public void setMsgDate(Date msgDate)
+	{
+		this.msgDate = msgDate;
+	}
 
 	public long getContactusid()
 	{

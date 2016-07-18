@@ -150,10 +150,7 @@ public class ClientController
 			map.addAttribute("totalInActive", postService.countActivePostByClient(reg.getUserid(),"isNotActive"));
 			map.addAttribute("totalPending", postService.countActivePostByClient(reg.getUserid(),"pending"));
 			map.addAttribute("totalprofiles", postProfileService.countSubmittedProfileByClientOrConsultant(reg.getUserid(), null));
-/*			map.addAttribute("totalshortlist", postProfileService.countShortListedProfileByClientOrConsultant(reg.getUserid(), null));
-			map.addAttribute("totaljoin", postProfileService.countJoinedProfileByClientOrConsultant(reg.getUserid(), null,"joinDate"));
-			map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(reg.getUserid(), null));
-*/
+
 			return "clientDashboard";
 		}
 				
@@ -930,7 +927,7 @@ public class ClientController
 	public @ResponseBody String clientacceptreject(ModelMap map, HttpServletRequest request, Principal principal)
 	{
 
-		String content = "Content";
+		String content = "";
 
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
 		map.addAttribute("registration",reg);
@@ -953,7 +950,6 @@ public class ClientController
 			{
 				Date date = new Date();
 				java.sql.Date dt = new java.sql.Date(date.getTime());
-				pp.setRejectReason(rej_reason);
 				Post post=pp.getPost();
 				CandidateProfile profile=pp.getProfile();
 				Registration consultant=profile.getRegistration();
@@ -979,6 +975,7 @@ public class ClientController
 				else if(ppstatus.equals("reject"))
 				{
 					pp.setRejected(dt);
+					pp.setRejectReason(rej_reason);
 					PostProfile postProfile=pp;
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
 						postProfile.setViewStatus(true);
@@ -999,6 +996,7 @@ public class ClientController
 				else if(ppstatus.equals("reject_recruit") && pp.getAccepted() != null)
 				{
 					pp.setDeclinedDate(dt);
+					pp.setRejectReason(rej_reason);
 					pp.setProcessStatus("declineDate");
 					content= candidate +" has been rejected for the  <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
@@ -1040,6 +1038,7 @@ public class ClientController
 				else if(ppstatus.equals("offer_reject") && pp.getAccepted() != null)
 				{
 					pp.setOfferDropDate(dt);
+					pp.setRejectReason(rej_reason);
 					pp.setProcessStatus("offerDropDate");
 					content= candidate +" offer has been rejected for the  <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
@@ -1049,21 +1048,20 @@ public class ClientController
 				{
 					obj.put("status", "failed");
 				}
+				if(content!=""){
 				Notifications nser=new Notifications();
 				nser.setDate(new java.sql.Date(new Date().getTime()));
 				nser.setNotification(content);
 				nser.setUserid(userid);
 				notificationService.addNotification(nser);
 				postProfileService.updatePostProfile(pp);
+				}
 				return obj.toJSONString();
 			}
-			
-			
 		} catch (Exception e)
 		{
 			e.printStackTrace();
 			obj.put("status", "failed");
-			
 		}
 		obj.put("status", "failed");
 		
@@ -1107,18 +1105,23 @@ public class ClientController
 		billingDetailscl.setClientAddress(client.getHoAddress());
 		billingDetailscl.setConsultantId(consultant.getUserid());
 		billingDetailscl.setCandidatePerson(profile.getName());
-		//if(client.getOrganizationName()!=null){
 		billingDetailscl.setFeePercentForClient(post.getFeePercent());	
-		//}else{
 		billingDetailscl.setFeePercentToAdmin(consultant.getFeeCommission());
-		//}
 		try{
 			billingDetailscl.setFee((billableCTC*post.getFeePercent())/100);
 		}catch(Exception e){
 			e.printStackTrace();
 			billingDetailscl.setFee(0);
 		}
-		Double total=billingDetailscl.getFee()+(GeneralConfig.TAX*billingDetailscl.getFee())/100+(GeneralConfig.CESS*billingDetailscl.getFee())/100;
+		Double total=0.0;
+		try
+		{
+			total = billingDetailscl.getFee()+(GeneralConfig.TAX*billingDetailscl.getFee())/100+(GeneralConfig.CESS*billingDetailscl.getFee())/100;
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		billingDetailscl.setTotalAmount(total);
 		Date dt = new Date();
 		java.sql.Date date = new java.sql.Date(dt.getTime());
@@ -1797,13 +1800,12 @@ public class ClientController
 				in = (Industry) inIterator.next();
 			}
 
-			//List<GlobalRating> global=globalRatingService.getGlobalRatingListByIndustryAndConsultant(in.getId(), consultant.getUserid());
 			
 			long publishtime = post.getCreateDate().getTime();
 			long turnaround = 0;
 			long totalSubmitted = postProfileService.countProfileListByConsultantIdAndPostId(consultant.getUserid(),
 					post.getPostId());
-			long totalSubmittedbyall = postProfileService.countPostProfileByPost(postId, "submitted","");
+			long totalSubmittedbyall = postProfileService.countPostProfileByPost(postId, "all","rejected");
 			GlobalRating newGlobalRating = new GlobalRating();
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -1830,13 +1832,19 @@ public class ClientController
 						turnaround += profileTime - publishtime;
 						count++;
 					}
-					
-					long turTime=0;
-					if (totalSubmitted == 0)
+					long turTime = 0;
+					try
 					{
-						turTime = 0;
-					} else{
-						turTime=turnaround/count;
+						if (totalSubmitted == 0)
+						{
+							turTime = 0;
+						} else
+						{
+							turTime = turnaround / count;
+						}
+					} catch (Exception e)
+					{
+						e.printStackTrace();
 					}
 					newGlobalRating.setTurnAround(turTime);
 					break;
@@ -1847,12 +1855,16 @@ public class ClientController
 							consultant.getUserid(), post.getPostId());
 					
 					long shrTime=0;
+					try{
 					if (totalSubmitted == 0)
 					{
 						shrTime = 0;
 					} else
 					{
 						shrTime=(totalShortlisted * 100 / totalSubmitted) ;
+					}
+					}catch(Exception e){
+						e.printStackTrace();
 					}
 					newGlobalRating.setShortlistRatio(shrTime);
 					break;
@@ -1861,6 +1873,7 @@ public class ClientController
 				{
 				
 					long clrTime=0;
+					try{
 					if (totalSubmitted == 0)
 					{
 						clrTime = 0;
@@ -1868,7 +1881,9 @@ public class ClientController
 					{
 						clrTime=(totalSubmitted * 100 / totalSubmittedbyall) ;
 					}
-
+					}catch(Exception e ){
+						e.printStackTrace();
+					}
 					newGlobalRating.setIndustrycoverage(clrTime);
 					
 					break;
@@ -1961,15 +1976,13 @@ public class ClientController
 			List<GlobalRatingPercentile> gper=globalRatingPercentileService.getGlobalRatingListByIndustryAndConsultant(in.getId(), entry.getKey());
 			if(gper!=null&&(!gper.isEmpty())){
 				GlobalRatingPercentile gp=gper.get(0);
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+			
 				gp.setModifyDate(dt);
 				gp.setPercentileTr(entry.getValue());
 				globalRatingPercentileService.updateGlobalRating(gp);
 			}else{
 				GlobalRatingPercentile gp=new GlobalRatingPercentile();
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+				
 				gp.setCreateDate(dt);
 				gp.setIndustryId(in.getId());
 				gp.setRegistration(registrationService.getRegistationByUserId(entry.getKey()));
@@ -1984,15 +1997,13 @@ public class ClientController
 			List<GlobalRatingPercentile> gper=globalRatingPercentileService.getGlobalRatingListByIndustryAndConsultant(in.getId(), entry.getKey());
 			if(gper!=null&&(!gper.isEmpty())){
 				GlobalRatingPercentile gp=gper.get(0);
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+			
 				gp.setModifyDate(dt);
 				gp.setPercentileOd(entry.getValue());
 				globalRatingPercentileService.updateGlobalRating(gp);
 			}else{
 				GlobalRatingPercentile gp=new GlobalRatingPercentile();
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+				
 				gp.setCreateDate(dt);
 				gp.setIndustryId(in.getId());
 				gp.setRegistration(registrationService.getRegistationByUserId(entry.getKey()));
@@ -2006,15 +2017,13 @@ public class ClientController
 			List<GlobalRatingPercentile> gper=globalRatingPercentileService.getGlobalRatingListByIndustryAndConsultant(in.getId(), entry.getKey());
 			if(gper!=null&&(!gper.isEmpty())){
 				GlobalRatingPercentile gp=gper.get(0);
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+			
 				gp.setModifyDate(dt);
 				gp.setPercentileSh(entry.getValue());
 				globalRatingPercentileService.updateGlobalRating(gp);
 			}else{
 				GlobalRatingPercentile gp=new GlobalRatingPercentile();
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+			
 				gp.setCreateDate(dt);
 				gp.setIndustryId(in.getId());
 				gp.setRegistration(registrationService.getRegistationByUserId(entry.getKey()));
@@ -2028,15 +2037,13 @@ public class ClientController
 			List<GlobalRatingPercentile> gper=globalRatingPercentileService.getGlobalRatingListByIndustryAndConsultant(in.getId(), entry.getKey());
 			if(gper!=null&&(!gper.isEmpty())){
 				GlobalRatingPercentile gp=gper.get(0);
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+				
 				gp.setModifyDate(dt);
 				gp.setPercentileInC(entry.getValue());
 				globalRatingPercentileService.updateGlobalRating(gp);
 			}else{
 				GlobalRatingPercentile gp=new GlobalRatingPercentile();
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+			
 				gp.setCreateDate(dt);
 				gp.setIndustryId(in.getId());
 				gp.setRegistration(registrationService.getRegistationByUserId(entry.getKey()));
@@ -2050,15 +2057,13 @@ public class ClientController
 			List<GlobalRatingPercentile> gper=globalRatingPercentileService.getGlobalRatingListByIndustryAndConsultant(in.getId(), entry.getKey());
 			if(gper!=null&&(!gper.isEmpty())){
 				GlobalRatingPercentile gp=gper.get(0);
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+				
 				gp.setModifyDate(dt);
 				gp.setPercentileCl(entry.getValue());
 				globalRatingPercentileService.updateGlobalRating(gp);
 			}else{
 				GlobalRatingPercentile gp=new GlobalRatingPercentile();
-				date = new Date();
-				dt = new java.sql.Date(date.getTime());
+				
 				gp.setCreateDate(dt);
 				gp.setIndustryId(in.getId());
 				gp.setRegistration(registrationService.getRegistationByUserId(entry.getKey()));
@@ -2077,11 +2082,6 @@ public class ClientController
 		Post post=postService.getPost(Long.parseLong(postId));
 		post.setUpdateInfo(updateInfo);
 		postService.updatePost(post);
-		/*	List<PostConsultant> list=postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc");
-		for (PostConsultant pp : list)
-		{
-			mailService.sendMail(pp.getConsultant().getUserid(), "Job Post Update Info", updateInfo);
-		}*/
 		map.addAttribute("pid", postId);
 		return  "redirect:clienteditpost";
 	}

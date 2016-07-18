@@ -1,6 +1,7 @@
 package com.unihyr.controller;
 
 import java.security.Principal;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,6 +29,9 @@ public class ContactUsController
 	@RequestMapping(value = "/requestfordemo", method = RequestMethod.POST)
 	public String requestfordemo(@ModelAttribute(value = "contactusform") @Valid ContactUs model,ModelMap map, HttpServletRequest request ,Principal principal)
 	{
+		Date date = new Date();
+		java.sql.Date dt = new java.sql.Date(date.getTime());
+		model.setMsgDate(dt);
 		contactUsService.addContactUsDetails(model);
 		map.addAttribute("regSuccess", "true");
 		map.addAttribute("orgName", model.getName());

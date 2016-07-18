@@ -144,11 +144,13 @@ jQuery(document).ready(function() {
 													
 												</td>
 												<td>
-												<%if(reg.getOrganizationName()!=null){%>
+												<%
+												if(reg.getAdmin()==null){
+												if(reg.getOrganizationName()!=null){%>
 													<a target="_blank" href="admineditclient?userid=<%=reg.getUserid() %>" >Edit</a>
 												<%}else{ %>
 													<a target="_blank" href="admineditconsultant?userid=<%=reg.getUserid() %>" >Edit</a>
-												<%} %>
+												<%}} %>
 												</td>
 											</tr>
 										<%

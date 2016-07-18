@@ -123,7 +123,7 @@ pleaseWait();
 		while(it.hasNext())
 		{
 			PostProfile pp = it.next();
-			if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("accepted"))
+			if(pp.getProcessStatus() != null&&(pp.getProcessStatus().equals("accepted")||pp.getProcessStatus().equals("recruited")))
 			{
 				shortListed.add(pp.getPpid());
 			}

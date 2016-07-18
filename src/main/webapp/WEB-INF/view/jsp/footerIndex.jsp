@@ -155,11 +155,17 @@ $(".help-desk .submit").click(function(event){
 <div class="firstTimeLoginPopup profileClosed1" style="top:35%;border:1px solid #f8b910;display: none;height: auto;position: fixed;max-height: 300px;" >
 				<div class="login-header" style="padding: 3px 3px 3px 2px;
 line-height: 30px;
-height: 29px;">
-					
+height: 90px;">
+					<a href="index">
+					<img alt="" src="images/logo.png" style="margin-left: 48px;">
+					</a>
 					<a href="javascript:void(0)"><span style="padding: 0px 9px;
     top: -16px;" class="close" title="Close" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');"><img style="height: 40px;" src="images/close.png" /></span></a>
 				</div>
+			
+				
+				
+				
 				<div class="login-wrap" style="padding: 10px;" id="profileClosed">
 				
 				</div>
@@ -224,7 +230,10 @@ if(reg!=null&&(reg.getFirstTime()==null||!reg.getFirstTime())){
 <div class="firstTimeLoginPopup" style="border:1px solid #f8b910;">
 				<div class="login-header" style="padding: 3px 3px 3px 2px;
 					line-height: 44px;
-					height: 30px;">
+					height: 90px;">
+					<a href="index">
+					<img alt="" src="images/logo.png" style="margin-left: 48px;">
+					</a>
 					<span class="close" title="close" style="top: -24px;"  onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');setFirstTimeFalse('<%=reg.getUserid() %>')">
 					<img style="    height: 40px;" src="images/close.png"></span>
 				</div>

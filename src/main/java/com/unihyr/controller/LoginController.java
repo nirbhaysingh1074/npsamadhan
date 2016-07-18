@@ -362,6 +362,8 @@ public class LoginController
 				}
 			}
 
+			
+			
 			reg.setIndustries(indset);
 			login.setReg(reg);
 			reg.setLog(login);
@@ -414,29 +416,23 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
-			
-			for (String ind : industries)
+
+			Set<Industry> industry=reg.getIndustries();
+			Set<Industry> newindustry=new HashSet<Industry>();
+			for (Iterator iterator = industry.iterator(); iterator.hasNext();)
 			{
-				Industry inds = industryService.getIndustry(Integer.parseInt(ind));
-				if (inds != null)
+				Industry industry2 = (Industry) iterator.next();
+				newindustry.add(industry2);
+			}
+			reg.getIndustries().removeAll(newindustry);
+				for (String ind : industries)
 				{
-					Set<Industry> industry=reg.getIndustries();
-					boolean flag=false;
-					for (Iterator iterator = industry.iterator(); iterator.hasNext();)
+					Industry inds = industryService.getIndustry(Integer.parseInt(ind));
+					if (inds != null)
 					{
-						Industry industry2 = (Industry) iterator.next();
-						if(industry2.getId()==inds.getId()){
-							flag=true;
-						}
-					}
-					
-					if(flag){
-						
-					}else{
 						reg.getIndustries().add(inds);
 					}
 				}
-			}
 			registrationService.update(reg);
 			return "redirect:/adminuserlist";
 		}
@@ -479,33 +475,23 @@ public class LoginController
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
-			
-			
-			
-			
-			for (String ind : industries)
+
+			Set<Industry> industry=reg.getIndustries();
+			Set<Industry> newindustry=new HashSet<Industry>();
+			for (Iterator iterator = industry.iterator(); iterator.hasNext();)
 			{
-				Industry inds = industryService.getIndustry(Integer.parseInt(ind));
-				if (inds != null)
+				Industry industry2 = (Industry) iterator.next();
+				newindustry.add(industry2);
+			}
+			reg.getIndustries().removeAll(newindustry);
+				for (String ind : industries)
 				{
-					Set<Industry> industry=reg.getIndustries();
-					boolean flag=false;
-					for (Iterator iterator = industry.iterator(); iterator.hasNext();)
+					Industry inds = industryService.getIndustry(Integer.parseInt(ind));
+					if (inds != null)
 					{
-						Industry industry2 = (Industry) iterator.next();
-						if(industry2.getId()==inds.getId()){
-							flag=true;
-						}
-					}
-					
-					if(flag){
-						
-					}else{
 						reg.getIndustries().add(inds);
 					}
 				}
-			}
-
 			registrationService.update(reg);
 			return "redirect:/adminuserlist";
 		}

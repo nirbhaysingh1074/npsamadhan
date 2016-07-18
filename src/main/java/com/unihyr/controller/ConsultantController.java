@@ -402,16 +402,7 @@ public class ConsultantController
 			cons = cons.getAdmin();
 		}
 
-	/*	map.addAttribute("totalActive",
-				postService.countPostsFilteredForConsultant(cons.getUserid(), null, null, null));
-		map.addAttribute("totalprofiles",
-				postProfileService.countSubmittedProfileByClientOrConsultant(null, cons.getUserid()));
-		map.addAttribute("totalshortlist",
-				postProfileService.countShortListedProfileByClientOrConsultant(null, cons.getUserid()));
-		map.addAttribute("totaljoin",
-				postProfileService.countJoinedProfileByClientOrConsultant(null, cons.getUserid(),"joinDate"));
-		map.addAttribute("totalpartner", postProfileService.countPartnerByClientOrConsultant(null, cons.getUserid()));
-*/
+	
 		String pid = request.getParameter("pid");
 		System.out.println("pid : " + pid);
 		if (pid != null && pid.length() > 0)
@@ -429,10 +420,7 @@ public class ConsultantController
 
 				map.addAttribute("selClient", client);
 
-//				map.addAttribute("postSelected", post.getPostId());
 				map.addAttribute("selectedPost", postService.getPost(post.getPostId()));
-//				map.addAttribute("totalpartner", postConsultantService.getInterestedConsultantByPost(post.getPostId(),"desc").size());
-//				map.addAttribute("totalshortlist", postProfileService.countShortlistedProfileListPostId(post.getPostId(),"accepted"));
 			
 			
 			}
@@ -818,8 +806,18 @@ public class ConsultantController
 						post.getPostConsultants().add(pc);
 						post.setPostConsultants(post.getPostConsultants());
 						postService.updatePost(post);
-						// closePost(registrationService.getRegistationByUserId("client1@silvereye.co"));
+						Notifications nser=new Notifications();
+						nser.setDate(new java.sql.Date(new Date().getTime()));
+						nser.setNotification(reg.getConsultName()+" have signed up for the post "+post.getTitle());
+						nser.setUserid(post.getClient().getUserid());
+						notificationService.addNotification(nser);					
+					
 					}
+					
+					
+					
+					
+					
 				}
 				TableToExcel.generateExcelwhenread(globalRatingPercentileService.getGlobalRatingList(),
 						globalRatingService.getGlobalRatingList());
@@ -1177,9 +1175,13 @@ e.printStackTrace();
 					}
 					List<GlobalRatingPercentile> gp = globalRatingPercentileService
 							.getGlobalRatingListByIndustryAndConsultant(in.getId(), consultant.getUserid());
+					try{
 					GlobalRatingPercentile postConsultant = gp.get(0);
 					postConsultant.setOfferDrop(postConsultant.getOfferDrop() + 1);
 					globalRatingPercentileService.updateGlobalRating(postConsultant);
+					}catch(Exception e ){
+						e.printStackTrace();
+					}
 					post.setNoOfPostsFilled(post.getNoOfPostsFilled()-1);
 					if(post.getCloseDate()!=null){
 						post.setCloseDate(null);

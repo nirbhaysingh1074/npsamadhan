@@ -309,8 +309,8 @@
 					<div class="reg-wrap">
 						<div>
 							<label>Industry<span class="req">*</span><span
-								style="font-size: 9px;">(press CTRL to select multiple)</span></label> <select
-								name="industries" id="industries" multiple="multiple" size="5">
+								style="font-size: 9px;"></span></label>
+								 <select name="industries" id="industries" >
 								<%
 									if (industryList != null && !industryList.isEmpty()) {
 											for (Industry ind : industryList) {

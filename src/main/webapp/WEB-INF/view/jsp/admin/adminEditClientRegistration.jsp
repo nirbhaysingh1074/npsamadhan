@@ -224,7 +224,6 @@
 	%>
 	<section>
 		<div class="container reg_page" style="margin: 50px auto;">
-			<a href="home"><span class="close" title="Home Page"><img style="    height: 40px;" src="images/close.png" /></span></a>
 			<div class="reg-form">
 				<form:form method="POST" action="admineditclient" commandName="regForm">
 					<div class="reg-header bottom-padding" >
@@ -269,7 +268,39 @@
 							<span class="error org_error">&nbsp;<form:errors path="organizationName" /> <%= orgmsg %></span>
 						</div>
 					</div>
-					
+					<div class="reg-wrap">
+						<div>
+						<%
+							List<Location> locList = (List) request.getAttribute("locList");
+							List<Industry> industryList = (List) request.getAttribute("industryList");
+							String[] aa = (String[]) request.getAttribute("sel_inds");
+							List<String> sel_inds = null;
+							if (aa != null) {
+								sel_inds = Arrays.asList(aa);
+							}
+							System.out.println("<<<<<<<<<<<<<<< : " + sel_inds);
+					%>
+							<label>Industry<span class="req">*</span><span
+								style="font-size: 9px;"><!-- (press CTRL to select multiple) --></span></label> <select
+								name="industries" id="industries" readonly="readonly">
+								<%
+									if (industryList != null && !industryList.isEmpty()) {
+											for (Industry ind : industryList) {
+												if (sel_inds != null && sel_inds.contains(String.valueOf(ind.getId()))) {
+								%>
+								<option value="<%=ind.getId()%>" selected="selected"><%=ind.getIndustry()%></option>
+								<%
+									} else {
+								%>
+								<option value="<%=ind.getId()%>"><%=ind.getIndustry()%></option>
+								<%
+									}
+									}
+									}
+								%>
+							</select> <span class="error industry_error">&nbsp; ${industry_req }</span>
+						</div>
+					</div>
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
@@ -293,39 +324,8 @@
 							<span class="error revenue_error">&nbsp;<form:errors path="revenue" /></span>
 						</div>
 					</div>
-							<%
-							List<Location> locList = (List) request.getAttribute("locList");
-							List<Industry> industryList = (List) request.getAttribute("industryList");
-							String[] aa = (String[]) request.getAttribute("sel_inds");
-							List<String> sel_inds = null;
-							if (aa != null) {
-								sel_inds = Arrays.asList(aa);
-							}
-							System.out.println("<<<<<<<<<<<<<<< : " + sel_inds);
-					%>
-					<div class="reg-wrap">
-						<div>
-							<label>Industry<span class="req">*</span><span
-								style="font-size: 9px;">(press CTRL to select multiple)</span></label> <select
-								name="industries" id="industries" multiple="multiple" size="5">
-								<%
-									if (industryList != null && !industryList.isEmpty()) {
-											for (Industry ind : industryList) {
-												if (sel_inds != null && sel_inds.contains(String.valueOf(ind.getId()))) {
-								%>
-								<option value="<%=ind.getId()%>" selected="selected"><%=ind.getIndustry()%></option>
-								<%
-									} else {
-								%>
-								<option value="<%=ind.getId()%>"><%=ind.getIndustry()%></option>
-								<%
-									}
-									}
-									}
-								%>
-							</select> <span class="error industry_error">&nbsp; ${industry_req }</span>
-						</div>
-					</div>
+							
+					
 					<div class="clearfix"></div>
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>

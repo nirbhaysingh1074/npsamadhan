@@ -242,7 +242,6 @@ $(document).ready(function() {
 
 	<section>
 		<div class="container reg_page" style="margin: 50px auto;">
-			<a href="home"><span class="close" title="Home Page"><img style="    height: 40px;" src="images/close.png" /></span></a>
 			<div class="reg-form">
 				<form:form method="POST" action="admineditconsultant"
 					commandName="regForm">

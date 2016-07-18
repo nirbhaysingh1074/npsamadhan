@@ -192,21 +192,22 @@
 									<dt>
 										<label>Industry</label>
 									</dt>
-									<dd>
-										<label>
+									
+										
 											<%
 												Iterator<Industry> it = reg.getIndustries().iterator();
 												while(it.hasNext())
 												{
 													Industry ind = it.next();
 													%>
-														<a ><%= ind.getIndustry() %> </a>
+													<dd><label>	<%= ind.getIndustry() %> </label></dd>
+													<dt>&nbsp;</dt>
 													<%
 												}
 											%>
-										</label>
 										
-									</dd>
+										
+									
 								</dl>
 								<%
 							}

@@ -128,7 +128,19 @@ public class Post implements Serializable
 	@Lob
 	private String variablePayComment;
 	
-	
+
+	@Column
+	private int inProcess;
+
+	public int getInProcess()
+	{
+		return inProcess;
+	}
+
+	public void setInProcess(int inProcess)
+	{
+		this.inProcess = inProcess;
+	}
 
 	public Date getOpenAgainDate()
 	{

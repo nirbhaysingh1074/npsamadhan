@@ -319,7 +319,7 @@ $( function() {
 						       								}
 						       							}
 						       							
-						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getProcessStatus() != null&&pr.getProcessStatus().equals("accepted"))
+						       							if(pr.getProfile().getRegistration().getUserid().equals(reg.getUserid()) && pr.getProcessStatus() != null&&(pr.getProcessStatus().equals("accepted")||pr.getProcessStatus().equals("recruited")))
 						       							{
 						       								prshort++;
 						       							}

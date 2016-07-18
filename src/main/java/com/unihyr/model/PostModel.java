@@ -66,6 +66,8 @@ public class PostModel
 	@NotBlank(message="{NotBlank.postForm.designation}")
 	private String designation;*/
 	
+	private int inProcess;
+	
 	private int profileParDay;
 	
 	private MultipartFile uploadJdfile;
@@ -76,6 +78,16 @@ public class PostModel
 
 	private String qualification_ug;
 	private String qualification_pg;
+
+	public int getInProcess()
+	{
+		return inProcess;
+	}
+
+	public void setInProcess(int inProcess)
+	{
+		this.inProcess = inProcess;
+	}
 
 	public Date getOpenAgainDate()
 	{

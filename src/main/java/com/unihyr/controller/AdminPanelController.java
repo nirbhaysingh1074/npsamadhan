@@ -231,18 +231,7 @@ public class AdminPanelController
 	public String adminPostList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
 		String viewBy = request.getParameter("viewBy");
-		
-		
-		if(viewBy != null)
-		{
-			
-		}
-//		Date cDate = new Date(); 
-//		Date eDate = new Date(cDate.getTime()-24*60*60*1000);
-		
 		map.addAttribute("pList", postService.getPosts(0, 1000));
-//		map.addAttribute("pList", postService.getAllPostBetweenDates(cDate, eDate, 0, 1000));
-		
 		return "adminPostList";
 	}
 	
@@ -256,7 +245,6 @@ public class AdminPanelController
 	@RequestMapping(value = "/adminprofilelist", method = RequestMethod.GET)
 	public String adminProfileList(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
-		System.out.println("adminprofilelist");
 		map.addAttribute("ppList", postProfileService.getAllPostProfile(0, 1000));
 		return "adminProfileList";
 	}
@@ -568,7 +556,7 @@ public class AdminPanelController
 			nser.setUserid(userid);
 			notificationService.addNotification(nser);
 			}
-			String	content1="Your "+post.getTitle()+" has been verified";
+			String	content1="Your Post - "+post.getTitle()+" has been verified";
 			Notifications nser=new Notifications();
 			nser.setDate(new java.sql.Date(new Date().getTime()));
 			nser.setNotification(content1);

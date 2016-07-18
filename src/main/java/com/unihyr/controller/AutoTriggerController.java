@@ -26,7 +26,7 @@ import com.unihyr.service.PostService;
 import com.unihyr.util.ApplicationContextProvider;
 
 /**
- * @author silvereye
+ * @author Silvereye
  * A controller to check whether any post is idle for particular days and perform action if idle.
  */
 @Component
@@ -47,10 +47,11 @@ public class AutoTriggerController
 	public boolean checkPostIdle()
 	{
 		
-		
+	/*	
 		List<PostProfile> allpp=postProfileService.getAllPostProfile(0, 1000);
 		for (PostProfile pp : allpp)
 		{
+			boolean inprocess=false;
 			if(pp.getWithdrawDate()!=null){
 				pp.setProcessStatus("withdrawDate");
 			}else if(pp.getRejected()!=null){
@@ -66,15 +67,17 @@ public class AutoTriggerController
 			}else if(pp.getOfferDate()!=null){
 				pp.setProcessStatus("offerDate");
 			}else if(pp.getRecruited()!=null){
+				inprocess=true;
 				pp.setProcessStatus("recruited");
 			}else if(pp.getAccepted()!=null){
+				inprocess=true;
 				pp.setProcessStatus("accepted");
 			}else if(pp.getSubmitted()!=null){
 				pp.setProcessStatus("submitted");
 			}
 			postProfileService.updatePostProfile(pp);
 		}
-		
+		*/
 		
 		List<Post> list = postService.getAllActivePosts();
 		for (Post post : list)
