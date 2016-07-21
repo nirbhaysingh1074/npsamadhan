@@ -55,7 +55,7 @@ jQuery(document).ready(function() {
 		{
 			$.ajax({
 				type : "GET",
-				url : "viewPostDetail",
+				url : "clientPostDetail",
 				data : {'pid':pid},
 				contentType : "application/json",
 				success : function(data) {

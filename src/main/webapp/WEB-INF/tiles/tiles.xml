@@ -7,6 +7,12 @@
     <definition name="homeTemplate" template="/WEB-INF/tilestemplate/jsp/homeTemplate.jsp">
         <put-attribute name="body" value="" />
     </definition> 
+    <definition name="publicHeader"
+		template="/WEB-INF/tilestemplate/jsp/publictemplate.jsp">
+		<put-attribute name="header"
+			value="/WEB-INF/view/jsp/headerPublic.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
     <definition name="home" extends="homeTemplate">
         <put-attribute name="title" value="UniHyr - Home" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/home.jsp" />
@@ -68,5 +74,13 @@
     <definition name="test" extends="homeTemplate">
         <put-attribute name="title" value="UniHyr - Test" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/test.jsp" />
+        </definition>
+    <definition name="forwardedProfile" extends="publicHeader">
+        <put-attribute name="title" value="UniHyr - Candidate Profile" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/forwardApplicantInfo.jsp" />
+    </definition>
+    <definition name="postDetails" extends="publicHeader">
+        <put-attribute name="title" value="UniHyr - Job Post" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/postDetails.jsp" />
     </definition>
 </tiles-definitions>

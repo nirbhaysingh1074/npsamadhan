@@ -160,7 +160,6 @@ public class ConsultantController
 			reg =reg.getAdmin(); 
 		}
 		String loggedinUser=reg.getUserid();
-		
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.WEEK_OF_MONTH, -1);
 		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
@@ -190,10 +189,6 @@ public class ConsultantController
 			map.addAttribute("locList", locationService.getLocationList());
 			map.addAttribute("qListUg",qualificationService.getAllUGQualification());
 			map.addAttribute("qListPg",qualificationService.getAllPGQualification());
-			
-			
-			
-			
 			return "uploadprofile";
 		}
 		return "redirect:consdashboard";
@@ -811,13 +806,7 @@ public class ConsultantController
 						nser.setNotification(reg.getConsultName()+" have signed up for the post "+post.getTitle());
 						nser.setUserid(post.getClient().getUserid());
 						notificationService.addNotification(nser);					
-					
 					}
-					
-					
-					
-					
-					
 				}
 				TableToExcel.generateExcelwhenread(globalRatingPercentileService.getGlobalRatingList(),
 						globalRatingService.getGlobalRatingList());
@@ -1179,6 +1168,9 @@ e.printStackTrace();
 					GlobalRatingPercentile postConsultant = gp.get(0);
 					postConsultant.setOfferDrop(postConsultant.getOfferDrop() + 1);
 					globalRatingPercentileService.updateGlobalRating(postConsultant);
+					BillingDetails bill = billingService.getBillingDetailsById(ppid);
+					bill.setDeleteDate(dt);
+					billingService.updateBillingDetails(bill);
 					}catch(Exception e ){
 						e.printStackTrace();
 					}
@@ -1197,6 +1189,8 @@ e.printStackTrace();
 					nser.setNotification(content);
 					nser.setUserid(pp.getPost().getClient().getUserid());
 					notificationService.addNotification(nser);
+					
+					
 					//st = mailService.sendMail(pp.getProfile().getRegistration().getUserid(), subject, content);
 					obj.put("status", "join_reject");
 				}else if (ppstatus.equals("candidate_withdraw")){

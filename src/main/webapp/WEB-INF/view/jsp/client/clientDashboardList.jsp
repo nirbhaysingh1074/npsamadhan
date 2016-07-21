@@ -75,8 +75,8 @@ var buttonst=$('#db_post_status').val();
 	      <div class="filter">
 	      	 <div class="col-md-4">&nbsp;
 	      	 	<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
-		      	 	<button id="act_post" class="profile_status_buttonGen">Activate</button> 
- 		      	 	<button id="inact_post" class="profile_status_buttonGen" >Deactivate</button> 
+		      	 	<button id="act_post" class="profile_status_buttonGen"><%=GeneralConfig.Label_Activate %></button> 
+ 		      	 	<button id="inact_post" class="profile_status_buttonGen" ><%=GeneralConfig.Label_DeActivate %></button> 
 <!-- 		      	 	<button id="del_post">Delete</button> -->
 <!-- 		      	 	<button id="close_post" >Close</button> -->
 	      	 	</sec:authorize>
@@ -340,12 +340,12 @@ var buttonst=$('#db_post_status').val();
 						       				<td  style="text-align: center;">
 						       					<sec:authorize access="hasRole('ROLE_EMP_USER')">
 						       					<div class="pre_check" style="float:none;padding: 0px;">
-								                  	<a href="viewPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
+								                  	<a href="clientPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
 							                  	</div>
 						       					</sec:authorize>
 						       					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 						       					<div class="pre_check" >
-								                  	<a href="viewPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
+								                  	<a href="clientPostDetail?pid=<%= post.getPostId() %>" target="_blank"><img width="24px" alt="View Post" title="Click to view post" src="images/view-icon.png"></a>
 							                  	</div>
 									<%
 										if(post.getCloseDate()==null&&post.isActive()||post.getPublished()==null) {							if (post.getPublished() == null) {

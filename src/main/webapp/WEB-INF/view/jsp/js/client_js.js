@@ -29,7 +29,7 @@ jQuery(document).ready(function() {
 		var pid = $(this).val();
 		if(pid != "" && pid != "0")
 		{
-			$('#view_jd .view_post').attr('href',"viewPostDetail?pid="+pid);
+			$('#view_jd .view_post').attr('href',"clientPostDetail?pid="+pid);
 			$('#view_jd .view_post').attr('target',"_blank");
 			$('#view_jd .view_post').removeClass('btn_disabled');
 		}

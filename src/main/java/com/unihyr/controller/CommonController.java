@@ -15,12 +15,17 @@ import com.unihyr.constraints.GeneralConfig;
 import com.unihyr.domain.ContactUs;
 import com.unihyr.domain.HelpDesk;
 import com.unihyr.domain.LoginInfo;
+import com.unihyr.domain.Post;
+import com.unihyr.domain.PostProfile;
 import com.unihyr.domain.Registration;
 import com.unihyr.service.ContactUsService;
 import com.unihyr.service.HelpDeskService;
 import com.unihyr.service.LoginInfoService;
 import com.unihyr.service.MailService;
+import com.unihyr.service.PostProfileService;
+import com.unihyr.service.PostService;
 import com.unihyr.service.RegistrationService;
+import com.unihyr.util.IntegerPerm;
 
 @Controller
 public class CommonController
@@ -28,14 +33,15 @@ public class CommonController
 	@Autowired	private MailService mailService;
 	@Autowired
 	private RegistrationService registrationService;
-	/**
-	 * login info service to invoke user login related functions
-	 */
 	@Autowired
 	private LoginInfoService loginInfoService;
 	@Autowired
 	private HelpDeskService helpDeskService;
 	@Autowired ContactUsService contactUsService;
+	@Autowired
+	PostProfileService postProfileService;
+	@Autowired
+	private PostService postService;
 	
 	@RequestMapping(value = "/helpDeskMessage", method = RequestMethod.GET)
 	public @ResponseBody String clientMailRejectProfile(ModelMap map, HttpServletRequest request, Principal principal)
@@ -230,6 +236,39 @@ public String termsOfService(ModelMap map, HttpServletRequest request, Principal
 		obj.put("status", false);
 		return obj.toJSONString();
 	}
-	
+
+	@RequestMapping(value = "/farwardProfile", method = RequestMethod.GET)
+	public @ResponseBody String farwardProfile(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		JSONObject obj = new JSONObject();
+		String ppid=request.getParameter("ppid");
+		String mail=request.getParameter("mail");
+		obj.put("status", "Profile forwarded succussfully");
+		try{
+		mailService.sendMail(mail, "Forwarded Candidate Profile","A Candidate Profile has been send to you. Please "
+				+ "<a target='_blank' href='"+GeneralConfig.UniHyrUrl+"forwardedProfile?ppid="+IntegerPerm.encipher(Integer.parseInt(ppid))+"' >click here</a> to check it.");
+		}catch(Exception e){
+			obj.put("status", "Error occured in forwarding please try again later");
+		}
+		return obj.toJSONString();
+	}
+	@RequestMapping(value = "/forwardedProfile", method = RequestMethod.GET)
+	public String forwardedProfile(ModelMap map, HttpServletRequest request ,Principal principal,@RequestParam long ppid)
+	{
+
+		ppid=IntegerPerm.decipher((int) ppid);
+		PostProfile postProfile = postProfileService.getPostProfile(ppid);
+		map.addAttribute("postProfile", postProfile);
+		return "forwardedProfile";
+	}
+	@RequestMapping(value = "/postDetails", method = RequestMethod.GET)
+	public String postDetails(ModelMap map, HttpServletRequest request ,Principal principal,@RequestParam long ppid)
+	{
+
+		ppid=IntegerPerm.decipher((int) ppid);
+		Post post = postService.getPost(ppid);
+		map.addAttribute("post", post);
+		return "postDetails";
+	}
 }
 	

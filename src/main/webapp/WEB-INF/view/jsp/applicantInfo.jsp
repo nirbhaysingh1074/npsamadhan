@@ -48,8 +48,43 @@ $(document).ready(function() {
         $(".tab-content").not(tab).removeClass("active");
     });
 });
-</script>
 
+
+function isEmail(email) {
+	  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	  return regex.test(email);
+	}
+
+</script>
+<script type="text/javascript">
+function forwardProfile(){
+	var forwardmail=$('#forwardmail').val();
+	var ppid=$('#ppidforwardmail').val();
+	if(!forwardmail ||!isEmail(forwardmail)){
+		$('.error_forwardmail').css('color','red');
+		$('.error_forwardmail').html('Please enter valid mail');
+	}
+	else{
+		pleaseWait();
+		$.ajax({
+			type : "GET",
+			url : "farwardProfile",
+			data : {'ppid':ppid,'mail':forwardmail},
+			contentType : "application/json",
+			success : function(data) {
+				var obj = jQuery.parseJSON(data);
+
+				$('.error_forwardmail').html(obj.status);
+				$('#forwardform').css('display','none');
+				pleaseDontWait();
+				//	alertify.success();
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+			}
+		}) ;
+	}
+}
+</script>
 </head>
 <body class="loading" >
 <div class="mid_wrapper">
@@ -137,22 +172,7 @@ unviewed=0;
 							}
 					              		%>
 					   <%=status %>
-			              <%
-			              if(pp.getPost().getCloseDate()!=null )
-		                	{
-			                	%>
-				                	Post Status:   Closed
-			                	<%
-		                	}else if(pp.getPost().isActive()){
-		                		%>
-			                	Post Status:   Active
-		                	<%
-		                	}else if(!pp.getPost().isActive()){
-		                		%>
-			                	Post Status:   Inactive
-		                	<%
-		                	}
-			              %>
+			             
 			              
 			              </span>
 			            </div>
@@ -163,86 +183,193 @@ unviewed=0;
 			              <div class="tp_row" style="padding-bottom: 0px;">
 			              <%CandidateProfile  profile=pp.getProfile(); %>
 				                <p><h3 style="font-weight: bold;">(Position : <%= pp.getPost().getTitle() %>)</h3></p>
-				                
-				                <table  class="table no-margin appinfotable"  >
-				                <tr>
-				                <td>Email</td><td><p><%=profile.getEmail()  %></p></td>
-				                </tr>
-				                <tr>
-				                <td>Contact</td><td><p>
-								<%if(profile.getCountryCode()!=null){ %>
-								+<%=profile.getCountryCode() %>
-								<%} %>
-								 <%= profile.getContact() %></p>
-				                </td>
-				                </tr>
-				                <tr>
-				                <td>Date Of Birth</td><td><p>
-				                <%if(profile.getDateofbirth()!=null) {%>
-				                <%= profile.getDateofbirth() %>
-				                <%} %>
-				                </p>
-				                </td>
-				                </tr>
-				                <tr>
-				                <td>Qualification</td><td><p>
-				                 <%if(profile.getQualification_ug()!=null&&profile.getQualification_ug()!=""){ %>
-								<%= profile.getQualification_ug() %>
-								, <%} %>
-								<%if(profile.getQualification_pg()!=null&&profile.getQualification_pg()!=""){ %>
-									<%=profile.getQualification_pg() %>
-								<%} %>
-				                </p>
-				                </td>
-				                </tr>
-				                <tr>
-				                <td>Current Role</td><td> <p><%= profile.getCurrentRole() %></p></td>
-				                </tr>
-				                <tr>
-				                <td>Current Organization</td><td><%= profile.getCurrentOrganization() %></p></td>
-				                </tr>
-				                <tr>
-				                <td>Current Location</td><td> <p>  <%= profile.getCurrentLocation() %></p> </td>
-				                </tr>
-				                <%if(profile.getExperience()!=null){ %>
-				                <tr>
-				                <td>Experience</td><td> <p>  <%= profile.getExperience() %> Year</p> </td>
-				                </tr>
-				                <%} %>
-				                <tr>
-				                <td>Current CTC</td><td> <p><%= profile.getCurrentCTC() %> Lakh  </p> </td>
-				                </tr>
-				                <tr>
-				                <td>Expected CTC</td><td> <p> <%= profile.getExpectedCTC() %> </p> </td>
-				                </tr>
-				                <tr>
-				                <td>CTC Related Comments</td><td> <p><%= profile.getCtcComments() %>  </p> </td>
-				                </tr>
-				                <tr>
-				                <td>Notice Period</td><td> <p> <%= profile.getNoticePeriod() %> days </p> </td>
-				                </tr>
-				                <tr>
-				                <td>Willing to Relocate</td><td> <p> <%= profile.getWillingToRelocate() %> </p> </td>
-				                </tr>
-				                <tr>
-				                <td>Submitted on</td><td> <p><%= DateFormats.getTimeValue(pp.getSubmitted()) %>  </p> </td>
-				                </tr>
-				                <tr>
-				                <td>Partner</td><td> <p><%= profile.getRegistration().getConsultName() %>  </p> </td>
-				                </tr>
-				                <%
-				                if(pp.getJoinDropDate() != null||pp.getOfferDropDate() != null||pp.getDeclinedDate() != null||pp.getRejected() != null)
-			              		{
-			              			%>
-			              		<tr>
-				                <td>Reject Reason :</td><td> <p> <%=pp.getRejectReason() %></p>
-		              			 </td>
-				                </tr>
-				              	<%
+
+									<table class="table no-margin appinfotable">
+										<tr>
+											<td>Email</td>
+											<td><p><%=profile.getEmail()%></p></td>
+										</tr>
+										<tr>
+											<td>Contact</td>
+											<td><p>
+													<%
+														if (profile.getCountryCode() != null) {
+													%>
+													+<%=profile.getCountryCode()%>
+													<%
+														}
+													%>
+													<%=profile.getContact()%></p></td>
+										</tr>
+										<tr>
+											<td>Date Of Birth</td>
+											<td><p>
+													<%
+														if (profile.getDateofbirth() != null) {
+													%>
+													<%=profile.getDateofbirth()%>
+													<%
+														}
+													%>
+												</p></td>
+										</tr>
+										<tr>
+											<td>Qualification</td>
+											<td><p>
+													<%
+														if (profile.getQualification_ug() != null && profile.getQualification_ug() != "") {
+													%>
+													<%=profile.getQualification_ug()%>
+													,
+													<%
+														}
+													%>
+													<%
+														if (profile.getQualification_pg() != null && profile.getQualification_pg() != "") {
+													%>
+													<%=profile.getQualification_pg()%>
+													<%
+														}
+													%>
+												</p></td>
+										</tr>
+										<tr>
+											<td>Current Role</td>
+											<td>
+												<p><%=profile.getCurrentRole()%></p>
+											</td>
+										</tr>
+										<tr>
+											<td>Current Organization</td>
+											<td><%=profile.getCurrentOrganization()%></p></td>
+										</tr>
+										<tr>
+											<td>Current Location</td>
+											<td>
+												<p>
+													<%=profile.getCurrentLocation()%></p>
+											</td>
+										</tr>
+										<%
+											if (profile.getExperience() != null) {
+										%>
+										<tr>
+											<td>Experience</td>
+											<td>
+												<p>
+													<%=profile.getExperience()%>
+													Year
+												</p>
+											</td>
+										</tr>
+										<%
+											}
+										%>
+										<tr>
+											<td>Current CTC</td>
+											<td>
+												<p><%=profile.getCurrentCTC()%>
+													Lakh
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>Expected CTC</td>
+											<td>
+												<p>
+													<%=profile.getExpectedCTC()%>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>CTC Related Comments</td>
+											<td>
+												<p><%=profile.getCtcComments()%>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>Notice Period</td>
+											<td>
+												<p>
+													<%=profile.getNoticePeriod()%>
+													days
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>Willing to Relocate</td>
+											<td>
+												<p>
+													<%=profile.getWillingToRelocate()%>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>Submitted on</td>
+											<td>
+												<p><%=DateFormats.getTimeValue(pp.getSubmitted())%>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>Partner</td>
+											<td>
+												<p><%=profile.getRegistration().getConsultName()%>
+												</p>
+											</td>
+										</tr>
+										<%
+											if (pp.getJoinDropDate() != null || pp.getOfferDropDate() != null || pp.getDeclinedDate() != null
+														|| pp.getRejected() != null) {
+										%>
+										<tr>
+											<td>Reject Reason :</td>
+											<td>
+												<p>
+													<%=pp.getRejectReason()%></p>
+											</td>
+										</tr>
+										
+										 <%
+			              if(pp.getPost().getCloseDate()!=null )
+		                	{
+			                	%>
+				                	<tr>
+											<td>Post Status: </td>
+											<td>
+												<p>Closed
+												</p>
+											</td>
+										</tr> 
+			                	<%
+		                	}else if(pp.getPost().isActive()){
+		                		%>
+			                	<tr>
+											<td>Post Status: </td>
+											<td>
+												<p>Active
+												</p>
+											</td>
+										</tr>
+		                	<%
+		                	}else if(!pp.getPost().isActive()){
+		                		%>
+			                	<tr>
+											<td>Post Status: </td>
+											<td>
+												<p>Inactive
+												</p>
+											</td>
+										</tr> 
+		                	<%
+		                	}
+			              %>
+										<%
 			              		}
 				                %>
-				                </table>
-					              	<%-- <%
+									</table>
+									<%-- <%
 					            		boolean rejected =false;
 						              	 if(pp.getOfferDate() != null)
 					              		{ 
@@ -315,7 +442,18 @@ unviewed=0;
 					              		
 					              	%> --%>
 					            
-					            
+					            					<div class="block btn_row no-margin" style="text-align: left;">
+														<div id="<%= pp.getPpid() %>" class="profile_status">
+															<span id="forwardlink" style="color: blue;text-decoration: underline;" onclick="$('#forwardform').css('display','block');$(this).css('display','none');">Forward Profile</span>
+															<span class="error_forwardmail"></span>
+															<div id="forwardform" style="display: none;">
+															<input type="email" required="required" id="forwardmail" />
+															<input type="hidden" value="<%=pp.getPpid() %>" id="ppidforwardmail" />
+															<button class="profile_status_button" onclick="forwardProfile()" >Forward</button>
+															<button class="profile_status_button" onclick="$('#forwardform').css('display','none');$('#forwardlink').css('display','block');;$('.error_forwardmail').html('');" >Cancel</button> 
+															</div>
+														</div>
+													</div>
 					              
 		                  </div>
 			              <sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">

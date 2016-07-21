@@ -101,9 +101,9 @@
         <put-attribute name="title" value="client posts" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/client/postList.jsp" />
     </definition>
-    <definition name="viewPostDetail" extends="clientTemplateWithoutNavigation">
+    <definition name="clientPostDetail" extends="clientTemplateWithoutNavigation">
         <put-attribute name="title" value="UniHyr - View Post Detail" />
-        <put-attribute name="body" value="/WEB-INF/view/jsp/client/viewPostDetail.jsp" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/client/clientPostDetail.jsp" />
         <put-attribute name="currentpage" value="clientaccount" cascade="true"/>
     </definition>
     <definition name="clientDashboardList" extends="homeTemplate">

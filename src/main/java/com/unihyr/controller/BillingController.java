@@ -113,9 +113,28 @@ public class BillingController
 		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
 		bill.setVerificationStatus(true);
 		billingService.updateBillingDetails(bill);
-		Registration reg = registrationService.getRegistationByUserId(principal.getName());
-		map.addAttribute("registration",reg);
 		map.addAttribute("verifySuccess","true");
 		return "invoiceVerification";
 	}
+	@RequestMapping(value="/adminBillUpdate",method=RequestMethod.GET)
+	public @ResponseBody String adminBillUpdate(ModelMap map,HttpServletRequest request,Principal principal)
+	{
+		JSONObject js=new JSONObject();
+		try{
+		String id=(String)request.getParameter("billId");
+		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
+		bill.setVerificationStatus(true);
+		bill.setClientPaidStatus(true);
+		bill.setAdminPaidStatus(true);
+		bill.setPaidDate(new java.sql.Date(new Date().getTime()));
+		billingService.updateBillingDetails(bill);
+		}catch(Exception e ){
+			e.printStackTrace();
+			js.put("status", "Error Occured");
+		}
+		js.put("status", "Paid status updated successfully");
+		return js.toJSONString();
+	}
+	
+	
 }

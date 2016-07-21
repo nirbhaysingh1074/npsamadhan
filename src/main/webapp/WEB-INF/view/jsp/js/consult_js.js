@@ -181,7 +181,7 @@ jQuery(document).ready(function() {
 							{
 
 								pleaseDontWait();
-								location.href="";
+								location.href="consdashboard";
 							}
 						},
 						error: function (xhr, ajaxOptions, thrownError) {

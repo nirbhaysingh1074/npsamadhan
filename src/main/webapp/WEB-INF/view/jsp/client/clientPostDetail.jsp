@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.util.IntegerPerm"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
 <%@page import="com.artofsolving.jodconverter.DocumentConverter"%>
@@ -15,10 +16,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%
+Post post = (Post)request.getAttribute("post");
+%>
 <html dir="ltr" lang="en-US">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="<%=post.getTitle() %>" />
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="images/logo.png" />
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" />
 <title>Uni Hyr</title>
 <style type="text/css">
 	.error{color: red;}
@@ -34,7 +41,7 @@
   <div class="container" >
   	<div class="new_post_info" style="margin-top: 10px;padding: 0 14px;">
 	<%
-		Post post = (Post)request.getAttribute("post");
+		
 		if(post != null)
 		{
 		
@@ -80,13 +87,13 @@
 		            	if(post.isActive())
 		            	{
 		            		%>
-		            			<li class="active post_inactivate" id="<%= post.getPostId()%>"><a href="javascript:void(0)">Inactivate</a></li>
+		            			<li class="active post_inactivate" id="<%= post.getPostId()%>"><a href="javascript:void(0)"><%=GeneralConfig.Label_DeActivate %></a></li>
 		            		<%
 		            	}
 		            	else
 		            	{
 		            		%>
-		            			<li class="active post_activate" id="<%= post.getPostId()%>"><a href="#">Activate</a></li>
+		            			<li class="active post_activate" id="<%= post.getPostId()%>"><a href="#"><%=GeneralConfig.Label_Activate %></a></li>
 		            		<%
 		            	}
 		            
@@ -336,6 +343,16 @@
 							</dt>
 							<dd>
 								<label><%= post.getComment() %></label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label> </label>
+							</dt>
+							<dd>
+								<label><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+								<script type="IN/Share" data-url="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" data-counter="top"></script></label>
 								
 							</dd>
 						</dl>

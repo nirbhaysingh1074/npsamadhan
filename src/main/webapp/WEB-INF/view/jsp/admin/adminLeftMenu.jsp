@@ -40,6 +40,7 @@
              <li><a href="adminHelpMessages"><i class="fa fa-file-text"></i> <span>Help Desk Messages</span></a></li>
               <li><a href="adminDemoRequests"><i class="fa fa-file-text"></i> <span>Demo Requests</span></a></li>
              <li><a href="adminLoggedUsers"><i class="fa fa-file-text"></i> <span>Logged In Users</span></a></li>
+             <li><a href="adminBillingDetails"><i class="fa fa-file-text"></i> <span>Bills</span></a></li>
             
             <li class="treeview">
               <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>

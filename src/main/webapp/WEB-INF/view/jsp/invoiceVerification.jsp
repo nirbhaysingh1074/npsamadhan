@@ -31,15 +31,16 @@
 							if (regSuccess != null && regSuccess.equals("true"))
 							{
 								%>
-									<form class="form-box bottom-padding" method="POST" action="j_spring_security_check">
 									<p style="font-weight: bold;">
 										Thank You for Verifying billing details.
 									</p>	
-									</form>
-									<sec:authorize access="hasRole('ROLE_ADMIN')">
-										<a href="adminuserlist" class="btn" style="background-color: green;border: 1px solid gray; padding:5px 10px;color: #fff;">Back To Users List</a>
-									</sec:authorize>
 								<%
+							}else{
+								%>
+								<p style="font-weight: bold;">
+									Some Error Occured in billing verification.
+								</p>	
+							<%
 							}
 						%>					
 				</div>

@@ -18,6 +18,7 @@
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/view/jsp/footerIndex.jsp" />
 	</definition>
+	
 
 	<definition name="consBillingDetails" extends="consultTemplate">
 		<put-attribute name="title"

@@ -1276,8 +1276,8 @@ public class ClientController
 	 * @param principal
 	 * @return
 	 */
-	@RequestMapping(value = "/viewPostDetail", method = RequestMethod.GET)
-	public String viewPostDetail(ModelMap map, HttpServletRequest request ,Principal principal)
+	@RequestMapping(value = "/clientPostDetail", method = RequestMethod.GET)
+	public String clientPostDetail(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
 		map.addAttribute("registration",reg);
@@ -1293,7 +1293,7 @@ public class ClientController
 			if(post != null)
 			{
 				map.addAttribute("post", post);
-				return "viewPostDetail";
+				return "clientPostDetail";
 			}
 			
 		}

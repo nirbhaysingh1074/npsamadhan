@@ -22,4 +22,6 @@ public interface BillingDao {
 
 	public List<BillingDetails> getAllDetailsUnverified();
 
+	public List<BillingDetails> getAllDetails();
+
 }

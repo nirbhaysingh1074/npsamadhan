@@ -26,6 +26,10 @@
         <put-attribute name="title" value="UniHyr - Profile List" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminProfileList.jsp" />
     </definition>
+    <definition name="adminBillingDetails" extends="adminTemplate">
+        <put-attribute name="title" value="UniHyr - Bills" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminBillingDetails.jsp" />
+    </definition>
     <definition name="adminUserDerail" extends="adminTemplate">
         <put-attribute name="title" value="UniHyr - User Detail" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/admin/adminUserDerail.jsp" />

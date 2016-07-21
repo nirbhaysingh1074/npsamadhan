@@ -14,6 +14,8 @@
 	List<PostProfile> profileList = (List<PostProfile>) request.getAttribute("profileList");
 	List<PostConsultant> postConsList = (List)request.getAttribute("postConsList");
 	System.out.println(postConsList);
+	Set<Integer> cons = new HashSet(); 
+	Set<Long> shortListed = new HashSet();
 	Post post=(Post)request.getAttribute("selectedPost");
 	long totalCount = (Long) request.getAttribute("totalCount");
 	int pn = (Integer) request.getAttribute("pn");
@@ -35,8 +37,6 @@
 	}
 %>
     <%if(post!=null) {
-    	Set<Integer> cons = new HashSet(); 
-		Set<Long> shortListed = new HashSet();
 		Iterator<PostProfile> it = post.getPostProfile().iterator();
 		int countRead=0;
 		while(it.hasNext())
@@ -223,26 +223,22 @@
 									<%
 							}
 			                  %>
-							<div class="" style="float: left;width: 65%;color: red;margin-left: 7px;line-height: 26px;">
-		                 	
-		                 	<%if(post!=null&&post.getUpdateInfo()!=null){
-		                 		%>
-		                 <marquee width="100%"><%=post.getUpdateInfo() %></marquee>
-		                 	<%} %>  
-		                 	
-		                 	 
-			                <%if(post.getCloseDate()!=null) {%>
-			             
-						<marquee>
-						<font color="red">This post has been closed. You can not submit profiles.</font>						
-						</marquee>
+						<div class="" style="float: left;width: 65%;color: red;margin-left: 7px;line-height: 26px;">
+		                <marquee width="100%">
+		                <%if(post!=null&&post.getUpdateInfo()!=null){	%>
+		                <%=post.getUpdateInfo() %>
+		                <%} %>  
+			            <%if(post.getCloseDate()!=null) {%>
+						This post has been closed. You can not submit profiles.					
 						<%} %>
-			                 </div>
-							
+						 Total Opening : <%=post.getNoOfPosts() %>, 
+						 Total Pending : <%=post.getNoOfPosts()-post.getNoOfPostsFilled() %>, 
+						 Total Submitted : <%=post.getPostProfile().size() %>, 
+						 In Process : <%=shortListed.size() %>, 
+						 Published Date : <%=DateFormats.getTimeValue(post.getPublished()) %>
+						</marquee>
+			            </div>
 						</div>
-						
-						
-						
 						<div class="candidate_profiles_for_cons">
 							<%
 								if(profileList != null)
@@ -372,12 +368,7 @@
 	                							} else {
 	                								status = GeneralConfig.SubmittedOnly;
 	                							}
-	                					             
-	                  							
-	                  							
-	                  							
-	                  							
-	                  							
+	                  							String action="none required";
 	                  							if(pp.getWithdrawDate()!=null){
 	                  								%>
 				                  					<td style="text-align: left;">
@@ -387,7 +378,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 															<%
 														}
@@ -395,7 +386,7 @@
 														{
 															%>
 															<td class="text-center" style="text-align: left;">
-																	<span>None Required</span>
+																	<span><%=action %></span>
 															</td>
 															<%
 															
@@ -411,7 +402,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 															<%
 														}
@@ -419,7 +410,7 @@
 														{
 															%>
 															<td class="text-center" style="text-align: left;">
-																	<span>None Required</span>
+																	<span><%=action %></span>
 															</td>
 															<%
 															
@@ -436,7 +427,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 															<%
 														}
@@ -444,7 +435,7 @@
 														{
 															%>
 															<td class="text-center" style="text-align: left;">
-																	<span>None Required</span>
+																	<span><%=action %></span>
 															</td>
 															<%
 														}
@@ -460,7 +451,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 															<%
 														}
@@ -468,7 +459,7 @@
 														{
 															%>
 																<td class="text-center" style="text-align: left;">
-																	<span>None Required</span>
+																	<span><%=action %></span>
 																</td>
 															<%
 														}
@@ -484,7 +475,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 																
 															<%
@@ -498,11 +489,7 @@
 																		 | <a style="cursor:pointer;" class="btn-open" data-type="join_reject"  title="Click to reject offer" >Offer Drop</a>
 																	</p>
 																</td>
-																<%-- <td class="text-center" style="text-align: left;">
-																	<p id="<%= pp.getPpid()%>" class="profile_status" data-view="table">
-																	<a style="cursor: pointer;" onclick="setCandidatureWithdraw('<%= pp.getPpid()%>')"  class="candidate_withdraw" title="Click to withdraw candidature" >Withdraw</a> 
-																</p>
-																</td> --%>
+															
 																
 															<%
 														}
@@ -514,25 +501,12 @@
 																<span><%=status %></span>
 															</td>
 															
-														<%
-														if( !pp.getPost().isActive()|| pp.getPost().getCloseDate()!=null)
-														{
-															%>
+														
 							                  					<td class="text-center" style="text-align: left;">
 																	<span>Post Inactive</span>
 																</td>
 																
-															<%
-														}
-														else
-														{
-															%>
-																<td class="text-center" style="text-align: left;">
-																	<span>	none required</span>
-																</td>
-															<%
-															
-														}
+														<%
 													}
 													else if(pp.getRecruited() != null)
 													{
@@ -546,7 +520,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 																
 															<%
@@ -581,7 +555,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 																
 															<%
@@ -592,7 +566,7 @@
 							                  					
 																
 																<td class="text-center" style="text-align: left;">
-															<span>	none required</span>
+															<span>	<%=action %></span>
 																</td>
 															<%
 															
@@ -610,7 +584,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 																
 															<%
@@ -643,7 +617,7 @@
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">
-																	<span>Post Inactive</span>
+																	<span><%=action %></span>
 																</td>
 																
 															<%

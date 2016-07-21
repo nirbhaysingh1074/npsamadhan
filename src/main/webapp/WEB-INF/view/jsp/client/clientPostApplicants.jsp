@@ -244,7 +244,7 @@ pleaseWait();
 									if (post != null) {
 								%>
 								<a target="_blank"
-									href="viewPostDetail?pid=<%=post.getPostId()%>"
+									href="clientPostDetail?pid=<%=post.getPostId()%>"
 									class="btn file_btn view_post  ${sel_post != null ? '' : 'btn_disabled'} "><strong>View
 										JD</strong></a>
 								<%
@@ -453,45 +453,47 @@ pleaseWait();
 									} else {
 										status = GeneralConfig.SubmittedOnly;
 									}
+									
+									String action ="none required";
 												if (pp.getPost().getCloseDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>Post Closed</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%	
 										}else if(!pp.getPost().isActive()) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>Post Inactive</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 										}else  if (pp.getWithdrawDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 										}else  if (pp.getJoinDropDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 										} else if (pp.getJoinDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 										} else if (pp.getOfferDropDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 										} else if (pp.getOfferDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 										} else if (pp.getDeclinedDate() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 										} else if (pp.getRecruited() != null) {
 									%>
@@ -512,7 +514,7 @@ pleaseWait();
 									else if (pp.getRejected() != null) {
 									%>
 									<td><span><%=status %></span></td>
-									<td class="text-center" style="text-align: left;"><span>None Required</span></td>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
 									} else if (pp.getAccepted() != null) {
 									%>

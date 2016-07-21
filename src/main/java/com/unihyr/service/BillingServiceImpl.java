@@ -65,5 +65,12 @@ public class BillingServiceImpl implements BillingService
 		return this.BillingDao.getAllDetailsUnverified();
 	}
 
+	@Override
+	public  List<BillingDetails> getAllDetails()
+	{
+		// TODO Auto-generated method stub
+		return this.BillingDao.getAllDetails();
+	}
+
 	
 }

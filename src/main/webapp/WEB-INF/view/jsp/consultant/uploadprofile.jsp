@@ -493,12 +493,12 @@ function otherLocationInput(){
 	            	<input type="text" style="display: none;" placeholder="Your Location" id="otherLocation" name="otherLocation" />
 	            	 <div id="div1"></div>
 	            	
-	            	<script type="text/javascript">
-function showfield(name){
-  if(name=='Other')document.getElementById('div1').innerHTML='Other: <form:input path="currentLocation"  />';
-  else document.getElementById('div1').innerHTML='';
-}
-</script>
+						            	<script type="text/javascript">
+					function showfield(name){
+					  if(name=='Other')document.getElementById('div1').innerHTML='Other: <form:input path="currentLocation"  />';
+					  else document.getElementById('div1').innerHTML='';
+					}
+					</script>
 	            	
 									<span class='error currentLocation_error'>&nbsp;<form:errors path="currentLocation" /></span>
 								</dd>
@@ -606,20 +606,27 @@ function showfield(name){
 	              <div class="row">
 	                <div class="col-md-6">
 	                  <form:select path="qualification_ug" multiple="multiple" style="height: 111px;" >
-	              	<form:option value="">Select Qualification</form:option>
-	             
-	              		            		 <c:forEach var="item" items="${qListUg}">
-						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
-						</c:forEach> 
+	              	<form:option value="">Select Graduation</form:option>
+	             	<%
+	             	List<Qualification> ugList=(List<Qualification>)request.getAttribute("qListUg");
+	              	for(Qualification loc:ugList){
+	              		if(!loc.getqTitle().trim().equalsIgnoreCase("any graduation")){
+           			%>
+					   <form:option value="<%=loc.getqTitle() %>"><%=loc.getqTitle() %></form:option>
+					<%}} %>
 	            	</form:select>
 	                  <span class='error qualification_ug_error'><form:errors path="qualification_ug"/></span>
 	                </div>
 	                <div class="col-md-6">
 	                  <form:select path="qualification_pg" multiple="multiple" style="height: 111px;" >
-	              	<form:option value="">Select Qualification</form:option>
-	            		 <c:forEach var="item" items="${qListPg}">
-						   <form:option value="${item.qTitle}">${item.qTitle}</form:option>
-						</c:forEach> 
+	              	<form:option value="">Select Post Graduation</form:option>
+	            		 	<%
+	             	List<Qualification> pgList=(List<Qualification>)request.getAttribute("qListPg");
+	              	for(Qualification loc:pgList){
+	              		if(!loc.getqTitle().trim().equalsIgnoreCase("any graduation")){
+           			%>
+						   <form:option value="<%=loc.getqTitle() %>"><%=loc.getqTitle() %></form:option>
+					<%}} %>
 	            	</form:select>
 	                  </div>
 	              </div>

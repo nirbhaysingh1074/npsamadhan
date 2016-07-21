@@ -1,55 +1,74 @@
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.constraints.NumberUtils"%>
-<%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.domain.BillingDetails"%>
+<%@page import="com.unihyr.domain.PostProfile"%>
+<%@page import="com.unihyr.domain.CandidateProfile"%>
+<%@page import="com.unihyr.domain.Post"%>
+<%@page import="com.unihyr.constraints.DateFormats"%>
+<%@page import="com.unihyr.domain.Registration"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type="text/javascript">
+function updatestatus(billId){
+	
+	$.ajax({
+		type : "GET",
+		url : "adminBillUpdate",
+		data : {'billId':billId},
+		contentType : "application/json",
+		success : function(data) {
+			var obj = jQuery.parseJSON(data);
+			alertify.success(obj.status);
+			location.href="";
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+		}
+	}) ;
+}
+</script>
 </head>
-<body>
-<div class="mid_wrapper">
-  <div class="container">
-	  	<div id="positions_info">
-		  	<div>
-				<div class="rightside_in new_table" style="padding: 10px 20px 0px;">
-				  	<div class="block consulting" style="float: left; width: auto;">
-				    </div>
-			   </div>
-		  </div>
-	    <div  class="positions_info cons_new_posts">
-	  <!--     <div class="filter">
-	        
-	        <div class="col-md-7 pagi_summary"><span>Showing 0 - 0 of 0</span></div>
-	        <div class="col-md-5">
-	              <ul class="page_nav unselectable">
-			            <li class="disabled"><a>First</a></li>
-			            <li class="disabled"><a><i class="fa fa-fw fa-angle-double-left"></i></a></li>
-		            	<li class="active current_page"><a>1</a></li>
-	      				<li class="disabled"><a><i class="fa fa-fw fa-angle-double-right"></i></a></li>
-			            <li class="disabled"><a>Last</a></li>
-	              </ul>
-	            </div>
-	      </div> -->
-	      <div class="positions_tab">
-	        	<table class="table no-margin" style="font-size: 10px;border: 1px solid gray;">
-		        	<thead>
-		        		<tr>
+<body class="hold-transition skin-blue sidebar-mini" >
+  
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>Bills</h1>
+          <ol class="breadcrumb">
+            <li><a href="admindashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li class="active">Bills</li>
+          </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+			<div class="row">
+				<div class="col-md-12">  
+				  <div class="box box-success" style="min-height: 200px">
+		           <div class="box-header with-border bg-green">
+		             <h3 class="box-title">List of Bills</h3>
+		
+		             <div class="box-tools pull-right">
+		               <button class="text-green" type="button" onclick="javascript:location.reload()"><i class="fa fa-fw fa-refresh"></i></button>
+		               <button data-widget="collapse" class="btn btn-box-tool" type="button"><i class="fa fa-minus"></i>
+		               </button>
+		             </div>
+		           </div>
+		           <!-- /.box-header -->
+		           <div class="box-body no-padding" style="font-size: 8px;">
+		             <table class="table posts"  >
+						<thead class="bg-gray">
+						<tr>
 	       				<th align="left">Candidate Name</th>
 	       				<th align="left">Position</th>
 	       				<th align="left">
-	       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 						Consultant Name
-						</sec:authorize>
-						<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 						Client Name
-						</sec:authorize>
 						</th>
 	       				<th align="left">Location</th>
 	       				<th align="left">Offer Accepted Date</th>
@@ -60,12 +79,9 @@
 	       				<th>
 	       				Recruitment Fee (%)
 	       				</th>
-	       				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 	       				<th align="left">
 						Commission(%)
 	       				</th>
-						</sec:authorize>
-	       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	       				<th align="left">			
 						Fee
 						</th>
@@ -74,21 +90,16 @@
 	       				CESS(%)
 	       				</th>
 	       				<th align="left">Total Amount</th>
-	       				</sec:authorize>
-	       				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 	       				<th>
 	       				Total Payment incl Tax
 	       				</th>
-	       				</sec:authorize>
 	       				<th align="left">Payment Due Date</th>
-	       				<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 	       				<th align="left">Verification Status</th>
-	       				<th align="left"></th>
-	       				</sec:authorize>
+	       				<th align="left">Action</th>
 		       			</tr>
-	       			</thead>
-	       			<tbody >
-					<%
+						</thead>
+						<tbody  id="load_admin_consultant">
+							<%
 					List<BillingDetails> bills=(List<BillingDetails>)request.getAttribute("bills");
 					for(BillingDetails bill:bills){
 					%>
@@ -98,12 +109,8 @@
 					<%=bill.getPosition() %>
 					</td>
 					<td>
-					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 						<%=bill.getConsultantName()%> 
-					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 						<%=bill.getClientName()%> 
-					</sec:authorize>
 					</td>
 					<td><%=bill.getLocation()%></td>
 					<td><%=DateFormats.ddMMMMyyyy.format(bill.getOfferAcceptedDate()) %></td>
@@ -128,12 +135,9 @@
 					<td>
 					<%=bill.getFeePercentForClient() %>
 					</td>
-					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 					<td>
 					<%=bill.getFeePercentToAdmin() %>
 					</td>
-					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 					<td>
 					<%=NumberUtils.convertNumberToCommoSeprated(bill.getFee()) %>
 					</td>
@@ -152,8 +156,6 @@
 					}
 					%>
 					<%=NumberUtils.convertNumberToCommoSeprated(totalAmount) %></td>
-					</sec:authorize>
-					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 	       				<td>
 	       				<%
 	       				Double recFee=bill.getFee();
@@ -171,7 +173,6 @@
 	       				%>
 	       				<%=NumberUtils.convertNumberToCommoSeprated(totalCom)%>
 	       				</td>
-	       				</sec:authorize>
 					
 					<td>
 					<%if(bill.getPaymentDueDateForAd()!=null){ %>
@@ -179,7 +180,6 @@
 					<%}else{ %>
 					Yet to Join
 					<%} %></td>
-					<sec:authorize access="hasRole('ROLE_EMP_MANAGER')">
 					<td>
 					<%if(bill.getJoiningDate()!=null){ %>
 					<%if(bill.getVerificationStatus()==null|| (!bill.getVerificationStatus())){ 
@@ -194,38 +194,31 @@
 					<td >
 					<%if(bill.getJoiningDate()!=null){ %>
 					<a target="_blank" href="clientBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>
+					<%if(bill.getPaidDate()!=null){ %>
+					<span>Paid on : <%=DateFormats.getTimeValue(bill.getPaidDate()) %></span>
+					<%}else{ %>
+					<span style="text-decoration: underline;color: blue;cursor: pointer;" onclick="updatestatus('<%=bill.getBillId() %>')" >Paid</span>
+					<%} %>
 					<%} %>
 					</td>
-					</sec:authorize>
-					
-					<%-- 
-					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
-					<td>
-					<%if(bill.getJoiningDate()!=null){ %>
-					<a target="_blank" href="consBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>
-					<%} %>
-					</td>
-					</sec:authorize>
-					 --%>
 					</tr>
 					<%} %>
 	       			</tbody>
-	       		</table>
-	      </div>
-	      <!-- <div class="block tab_btm">
-	        <div class="pagination">
-	          <ul class="pagi">
-		            <li class="disabled"><a>First</a></li>
-		            <li class="disabled"><a><i class="fa fa-fw fa-angle-double-left"></i></a></li>
-	            	<li class="active current_page"><a>1</a></li>
-	   				<li class="disabled"><a><i class="fa fa-fw fa-angle-double-right"></i></a></li>
-		            <li class="disabled"><a>Last</a></li>
-	          </ul>
-	        </div>
-	      </div> -->
-	    </div>
-    </div>
-  </div>
-</div>
-</body>
+					</table>
+		           </div>
+		           <div class="overlay">
+		              <i class="fa fa-refresh fa-spin"></i>
+		            </div>
+		           <!-- /.box-body -->
+	      		</div>
+	          </div>  
+	        </div>  
+        </section><!-- /.content -->
+      </div><!-- /.content-wrapper -->
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	$('.overlay').hide();
+});
+</script>    
+  </body>
 </html>

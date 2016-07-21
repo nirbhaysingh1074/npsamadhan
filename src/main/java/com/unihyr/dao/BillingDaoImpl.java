@@ -68,7 +68,8 @@ public class BillingDaoImpl implements BillingDao
 		// TODO Auto-generated method stub
 		Session session=this.sessionFactory.getCurrentSession();
 		Criteria crieteria=session.createCriteria(BillingDetails.class);
-		crieteria.add(Restrictions.eq("clientId", userid));
+		crieteria.add(Restrictions.eq("clientId", userid))
+		.add(Restrictions.isNull("deleteDate"));
 		crieteria.addOrder(Order.desc(sortParam));
 		return crieteria.list();
 	}
@@ -78,7 +79,8 @@ public class BillingDaoImpl implements BillingDao
 		// TODO Auto-generated method stub
 		Session session=this.sessionFactory.getCurrentSession();
 		Criteria crieteria=session.createCriteria(BillingDetails.class);
-		crieteria.add(Restrictions.eq("consultantId", userid));
+		crieteria.add(Restrictions.eq("consultantId", userid))
+		.add(Restrictions.isNull("deleteDate"));
 		crieteria.addOrder(Order.desc(sortParam));
 		return crieteria.list();
 	}
@@ -89,7 +91,8 @@ public class BillingDaoImpl implements BillingDao
 		// TODO Auto-generated method stub
 		Session session=this.sessionFactory.getCurrentSession();
 		Criteria crieteria=session.createCriteria(BillingDetails.class);
-		crieteria.add(Restrictions.eq("postProfileId", ppid));
+		crieteria.add(Restrictions.eq("postProfileId", ppid))
+		.add(Restrictions.isNull("deleteDate"));
 		if(crieteria.list().isEmpty())
 			return null;
 		else
@@ -101,7 +104,16 @@ public class BillingDaoImpl implements BillingDao
 	{
 		Session session=this.sessionFactory.getCurrentSession();
 		Criteria crieteria=session.createCriteria(BillingDetails.class);
-		crieteria.add(Restrictions.isNull("verificationStatus"));
+		crieteria.add(Restrictions.isNull("verificationStatus"))
+		.add(Restrictions.isNull("deleteDate"));
+		return crieteria.list();
+	}
+	@Override
+	public List<BillingDetails> getAllDetails()
+	{
+		Session session=this.sessionFactory.getCurrentSession();
+		Criteria crieteria=session.createCriteria(BillingDetails.class);
+		crieteria.add(Restrictions.isNull("deleteDate"));
 		return crieteria.list();
 	}
 

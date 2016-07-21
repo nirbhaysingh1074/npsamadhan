@@ -38,6 +38,7 @@ import com.unihyr.domain.RatingParameter;
 import com.unihyr.domain.Registration;
 import com.unihyr.domain.UserRole;
 import com.unihyr.model.ClientUserModel;
+import com.unihyr.service.BillingService;
 import com.unihyr.service.GlobalRatingService;
 import com.unihyr.service.InboxService;
 import com.unihyr.service.IndustryService;
@@ -106,7 +107,9 @@ public class AdminPanelController
 	
 	@Autowired
 	private NotificationService notificationService;
-	
+
+	@Autowired
+	private BillingService billingService;
 	/**
 	 * @param map
 	 * @return
@@ -235,7 +238,7 @@ public class AdminPanelController
 		return "adminPostList";
 	}
 	
-	
+
 	/**
 	 * @param map
 	 * @param request
@@ -247,6 +250,18 @@ public class AdminPanelController
 	{
 		map.addAttribute("ppList", postProfileService.getAllPostProfile(0, 1000));
 		return "adminProfileList";
+	}
+	/**
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
+	@RequestMapping(value = "/adminBillingDetails", method = RequestMethod.GET)
+	public String adminBillingDetails(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		map.addAttribute("bills", billingService.getAllDetails());
+		return "adminBillingDetails";
 	}
 	
 	/**

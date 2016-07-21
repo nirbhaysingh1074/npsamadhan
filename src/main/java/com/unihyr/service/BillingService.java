@@ -24,5 +24,7 @@ public interface BillingService
 
 	public List<BillingDetails> getAllDetailsUnverified();
 
+	public  List<BillingDetails>  getAllDetails();
+
 
 }
