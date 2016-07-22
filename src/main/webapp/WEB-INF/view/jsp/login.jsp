@@ -6,6 +6,7 @@
 	
 	<title>UniHyr</title>
 	
+<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 	<link rel="stylesheet" href="css/media.css" media="screen" />
     <link rel="stylesheet" href="css/style.css" media="screen" />

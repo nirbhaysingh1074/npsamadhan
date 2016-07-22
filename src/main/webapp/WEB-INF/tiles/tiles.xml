@@ -83,4 +83,8 @@
         <put-attribute name="title" value="UniHyr - Job Post" />
         <put-attribute name="body" value="/WEB-INF/view/jsp/postDetails.jsp" />
     </definition>
+    <definition name="contractagreement" extends="publicHeader">
+        <put-attribute name="title" value="UniHyr - Contract Agreement" />
+        <put-attribute name="body" value="/WEB-INF/view/jsp/contractagreement.jsp" />
+    </definition>
 </tiles-definitions>

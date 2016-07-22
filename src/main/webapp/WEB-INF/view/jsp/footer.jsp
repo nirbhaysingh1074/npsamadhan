@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 <footer class="footer rw">
 		<div class="footer_top Light12 grey2">
 			<div class="container">

@@ -64,7 +64,7 @@
 											<tr>
 												<td><%= var.getVarName() %></td>
 												<td><%= var.getVarValue() %></td>
-												<td class="text-center"><a href="adminEditConfiguration?lid=<%= var.getConfigId()%>">
+												<td class="text-center"><a href="adminEditConfiguration?configName=<%= var.getVarName()%>">
 												<button class="btn btn-sm btn-success"> Edit </button></a></td>
 											</tr>
 		       		 					<%

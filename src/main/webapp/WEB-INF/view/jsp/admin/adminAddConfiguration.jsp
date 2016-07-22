@@ -48,7 +48,7 @@
 			                    <div class="form-group">
 			                      <label class="col-sm-4 control-label" for="inputEmail3">Value</label>
 			                      <div class="col-sm-8">
-			                        <form:input path="varValue" class="form-control" />
+			                        <form:textarea path="varValue" class="form-control" ></form:textarea>
 			                        <span class="error"> ${varvalue_error}</span>
 			                        
 			                      </div>

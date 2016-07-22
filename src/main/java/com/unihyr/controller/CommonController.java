@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.unihyr.constraints.GeneralConfig;
+import com.unihyr.domain.ConfigVariables;
 import com.unihyr.domain.ContactUs;
 import com.unihyr.domain.HelpDesk;
 import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Post;
 import com.unihyr.domain.PostProfile;
 import com.unihyr.domain.Registration;
+import com.unihyr.service.ConfigVariablesService;
 import com.unihyr.service.ContactUsService;
 import com.unihyr.service.HelpDeskService;
 import com.unihyr.service.LoginInfoService;
@@ -25,6 +27,7 @@ import com.unihyr.service.MailService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.RegistrationService;
+import com.unihyr.util.GeneratePdf;
 import com.unihyr.util.IntegerPerm;
 
 @Controller
@@ -42,6 +45,8 @@ public class CommonController
 	PostProfileService postProfileService;
 	@Autowired
 	private PostService postService;
+
+	@Autowired private ConfigVariablesService configurationService;
 	
 	@RequestMapping(value = "/helpDeskMessage", method = RequestMethod.GET)
 	public @ResponseBody String clientMailRejectProfile(ModelMap map, HttpServletRequest request, Principal principal)
@@ -255,7 +260,6 @@ public String termsOfService(ModelMap map, HttpServletRequest request, Principal
 	@RequestMapping(value = "/forwardedProfile", method = RequestMethod.GET)
 	public String forwardedProfile(ModelMap map, HttpServletRequest request ,Principal principal,@RequestParam long ppid)
 	{
-
 		ppid=IntegerPerm.decipher((int) ppid);
 		PostProfile postProfile = postProfileService.getPostProfile(ppid);
 		map.addAttribute("postProfile", postProfile);
@@ -264,11 +268,33 @@ public String termsOfService(ModelMap map, HttpServletRequest request, Principal
 	@RequestMapping(value = "/postDetails", method = RequestMethod.GET)
 	public String postDetails(ModelMap map, HttpServletRequest request ,Principal principal,@RequestParam long ppid)
 	{
-
 		ppid=IntegerPerm.decipher((int) ppid);
 		Post post = postService.getPost(ppid);
 		map.addAttribute("post", post);
 		return "postDetails";
+	}
+	@RequestMapping(value = "/contractagreement", method = RequestMethod.GET)
+	public String contractagreement(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		String userid=request.getParameter("userid");
+		Registration reg=registrationService.getRegistationByUserId(userid);
+		LoginInfo logininfo=loginInfoService.findUserById(userid);
+		if(!logininfo.getIsactive()){
+			ConfigVariables configVariables=configurationService.getConfigVariable("contract").get(0);
+			map.addAttribute("reg", reg);
+			map.addAttribute("contract",configVariables);
+		}
+		return "contractagreement";
+	}
+	@RequestMapping(value = "/contractagreement", method = RequestMethod.POST)
+	public String contractagreed(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		
+		String content="";
+		
+		String pathToStore="";
+		GeneratePdf.generatePdf(content, pathToStore);
+		return "contractagreement";
 	}
 }
 	

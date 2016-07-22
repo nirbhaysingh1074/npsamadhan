@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.unihyr.util.IntegerPerm"%>
 <%@page import="com.unihyr.constraints.NumberUtils"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter"%>
@@ -20,6 +21,14 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html dir="ltr" lang="en-US">
 <head>
+<%
+
+Post post = (Post)request.getAttribute("post");
+%>
+<meta prefix="og: http://ogp.me/ns#" property="og:title" content="<%=post.getTitle() %>" />
+<meta prefix="og: http://ogp.me/ns#" property="og:image" content="images/logo.png" />
+<meta prefix="og: http://ogp.me/ns#" property="og:url" content="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" />
+
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Uni Hyr</title>
@@ -37,13 +46,40 @@
   <div class="container" >
   	<div class="new_post_info" style="margin-top: 10px;padding: 0 14px;">
 	<%
-		Post post = (Post)request.getAttribute("post");
+		
 	Registration registration=(Registration)request.getAttribute("registration");
 		if(post != null)
 		{
 			%>
 		      <div class="filter">
-		        <div class="col-md-7  pagi_summary"><span><%= post.getJobCode()%> ( <%= post.getTitle() %> - <%= post.getLocation() %> )</span></div>
+		        <div class="col-md-7  pagi_summary">
+		        <%
+		    	Registration reg = (Registration)request.getAttribute("registration");
+    			Iterator<PostConsultant> it = post.getPostConsultants().iterator();
+     			
+     			PostConsultant pocl = null;
+     			while(it.hasNext())
+     			{
+     				PostConsultant pc = it.next();
+     				if(pc.getConsultant().getUserid().equals(reg.getUserid()) || (reg.getAdmin() != null && pc.getConsultant().getUserid().equals(reg.getAdmin().getUserid())  ) )
+     				{
+     					pocl = pc;
+     				}
+     			}
+		        
+		        %>
+		        <%
+		        if(pocl != null)
+         			{
+		        	
+         			%>
+		        <span><%= post.getTitle() %> - <%= post.getLocation() %> </span>
+		        <%}else{
+		        	%>
+		       <span><%= post.getJobCode()%> ( <%= post.getTitle() %> - <%= post.getLocation() %> )</span>
+		        <%} %>
+		        
+		        </div>
 		        <div class="col-md-5">
 		          <sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
 		          <ul class="page_nav">
@@ -64,18 +100,7 @@
 		            </li> 
 		            --%>
 		             <%} 
-		   			Registration reg = (Registration)request.getAttribute("registration");
-        			Iterator<PostConsultant> it = post.getPostConsultants().iterator();
-         			
-         			PostConsultant pocl = null;
-         			while(it.hasNext())
-         			{
-         				PostConsultant pc = it.next();
-         				if(pc.getConsultant().getUserid().equals(reg.getUserid()) || (reg.getAdmin() != null && pc.getConsultant().getUserid().equals(reg.getAdmin().getUserid())  ) )
-         				{
-         					pocl = pc;
-         				}
-         			}
+		   		
          			
          			if(pocl != null)
          			{
@@ -97,6 +122,11 @@
 		        <div class="form_cont">
 			       
 			        <div class="form_col viewJd">
+						  <%
+		        if(pocl != null)
+         			{
+		        	
+         			%>
 						 <dl>
 							<dt>
 								<label>Job Code</label>
@@ -106,6 +136,7 @@
 								
 							</dd>
 						</dl> 
+						<%} %>
 						<dl>
 							<dt>
 								<label>Title</label>
@@ -283,7 +314,13 @@
 									</dl>
 								<%
 							}
+						
 						%>
+						  <%
+		        if(pocl != null)
+         			{
+		        	
+         			%>
 						<dl>
 							<dt>
 								<label>Client</label>
@@ -298,7 +335,7 @@
 								
 							</dd>
 						</dl>
-						
+						<%} %>
 					 	<dl>
 							<dt>
 								<label>Fee Percent</label>
@@ -334,9 +371,6 @@
 								
 							</dd>
 						</dl>
-						
-						 
-						 
 						<%
 							if(post.getEditSummary() != null)
 							{
@@ -361,6 +395,18 @@
 								<%
 							}
 						%>
+					<div class="clearfix" style="padding: 15px">
+				
+					
+					
+					
+								<label><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+								<script type="IN/Share" data-url="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" ></script></label>
+								
+					</div>
+						 
+						 
+						
 				
 						<%if(post.getAdditionDetail()!=null&&post.getAdditionDetail().trim()!="") {%>
 						<div class="clearfix" style="padding: 15px">

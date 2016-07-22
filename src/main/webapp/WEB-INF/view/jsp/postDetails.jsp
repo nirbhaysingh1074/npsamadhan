@@ -236,16 +236,7 @@
 								
 							</dd>
 						</dl>
-						<dl>
-							<dt>
-								<label> </label>
-							</dt>
-							<dd>
-								<label><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-<script type="IN/Share" data-url="http://54.191.37.178/unihyr/postDetails?pid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" data-counter="top"></script></label>
-								
-							</dd>
-						</dl>
+					
 						
 						 
 						<%

@@ -16,13 +16,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-            Update Location
+            Update Configuration
             <small>update</small>
           </h1>
           <ol class="breadcrumb">
             <li><a href="admindashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="adminlocations"><i class="fa fa-dashboard"></i> Locations</a></li>
-            <li class="active">Update Location</li>
+            <li><a href="adminlocations"><i class="fa fa-dashboard"></i> Configuration</a></li>
+            <li class="active">Update Configuration</li>
           </ol>
         </section>
 
@@ -32,7 +32,7 @@
 				<div class="col-md-6">  
 				  <div class="box box-success" style="min-height: 200px">
 		           <div class="box-header with-border bg-green">
-		             <h3 class="box-title">Update Location</h3>
+		             <h3 class="box-title">Update Configuration</h3>
 		
 		             <div class="box-tools pull-right">
 		               <button class="text-green" type="button" onclick="javascript:location.reload()"><i class="fa fa-fw fa-refresh"></i></button>
@@ -40,14 +40,21 @@
 		           </div>
 		           <!-- /.box-header -->
 		           <div class="box-body no-padding">
-	           		 <form:form method="POST"  class="form-horizontal" action="admineditlocation" commandName="locForm" onsubmit=" return validateForm()">
+	           		 <form:form method="POST"  class="form-horizontal" action="adminEditConfiguration" commandName="configVariables" onsubmit=" return validateForm()">
 		                  <div class="box-body">
 		                  		<div class="form-group">
-			                      <label class="col-sm-4 control-label" for="inputEmail3">Location</label>
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Var Name</label>
 			                      <div class="col-sm-8">
-			                        <form:input path="location" class="form-control" />
-			                        <form:hidden path="lid"/>
-			                        <span class="error"> ${loc_error}</span>
+			                        <form:input path="varName" class="form-control" />
+			                        <span class="error"> ${varname_error}</span>
+			                        
+			                      </div>
+			                    </div>
+			                    <div class="form-group">
+			                      <label class="col-sm-4 control-label" for="inputEmail3">Value</label>
+			                      <div class="col-sm-8">
+			                        <form:textarea path="varValue" class="form-control" ></form:textarea>
+			                        <span class="error"> ${varvalue_error}</span>
 			                        
 			                      </div>
 			                    </div>

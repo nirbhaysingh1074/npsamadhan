@@ -5,8 +5,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>UniHyr</title>
-
-	<link rel="stylesheet" href="css/fonts.css" media="screen"   />
+<link rel="stylesheet" href="css/fonts.css" media="screen"   />
 <link rel="stylesheet" href="css/media.css" media="screen" />
 <link rel="stylesheet" href="css/style.css" media="screen" />
 
@@ -37,6 +36,37 @@ function validateForm(){
 }
 </script>
 <style>
+.firstTimeLoginPopup{
+	    margin: 0px auto;
+    top: 25%;
+    left: 17%;
+    position: fixed;
+    height: 244px;
+    width: 914px;
+    background: #fff;
+    z-index: 10;
+}
+.bodyCover{
+	position: fixed;
+	top: 0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	z-index: 9;
+	opacity:0.8;
+	background: #ececec;
+}
+.bodyCoverWait{
+	position: fixed;
+	top: 0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	z-index: 9;
+	opacity:0.8;
+	background: #ececec;
+}
+
 #slider1 {
 	position: relative;
 	overflow: hidden;
@@ -819,6 +849,78 @@ $("#movetotop").click(function() {
 	});
 
 </script>
+<div class="bodyCoverWait" style="display: none;text-align: center; ">
+<img style="position: relative;top: 250px;" alt="Please wait..." src="images/pwait.gif" />
+</div>
+
+<div class="firstTimeLoginPopup profileClosed1" style="top:35%;border:1px solid #f8b910;display: none;height: auto;position: fixed;max-height: 300px;" >
+				<div class="login-header" style="padding: 3px 3px 3px 2px;
+line-height: 30px;
+height: 72px;">
+					<a href="index">
+					<img alt="" src="images/logo.png" style="margin-left: 48px;">
+					</a>
+					<a href="javascript:void(0)"><span style="padding: 0px 9px;
+    top: -16px;" class="close" title="Close" onclick="$('.bodyCover').css('display','none');$('.firstTimeLoginPopup').css('display','none');"><img style="height: 40px;" src="images/close.png" /></span></a>
+				</div>
+			
+				
+				
+				
+				<div class="login-wrap" style="padding: 10px;" id="profileClosed">
+				
+				</div>
+			</div>
+
+<div class="bodyCover profileClosed1" style="display: none;position: fixed;">
+
+</div>
+<script type="text/javascript">
+
+function getClosedCandidates(postId){
+	pleaseWait();
+	$.ajax({
+		type : "GET",
+		url : "profileClosures",
+		data : {'postId':postId},
+		contentType : "application/json",
+		success : function(data) {
+			pleaseDontWait();
+			$('#profileClosed').html(data);
+			$('.profileClosed1').css('display','block');
+			$('.profileClosed1').css('display','block');
+		},
+		error: function (xhr, ajaxOptions, thrownError) {
+	      }
+    }) ;	
+
+}
+
+function pleaseWait(){
+
+	$('.bodyCoverWait').css('display','block');
+}
+function pleaseDontWait(){
+
+	$('.bodyCoverWait').css('display','none');
+}
+</script>
+<% 
+String message="";
+System.out.println(request.getParameter("message"));
+if(request.getParameter("message")!=null){
+	message=request.getParameter("message");
+	message="<div style='text-align:center;font-size:12px;'>"+message+"<div>";
+%>
+<script type="text/javascript">
+			$('#profileClosed').html("<%=message%>");
+			$('.profileClosed1').css('display','block');
+			$('.profileClosed1').css('display','block');
+			</script>
+<%
+}
+%>
+
 
 
 </body>

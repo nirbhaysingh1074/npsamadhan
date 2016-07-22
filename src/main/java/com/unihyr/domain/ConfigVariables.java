@@ -7,10 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
- * Model class Used to store all configurations which are global to whole applicationa and 
+ * Model class Used to store all configurations which are global to whole application and 
  * to all type of Users. These permissions can only be updated by Admin  
  * @author Rohit Tiwari
  */
@@ -25,11 +26,10 @@ public class ConfigVariables
 	@Column
 	private String varName;
 	@Column
+	@Lob
 	private String varValue;
-
 	@Column
 	private String scope;
-
 	@Column
 	private String modifiedBy;
 	@Column
@@ -93,8 +93,4 @@ public class ConfigVariables
 	{
 		this.varValue = varValue;
 	}
-	
-	
-	
-
 }

@@ -441,7 +441,8 @@ unviewed=0;
 					              		}
 					              		
 					              	%> --%>
-					            
+					            <sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
+												
 					            					<div class="block btn_row no-margin" style="text-align: left;">
 														<div id="<%= pp.getPpid() %>" class="profile_status">
 															<span id="forwardlink" style="color: blue;text-decoration: underline;" onclick="$('#forwardform').css('display','block');$(this).css('display','none');">Forward Profile</span>
@@ -454,7 +455,7 @@ unviewed=0;
 															</div>
 														</div>
 													</div>
-					              
+					              </sec:authorize>
 		                  </div>
 			              <sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
 			             

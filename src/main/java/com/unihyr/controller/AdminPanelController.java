@@ -674,6 +674,11 @@ public class AdminPanelController
 			registration.setUsersRequired(Integer.parseInt(request.getParameter("userQuota")));
 			registration.setEmptyField(request.getParameter("emptyField"));
 			registrationService.update(registration);
+			newly added for econtract
+			String mailContent="Please verify contract details <a href='"+GeneralConfig.UniHyrUrl
+					+"/contractagreement?userid="+registration.getUserid()+"' > Click here</a>";
+			mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Contract Verification", mailContent);
+			//
 			LoginInfo info = loginInfoService.findUserById(uid);
 			String id = GeneralConfig.generatePassword();
 			if (info.getIsactive() != null && (!Boolean.parseBoolean(info.getIsactive())))
@@ -694,7 +699,7 @@ public class AdminPanelController
 					companyName = registration.getOrganizationName();
 				}
 
-				String mailContent = "Dear " + registration.getName() + " (" + companyName + "),<br><br><br>" +
+				mailContent = "Dear " + registration.getName() + " (" + companyName + "),<br><br><br>" +
 
 				"Congratulations, you have successfully registered to UniHyr. <br>" +
 
@@ -707,6 +712,10 @@ public class AdminPanelController
 				"Regards,<br>" + "UniHyr Admin Team";
 
 				mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Successful", mailContent);
+			
+			
+			
+			
 			}
 			map.addAttribute("regList", registrationService.getRegistrations(0, 1000));
 			return "adminUserList";

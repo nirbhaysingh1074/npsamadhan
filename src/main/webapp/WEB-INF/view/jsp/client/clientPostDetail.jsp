@@ -23,9 +23,6 @@ Post post = (Post)request.getAttribute("post");
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta prefix="og: http://ogp.me/ns#" property="og:title" content="<%=post.getTitle() %>" />
-<meta prefix="og: http://ogp.me/ns#" property="og:image" content="images/logo.png" />
-<meta prefix="og: http://ogp.me/ns#" property="og:url" content="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" />
 <title>Uni Hyr</title>
 <style type="text/css">
 	.error{color: red;}
@@ -346,16 +343,6 @@ Post post = (Post)request.getAttribute("post");
 								
 							</dd>
 						</dl>
-						<dl>
-							<dt>
-								<label> </label>
-							</dt>
-							<dd>
-								<label><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-								<script type="IN/Share" data-url="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" data-counter="top"></script></label>
-								
-							</dd>
-						</dl>
 						
 						 
 						<%
@@ -401,6 +388,7 @@ Post post = (Post)request.getAttribute("post");
 							    int serverPort = request.getServerPort();
 					            String inPath=GeneralConfig.UploadPath+ post.getUploadjd();
 					            String pathh="";
+					            
 					            if(!inPath.toLowerCase().contains(".pdf"))
 					         	{
 					            	 try {

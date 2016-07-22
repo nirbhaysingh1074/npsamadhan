@@ -154,7 +154,7 @@ jQuery(document).ready(function() {
 				        	</div>
 				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >
 					        	<div class="col-md-3">
-					        	<img src="images/profiles.png" width="17px">
+					        	<img src="images/Profile_submited_icon.png" width="17px">
 					        		
 					        	</div>
 					        	<div class="col-md-9"  style="padding: 0px;">
@@ -163,7 +163,7 @@ jQuery(document).ready(function() {
 				        	</div>
 				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >
 					        	<div class="col-md-3">
-					        		<img src="images/check-cloud.png"  width="17px">
+					        		<img src="images/process.png"  width="17px">
 					        	</div>
 					        	<div class="col-md-9"  style="padding: 0px;">
 									${totalshortlist} <%=GeneralConfig.Shortlist %>
@@ -171,7 +171,7 @@ jQuery(document).ready(function() {
 				        	</div>
 				        	<div class="col-md-2 report_sum" style="width: 16%;margin:right:3px;" >
 					        	<div class="col-md-3">
-					        		<img src="images/check-cloud.png"  width="17px">
+					        		<img src="images/grey.png"  width="17px">
 					        		
 					        	</div>
 					        	<div class="col-md-9"  style="padding: 0px;">
@@ -180,7 +180,7 @@ jQuery(document).ready(function() {
 				        	</div>
 				        	<div class="col-md-2 report_sum" style="width: 16%;margin-right:0px;" >
 					        	<div class="col-md-3">
-					        		<img src="images/check-cloud.png"  width="17px">
+					        		<img src="images/green.png"  width="17px">
 					        		
 					        	</div>
 					        	<div class="col-md-9"  style="padding: 0px;">

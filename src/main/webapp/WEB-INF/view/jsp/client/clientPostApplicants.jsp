@@ -230,7 +230,7 @@ pleaseWait();
 						<div class="block consulting" style="padding: 9px 15px 1px 15px">
 							<div style="float: left;margin-right: 30px;">
 								<select id="selected_post" style="margin-bottom: 7px">
-									<option value="0">Select Post</option>
+<!-- 									<option value="0">Select Post</option> -->
 									<c:forEach var="item" items="${postsList}">
 										<option value="${item.postId}"
 											${sel_post.postId == item.postId ? 'selected="selected"' : ''}>${item.title}</option>
