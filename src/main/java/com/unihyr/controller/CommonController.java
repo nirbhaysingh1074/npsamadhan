@@ -1,7 +1,10 @@
 package com.unihyr.controller;
 
+import java.io.File;
 import java.security.Principal;
 import java.util.Date;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,7 @@ import com.unihyr.service.PostService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.util.GeneratePdf;
 import com.unihyr.util.IntegerPerm;
+import com.unihyr.util.StringEncryption;
 
 @Controller
 public class CommonController
@@ -276,25 +280,106 @@ public String termsOfService(ModelMap map, HttpServletRequest request, Principal
 	@RequestMapping(value = "/contractagreement", method = RequestMethod.GET)
 	public String contractagreement(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
-		String userid=request.getParameter("userid");
+		//String userid=StringEncryption.decrypt(request.getParameter("ii").getBytes());
+		String userid=request.getParameter("ii");
 		Registration reg=registrationService.getRegistationByUserId(userid);
-		LoginInfo logininfo=loginInfoService.findUserById(userid);
-		if(!logininfo.getIsactive()){
-			ConfigVariables configVariables=configurationService.getConfigVariable("contract").get(0);
-			map.addAttribute("reg", reg);
-			map.addAttribute("contract",configVariables);
-		}
+		ConfigVariables configVariables=configurationService.getConfigVariable("contract").get(0);
+		map.addAttribute("reg", reg);
+		map.addAttribute("contract",configVariables);
 		return "contractagreement";
 	}
 	@RequestMapping(value = "/contractagreement", method = RequestMethod.POST)
 	public String contractagreed(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
+		String userid=request.getParameter("userid");
+		Registration registration=registrationService.getRegistationByUserId(userid);
+		String pathToStore=UUID.randomUUID()+".pdf";
+		LoginInfo info = loginInfoService.findUserById(userid);
+		String id = GeneralConfig.generatePassword();
+		if (registration.getContractDate()==null)
+		{
+
+			if (info != null)
+			{
+				info.setIsactive("true");
+				loginInfoService.updateLoginInfo(info);
+				loginInfoService.updatePassword(info.getUserid(), null, id);
+			}
+			
+
+			ConfigVariables conf=configurationService.getConfigVariable("contract").get(0);
+			
+			GeneratePdf.generatePdf(conf.getVarValue(), pathToStore);
+			registration.setContractorIP(getClientIpAddr(request));
+			registration.setContractPath(pathToStore);
+			registration.setContractDate(new java.sql.Date(new Date().getTime()));
+			registrationService.update(registration);
+			
+		}
 		
-		String content="";
-		
-		String pathToStore="";
-		GeneratePdf.generatePdf(content, pathToStore);
+		String companyName = "";
+		if (registration.getConsultName() != null)
+		{
+			companyName = registration.getConsultName();
+		} else
+		{
+			companyName = registration.getOrganizationName();
+		}
+
+		String mailContent = "Dear " + registration.getName() + " (" + companyName + "),<br><br><br>" +
+
+		"Congratulations, you have successfully registered to UniHyr. <br>" +
+
+		"We are delighted to have you on-board our UniHyr family.<br>" +
+
+		"Please find below your user credentials. Please login and change "
+				+ "password for security reasons. For any assistance, please feel free to reach out to us at help@unihyr.com<br><br>"
+				+ "Username - " + registration.getUserid() + "<br>" + "Password - " + id + "<br><br><br>" +
+
+		"Regards,<br>" + "UniHyr Admin Team";
+
+		mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Successful", mailContent,registration.getContractPath(),new File(GeneralConfig.UploadPath+registration.getContractPath()));
+	
 		return "contractagreement";
+	}
+	
+	
+	public static String getClientIpAddr(HttpServletRequest request) {  
+	    String ip = request.getHeader("X-Forwarded-For");  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("Proxy-Client-IP");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("WL-Proxy-Client-IP");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("HTTP_X_FORWARDED_FOR");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("HTTP_X_FORWARDED");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("HTTP_X_CLUSTER_CLIENT_IP");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("HTTP_CLIENT_IP");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("HTTP_FORWARDED_FOR");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("HTTP_FORWARDED");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("HTTP_VIA");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getHeader("REMOTE_ADDR");  
+	    }  
+	    if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+	        ip = request.getRemoteAddr();  
+	    }  
+	    return ip;  
 	}
 }
 	

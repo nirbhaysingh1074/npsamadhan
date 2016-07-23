@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.util.IntegerPerm"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostConsultant"%>
 <%@page import="java.util.Set"%>
@@ -204,6 +205,11 @@
 								%>
 			              
 			                 </div>
+			                  <div  class="pre_check" style="float: left;margin-left: -9px;margin-top: 5px;">
+								<label><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+								<script type="IN/Share" data-url="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" ></script></label>
+						</div>
+			                 
 			                  <%
 
 							if(quataExceed){
@@ -238,6 +244,7 @@
 						 Published Date : <%=DateFormats.getTimeValue(post.getPublished()) %>
 						</marquee>
 			            </div>
+			           
 						</div>
 						<div class="candidate_profiles_for_cons">
 							<%

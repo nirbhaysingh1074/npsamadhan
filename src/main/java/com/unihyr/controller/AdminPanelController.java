@@ -53,6 +53,7 @@ import com.unihyr.service.RatingCalculationService;
 import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
 import com.unihyr.service.UserRoleService;
+import com.unihyr.util.StringEncryption;
 /**
  * Controls all the request of UniHyr admin
  * @author Rohit Tiwari
@@ -548,7 +549,7 @@ public class AdminPanelController
 	{
 		JSONObject obj = new JSONObject();
 		Post post = postService.getPost(pid);
-		if(post != null)
+		if(post != null&&post.getVerifyDate()==null)
 		{
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -674,49 +675,16 @@ public class AdminPanelController
 			registration.setUsersRequired(Integer.parseInt(request.getParameter("userQuota")));
 			registration.setEmptyField(request.getParameter("emptyField"));
 			registrationService.update(registration);
-			newly added for econtract
+			
+
+//			String mailContent="Please verify contract details <a href='"+GeneralConfig.UniHyrUrl
+//					+"/contractagreement?ii="+StringEncryption.encrypt(registration.getUserid())+"' > Click here</a>";
+//			mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Contract Verification", mailContent);
 			String mailContent="Please verify contract details <a href='"+GeneralConfig.UniHyrUrl
-					+"/contractagreement?userid="+registration.getUserid()+"' > Click here</a>";
+					+"/contractagreement?ii="+registration.getUserid()+"' > Click here</a>";
 			mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Contract Verification", mailContent);
 			//
-			LoginInfo info = loginInfoService.findUserById(uid);
-			String id = GeneralConfig.generatePassword();
-			if (info.getIsactive() != null && (!Boolean.parseBoolean(info.getIsactive())))
-			{
-
-				if (info != null)
-				{
-					info.setIsactive("true");
-					loginInfoService.updateLoginInfo(info);
-					loginInfoService.updatePassword(info.getUserid(), null, id);
-				}
-				String companyName = "";
-				if (registration.getConsultName() != null)
-				{
-					companyName = registration.getConsultName();
-				} else
-				{
-					companyName = registration.getOrganizationName();
-				}
-
-				mailContent = "Dear " + registration.getName() + " (" + companyName + "),<br><br><br>" +
-
-				"Congratulations, you have successfully registered to UniHyr. <br>" +
-
-				"We are delighted to have you on-board our UniHyr family.<br>" +
-
-				"Please find below your user credentials. Please login and change "
-						+ "password for security reasons. For any assistance, please feel free to reach out to us at help@unihyr.com<br><br>"
-						+ "Username - " + registration.getUserid() + "<br>" + "Password - " + id + "<br><br><br>" +
-
-				"Regards,<br>" + "UniHyr Admin Team";
-
-				mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Successful", mailContent);
 			
-			
-			
-			
-			}
 			map.addAttribute("regList", registrationService.getRegistrations(0, 1000));
 			return "adminUserList";
 		}

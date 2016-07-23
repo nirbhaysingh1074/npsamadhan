@@ -52,13 +52,15 @@
 			      <%=str %>
 		        </div>
 		     
-		      </div>
-				  <label><input type="checkbox" onchange="checkAgree()">
-		       On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and 
-		       </label> 
-		       <br> <br>
-		       <input type="button" onclick="contractAgree()" value="Submit" />	  
-		
+		      	</div>
+				<form action="contractagreement" method="post" onclick="">
+				<label><input type="checkbox" onchange="checkAgree()">
+			       On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and 
+			    </label> 
+			    <br> <br>
+		       	<input type="hidden" name="userid" value="<%=reg.getUserid()%>">
+		       	<input type="submit" value="Submit" />	  
+				</form>
 	</div>
 </div>
 </div>

@@ -1,5 +1,6 @@
 package com.unihyr.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,7 +67,43 @@ public class ConsultRegModel
 	private String panno;
 	
 	private String stno;
+
+	private String contractPath;
 	
+	private Date contractDate;
+
+	private String contractorIP;
+	
+	public String getContractorIP()
+	{
+		return contractorIP;
+	}
+
+	public void setContractorIP(String contractorIP)
+	{
+		this.contractorIP = contractorIP;
+	}
+
+	public String getContractPath()
+	{
+		return contractPath;
+	}
+
+	public void setContractPath(String contractPath)
+	{
+		this.contractPath = contractPath;
+	}
+
+	public Date getContractDate()
+	{
+		return contractDate;
+	}
+
+	public void setContractDate(Date contractDate)
+	{
+		this.contractDate = contractDate;
+	}
+
 	public String getPanno()
 	{
 		return panno;

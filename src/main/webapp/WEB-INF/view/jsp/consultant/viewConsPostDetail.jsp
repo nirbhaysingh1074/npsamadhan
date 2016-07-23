@@ -395,15 +395,7 @@ Post post = (Post)request.getAttribute("post");
 								<%
 							}
 						%>
-					<div class="clearfix" style="padding: 15px">
-				
 					
-					
-					
-								<label><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-								<script type="IN/Share" data-url="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" ></script></label>
-								
-					</div>
 						 
 						 
 						

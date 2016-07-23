@@ -125,9 +125,47 @@ public class Registration implements Serializable
 	
 	private String panno;
 	private String stno;
-	
-	
-	
+	private String contractPath;
+	private String contractorIP;
+	private Date contractDate;
+	@Column
+	public String getContractorIP()
+	{
+		return contractorIP;
+	}
+
+
+	public void setContractorIP(String contractorIP)
+	{
+		this.contractorIP = contractorIP;
+	}
+
+
+	@Column
+	public String getContractPath()
+	{
+		return contractPath;
+	}
+
+
+	public void setContractPath(String contractPath)
+	{
+		this.contractPath = contractPath;
+	}
+
+	@Column
+	public Date getContractDate()
+	{
+		return contractDate;
+	}
+
+
+	public void setContractDate(Date contractDate)
+	{
+		this.contractDate = contractDate;
+	}
+
+
 	@Column
 	public String getPanno()
 	{
