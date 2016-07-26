@@ -217,16 +217,34 @@
 			                 <p style="font-size: 10px;"><i>
 			                 
 											You have already exhausted your weekly upload profile quota, please submit profile later.
-							</i>
+							</i><span class="questionMark"><a target="_blank" href="faq">?</a></span>
 							</p> 
 							<%}else if(post.getCloseDate()==null&& post.getVerifyDate()!=null&& (!post.isActive())){
 								  %>
 					                 <p style="font-size: 10px;"><i>
 					                 
 													The position has been currently marked 'Inactive' by the employer hence new profiles cannot be uploaded. You will receive a notification when the position is made 'Active'
-									</i>
+									</i><span class="questionMark"><a target="_blank" href="faq">?</a></span>
 									</p> 
 									<%
+							}else if(post.getCloseDate()!=null){
+								%>
+								     <p style="font-size: 10px;"><i>
+													The position has been closed hence new profiles cannot be uploaded.
+									</i><span class="questionMark"><a target="_blank" href="faq">?</a></span>
+									</p> 
+								<%
+							}else{
+								Long remaining=(Long)request.getAttribute("profileRemaining");
+								
+								%>
+								
+								<p style="font-size: 10px;"><i>
+								No of profile remaining to be uploaded this week : <%=remaining %>	
+									</i><span class="questionMark"><a target="_blank" href="faq">?</a></span>
+									</p> 
+								
+								<%
 							}
 			                  %>
 						<div class="" style="float: left;width: 65%;color: red;margin-left: 7px;line-height: 26px;">
@@ -241,7 +259,7 @@
 						 Total Pending : <%=post.getNoOfPosts()-post.getNoOfPostsFilled() %>, 
 						 Total Submitted : <%=post.getPostProfile().size() %>, 
 						 In Process : <%=shortListed.size() %>, 
-						 Published Date : <%=DateFormats.getTimeValue(post.getPublished()) %>
+						 Published Date : <%=post.getPublished() %>
 						</marquee>
 			            </div>
 			           
@@ -478,7 +496,7 @@
 																<span><%=status %></span>
 															</td>
 															<%
-														if( !pp.getPost().isActive())
+														if( !pp.getPost().isActive()&&pp.getPost().getCloseDate()==null)
 														{
 															%>
 							                  					<td class="text-center" style="text-align: left;">

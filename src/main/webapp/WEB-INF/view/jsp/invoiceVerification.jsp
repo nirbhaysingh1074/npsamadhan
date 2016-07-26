@@ -27,7 +27,8 @@
 				</div>
 				<div class="login-wrap bottom-padding">
 						<%
-							String regSuccess = (String) request.getParameter("verifySuccess");
+							String regSuccess = (String) request.getAttribute("verifySuccess");
+						System.out.println(regSuccess);
 							if (regSuccess != null && regSuccess.equals("true"))
 							{
 								%>

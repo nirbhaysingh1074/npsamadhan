@@ -25,4 +25,8 @@ public interface IndustryDao
 	public List<Registration> getConsultantsByIndustry(int industryId);
 
 	public void deleteIndustry(Industry industry);
+
+	long countClientsByIndustry(int industryId);
+
+	long countConsultantsByIndustry(int industryId);
 }

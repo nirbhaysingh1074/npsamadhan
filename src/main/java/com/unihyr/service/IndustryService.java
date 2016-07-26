@@ -25,4 +25,8 @@ public interface IndustryService
 	public List<Registration> getConsultantsByIndustry(int industryId);
 
 	public void deleteIndustry(Industry industry);
+
+	long countConsultantsByIndustry(int industryId);
+
+	long countClientsByIndustry(int industryId);
 }

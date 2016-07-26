@@ -14,15 +14,15 @@
 	{
 		var name = $('#name').val();
 		var userid = $('#userid').val();
-	//	var password = $('#password').val();
+		var phone = $('#mobileno').val();
 	//	var repassword = $('#repassword').val();
 		
 		var valid = true;
 		$('.error').html('&nbsp;');
-		
+
 		if(name == "")
 		{
-			$('.name_error').html('Please enter user name ')
+			$('.name_error').html('Please enter user name ');
 			valid = false;
 		}
 		if(userid == "" || !isEmail(userid))
@@ -30,7 +30,12 @@
 			$('.userid_error').html("Please enter a valid email");
 			valid = false;
 		}
-		
+
+		if(phone == "")
+		{
+			$('.mobileno_error').html('Please enter mobile number ');
+			valid = false;
+		}
 	/* 	if(password == "")
 		{
 			$('.password_error').html("please enter a valid password");

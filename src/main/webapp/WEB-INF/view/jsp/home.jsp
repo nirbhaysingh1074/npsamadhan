@@ -358,10 +358,10 @@ width: 1076px !important;
 
 									<h2>Get the right talent in super quick time!</h2>
 									<p>We know that when it comes to hiring – quality and time
-										are the most critical factors. UniHyr's partner network
-										provides a deeper penetration in the available talent pool the
-										reach and ensures that you get quality profiles in a
-										disruptively shorter time</p>
+										are the most critical factors. UniHyr’s partner network
+										provides a deeper penetration in the available talent pool and
+										ensures that you get quality profiles in a disruptively
+										shorter time</p>
 								</div>
 							</div>
 						</div>
@@ -375,8 +375,9 @@ width: 1076px !important;
 								<div class="bx">
 									<h2>Simple, neat, and intuitive interface for a seamless
 										user experience</h2>
-									<p>Our user interface has been designed keeping in mind the
-										users to let you navigate & manage your positions effectively</p>
+									<p>Our user interface is simple, intuitive and powerful to
+										facilitate publishing of new requirements and receiving
+										profiles on the same</p>
 								</div>
 							</div>
 						</div>
@@ -439,13 +440,13 @@ width: 1076px !important;
 								alt="img"></a>
 							<h4>Post your Job</h4>
 							<p>Employers provide a detailed description of the
-								requirements that would be made visble to the hiring partenrs on
+								requirements that would be made visible to the hiring partners on
 								the platform</p> </li>
 						<li></li>
 						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i1.png"
 								alt="img"></a>
 							<h4>Receive Profiles</h4>
-							<p>Based on ratings multiple hirng partners would conduct
+							<p>Based on ratings multiple hiring partners would conduct
 								search and submit profiles on the platform</p> </li>
 
 						<li></li>
@@ -459,7 +460,7 @@ width: 1076px !important;
 								alt="img"></a>
 							<h4>Offer</h4>
 							<p>Profiles would move through various stages on the platform
-								from Shortlisted > Offered > Joined</p> </li>
+								from In Process > Offered > Joined</p> </li>
 						<li></li>
 						<li><a href="javascript:void(0)" class="thumbnl"><img src="images/i3.png"
 								alt="img"></a>
@@ -508,7 +509,7 @@ width: 1076px !important;
 Multiple consultants leading to multiplicity of contracts and touch points that are difficult to manage</li>
 <li>
 
-Employers get limited to a select few who may or may not be the best consultants for the skill they want to hire for</li>
+Employers get limited to a select few consultants who may or may not be the best consultants for the skill they want to hire for</li>
 <li>
 
 Inefficient interaction over emails  leading to duplicity of work and time spent in non-value adding activities
@@ -525,7 +526,7 @@ No rigorous mechanism of driving quality from the consultants
 		<li>	
 Single window to post new requirements and manage profiles received from consultants</li>
 <li>
-Incredibly wider access to a wider partner network to accelerate quality hiring</li>
+Incredibly deeper access to the talent pool through the partner network to accelerate quality hiring</li>
 <li>
 Easy to use interface for both employers and partners where they can exchange profiles, messages and track status
 </li>

@@ -74,17 +74,42 @@ public class IndustryDaoImpl implements IndustryDao
 	@Override
 	public List<Registration> getClientsByIndustry(int industryId)
 	{
-//		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid INNER JOIN user_industry ui on reg.lid = ui.lid where ur.userrole =:role and ui.id =:industryId";
-//		return (List<Registration>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
-//				.addEntity(Registration.class).setString("role", Roles.ROLE_CON_MANAGER.toString())
-//				.setParameterList("industryId", industryId).list();
-		return null;
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid INNER JOIN user_industry ui on reg.lid = ui.lid where ur.userrole =:role and ui.id =:industryId";
+		return (List<Registration>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.addEntity(Registration.class)
+				.setString("role", Roles.ROLE_EMP_MANAGER.toString())
+				.setParameter("industryId", industryId).list();
 	}
 
 	@Override
 	public List<Registration> getConsultantsByIndustry(int industryId)
 	{
-		return null;
+
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid INNER JOIN user_industry ui on reg.lid = ui.lid where ur.userrole =:role and ui.id =:industryId";
+		return (List<Registration>) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.addEntity(Registration.class)
+				.setString("role", Roles.ROLE_CON_MANAGER.toString())
+				.setParameter("industryId", industryId).list();
+	}
+	@Override
+	public long countClientsByIndustry(int industryId)
+	{
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid INNER JOIN user_industry ui on reg.lid = ui.lid where ur.userrole =:role and ui.id =:industryId";
+		return (long) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.addEntity(Registration.class)
+				.setString("role", Roles.ROLE_EMP_MANAGER.toString())
+				.setParameter("industryId", industryId).list().size();
+	}
+
+	@Override
+	public long countConsultantsByIndustry(int industryId)
+	{
+
+		String sql = "select reg.* from registration reg INNER JOIN userrole ur on reg.userid= ur.userid INNER JOIN user_industry ui on reg.lid = ui.lid where ur.userrole =:role and ui.id =:industryId";
+		return (long) this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+				.addEntity(Registration.class)
+				.setString("role", Roles.ROLE_CON_MANAGER.toString())
+				.setParameter("industryId", industryId).list().size();
 	}
 
 	@Override

@@ -73,11 +73,11 @@
 			$('.qualification_ug_error').html('Please specify undergraduate qualification');
 			valid = false;
 		}
-		var qpg= $('#qualification_pg').val();
-		if(!qpg||qpg === null||qpg==""){
-			$('.qualification_pg_error').html('Please specify postgraduate qualification');
-			valid = false;
-		}
+// 		var qpg= $('#qualification_pg').val();
+// 		if(!qpg||qpg === null||qpg==""){
+// 			$('.qualification_pg_error').html('Please specify postgraduate qualification');
+// 			valid = false;
+// 		}
 		if(title == "")
 		{
 			$('.title_error').html('Please enter post title')

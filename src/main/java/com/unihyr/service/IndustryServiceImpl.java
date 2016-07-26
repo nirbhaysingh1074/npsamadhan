@@ -72,5 +72,14 @@ public class IndustryServiceImpl implements IndustryService
 		this.industryDao.deleteIndustry(industry);
 		
 	}
+	@Override
+	public	long countClientsByIndustry(int industryId){
+		return this.industryDao.countClientsByIndustry(industryId);
+	}
+
+	@Override
+	public	long countConsultantsByIndustry(int industryId){
+		return this.industryDao.countConsultantsByIndustry(industryId);
+	}
 	
 }

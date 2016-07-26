@@ -298,23 +298,18 @@ public String termsOfService(ModelMap map, HttpServletRequest request, Principal
 		String id = GeneralConfig.generatePassword();
 		if (registration.getContractDate()==null)
 		{
-
 			if (info != null)
 			{
 				info.setIsactive("true");
 				loginInfoService.updateLoginInfo(info);
 				loginInfoService.updatePassword(info.getUserid(), null, id);
 			}
-			
-
 			ConfigVariables conf=configurationService.getConfigVariable("contract").get(0);
-			
 			GeneratePdf.generatePdf(conf.getVarValue(), pathToStore);
 			registration.setContractorIP(getClientIpAddr(request));
 			registration.setContractPath(pathToStore);
 			registration.setContractDate(new java.sql.Date(new Date().getTime()));
 			registrationService.update(registration);
-			
 		}
 		
 		String companyName = "";

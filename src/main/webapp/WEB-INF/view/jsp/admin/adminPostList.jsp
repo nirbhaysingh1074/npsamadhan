@@ -147,11 +147,9 @@
 							if(post.getUploadjd() != null)
 							{
 								%>
-									<dl>
-										<dt>
-											<label><a target="_blank" href="<%= "/data/"+post.getUploadjd()%>">Download JD</a></label>
-										</dt>
-									</dl>
+									
+											<a target="_blank" href="<%= "/data/"+post.getUploadjd()%>">Download JD</a>
+										
 								<%
 							}%>
 											</td>

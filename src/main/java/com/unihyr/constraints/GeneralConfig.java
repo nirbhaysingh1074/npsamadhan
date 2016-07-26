@@ -28,7 +28,8 @@ public class GeneralConfig
 	public static final String OfferAcceptReject = "Offer Declined";
 	public static final String OfferJoin = "Joined";
 	public static final String OfferDrop = "Dropped";
-	//public static final String UniHyrUrl = "http://localhost:8081/unihyr/";
+	//public static final String UniHyrUrl = "http://localhost:8082/unihyr/";
+	public static final String DataUrl = "http://54.191.37.178/";
 	//public static final String UniHyrUrl = "http://54.191.37.178/";
 	public static final String UniHyrUrl = "http://54.191.37.178/unihyr/";
 	public static final long PostDaysOut = 15;

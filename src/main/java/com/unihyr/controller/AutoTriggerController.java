@@ -136,6 +136,7 @@ public class AutoTriggerController
 			Date submitted = null;
 			submitted = bill.getCreateDate();
 			long diff = today.getTime() - submitted.getTime();
+			diff=TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 			if (diff > GeneralConfig.BillDaysOut)
 			{
 				bill.setVerificationStatus(true);

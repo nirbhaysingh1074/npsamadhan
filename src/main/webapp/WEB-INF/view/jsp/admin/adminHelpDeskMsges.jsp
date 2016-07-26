@@ -20,7 +20,7 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-           Industries List
+           Help Desk
 <!--             <small>add new </small> -->
           </h1>
           <ol class="breadcrumb">

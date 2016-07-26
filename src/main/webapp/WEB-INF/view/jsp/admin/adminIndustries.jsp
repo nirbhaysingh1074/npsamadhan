@@ -1,4 +1,6 @@
 
+<%@page import="com.unihyr.domain.Registration"%>
+<%@page import="com.unihyr.service.IndustryService"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="com.unihyr.domain.Industry"%>
 <%@page import="java.util.List"%>
@@ -48,20 +50,36 @@
 								<tr>
 									<th>Industry</th>
 									<th>Create Date</th>
+									<th>No of Clients</th>
+									<th>No of Consultants</th>
 									<th class="text-center">Action</th>
 								</tr>
 							</thead>
 							<tbody>
 			           		 <%
+			           		 IndustryService industryService=(IndustryService)request.getAttribute("industryService");
+			           		
 		   	           		 	List<Industry> indList = (List) request.getAttribute("indList");
 		   	           		 	if (indList != null && !indList.isEmpty()) 
 		   	           		 	{
 		   	           		 		for (Industry ind : indList) 
 		   	           		 		{
-		     	           		 		%>
+			   	           		 	 	List<Registration> clients=(List<Registration>)industryService.getClientsByIndustry(ind.getId());
+			   	           		 	 	List<Registration> consultants=(List<Registration>)industryService.getConsultantsByIndustry(ind.getId());
+			   	           		 	String client="";
+			   	           			String consultant="";
+		   	           		 	 	for(Registration reg:clients){
+		   	           		 	 		client=client+reg.getOrganizationName()+"\n";
+		   	           		 	 	}
+		   	           		 	 	for(Registration reg:consultants){
+		   	           		 	 		consultant=consultant+reg.getConsultName()+"\n";
+		   	           		 	 	}
+		   	           		 			%>
 											<tr>
 												<td><%= ind.getIndustry() %></td>
 												<td><%= DateFormats.getTimeValue(ind.getCreateDate()) %></td>
+												<td title="<%=client%>"><%=industryService.countClientsByIndustry(ind.getId())%></td>
+												<td title="<%=consultant%>"><%=industryService.countConsultantsByIndustry(ind.getId())%></td>
 												<td class="text-center"><a href="admineditindustry?industryId=<%= ind.getId()%>"><button class="btn btn-sm btn-success"> Edit </button></a>
 												<a href="admindeleteindustry?industryId=<%= ind.getId()%>"><button class="btn btn-sm btn-error"> Delete </button></a>
 												</td>

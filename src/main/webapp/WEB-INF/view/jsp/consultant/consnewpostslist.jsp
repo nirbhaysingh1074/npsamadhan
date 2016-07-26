@@ -75,12 +75,12 @@
 	       				<th align="left">Position</th>
 <!-- 	       				<th align="left">Org</th> -->
 	       				<th align="left">Industry</th>
-	       				<th align="left">Fee Percent</th>
+	       				<th align="left">Fee Percent Range</th>
 	       				<th align="left">Posted Date</th>
 	       				<th align="left">Location</th>
 	       				<th align="left">Exp. Range (in Yr.)</th>
 	       				<th align="left">Comp. Range (in Lacs)</th>
-	       				<!-- <th>View JD</th> -->
+	       				<th align="left">Fee Percent</th>
 	       			</tr>
        			</thead>
        			<tbody>
@@ -122,9 +122,21 @@
 						                	<a  href="consviewjd?pid=<%= post.getPostId() %>"  class="view_post " title="Click to view post detail"><%= post.getTitle() %></a></div>
 					                	</td>
 		             					
-<%-- 		             					<td><a href="consviewuser?uid=<%= post.getClient().getUserid()%>"><%= post.getClient().getOrganizationName() %></a></td> --%>
-		             					 <td ><%= inds.getIndustry() %></td> 
-		             					<td style="font-size: 10px;"><%= post.getFeePercent() %></td>
+										<%-- <td><a href="consviewuser?uid=<%= post.getClient().getUserid()%>"><%= post.getClient().getOrganizationName() %></a></td> --%>
+		             					<td ><%= inds.getIndustry() %></td> 
+		             					<td style="font-size: 10px;">
+		             					<input type="hidden" value="<%=post.getFeePercent()%>" id="postfee<%=post.getPostId() %>" />
+		             					<%
+		             					if(post.getFeePercent()>0){ 
+		             					%>
+		             					<%=post.getFeePercent()/2 %> - <%= post.getFeePercent() %>
+		             					<%}else{
+		             					%>
+		             					<%=post.getFeePercent() %> - <%= post.getFeePercent() %>
+		             					<%
+		             					}
+		             					%>
+		             					</td>
 		             					<td><%= DateFormats.ddMMMMyyyy.format(post.getPublished()) %></td>
 		             					<td><%= post.getLocation()%></td>
 		             					<td><%= post.getExp_min()%> to <%= post.getExp_max()  %>  </td>
@@ -137,7 +149,9 @@
 						                	</div>
 		             					</td>  --%>
 		             					
-		             					
+		             					<td >
+		             					<input type="text" style="width: 61px;"  placeholder="0.00" class="number_only" id="<%=post.getPostId()%>">
+		             					</td>
 		             				</tr>
 		             				<%
 						                  			
@@ -210,6 +224,49 @@
         </script>
       </div> --%>
    
+<script type="text/javascript">
 
+
+$(".number_only").keydown(function (e) {
+	
+// 	if(e.id){
+		
+// 	}
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+         // Allow: Ctrl+A, Command+A
+        (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+         // Allow: home, end, left, right, down, up
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+             // let it happen, don't do anything
+             return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+});
+
+$(".number_only").on("blur",function(e){
+	var pid=this.id;
+	var prange=$('#'+pid).val();
+	var fee=$('#postfee'+pid).val();
+	if(Number(fee)>0){
+		if(Number(prange)<(Number(fee)/2)){
+			alertify.error("wrong fee percent range entered. Changed to default value");
+			$('#'+pid).val(Number(fee));	
+		}
+		else if(Number(prange)>(Number(fee))){
+			alertify.error("wrong fee percent range entered. Changed to default value");
+			$('#'+pid).val(Number(fee));	
+		}else{
+			
+		}
+	}else{
+		alertify.error("wrong fee percent range entered. Changed to default value");
+		$('#'+pid).val(Number(fee));
+	}
+});
+</script>
 </body>
 </html>

@@ -62,6 +62,7 @@ public class IndustryController
 	public String adminIndustries(ModelMap map)
 	{
 		map.addAttribute("indList", industryService.getIndustryList());
+		map.addAttribute("industryService", industryService);
 		return "adminIndustries";
 	}
 

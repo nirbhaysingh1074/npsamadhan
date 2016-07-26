@@ -197,11 +197,11 @@ function otherLocationInput(){
 							$('.qualification_ug_error').html('Please specify undergraduate qualification');
 							valid = false;
 						}
-						var qpg= $('#qualification_pg').val();
+					/* 	var qpg= $('#qualification_pg').val();
 						if(!qpg||qpg === null||qpg==""){
 							$('.qualification_pg_error').html('Please specify postgraduate qualification');
 							valid = false;
-						}
+						} */
 						if(client == "")
 						{
 							$('.client_error').html("Please provide client name");

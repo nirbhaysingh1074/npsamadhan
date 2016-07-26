@@ -441,21 +441,7 @@ unviewed=0;
 					              		}
 					              		
 					              	%> --%>
-					            <sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
-												
-					            					<div class="block btn_row no-margin" style="text-align: left;">
-														<div id="<%= pp.getPpid() %>" class="profile_status">
-															<span id="forwardlink" style="color: blue;text-decoration: underline;" onclick="$('#forwardform').css('display','block');$(this).css('display','none');">Forward Profile</span>
-															<span class="error_forwardmail"></span>
-															<div id="forwardform" style="display: none;">
-															<input type="email" required="required" id="forwardmail" />
-															<input type="hidden" value="<%=pp.getPpid() %>" id="ppidforwardmail" />
-															<button class="profile_status_button" onclick="forwardProfile()" >Forward</button>
-															<button class="profile_status_button" onclick="$('#forwardform').css('display','none');$('#forwardlink').css('display','block');;$('.error_forwardmail').html('');" >Cancel</button> 
-															</div>
-														</div>
-													</div>
-					              </sec:authorize>
+					           
 		                  </div>
 			              <sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
 			             
@@ -550,7 +536,25 @@ unviewed=0;
 			              </ul>
 			            </div> -->
 			            <div class="tab_content tab"   style="padding: 0px;" >
+			              <sec:authorize access="hasRole('ROLE_EMP_MANAGER') or hasRole('ROLE_EMP_USER')">
+												
+					            					<div class="block btn_row no-margin" style="text-align: right;">
+														<div id="<%= pp.getPpid() %>" class="profile_status">
+															<button id="forwardlink" class="profile_status_button"  onclick="$('#forwardform').css('display','block');$(this).css('display','none');">Forward Profile</button>
+															<div id="forwardform" style="display: none;">
+															<input type="email" required="required" id="forwardmail" style="width: 228px;" />
+															<input type="hidden" value="<%=pp.getPpid() %>" id="ppidforwardmail" />
+															<button class="profile_status_button" onclick="forwardProfile()" >Forward</button>
+															<button class="profile_status_button" onclick="$('#forwardform').css('display','none');$('#forwardlink').css('display','block');;$('.error_forwardmail').html('');" >Cancel</button> 
+															<br><span class="error_forwardmail"></span>
+															
+															</div>
+														</div>
+													</div>
+					              </sec:authorize> 
 			              <div style="padding: 0px;" id="tab-1" class="tab-content resume_col active">
+			             
+			             
 			              <% 
 			              if(pp.getProfile().getResumePath()==null){ %>
 			                <%=  pp.getProfile().getResumeText()%>

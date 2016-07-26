@@ -339,6 +339,18 @@ function fillPosts(clientId)
 			contentType : "application/json",
 			success : function(data) {
 				$('#cons_leftside_postlist').html(data);
+				
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+			}
+		});
+		$.ajax({
+			type : "GET",
+			url : "cons_your_positions_blankpage",
+			contentType : "application/json",
+			success : function(data) {
+				$('.right_side').html(data);
+				
 			},
 			error : function(xhr, ajaxOptions, thrownError) {
 			}

@@ -14,6 +14,8 @@
 	{
 		var name = $('#name').val();
 		var userid = $('#userid').val();
+
+		var phone = $('#mobileno').val();
 		/* var password = $('#password').val();
 		var repassword = $('#repassword').val();
 		 */
@@ -30,7 +32,12 @@
 			$('.userid_error').html("Please enter a valid email");
 			valid = false;
 		}
-		
+
+		if(phone == "")
+		{
+			$('.mobileno_error').html('Please enter mobile number ');
+			valid = false;
+		}
 		/* if(password == "")
 		{
 			$('.password_error').html("please enter a valid password");

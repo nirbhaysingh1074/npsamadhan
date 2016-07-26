@@ -20,13 +20,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>
-           Industries List
+           List Of Qualifications
 <!--             <small>add new </small> -->
           </h1>
           <ol class="breadcrumb">
             <li><a href="admindashboard"><i class="fa fa-dashboard"></i> Dashboard</a></li>
 <!--             <li><a href="#"><i class="fa fa-dashboard"></i> Industries</a></li> -->
-            <li class="active">Industriesy</li>
+            <li class="active">Qualifications</li>
           </ol>
         </section>
 

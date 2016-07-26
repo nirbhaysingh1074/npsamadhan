@@ -706,6 +706,20 @@ font-weight: bold;
     border-bottom: 3px solid #d1d1d1;
     border-right: 3px solid #d1d1d1;
 }
+.questionMark a{
+	
+color:#fff !important;
+}
+.questionMark{
+	border-radius: 7px;
+padding-left: 4px;
+background:black;
+font-weight:bold;
+padding-right: 4px;
+}
+.datepick-month-year{
+	width: 49% !important;
+}
 
 Pseudo ::after element
 .arrow_box_1:after {

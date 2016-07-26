@@ -424,6 +424,11 @@ public class ConsultantController
 
 		return "cons_your_positions";
 	}
+	@RequestMapping(value = "/cons_your_positions_blankpage", method = RequestMethod.GET)
+	public String cons_your_positions_blankpage(ModelMap map, HttpServletRequest request, Principal principal)
+	{
+		return "cons_your_positions_blankpage";
+	}
 
 	@RequestMapping(value = "/profilelistbyconsidclientid", method = RequestMethod.GET)
 	public String profilelistbyconsidclientid(ModelMap map, @RequestParam String clientId, @RequestParam String postId,
@@ -480,6 +485,7 @@ public class ConsultantController
 			if (post.getProfileParDay() == 0 || post.getProfileParDay() > quata)
 			{
 				map.addAttribute("quataExceed", false);
+				map.addAttribute("profileRemaining",post.getProfileParDay()-quata);
 			} else
 			{
 				map.addAttribute("quataExceed", true);
@@ -1114,7 +1120,7 @@ e.printStackTrace();
 					billingService.updateBillingDetails(bill);
 					String mailContent="Dear Sir/Madam<br><br>"+
 					"Congratulations on closing your position on UniHyr.<br><br>"+
-					"Please find below the details of the closed position. You can view the invoice <a href='" + GeneralConfig.UniHyrUrl + "data/" + billInvoiceHtml
+					"Please find below the details of the closed position. You can view the invoice <a href='" + GeneralConfig.DataUrl + "data/" + billInvoiceHtml
 					+ "' >here</a>.Please click the following link to <a href='" + GeneralConfig.UniHyrUrl
 					+ "verifyBillingDetails?billId=" + bill.getBillId() + "' >verify</a> the invoice.<br><br>"
 					+ "In case of any errors, please reply to this mail. If there is no response for a period of 7 days, the invoice will be deemed as Verified."

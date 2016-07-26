@@ -639,7 +639,6 @@ public class ClientController
 						+ "<p></p>"
 						+ "<p>Best Regards,</p>"
 						+ "<p></p>"
-//						+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"
 						+ "<p><strong>Admin Team</strong></p><p></p>"
 						+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 						+ "</div>"
@@ -964,9 +963,9 @@ public class ClientController
 					pp.setActionPerformerId(principal.getName());
 					PostProfile postProfile=pp;
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
-						postProfile.setViewStatus(true);
-						postProfile.setProcessStatus("accepted");
-						postProfileService.updatePostProfile(postProfile);}
+						postProfile.setViewStatus(true);}
+
+					postProfile.setProcessStatus("accepted");
 						content = candidate + " has been shortlited for the <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a> (" + (reg.getOrganizationName())
 							+ ")";
@@ -978,9 +977,8 @@ public class ClientController
 					pp.setRejectReason(rej_reason);
 					PostProfile postProfile=pp;
 					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
-						postProfile.setViewStatus(true);
+						postProfile.setViewStatus(true);}
 						postProfile.setProcessStatus("rejected");
-						postProfileService.updatePostProfile(postProfile);}
 					content= candidate +" has been rejected for the <a href='cons_your_position?pid="
 							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "rejected");

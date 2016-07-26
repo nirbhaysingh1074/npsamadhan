@@ -620,7 +620,6 @@ public class AdminPanelController
 					+ "<p></p>"
 					+ "<p>Best Regards,</p>"
 					+ "<p></p>"
-					/*+ "<p><img src ='"+GeneralConfig.UniHyrUrl+"logo.png' width='63'> </p>"*/
 					+ "<p><strong>Admin Team</strong></p><p></p>"
 					+ "<p>This is a system generated mail. Please do not reply to this mail. In case of any queries, please write to <a target='_blank' href='mailto:partnerdesk@unihyr.com'>partnerdesk@unihyr.com</a></p>"
 					+ "</div>"
@@ -674,17 +673,16 @@ public class AdminPanelController
 			registration.setPaymentDays(Integer.parseInt(request.getParameter("paymentDays")));
 			registration.setUsersRequired(Integer.parseInt(request.getParameter("userQuota")));
 			registration.setEmptyField(request.getParameter("emptyField"));
-			registrationService.update(registration);
 			
+			
+			registrationService.update(registration);
 
-//			String mailContent="Please verify contract details <a href='"+GeneralConfig.UniHyrUrl
-//					+"/contractagreement?ii="+StringEncryption.encrypt(registration.getUserid())+"' > Click here</a>";
-//			mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Contract Verification", mailContent);
+			if(registration.getContractDate()==null){
 			String mailContent="Please verify contract details <a href='"+GeneralConfig.UniHyrUrl
 					+"/contractagreement?ii="+registration.getUserid()+"' > Click here</a>";
 			mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Contract Verification", mailContent);
+			}
 			//
-			
 			map.addAttribute("regList", registrationService.getRegistrations(0, 1000));
 			return "adminUserList";
 		}
