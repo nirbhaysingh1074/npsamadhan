@@ -238,5 +238,14 @@ public class PostProfileServiceImpl implements PostProfileService
 	{
 		return this.postProfileDao.getPostProfileByContactAndDob(postId,contactNo,dob);
 	}
-	
+	@Override
+	public long countViewedProfileListByConsultantIdAndPostId(String consultantId, long postId){
+		return this.postProfileDao.countViewedProfileListByConsultantIdAndPostId(consultantId, postId);
+	}
+
+	@Override
+	public long countViewedPostProfileByPost(long postId, String filterBy, String rejected)
+	{
+		return this.postProfileDao.countViewedPostProfileByPost(postId,filterBy,rejected);
+	}
 }

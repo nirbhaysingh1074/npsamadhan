@@ -22,6 +22,7 @@ import com.unihyr.domain.LoginInfo;
 import com.unihyr.domain.Post;
 import com.unihyr.domain.PostProfile;
 import com.unihyr.domain.Registration;
+import com.unihyr.domain.SocialSharing;
 import com.unihyr.service.ConfigVariablesService;
 import com.unihyr.service.ContactUsService;
 import com.unihyr.service.HelpDeskService;
@@ -30,6 +31,7 @@ import com.unihyr.service.MailService;
 import com.unihyr.service.PostProfileService;
 import com.unihyr.service.PostService;
 import com.unihyr.service.RegistrationService;
+import com.unihyr.service.SocialSharingService;
 import com.unihyr.util.GeneratePdf;
 import com.unihyr.util.IntegerPerm;
 import com.unihyr.util.StringEncryption;
@@ -49,6 +51,8 @@ public class CommonController
 	PostProfileService postProfileService;
 	@Autowired
 	private PostService postService;
+	@Autowired
+	private SocialSharingService socialSharingService;
 
 	@Autowired private ConfigVariablesService configurationService;
 	
@@ -277,6 +281,27 @@ public String termsOfService(ModelMap map, HttpServletRequest request, Principal
 		map.addAttribute("post", post);
 		return "postDetails";
 	}
+
+	@RequestMapping(value = "/addSocialSharingData", method = RequestMethod.GET)
+	public @ResponseBody String addSocialSharingData(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		SocialSharing socialSharing=new SocialSharing();
+		socialSharing.setApi_key(request.getParameter("api_key"));
+		socialSharing.setOauth_expires(request.getParameter("oauth_expires"));
+		socialSharing.setOauth_token(request.getParameter("oauth_token"));
+		socialSharing.setSocialMediaName("linkedin");
+		socialSharing.setUserid(principal.getName());
+		socialSharingService.add(socialSharing);
+		return "success";
+	}
+	@RequestMapping(value = "/deleteSocialSharingData", method = RequestMethod.GET)
+	public @ResponseBody String deleteSocialSharingData(ModelMap map, HttpServletRequest request ,Principal principal)
+	{
+		socialSharingService.delete(principal.getName());
+		return "success";
+	}
+	
+	
 	@RequestMapping(value = "/contractagreement", method = RequestMethod.GET)
 	public String contractagreement(ModelMap map, HttpServletRequest request ,Principal principal)
 	{
@@ -335,7 +360,8 @@ public String termsOfService(ModelMap map, HttpServletRequest request, Principal
 
 		mailService.sendMail(registration.getUserid(), "UniHyr - Registeration Successful", mailContent,registration.getContractPath(),new File(GeneralConfig.UploadPath+registration.getContractPath()));
 	
-		return "contractagreement";
+		map.addAttribute("contractagree","true");
+		return "regSuccess";
 	}
 	
 	

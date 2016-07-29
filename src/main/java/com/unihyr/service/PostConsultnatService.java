@@ -39,5 +39,5 @@ public interface PostConsultnatService
 	 * @param string
 	 * @return
 	 */
-	public List<PostConsultant> getInterestedPostByConsIdandPostId(String consName, long postId, String string);
+	public List<PostConsultant> getInterestedPostConsultantsByConsIdandPostId(String consName, long postId, String string);
 }

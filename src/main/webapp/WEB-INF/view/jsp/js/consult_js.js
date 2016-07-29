@@ -156,8 +156,10 @@ jQuery(document).ready(function() {
 	$(document.body).on('click', '.filter  #show_interest' ,function(){
 		
 		var val = [];
+		var comval =[];
 		 $('.sel_newposts:checkbox:checked').each(function(i){
 	        val[i] = $(this).val();
+	        comval[i] = $('#'+val[i]).val();
 	      });
 	 
 		 if(! val.length > 0)
@@ -173,7 +175,7 @@ jQuery(document).ready(function() {
 					$.ajax({
 						type : "GET",
 						url : "consBulkInterest",
-						data : {'pids':val.toString()},
+						data : {'pids':val.toString(),'coms':comval.toString()},
 						contentType : "application/json",
 						success : function(data) {
 							var obj = jQuery.parseJSON(data);
@@ -198,7 +200,6 @@ jQuery(document).ready(function() {
 		var val = [];
 		 $('.sel_posts:checkbox:checked').each(function(i){
 	        val[i] = $(this).val();
-	     
 		 });
 		 if(! val.length > 0)
 		 {

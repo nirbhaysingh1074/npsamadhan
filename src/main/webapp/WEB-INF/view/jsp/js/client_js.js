@@ -234,7 +234,7 @@ pleaseWait();
 							selected.parent().parent().find('td:eq(7)').html("<span>Offer</span>");
 							selected.html("<button class='btn-offer-open profile_status_button' data-type='offer_accept' title='Click to accept offer' onclick='$('#postIdForAccept').val('"+ppid+"')' >Offer Accept</button><button class='btn-open profile_status_button' data-type='offer_reject' title='Click to reject offer'>Reject</button>");
 						}
-					*///	alertify.success("Profile send offered successfilly !");
+					*///	alertify.success("Profile send offered successfully !");
 					}
 					else
 					{

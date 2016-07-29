@@ -559,7 +559,8 @@ public class AdminPanelController
 
 			List<Registration> consList =  registrationService.getConsultantsByClientIndustry(post.getClient().getUserid());
 			String ids = "";
-			String position="<a href='consviewjd?pid="+post.getPostId()+"' >"+ post.getTitle()+"</a>";
+//			String position="<a href='consviewjd?pid="+post.getPostId()+"' >"+ post.getTitle()+"</a>";
+			String position=post.getTitle();
 			
 			for(Registration cons : consList)
 			{

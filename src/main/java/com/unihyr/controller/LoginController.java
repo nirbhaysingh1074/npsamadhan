@@ -267,6 +267,8 @@ public class LoginController
 		clModel.setWebsiteUrl(reg.getWebsiteUrl());
 		clModel.setPanno(reg.getPanno());
 		clModel.setStno(reg.getStno());
+		clModel.setIfscCode(reg.getIfscCode());
+		clModel.setAccountNo(reg.getAccountNo());
 		
 		map.addAttribute("regForm", clModel);
 		return "adminEditClientRegistration";
@@ -301,7 +303,8 @@ public class LoginController
 		clModel.setPanno(register.getPanno());
 		clModel.setStno(register.getStno());
 		clModel.setYearsInIndusrty(register.getYearsInIndusrty());
-		
+		clModel.setIfscCode(register.getIfscCode());
+		clModel.setAccountNo(register.getAccountNo());
 		map.addAttribute("regForm", clModel);
 		return "adminEditConsultRegistration";
 	}
@@ -413,6 +416,8 @@ public class LoginController
 			reg.setPanno(register.getPanno());
 			reg.setStno(register.getStno());
 			reg.setYearsInIndusrty(register.getYearsInIndusrty());
+			reg.setIfscCode(register.getIfscCode());
+			reg.setAccountNo(register.getAccountNo());
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);
@@ -472,6 +477,8 @@ public class LoginController
 			reg.setWebsiteUrl(register.getWebsiteUrl());
 			reg.setPanno(register.getPanno());
 			reg.setStno(register.getStno());
+			reg.setIfscCode(register.getIfscCode());
+			reg.setAccountNo(register.getAccountNo());
 			java.util.Date dt = new java.util.Date();
 			java.sql.Date regdate = new java.sql.Date(dt.getTime());
 			reg.setRegdate(regdate);

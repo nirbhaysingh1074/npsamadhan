@@ -193,7 +193,7 @@ function updatestatus(billId){
 					</td>
 					<td >
 					<%if(bill.getJoiningDate()!=null){ %>
-					<a target="_blank" href="clientBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>
+					<a target="_blank" href="<%= "/data/"+bill.getInvoicePath()%>" >Invoice</a>
 					<%if(bill.getPaidDate()!=null){ %>
 					<span>Paid on : <%=DateFormats.getTimeValue(bill.getPaidDate()) %></span>
 					<%}else{ %>

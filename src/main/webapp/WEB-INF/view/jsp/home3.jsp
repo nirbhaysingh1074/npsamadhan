@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
-<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 <title>UniHyr</title>
-<link rel="stylesheet" href="css/fonts.css" media="screen"   />
+<link rel="stylesheet" href="css/fontshome.css" media="screen"   />
 <link rel="stylesheet" href="css/media.css" media="screen" />
 <link rel="stylesheet" href="css/style.css" media="screen" />
 
@@ -37,6 +36,133 @@ function validateForm(){
 }
 </script>
 <style>
+.Slde_cent .grd .bx h2{
+font-size: 60px;
+color: #fff;
+text-transform: none;
+font-weight: normal;
+
+}
+.Slde_cent .grd {
+    width: 100%;
+    margin: 0 auto;
+}
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    }
+    .Slde_cent .grd .bx p {
+    color: #fff;
+    font-size: 29px;
+}
+.title_rw h2 {
+    color: #000000;
+    background: url(../images/tle_botm.jpg) no-repeat center bottom;
+    text-transform: none;
+    padding-bottom: 10px;
+    font-size: 45px;
+}
+.home-nav ul li a {
+    color: #000;
+    display: inline-block;
+    font-size: 19px !important;
+    margin-left: 1px;
+    padding: 7px 10px 6px;
+    text-align: center;
+    cursor: pointer;
+    }
+.Top_right {
+    width: auto;
+    float: right;
+    margin-top: 26px;
+    margin-right: 10px;
+}
+.Scrlbr {
+    width: 100%;
+    float: left;
+    background: rgba(0,0,0,.4);
+    position: absolute;
+    margin-top: -106px;
+    height: 100px;
+    padding-top: 24px;
+    }
+
+.howflow ul li h4 {
+    font-size: 21px;
+    color: #000;
+    text-transform: none;
+    margin-bottom: 6px;
+    font-weight: bold;
+
+}
+ .howflow ul li p {
+    font-size: 19px;
+    color: #000000;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+.featserv > ul {
+    font-size: 19px;
+    line-height: 30px;
+}
+.featserv ul li h3 {
+    font-size: 31px;
+    color: #000;
+    }
+.normalulli{
+
+    font-size:19px !important;
+}
+.featserv ul li p {
+    font-size: 19px;
+    color: #000000;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.featserv ul li h4 {
+    font-size: 22px;
+    color: #777;
+    text-transform: none;
+    margin-bottom: 19px;
+    font-weight: bold;
+}
+.Lineheight1 {
+    line-height: 30px;
+    font-size: 19px;
+}
+
+#contactusform{
+    margin-left: 28px;
+}
+.Slde_cent {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 32%;
+    z-index: 6;
+}
+.slde_m_img img {
+    height: 100%;
+    width: 100%;
+    opacity: 0.45;
+}
+h3{
+font-size: 30px !important;
+}
+.feature_sec {
+    width: 100%;
+    float: left;
+    padding: 35px 0px;
+    background: #fff;
+}
+
+
+
+
+
 .firstTimeLoginPopup{
 	    margin: 0px auto;
     top: 25%;
@@ -84,7 +210,7 @@ color: #fff;
 	position: relative;
 	margin: 0;
 	padding: 0;
-	height: 518px;
+	height: 715px;
 	list-style: none;
 }
 
@@ -95,7 +221,7 @@ color: #fff;
 	margin: 0;
 	padding: 0;
 	width: 1200px;
-	height: 518px;
+	height: 715px;
 	background: #ccc;
 	text-align: center;
 	/* line-height: 300px; */
@@ -167,10 +293,10 @@ a.control_next {
 	width:210px
 }
 .bx-wrapper{
-width: 1076px !important;
+width: 1396px !important;
 }
 .bx-window{
-width: 1076px !important;
+width: 1396px !important;
 }
 </style>
 <script>
@@ -267,6 +393,7 @@ width: 1076px !important;
 </style>
 </head>
 <body>
+<img alt="" src="images/home_p.jpg" style="position: fixed;top:40px;left:0px;height: 100%;width: 100%;z-index: -7;" >
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -281,7 +408,7 @@ width: 1076px !important;
 		<div class="Headr_top ">
 			<div class="container">
 				<div class="logo">
-					<a id="home" href="home"><img src="images/logo.png" alt="img" border="0"></a>
+					<a id="home" href="home"><img style="margin-left: 58px;" src="images/logo.png" alt="img" border="0"></a>
 				</div>
 				<div class="home-nav">
 					<ul style="margin-bottom: 0px; margin-top: 27px;">
@@ -306,7 +433,7 @@ width: 1076px !important;
 			</div>
 		</div>
 	</header>
-	<section class="Middle" style="margin-top: 76px;">
+	<section class="Middle" style="margin-top: 76px;background: #fffff;">
 		<!-- <div class="Slider">
 		<div class="prev"><a href=""><img src="images/arw1.png" border="0" alt="img"></a></div> 
 		<div class="next"><a href=""><img src="images/arw2.png" border="0" alt="img"></a></div>
@@ -358,8 +485,8 @@ width: 1076px !important;
 
 
 									<h2>Get the right talent in super quick time!</h2>
-									<p>We know that when it comes to hiring – quality and time
-										are the most critical factors. UniHyr’s partner network
+									<p>We know that when it comes to hiring &ndash; quality and time
+										are the most critical factors. UniHyr&lsquo;s partner network
 										provides a deeper penetration in the available talent pool and
 										ensures that you get quality profiles in a disruptively
 										shorter time</p>
@@ -501,7 +628,7 @@ width: 1076px !important;
 			
 			<div class="featserv rw">
 				
-				<ul style="font-size: 13px;line-height: 22px;">
+				<ul >
 					<li style="width: 42%;float: left;">
 					<ul style="text-align: left;list-style-type: disc;">
 			<li>
@@ -523,7 +650,7 @@ No rigorous mechanism of driving quality from the consultants
 						</li> 
 				<li style="width: 10%;"></li>
 					<li style="width: 42%;float: right;">
-						<ul style="text-align: left;list-style-type: disc;line-height: 22px;">
+						<ul style="text-align: left;list-style-type: disc;">
 		<li>	
 Single window to post new requirements and manage profiles received from consultants</li>
 <li>
@@ -548,48 +675,48 @@ Analytics driven rating system of consultants
 		
 		</div>
 	</div> 
-		<div class="feature_sec">
+		<div class="feature_sec" style="background: transparent none repeat scroll 0% 0%;color: white;">
 			<div class="container">
 				<div class="title_rw">
-					<h2>WHAT'S IN IT FOR...</h2>
+					<h2 style="color: white;">What's In It For...</h2>
 				</div>
 
 				<div class="featserv rw">
-					<ul>
+					<ul style="color: white;">
 						<li>
 
-							<h3 style="font-weight: bold; margin-bottom: 25px;">Employers</h3>
+							<h3 style="margin-bottom: 25px;">Employers</h3>
 							<div class="normalulli">
-								<ul>
-									<li><h4>GET ALL UNDER ONE ROOF</h4>
-										<p>One stop shop to engage with rated recruitment consulting/search firms without getting into the
+								<ul style="color: white !important;">
+									<li><h4 style="color: white !important;">GET ALL UNDER ONE ROOF</h4>
+										<p style="color: white !important;">One stop shop to engage with rated recruitment consulting/search firms without getting into the
 													hassle for managing them</p></li>
-									<li><h4>UNIQUE RATING SYSTEM TO ENSURE YOU KNOW WHO IS THE BEST</h4>
-										<p>Profiles from hiring partners with better ratings are shown first so that you get the best</p></li>
+									<li><h4 style="color: white !important;">UNIQUE RATING SYSTEM TO ENSURE YOU KNOW WHO IS THE BEST</h4>
+										<p style="color: white !important;">Profiles from hiring partners with better ratings are shown first so that you get the best</p></li>
 
-									<li><h4>HASSLE FREE AND TRANSPARENT</h4>
-										<p>No hassle of managing multiple recruitment agency contracts – clients protected by a single contract with
+									<li><h4 style="color: white !important;">HASSLE FREE AND TRANSPARENT</h4>
+										<p style="color: white !important;">No hassle of managing multiple recruitment agency contracts – clients protected by a single contract with
 										UniHyr outlining simple, transparent, and universal terms and conditions</p></li>
-									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
-										<p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
+									<li><h4 style="color: white !important;">FREE TO USE – PAY ONLY ON OUTCOME</h4>
+										<p style="color: white !important;">No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
 								</ul>
 							</div> <!-- 						<a href="" class="readmore">Read More</a> -->
 						</li>
 						<li>
 
-							<h3 style="font-weight: bold; margin-bottom: 25px;">Hiring
+							<h3 style="margin-bottom: 25px;">Hiring
 								Partners</h3>
 							<div class="normalulli" style="border-left: 1px solid #f1b910;">
-								<ul>
-									<li><h4>MORE BUSINESS!!</h4>
-										<p>Significant increase in business - get to work for new clients without having to spend time & effort in
+								<ul  style="color: white !important;">
+									<li><h4 style="color: white !important;">MORE BUSINESS!!</h4>
+										<p style="color: white !important;">Significant increase in business - get to work for new clients without having to spend time & effort in
 													acquiring them</p></li>
-									<li><h4>TRANSPARENT, PERFORMNCE DRIVEN</h4>
-										<p>Performance rating rewards good performance and leads to transparency</p></li>
-									<li><h4>SIMPLE TO USE AND HASSLE FREE</h4>
-										<p>Easy to use interface that lets you work on multiple client requirements at the same time</p></li>
-									<li><h4>FREE TO USE – PAY ONLY ON OUTCOME</h4>
-										<p>No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
+									<li><h4 style="color: white !important;">TRANSPARENT, PERFORMNCE DRIVEN</h4>
+										<p style="color: white !important;">Performance rating rewards good performance and leads to transparency</p></li>
+									<li><h4 style="color: white !important;">SIMPLE TO USE AND HASSLE FREE</h4>
+										<p style="color: white !important;">Easy to use interface that lets you work on multiple client requirements at the same time</p></li>
+									<li><h4 style="color: white !important;">FREE TO USE – PAY ONLY ON OUTCOME</h4>
+										<p style="color: white !important;">No signing up or usage charges. Payment to be made only on the hiring outcome</p></li>
 								</ul>
 							</div> <!-- 						<a href="" class="readmore">Read More</a> -->
 						</li>
@@ -613,7 +740,7 @@ Analytics driven rating system of consultants
 		
 			<div class="featserv rw" style="text-align: left;">
 				
-				<p style="font-size: 12px;padding: 20px;" class="Lineheight1">Hiring
+				<p style="padding: 20px;" class="Lineheight1">Hiring
 						continues to be one of the single biggest challenge impacting
 						growth of the modern day businesses. UniHyr is an innovative
 						solution that brings together several potential employers and a

@@ -41,6 +41,14 @@
 								You new password has been sent to your mail id. 
 							</p>
 						<%}
+							 regSuccess = (String) request.getAttribute("contractagree");
+							//System.out.println("asdfasdfasd"+regSuccess);
+								if (regSuccess != null && regSuccess.equals("true"))
+							{%>
+								<p>
+									You new password has been sent to your mail id. 
+								</p>
+							<%}
 								 regSuccess = (String) request.getParameter("regSuccess");
 	 							if (regSuccess != null && regSuccess.equals("true"))
 								{

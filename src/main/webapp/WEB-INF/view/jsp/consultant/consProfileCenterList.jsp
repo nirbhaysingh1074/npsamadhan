@@ -74,7 +74,6 @@
 						</ul>
 					</div>
 				</div>
-
 				<div class="positions_tab">
 		        	<table class="table no-margin" style="/* font-size: 10px; */border: 1px solid gray;">
 			        	<thead>
@@ -91,14 +90,13 @@
 			       			</tr>
 		       			</thead>
 		       			<tbody >
-	
 									<%
 										for (PostProfile pp : ppList) 
 										{
 											%>
 											<tr>
 												<td><a target="_blank" href="consapplicantinfo?ppid=<%= pp.getPpid()%>"><%=pp.getProfile().getName()%></a></td>
-												<td><a target="_blank"  href="clientPostDetail?pid=<%= pp.getPost().getPostId()%>"><%=pp.getPost().getTitle()%></a></td>
+												<td><a target="_blank"  href="consviewjd?pid=<%= pp.getPost().getPostId()%>"><%=pp.getPost().getTitle()%></a></td>
 												<td><%=pp.getProfile().getContact()%></td>
 												<td><%=pp.getProfile().getEmail()%></td>
 												<td><%=pp.getProfile().getCurrentRole()%></td>

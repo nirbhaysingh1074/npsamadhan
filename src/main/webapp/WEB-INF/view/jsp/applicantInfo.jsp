@@ -74,10 +74,12 @@ function forwardProfile(){
 			success : function(data) {
 				var obj = jQuery.parseJSON(data);
 
-				$('.error_forwardmail').html(obj.status);
+				//$('.error_forwardmail').html(obj.status);
 				$('#forwardform').css('display','none');
+				$('#forwardlink').css('display','block');
+				$('#forwardmail').val('');
 				pleaseDontWait();
-				//	alertify.success();
+				alertify.success(obj.status);
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
 			}
@@ -540,12 +542,12 @@ unviewed=0;
 												
 					            					<div class="block btn_row no-margin" style="text-align: right;">
 														<div id="<%= pp.getPpid() %>" class="profile_status">
-															<button id="forwardlink" class="profile_status_button"  onclick="$('#forwardform').css('display','block');$(this).css('display','none');">Forward Profile</button>
+															<button id="forwardlink" class="profile_status_button" style="float: right;"  onclick="$('#forwardform').css('display','block');$(this).css('display','none');">Forward Profile</button>
 															<div id="forwardform" style="display: none;">
 															<input type="email" required="required" id="forwardmail" style="width: 228px;" />
 															<input type="hidden" value="<%=pp.getPpid() %>" id="ppidforwardmail" />
 															<button class="profile_status_button" onclick="forwardProfile()" >Forward</button>
-															<button class="profile_status_button" onclick="$('#forwardform').css('display','none');$('#forwardlink').css('display','block');;$('.error_forwardmail').html('');" >Cancel</button> 
+															<button class="profile_status_button" onclick="$('#forwardform').css('display','none');$('#forwardlink').css('display','block');$('.error_forwardmail').html('');" >Cancel</button> 
 															<br><span class="error_forwardmail"></span>
 															
 															</div>

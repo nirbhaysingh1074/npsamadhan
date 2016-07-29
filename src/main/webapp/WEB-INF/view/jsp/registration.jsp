@@ -65,6 +65,18 @@
 				$('.stno_error').html('Please enter service tax number ');
 				valid = false;
 			}
+			var ifscCode = $('#ifscCode').val();
+			var accountNo = $('#accountNo').val();
+			if(!ifscCode)
+			{
+				$('.ifscCode_error').html('Please enter IFSC/RTGS number ');
+				valid = false;
+			}
+			if(!accountNo)
+			{
+				$('.accountNo_error').html('Please enter account number ');
+				valid = false;
+			}
 			if(noofpeoples == "")
 			{
 				$('.noofpeoples_error').html("Please enter no of employees");
@@ -251,7 +263,7 @@
 					<div class="reg-wrap">
 						<div style="padding-bottom: 10px;" class='clearfix'>
 							<label>Pan No<span class="req">*</span></label>
-							<form:input path="panno" onchange="checkUserExistance()" />
+							<form:input path="panno"  />
 							<span class="error panno_error">&nbsp;<form:errors path="panno" /> </span>
 						</div>
 					</div>
@@ -260,6 +272,21 @@
 							<label>Service Tax No<span class="req">*</span></label>
 							<form:input path="stno"  />
 							<span class="error stno_error">&nbsp;<form:errors path="stno" /> </span>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>IFSC/RTGS Code<span class="req">*</span></label>
+							<form:input path="ifscCode"  />
+							<span class="error ifscCode_error">&nbsp;<form:errors path="ifscCode" /> </span>
+						</div>
+					</div>
+					<div class="reg-wrap">
+						<div style="padding-bottom: 10px;" class='clearfix'>
+							<label>Account No<span class="req">*</span></label>
+							<form:input path="accountNo"  />
+							<span class="error accountNo_error">&nbsp;<form:errors path="accountNo" /> </span>
 						</div>
 					</div>
 					

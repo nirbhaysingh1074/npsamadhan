@@ -221,4 +221,5 @@ public class ProfileServiceImpl implements ProfileService {
 	{
 		return this.profileDao.countProfileList();
 	}
+	
 }

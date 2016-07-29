@@ -89,4 +89,8 @@ public interface PostProfileDao
 	boolean getPostProfileByContactAndDob(long postId, String contactNo, String dob);
 
 	List<PostProfile> getPostProfileByPostForStartup(long postId, int first, int max, String filterBy);
+
+	long countViewedProfileListByConsultantIdAndPostId(String consultantId, long postId);
+
+	public long countViewedPostProfileByPost(long postId, String filterBy, String rejected);
 }

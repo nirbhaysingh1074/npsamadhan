@@ -375,9 +375,9 @@ var buttonst=$('#db_post_status').val();
 											}
 											
 									%>
-									<button
-											class="profile_status_buttonGen" style="background: #ececec;cursor: auto;"
-											pid="<%=post.getPostId()%>" title="<%=tooltip%>">Edit</button>
+<!-- 									<button -->
+<!-- 											class="profile_status_buttonGen" style="background: #ececec;cursor: auto;" -->
+<%-- 											pid="<%=post.getPostId()%>" title="<%=tooltip%>">Edit</button> --%>
 									<%
 										}
 									%>

@@ -74,6 +74,31 @@ public class ConsultRegModel
 
 	private String contractorIP;
 	
+	private String ifscCode;
+	
+	private String accountNo;
+	
+	
+	public String getIfscCode()
+	{
+		return ifscCode;
+	}
+
+	public void setIfscCode(String ifscCode)
+	{
+		this.ifscCode = ifscCode;
+	}
+
+	public String getAccountNo()
+	{
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo)
+	{
+		this.accountNo = accountNo;
+	}
+
 	public String getContractorIP()
 	{
 		return contractorIP;

@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.SecondaryTables;
@@ -48,6 +51,9 @@ public class BillingDetails
 	@Column
 	private String invoicePath;
 	
+	@Column
+	private String consInvoicePath;
+	
 	@Column(nullable=false)
 	private String location;
 
@@ -62,6 +68,7 @@ public class BillingDetails
 
 	@Column
 	private Date expectedJoiningDate;
+	
 	@Column
 	private Boolean verificationStatus;
 
@@ -74,11 +81,13 @@ public class BillingDetails
 
 	@Column(nullable=false)
 	private double feePercentForClient;
+	
 	@Column(nullable=false)
 	private double feePercentToAdmin;
 
 	@Column(nullable=false)
 	private double fee;
+	
 	@Column(nullable=false)
 	private double tax;
 
@@ -105,6 +114,30 @@ public class BillingDetails
 	@Column(nullable=false)
 	private long postProfileId;
 
+
+	public String getConsInvoicePath()
+	{
+		return consInvoicePath;
+	}
+
+	public void setConsInvoicePath(String consInvoicePath)
+	{
+		this.consInvoicePath = consInvoicePath;
+	}
+
+	@OneToOne  
+    @JoinColumn(name = "ppid" , nullable= false)
+	private PostProfile postProfile;
+	
+	public PostProfile getPostProfile()
+	{
+		return postProfile;
+	}
+
+	public void setPostProfile(PostProfile postProfile)
+	{
+		this.postProfile = postProfile;
+	}
 
 	@Column
 	private Date paidDate;

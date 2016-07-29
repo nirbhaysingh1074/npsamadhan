@@ -114,6 +114,7 @@ pleaseWait();
     <%
 
 	int pn=1;
+	int offersent=0;
     if(post!=null) {
     
     	Set<Integer> cons = new HashSet(); 
@@ -126,6 +127,9 @@ pleaseWait();
 			if(pp.getProcessStatus() != null&&(pp.getProcessStatus().equals("accepted")||pp.getProcessStatus().equals("recruited")))
 			{
 				shortListed.add(pp.getPpid());
+			}
+			if(pp.getProcessStatus() != null&&pp.getProcessStatus().equals("recruited")){
+				offersent++;	
 			}
 			if(pp.getViewStatus()==null||(!pp.getViewStatus())){
 				countRead++;
@@ -230,8 +234,9 @@ pleaseWait();
 						<div class="block consulting" style="padding: 9px 15px 1px 15px">
 							<div style="float: left;margin-right: 30px;">
 								<select id="selected_post" style="margin-bottom: 7px">
-<!-- 									<option value="0">Select Post</option> -->
+									<option value="0">Select Post</option>
 									<c:forEach var="item" items="${postsList}">
+									
 										<option value="${item.postId}"
 											${sel_post.postId == item.postId ? 'selected="selected"' : ''}>${item.title}</option>
 									</c:forEach>
@@ -495,7 +500,7 @@ pleaseWait();
 									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
-										} else if (pp.getRecruited() != null) {
+									} else if (pp.getRecruited() != null) {
 									%>
 									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;">
@@ -516,9 +521,12 @@ pleaseWait();
 									<td><span><%=status %></span></td>
 									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
 									<%
-									} else if (pp.getAccepted() != null) {
+									} else if (pp.getAccepted() != null ) {
 									%>
 									<td><span><%=status %></span></td>
+									<%if(offersent>=pp.getPost().getNoOfPosts()){ %>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
+									<%}else{ %>
 									<td class="text-center">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -531,10 +539,14 @@ pleaseWait();
 
 										</p>
 									</td>
+									<%} %>
 									<%
 										} else {
 									%>
 									<td><span><%=status %></span></td>
+										<%if(offersent>=pp.getPost().getNoOfPosts()){ %>
+									<td class="text-center" style="text-align: left;"><span><%=action %></span></td>
+									<%}else{ %>
 									<td class="text-center">
 										<p id="<%=pp.getPpid()%>" class="profile_status"
 											data-view="table">
@@ -544,7 +556,7 @@ pleaseWait();
 											<a style="float: left;cursor: pointer;"  class="btn-open "
 												data-type="reject_profile" title="Click to reject profile">Reject</a>
 										</p>
-									</td>
+									</td><%} %>
 									<%
 										}
 									%>

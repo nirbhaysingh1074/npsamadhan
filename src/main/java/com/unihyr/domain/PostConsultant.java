@@ -36,9 +36,21 @@ public class PostConsultant
 
 	@Column
 	private double percentile;
+	@Column
+	private double feePercent;
 
 
 	
+
+	public double getFeePercent()
+	{
+		return feePercent;
+	}
+
+	public void setFeePercent(double feePercent)
+	{
+		this.feePercent = feePercent;
+	}
 
 	public double getPercentile()
 	{

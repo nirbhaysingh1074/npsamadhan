@@ -31,10 +31,18 @@ import com.unihyr.service.RegistrationService;
 @Controller
 public class BillingController
 {
+	
+	/**
+	 * service to deal with billing related functions
+	 */
 	@Autowired BillingService billingService;
 
+	/**
+	 * service to deal with user registration related functions
+	 */
 	@Autowired
 	private RegistrationService registrationService;
+	
 	/**
 	 * used to handle request to generate billing details for client
 	 * @param map used to store response attribues
@@ -85,13 +93,20 @@ public class BillingController
 		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
 		request.setAttribute("bill",bill);
 		request.setAttribute("clientId",principal.getName());
-		new ConsultantController().createBillInvoice(bill, principal.getName());
+		new ConsultantController().createBillInvoice(bill);
 		Registration reg = registrationService.getRegistationByUserId(principal.getName());
 		map.addAttribute("registration",reg);
 	
 		return "clientBillInvoice";
 	}
 
+	/**
+	 * request method to Verify invoice by client itself
+	 * @param map 
+	 * @param request
+	 * @param principal
+	 * @return billing detail page for client
+	 */
 	@RequestMapping(value="/clientVerifyBillingDetails",method=RequestMethod.GET)
 	public String clientVerifyBillingDetails(ModelMap map,HttpServletRequest request,Principal principal)
 	{
@@ -106,6 +121,13 @@ public class BillingController
 	
 		return "clientBillingDetails";
 	}
+	/**
+	 * request method to verify billing details via link provided in mail notification.
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value="/verifyBillingDetails",method=RequestMethod.GET)
 	public String verifyBillingDetails(ModelMap map,HttpServletRequest request,Principal principal)
 	{
@@ -116,6 +138,13 @@ public class BillingController
 		map.addAttribute("verifySuccess","true");
 		return "invoiceVerification";
 	}
+	/**
+	 * request method to update billing info via administrator unihyr
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
 	@RequestMapping(value="/adminBillUpdate",method=RequestMethod.GET)
 	public @ResponseBody String adminBillUpdate(ModelMap map,HttpServletRequest request,Principal principal)
 	{
@@ -135,6 +164,32 @@ public class BillingController
 		js.put("status", "Paid status updated successfully");
 		return js.toJSONString();
 	}
+	
+
+	/**
+	 * request method to generate bill invoice for consultant
+	 * @param map
+	 * @param request
+	 * @param principal
+	 * @return
+	 */
+	@RequestMapping(value = "/consGenerateBillInvoice", method = RequestMethod.POST)
+	public String consGenerateBillInvoice(ModelMap map, HttpServletRequest request ,Principal principal )
+	{
+		String id=(String)request.getParameter("billId");
+		String invoiceno=(String)request.getParameter("invoiceno");
+		
+		BillingDetails bill = billingService.getBillingDetailsById(Integer.parseInt(id));
+		request.setAttribute("bill",bill);
+		request.setAttribute("clientId",principal.getName());
+		bill.setConsInvoicePath(new ConsultantController().createConsBillInvoice(bill,invoiceno));
+		billingService.updateBillingDetails(bill);
+		Registration reg = registrationService.getRegistationByUserId(principal.getName());
+		map.addAttribute("registration",reg);
+	
+		return "redirect:/consBillingDetails";
+	}
+
 	
 	
 }

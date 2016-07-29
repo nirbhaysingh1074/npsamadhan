@@ -160,7 +160,10 @@ border-right: 4px solid rgb(220, 220, 220);
 border-bottom: 4px solid rgb(220, 220, 220);
 }
 
+
 </style>
+
+
 </head>
 <body class="loading"  >
 <tilesx:useAttribute name="currentpage" />

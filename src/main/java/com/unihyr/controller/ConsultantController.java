@@ -88,6 +88,7 @@ import com.unihyr.service.ProfileService;
 import com.unihyr.service.QualificationService;
 import com.unihyr.service.RatingParameterService;
 import com.unihyr.service.RegistrationService;
+import com.unihyr.service.SocialSharingService;
 import com.unihyr.util.CalculateRating;
 import com.unihyr.util.IndustryCoverageCalc;
 import com.unihyr.util.OfferCloseCalc;
@@ -123,18 +124,12 @@ public class ConsultantController
 	GlobalRatingService globalRatingService;
 	@Autowired
 	RatingParameterService ratingParamService;
-
 	@Autowired
 	InboxService inboxService;
 	@Autowired
 	private BillingService billingService;
 	@Autowired
 	private LocationService locationService;
-
-	@Autowired
-	private PostConsultnatService postConsultantService;
-	@Autowired
-	private RatingParameterService ratingParameterService;
 	@Autowired
 	private MailService mailService;
 	@Autowired
@@ -143,6 +138,8 @@ public class ConsultantController
 	private NotificationService notificationService;
 	@Autowired
 	private QualificationService qualificationService;
+	@Autowired
+	private SocialSharingService socialSharingService;
 	/**
 	 * login info service to invoke user login related functions
 	 */
@@ -361,9 +358,11 @@ public class ConsultantController
 				map.addAttribute("upload_success", true);
 				Notifications nser=new Notifications();
 				nser.setDate(new java.sql.Date(new Date().getTime()));
-				nser.setNotification("New profile of <a href='clientapplicantinfo?ppid="+pp.getProfile().getProfileId()+"' >"
-						+pp.getProfile().getName()+"</a> has been uploaded on  <a href='clientpostapplicants?pid="
-							+ post.getPostId() + "' >" + post.getTitle() + "</a> by "+pp.getProfile().getRegistration().getConsultName());
+//				nser.setNotification("New profile of <a href='clientapplicantinfo?ppid="+pp.getProfile().getProfileId()+"' >"
+//						+pp.getProfile().getName()+"</a> has been uploaded on  <a href='clientpostapplicants?pid="
+//							+ post.getPostId() + "' >" + post.getTitle() + "</a> by "+pp.getProfile().getRegistration().getConsultName());
+				nser.setNotification("New profile of "
+						+pp.getProfile().getName()+" has been uploaded on  " + post.getTitle() + " by "+pp.getProfile().getRegistration().getConsultName());
 				nser.setUserid(pp.getPost().getClient().getUserid());
 				notificationService.addNotification(nser);
 				
@@ -500,11 +499,10 @@ public class ConsultantController
 		Registration client = post.getClient();
 		map.addAttribute("postConsList", postConsultnatService
 				.getInterestedPostForConsultantByClient(cons.getUserid(), client.getUserid(), "percentile"));
-
-		
 		map.addAttribute("rpp", GeneralConfig.rpp_cons);
 		map.addAttribute("pn", Integer.parseInt(pageNo));
 		map.addAttribute("sortParam", sortParam);
+		map.addAttribute("socialSharing" ,socialSharingService.getSocialSharing(loggedinUser));
 		return "profilelistbyconsidclientid";
 	}
 
@@ -746,16 +744,30 @@ public class ConsultantController
 		
 		JSONObject object = new JSONObject();
 		String pids = request.getParameter("pids");
+		String coms = request.getParameter("coms");
 		if (pids != null && pids.length() > 0)
 		{
 			String[] ids = pids.split(",");
+			String[] comis = coms.split(",");
 			try
 			{
 				System.out.println("value is " + pids);
 				for (String pid : ids)
 				{
+					int i=0; 
 					post = postService.getPost(Long.parseLong(pid.trim()));
 					JSONObject obj = new JSONObject();
+					Double feePer=0.0;
+					try{
+						feePer=Double.parseDouble(comis[i]);
+						if(feePer<post.getFeePercent()/2||feePer>post.getFeePercent()){
+							feePer=post.getFeePercent();
+						}
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					
+					
 					if (post != null)
 					{
 						PostConsultant pc = new PostConsultant();
@@ -804,9 +816,12 @@ public class ConsultantController
 						}
 						pc.setConsultant(consultant);
 						pc.setPercentile(percentile);
+						pc.setFeePercent(feePer);
 						post.getPostConsultants().add(pc);
 						post.setPostConsultants(post.getPostConsultants());
 						postService.updatePost(post);
+						
+					
 						Notifications nser=new Notifications();
 						nser.setDate(new java.sql.Date(new Date().getTime()));
 						nser.setNotification(reg.getConsultName()+" have signed up for the post "+post.getTitle());
@@ -1096,9 +1111,11 @@ e.printStackTrace();
 					java.sql.Date dt = new java.sql.Date(date1.getTime());
 					BillingDetails billingDetailscl = billingService.getBillingDetailsById(pp.getPpid());
 					billingDetailscl.setJoiningDate(dt);
-					long payDay = Long.parseLong(pp.getPost().getClient().getPaymentDays() + "");
+					Registration client=pp.getPost().getClient();
+					long payDay = Long.parseLong(client.getPaymentDays() + "");
 					try
 					{
+						
 					billingDetailscl
 							.setPaymentDueDateForAd(new java.sql.Date(dt.getTime() + (payDay) * 24 * 60 * 60 * 1000));
 					billingDetailscl
@@ -1111,11 +1128,9 @@ e.printStackTrace();
 					{
 						e.printStackTrace();
 					}
-					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
 					billingService.updateBillingDetails(billingDetailscl);
-					String clientId = pp.getProfile().getRegistration().getUserid();
 					BillingDetails bill = billingService.getBillingDetailsById(ppid);
-					String billInvoiceHtml = createBillInvoice(bill, clientId);
+					String billInvoiceHtml = createBillInvoice(bill);
 					bill.setInvoicePath(billInvoiceHtml);
 					billingService.updateBillingDetails(bill);
 					String mailContent="Dear Sir/Madam<br><br>"+
@@ -1136,24 +1151,25 @@ e.printStackTrace();
 					"<tr><td>Recruitment Fee (INR)</td><td>"+bill.getFee()+"</td></tr>"+
 					"<tr><td>Service Tax @14%</td><td>"+GeneralConfig.TAX+"</td></tr>"+
 					"<tr><td>Swach Bharat Cess @ 0.5%</td><td>"+GeneralConfig.CESS+"</td></tr>"+
+					"<tr><td>Swach Bharat Cess @ 0.5%</td><td>"+GeneralConfig.KrishiKalyan+"</td></tr>"+
 					"<tr><td>Total Invoice Amount (INR)</td><td>"+bill.getTotalAmount()+"</td></tr>"+
 					"<tr><td>Payment Days (as per contract) (days)</td><td>"+payDay+"</td></tr>"+
 					"<tr><td>Payment Due Date</td><td>"+DateFormats.ddMMMMyyyy.format(bill.getPaymentDueDateForAd())+"</td></tr></table>";
 					mailContent+="<br><br> Best Regards,<br>"+
 					"UniHyr Admin Team";
-					mailService.sendMail(pp.getPost().getClient().getUserid(), "Bill Invoice verfication",mailContent);
-					String	content= pp.getProfile().getName() +" has accepted offer for the  <a href='clientpostapplicants?pid="
-							+ post.getPostId() + "' >" + post.getTitle() + "</a>  ("+(client.getOrganizationName())+")" ;
+					mailService.sendMail(client.getUserid(), "Bill Invoice verfication",mailContent);
+//					String	content= pp.getProfile().getName() +" has accepted offer for the  <a href='clientpostapplicants?pid="
+//							+ post.getPostId() + "' >" + post.getTitle() + "</a>  ("+(client.getOrganizationName())+")" ;
+					String	content= pp.getProfile().getName() +" has accepted offer for the " + post.getTitle() + "  ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
 					nser.setDate(new java.sql.Date(new Date().getTime()));
 					nser.setNotification(content);
-					nser.setUserid(pp.getPost().getClient().getUserid());
+					nser.setUserid(client.getUserid());
 					notificationService.addNotification(nser);
 					obj.put("status", "join_accept");
 				} 
 				else if (ppstatus.equals("join_reject"))
 				{
-
 					pp.setProcessStatus("joinDropDate");
 					Date date = new Date();
 					java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -1188,12 +1204,13 @@ e.printStackTrace();
 					}
 					postService.updatePost(post);
 					closePost(client);
-					String	content= pp.getProfile().getName() +" has rejected offer for the  <a href='clientpostapplicants?pid="
-							+ post.getPostId() + "' >" + post.getTitle() + "</a>  ("+(client.getOrganizationName())+")" ;
+//					String	content= pp.getProfile().getName() +" has rejected offer for the  <a href='clientpostapplicants?pid="
+//							+ post.getPostId() + "' >" + post.getTitle() + "</a>  ("+(client.getOrganizationName())+")" ;
+					String	content= pp.getProfile().getName() +" has rejected offer for the  " + post.getTitle() + " ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
 					nser.setDate(new java.sql.Date(new Date().getTime()));
 					nser.setNotification(content);
-					nser.setUserid(pp.getPost().getClient().getUserid());
+					nser.setUserid(client.getUserid());
 					notificationService.addNotification(nser);
 					
 					
@@ -1207,12 +1224,13 @@ e.printStackTrace();
 					String rej_reason = request.getParameter("rej_reason");
 					pp.setRejectReason(rej_reason);
 					Registration client = registrationService.getRegistationByUserId(post.getClient().getUserid());
-					String	content= pp.getProfile().getName() +" had withdrawn candidature for the  <a href='clientpostapplicants?pid="
-							+ post.getPostId() + "' >" + post.getTitle() + "</a>   ("+(client.getOrganizationName())+")" ;
+//					String	content= pp.getProfile().getName() +" had withdrawn candidature for the  <a href='clientpostapplicants?pid="
+//							+ post.getPostId() + "' >" + post.getTitle() + "</a>   ("+(client.getOrganizationName())+")" ;
+					String	content= pp.getProfile().getName() +" had withdrawn candidature for the " + post.getTitle() + "  ("+(client.getOrganizationName())+")" ;
 					Notifications nser=new Notifications();
 					nser.setDate(new java.sql.Date(new Date().getTime()));
 					nser.setNotification(content);
-					nser.setUserid(pp.getPost().getClient().getUserid());
+					nser.setUserid(client.getUserid());
 					notificationService.addNotification(nser);
 					String consultId=pp.getProfile().getRegistration().getUserid();
 					subject="UniHyr Alert : Candidature Withdrawn - "+consultId+"," +pp.getPost().getTitle();
@@ -1245,13 +1263,13 @@ e.printStackTrace();
 		return obj.toJSONString();
 	}
 
-	public String createBillInvoice(BillingDetails bill, String clientId)
+	public String createBillInvoice(BillingDetails bill)
 	{
 		try
 		{
 			Document document = new Document(PageSize.A4);
 			String pathToStore=UUID.randomUUID() + ".pdf";
-			
+			Registration client=bill.getPostProfile().getPost().getClient();
 			String path = GeneralConfig.UploadPath +pathToStore ;
 			PdfWriter.getInstance(document, new FileOutputStream(path));
 			document.open();
@@ -1260,6 +1278,23 @@ e.printStackTrace();
 			document.addSubject("Invoice");
 			document.addCreationDate();
 			HTMLWorker htmlWorker = new HTMLWorker(document);
+			String panno="XXXXXXXXXXXX";
+			String stno="XXXXXXXXXXXX";
+			String ifscCode="XXXXXXXXXXXX";
+			String accountNo="XXXXXXXXXXXX";
+			if(client.getPanno()!=null)
+				panno=client.getPanno();
+			if(client.getStno()!=null)
+				stno=client.getStno();
+			if(client.getIfscCode()!=null)
+				ifscCode=client.getIfscCode();
+			if(client.getAccountNo()!=null)
+				accountNo=client.getAccountNo();
+			
+			
+			
+			
+			
 			StringBuilder str = new StringBuilder();
 			str.append("<html><head>");
 			str.append("</head><body><font size='-2' >");
@@ -1276,7 +1311,7 @@ e.printStackTrace();
 			str.append("	<tr>");
 			str.append("	<td style='width: 40%'><strong>UniHyr</strong><br>");
 			str.append(
-					"	<span style='padding-right: 240px; word-wrap: break-word;'>Here is address of client is address of client is address of client </span></td>");
+					"	<span style='padding-right: 240px; word-wrap: break-word;'>"+GeneralConfig.UnihyrAddress+ "</span></td>");
 			str.append("		<td width='20%'>");
 			str.append("	</td>");
 			str.append("	<td  width='35%'></td>");
@@ -1288,14 +1323,14 @@ e.printStackTrace();
 			str.append("	<td style='width: 25%'></td>");
 			str.append("		<td>Date Of Invoice:<br>Invoice# :<br>Pan No :<br>Service Tax Reg No :</td>");
 			str.append("		<td>" + DateFormats.ddMMMMyyyy.format(bill.getJoiningDate()) + "<br>" + bill.getBillId()
-					+ "<br>" + "XXXXXXXXXXXXXX<br>" + "XXXXXXXXXXXXXX" + "</td>");
+					+ "<br>" + panno+"<br>" + stno + "</td>");
 			str.append("	</tr>");
 
 			str.append("</table>");
 			str.append("<table style='width: 100%'>");
 			str.append("	<tr>");
 			str.append("	<td style='width: 40%;'><strong>To</strong><br>" + bill.getClientName() + ""
-					+ "<p style='width: 50%'>this is addres container. is addres container. is addres container.</p>"
+					+ "<p style='width: 50%'>"+client.getOfficeAddress()+"</p>"
 					+ "</td>");
 			str.append("	<td style='width: 40%;'></td>");
 			str.append("	<td style='width: 10%;'></td>");
@@ -1315,8 +1350,8 @@ e.printStackTrace();
 			str.append("		</tbody>");
 			str.append("	</table>");
 			str.append("	<br> <br>");
-			Double total = bill.getFee() + (GeneralConfig.TAX * bill.getFee()) / 100
-					+ (GeneralConfig.CESS * bill.getFee()) / 100;
+			Double totalTax=GeneralConfig.TAX+GeneralConfig.CESS+GeneralConfig.KrishiKalyan;
+			Double total = bill.getFee() + (totalTax * bill.getFee()) / 100;
 			str.append("<table border='1' style='border: 0.5px solid; width: 90%; margin: auto;'>");
 			str.append("	<tr  style='border-bottom: 1px solid #000; height: 30px;'>");
 			str.append(
@@ -1343,14 +1378,21 @@ e.printStackTrace();
 			str.append(GeneralConfig.TAX);
 			str.append("	</td>");
 			str.append("	<td style='text-align: right; padding-right: 10px;'>"
-					+ (GeneralConfig.TAX * bill.getFee()) / 100 + "</td>");
+					+ NumberUtils.convertNumberToCommoSeprated((GeneralConfig.TAX * bill.getFee()) / 100) + "</td>");
 			str.append("</tr>");
 			str.append("<tr>");
 			str.append("	<td style='height: 25px; padding-left: 10px;'>Swatch");
 			str.append("		Bharat Cess @ " + GeneralConfig.CESS);
 			str.append("	</td>");
 			str.append("	<td style='text-align: right; padding-right: 10px;'>"
-					+ (GeneralConfig.CESS * bill.getFee()) / 100 + "</td>");
+					+ NumberUtils.convertNumberToCommoSeprated((GeneralConfig.CESS * bill.getFee()) / 100) + "</td>");
+			str.append("	</tr>");
+			str.append("<tr>");
+			str.append("	<td style='height: 25px; padding-left: 10px;'>Krishi Kalyan ");
+			str.append("		Cess @ " + GeneralConfig.KrishiKalyan);
+			str.append("	</td>");
+			str.append("	<td style='text-align: right; padding-right: 10px;'>"
+					+ NumberUtils.convertNumberToCommoSeprated((GeneralConfig.KrishiKalyan * bill.getFee()) / 100) + "</td>");
 			str.append("	</tr>");
 			str.append("	<tr border='1' style='border-top: 1px solid #000; height: 30px;'>");
 			str.append("	<th align='center' style='border-top:1px solid #000;'>Total</th>");
@@ -1385,11 +1427,210 @@ e.printStackTrace();
 			str.append("</tr>");
 			str.append("<tr style='height: 25px;'>");
 			str.append("	<td>Current A/C No :</td>");
-			str.append("	<td>xxxxxxxxxxx</td>");
+			str.append("	<td>"+accountNo+"</td>");
 			str.append("	</tr>");
 			str.append("	<tr style='height: 25px;'>");
 			str.append("		<td>IFSC /RTGS Code :</td>");
-			str.append("	<td>xxxxxxxxxxxx</td>");
+			str.append("	<td>"+ifscCode+"</td>");
+			str.append("	</tr>");
+
+			str.append("	<tr>");
+			str.append("		<td><pre> </pre></td>");
+			str.append("		<td></td>");
+			str.append("	</tr>");
+			str.append("	<tr>");
+			str.append("	<td><span style='font-size: 8px;'>Please make");
+			str.append("			cheques payable to UniHyr</span></td>");
+			str.append("		<td></td>");
+			str.append("	</tr>");
+
+			str.append("	<tr>");
+			str.append("		<td><span style='font-size: 7px;'>This is computer");
+			str.append("				generated invoice, hence does not require any signature</span></td>");
+			str.append("		<td></td>");
+			str.append("	</tr>");
+			str.append("	</table>");
+
+			str.append("</font></body></html>");
+			htmlWorker.parse(new StringReader(str.toString()));
+			document.close();
+			System.out.println("Done");
+			return pathToStore;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return e.getMessage();
+		} // TODO Auto-generated method stub
+	}
+	public String createConsBillInvoice(BillingDetails bill, String invoiceno)
+	{
+		try
+		{
+			Document document = new Document(PageSize.A4);
+			String pathToStore=UUID.randomUUID() + ".pdf";
+			Registration client=bill.getPostProfile().getPost().getClient();
+			String path = GeneralConfig.UploadPath +pathToStore ;
+			PdfWriter.getInstance(document, new FileOutputStream(path));
+			document.open();
+			document.addAuthor("Unihyr");
+			document.addCreator("Unihyr");
+			document.addSubject("Invoice");
+			document.addCreationDate();
+			HTMLWorker htmlWorker = new HTMLWorker(document);
+			String panno="XXXXXXXXXXXX";
+			String stno="XXXXXXXXXXXX";
+			String ifscCode="XXXXXXXXXXXX";
+			String accountNo="XXXXXXXXXXXX";
+			if(client.getPanno()!=null)
+				panno=client.getPanno();
+			if(client.getStno()!=null)
+				stno=client.getStno();
+			if(client.getIfscCode()!=null)
+				ifscCode=client.getIfscCode();
+			if(client.getAccountNo()!=null)
+				accountNo=client.getAccountNo();
+			
+			
+			
+			
+			
+			StringBuilder str = new StringBuilder();
+			str.append("<html><head>");
+			str.append("</head><body><font size='-2' >");
+			str.append("			<table style='width: 100%;'>");
+			str.append("			<tbody>");
+			str.append("			<tr>");
+			str.append("		<td width='40%'>");
+			str.append(" <img style='width: 160px;' src='logo.png' alt='logo' /> ");
+			str.append("	</td>");
+			str.append("		<td width='20%'>");
+			str.append("	</td>");
+			str.append(" <td width='35%'> <img alt='invoice' src='invoice.png'></td> ");
+			str.append("	</tr>");
+			str.append("	<tr>");
+			str.append("	<td style='width: 40%'><strong>UniHyr</strong><br>");
+			str.append(
+					"	<span style='padding-right: 240px; word-wrap: break-word;'>"+GeneralConfig.UnihyrAddress+ "</span></td>");
+			str.append("		<td width='20%'>");
+			str.append("	</td>");
+			str.append("	<td  width='35%'></td>");
+			str.append("		</tr>");
+			str.append("</table>");
+			str.append("<table style='width: 100%'>");
+			str.append("<tr>");
+			str.append("	<td style='width: 25%'></td>");
+			str.append("	<td style='width: 25%'></td>");
+			str.append("		<td>Date Of Invoice:<br>Invoice# :<br>Pan No :<br>Service Tax Reg No :</td>");
+			str.append("		<td>" + DateFormats.ddMMMMyyyy.format(bill.getJoiningDate()) + "<br>" + invoiceno
+					+ "<br>" + panno+"<br>" + stno + "</td>");
+			str.append("	</tr>");
+
+			str.append("</table>");
+			str.append("<table style='width: 100%'>");
+			str.append("	<tr>");
+			str.append("	<td style='width: 40%;'><strong>To</strong><br>" + bill.getClientName() + ""
+					+ "<p style='width: 50%'>"+client.getOfficeAddress()+"</p>"
+					+ "</td>");
+			str.append("	<td style='width: 40%;'></td>");
+			str.append("	<td style='width: 10%;'></td>");
+			str.append("</tr>");
+			str.append("<tr>");
+			str.append("	<td></td>");
+			str.append("	<td></td>");
+			str.append("	<td></td>");
+			str.append("	</tr>");
+			str.append("		<tr>");
+			str.append("		<td>");
+			str.append("			");
+			str.append("		</td>");
+			str.append("		<td></td>");
+			str.append("		<td></td>");
+			str.append("	</tr>");
+			str.append("		</tbody>");
+			str.append("	</table>");
+			str.append("	<br> <br>");
+			Double totalTax=GeneralConfig.TAX+GeneralConfig.CESS+GeneralConfig.KrishiKalyan;
+			Double total = bill.getFee() + (totalTax * bill.getFee()) / 100;
+			str.append("<table border='1' style='border: 0.5px solid; width: 90%; margin: auto;'>");
+			str.append("	<tr  style='border-bottom: 1px solid #000; height: 30px;'>");
+			str.append(
+					"	<th align='center' style='width: 81%;border-right: 1px solid #000;border-bottom:1px solid #000;'>Description</th>");
+			str.append("		<th align='left'");
+			str.append(
+					"			style='width: 15%;  width: 75%; text-align: right;padding-right: 10px;border-bottom:1px solid #000; '>Amount");
+			str.append("			(in Rs.)</th>");
+			str.append("		</tr>");
+			str.append("<tr>");
+			str.append("<td style='height: 25px; padding-left: 10px;'>Position :");
+			str.append(bill.getPosition() + "<br>");
+			str.append("	</td>");
+			str.append("	<td style='text-align: right; padding-right: 10px;'>"
+					+ NumberUtils.convertNumberToCommoSeprated(bill.getFee()) + "</td>");
+			str.append("</tr>");
+			str.append("<tr>");
+			str.append("	<td style='height: 25px; padding-left: 10px;'>Candidate");
+			str.append("		Hired :" + bill.getCandidatePerson() + "</td>");
+			str.append("	<td style='text-align: right; padding-right: 10px;'></td>");
+			str.append("</tr>");
+			str.append("<tr>");
+			str.append("	<td style='height: 25px; padding-left: 10px;'>Servic Tax");
+			str.append(GeneralConfig.TAX);
+			str.append("	</td>");
+			str.append("	<td style='text-align: right; padding-right: 10px;'>"
+					+ NumberUtils.convertNumberToCommoSeprated((GeneralConfig.TAX * bill.getFee()) / 100) + "</td>");
+			str.append("</tr>");
+			str.append("<tr>");
+			str.append("	<td style='height: 25px; padding-left: 10px;'>Swatch");
+			str.append("		Bharat Cess @ " + GeneralConfig.CESS);
+			str.append("	</td>");
+			str.append("	<td style='text-align: right; padding-right: 10px;'>"
+					+ NumberUtils.convertNumberToCommoSeprated((GeneralConfig.CESS * bill.getFee()) / 100) + "</td>");
+			str.append("	</tr>");
+			str.append("<tr>");
+			str.append("	<td style='height: 25px; padding-left: 10px;'>Krishi Kalyan ");
+			str.append("		Cess @ " + GeneralConfig.KrishiKalyan);
+			str.append("	</td>");
+			str.append("	<td style='text-align: right; padding-right: 10px;'>"
+					+ NumberUtils.convertNumberToCommoSeprated((GeneralConfig.KrishiKalyan * bill.getFee()) / 100) + "</td>");
+			str.append("	</tr>");
+			str.append("	<tr border='1' style='border-top: 1px solid #000; height: 30px;'>");
+			str.append("	<th align='center' style='border-top:1px solid #000;'>Total</th>");
+			str.append(
+					"	<th align='right' style='padding-right: 10px;border-left: 1px solid #000;border-top:1px solid #000;'>"
+							+ total + "</th>");
+			str.append("	</tr>");
+			str.append("</table>");
+			str.append("<br>");
+			str.append("<table style='width: 90%; margin: auto;' >");
+			str.append("	<tr style='height: 25px;'>");
+			str.append("		<td width='60%' style='width:60%;'><strong>Amount in words");
+			str.append("				:</strong></td>");
+			str.append("		<td style='width: 40%;'></td>");
+			str.append("	</tr>");
+			str.append("<tr style='height: 25px;'>");
+			str.append("	<td>" + numbertowordindian.numToWordIndian(total.intValue() + ""));
+			str.append("		Only</td>");
+			str.append("	<td></td>");
+			str.append("</tr>");
+			str.append("<tr>");
+			str.append("	<td><pre> </pre></td>");
+			str.append("	<td></td>");
+			str.append("</tr>");
+			str.append("<tr style='height: 25px;'>");
+			str.append("	<td>Account Details for electronic transfer</td>");
+			str.append("	<td></td>");
+			str.append("	</tr>");
+			str.append("<tr style='height: 25px;'>");
+			str.append("	<td>Account Name</td>");
+			str.append("	<td>UniHyr</td>");
+			str.append("</tr>");
+			str.append("<tr style='height: 25px;'>");
+			str.append("	<td>Current A/C No :</td>");
+			str.append("	<td>"+accountNo+"</td>");
+			str.append("	</tr>");
+			str.append("	<tr style='height: 25px;'>");
+			str.append("		<td>IFSC /RTGS Code :</td>");
+			str.append("	<td>"+ifscCode+"</td>");
 			str.append("	</tr>");
 
 			str.append("	<tr>");
@@ -1554,15 +1795,6 @@ e.printStackTrace();
 		}
 		return "redirect:consultantaccount";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public void closePost(Registration client)
 	{

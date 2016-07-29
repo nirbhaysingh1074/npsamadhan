@@ -55,6 +55,7 @@
 		var location = $('#location').val();
 		var fun = $('#function').val();
 		var noOfPosts = $('#noOfPosts').val();
+		var profileParDay = $('#profileParDay').val();
 		var exp_min = $('#exp_min').val();
 		var exp_max = $('#exp_max').val();
 		var ctc_min = $('#ctc_min').val();
@@ -96,6 +97,11 @@
 		if(noOfPosts == ""||noOfPosts == "0")
 		{
 			$('.noOfPosts_error').html('Please enter no of posts')
+			valid = false;
+		}
+		if(profileParDay == ""||profileParDay == "0")
+		{
+			$('.profileParDay_error').html('Please enter profile quota per week');
 			valid = false;
 		}
 		
@@ -219,9 +225,9 @@ Registration registration=(Registration)request.getAttribute("registration");
 							 <span class="error uploadjd_error">&nbsp;<form:errors path="uploadjd" /></span>
 						    
 						</div>
-						<div style="float: left;">
-						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;border-radius: 0 5px 5px 0;float: right;height: 27px;overflow: hidden;position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" />
-					</div>
+<!-- 						<div style="float: left;"> -->
+<!-- 						    <input style="margin-left:10px; background: #f8b910 none repeat scroll 0 0;border-radius: 0 5px 5px 0;float: right;height: 27px;overflow: hidden;position: relative;padding: 2px;"  type="button" value="Upload" onclick="$('#jobDescriptionText').css('display','none')" /> -->
+<!-- 					</div> -->
 					</dd>
 				</dl>
 	          

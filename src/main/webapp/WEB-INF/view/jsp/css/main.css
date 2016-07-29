@@ -174,7 +174,7 @@ border-bottom: 2px solid #ffeded; */
 		background: white;
 }
 
-.file_up{float:left; width:82%; position:relative;}
+.file_up{float:left; width:100%; position:relative;}
 /* .form_cont .form_col dl dd .file_up span{position:absolute; top:0; right:0; width:70px; height:100%; background:#c1c1c1; border-radius:0 3px 3px 0; cursor:pointer;}
 .form_cont .form_col dl dd .file_up span:after{content:'Browse'; position:absolute; left:8px; top:7px; font-size:12px;  font-weight:bold;}
 .form_cont .form_col dl dd .file_up input[type="file"]{opacity:0; float:right;} */

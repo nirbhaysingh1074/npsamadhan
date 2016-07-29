@@ -64,7 +64,7 @@ public class PostConsultnatDaoImpl implements PostConsultnatDao
 	}
 
 	@Override
-	public List<PostConsultant> getInterestedPostByConsIdandPostId(String consName, long postId, String ratingParam)
+	public List<PostConsultant> getInterestedPostConsultantsByConsIdandPostId(String consName, long postId, String ratingParam)
 	{
 		List<PostConsultant> list=new  ArrayList<PostConsultant>();
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostConsultant.class);

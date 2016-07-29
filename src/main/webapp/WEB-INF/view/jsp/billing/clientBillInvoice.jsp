@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.domain.Registration"%>
 <%@page import="com.unihyr.constraints.DateFormats"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="com.unihyr.constraints.numbertowordindian"%>
@@ -77,12 +78,13 @@ textarea:hover, textarea:focus, #items td.total-value textarea:hover, #items td.
 </head>
 <body  >
 	<%
-BillingDetails bill=(BillingDetails)request.getAttribute("bill");
+	BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 	String clientId=(String)request.getAttribute("clientId");
 	if(!clientId.equals(bill.getClientId())){
 		out.println("No invoice");
 	}else{
-%>
+		Registration client=bill.getPostProfile().getPost().getClient();
+	%>
 <div class="filter">
 					<div class="col-md-5" style="text-align: center;">
 							<button id="sdfg"  class="profile_status_buttonGen"	>Print</button>
@@ -115,7 +117,7 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<tr>
 											<td style="width: 5%"></td>
 											<td style="width: 40%"><strong>UniHyr</strong><br>
-												<span style="padding-right: 240px; word-wrap: break-word;"><%=bill.getClientAddress() %></span></td>
+												<span style="padding-right: 240px; word-wrap: break-word;"><%=GeneralConfig.UnihyrAddress%></span></td>
 											<td colspan="2" style="width: 17%"></td>
 										</tr>
 								</table>
@@ -137,13 +139,17 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 										<td></td>
 										<td></td>
 										<td>Pan No :</td>
-										<td>XXXXXXXXXXXXXX</td>
+										<td><%if(client.getPanno()!=null){ %>
+					                        <%= client.getPanno()%> 
+					                        <%} %></td>
 									</tr>
 									<tr>
 										<td></td>
 										<td></td>
 										<td>Service Tax Reg No :</td>
-										<td>XXXXXXXXXXXXXX</td>
+										<td><%if(client.getStno()!=null){ %>
+					                        <%= client.getStno()%> 
+					                        <%} %></td>
 									</tr>
 								</table>
 								<table style="width: 100%">
@@ -155,14 +161,14 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 									</tr>
 									<tr>
 										<td></td>
-										<td><%=bill.getClientName() %></td>
+										<td><%=client.getOrganizationName() %></td>
 										<td></td>
 										<td></td>
 									</tr>
 									<tr>
 										<td></td>
 										<td>
-											<p style="width: 50%"><%=bill.getClientAddress() %></p>
+											<p style="width: 50%"><%=client.getOfficeAddress() %></p>
 										</td>
 										<td></td>
 										<td></td>
@@ -171,8 +177,9 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 
 								</table>
 								<br> <br>
-								<%
-								Double total=bill.getFee()+(GeneralConfig.TAX*bill.getFee())/100+(GeneralConfig.CESS*bill.getFee())/100;
+							<%
+							Double totalTax=GeneralConfig.TAX+GeneralConfig.CESS+GeneralConfig.KrishiKalyan;
+							Double total = bill.getFee() + (totalTax * bill.getFee()) / 100;
 							%>
 								<table style="border: 0.5px solid; width: 90%; margin: auto;">
 									<tr style="border-bottom: 1px solid #000; height: 30px;">
@@ -201,7 +208,7 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 									</tr>
 									<tr>
 
-										<td style="height: 25px; padding-left: 10px;">Servic Tax
+										<td style="height: 25px; padding-left: 10px;">Service Tax
 											@ <%=GeneralConfig.TAX %>
 										</td>
 										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated((GeneralConfig.TAX*bill.getFee())/100) %></td>
@@ -209,12 +216,20 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 									</tr>
 									<tr>
 
-										<td style="height: 25px; padding-left: 10px;">Swatch
-											Bharat Cess @ <%=GeneralConfig.CESS %>
-										</td>
-										<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated((GeneralConfig.CESS*bill.getFee())/100) %></td>
+									<td style="height: 25px; padding-left: 10px;">
+										Swatch Bharat Cess @ <%=GeneralConfig.CESS %>
+									</td>
+									<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated((GeneralConfig.CESS*bill.getFee())/100) %></td>
 
-									</tr>
+								</tr>
+								<tr>
+
+									<td style="height: 25px; padding-left: 10px;"> 
+										Krishi Kalyan Cess @ <%=GeneralConfig.KrishiKalyan %>
+									</td>
+									<td style="text-align: right; padding-right: 10px;"><%=NumberUtils.convertNumberToCommoSeprated((GeneralConfig.KrishiKalyan*bill.getFee())/100) %></td>
+
+								</tr>
 									<tr style="border-top: 1px solid #000; height: 30px;">
 
 										<th align="center" style="border-top:1px solid #000;">Total</th>
@@ -250,11 +265,15 @@ BillingDetails bill=(BillingDetails)request.getAttribute("bill");
 									</tr>
 									<tr style="height: 25px;">
 										<td>Current A/C No :</td>
-										<td>xxxxxxxxxxx</td>
+										<td><%if(client.getAccountNo()!=null){ %>
+					                        <%= client.getAccountNo()%> 
+					                        <%} %></td>
 									</tr>
 									<tr style="height: 25px;">
 										<td>IFSC /RTGS Code :</td>
-										<td>xxxxxxxxxxxx</td>
+										<td><%if(client.getIfscCode()!=null){ %>
+					                        <%= client.getIfscCode()%> 
+					                        <%} %></td>
 									</tr>
 
 									<tr>

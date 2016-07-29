@@ -1,3 +1,4 @@
+<%@page import="com.unihyr.domain.SocialSharing"%>
 <%@page import="com.unihyr.util.IntegerPerm"%>
 <%@page import="com.unihyr.constraints.GeneralConfig"%>
 <%@page import="com.unihyr.domain.PostConsultant"%>
@@ -11,13 +12,115 @@
 <%@page import="com.unihyr.domain.Registration"%>
 <%@page import="com.unihyr.domain.CandidateProfile"%>
 <%@page import="java.util.List"%>
+<head>
+<script type="text/javascript" src="//platform.linkedin.com/in.js">
+	api_key:78qdnibk4iyxe8
+// 	authorize: true
+//   onLoad: onLinkedInLoad
+</script>
+
+
+<script type="text/javascript">
+
+  function shareContent() {
+	  <%
+	  SocialSharing socialSharing=(SocialSharing)request.getAttribute("socialSharing");
+
+		Post post=(Post)request.getAttribute("selectedPost");
+	  
+	  %>
+    var payload ={
+    		  "comment": "Check out http://54.191.37.178/unihyr/!",
+    		  "content": {
+    		    "title": "Unihyr unique hiring solution",
+    		    "description": "<%=post.getTitle()%>",
+    		    "submitted-url": "http://54.191.37.178/unihyr/",  
+    		    "submitted-image-url": "http://54.191.37.178/unihyr/images/logo.png"
+    		  },
+    		  "visibility": {
+    		    "code": "anyone"
+    		  }  
+    		};
+    <%
+   
+    if(socialSharing!=null){
+    %>
+    IN.ENV.auth={
+    		api_key:"<%=socialSharing.getApi_key()%>",
+    		oauth_expires_in:<%=socialSharing.getOauth_expires()%>,
+    		oauth_token:"<%=socialSharing.getOauth_token()%>"
+    };
+    <%}%>
+    IN.API.Raw("people/~/shares?oauth2_access_token="+IN.ENV.auth.oauth_token+"&&format=json")
+    .method("POST")
+    .body(JSON.stringify(payload))
+    .result(onSuccess)
+    .error(onError);
+  }
+</script>
+
+
+
+<script type="text/javascript">
+
+// Setup an event listener to make an API call once auth is complete
+function onLinkedInLoad() {
+    IN.Event.on(IN, "auth", getProfileData);
+  //  alert(IN.ENV.auth.oauth_token);
+}
+
+// Handle the successful return from the API call
+function onSuccess(data) {
+	alertify.success("shared successfully");
+    console.log(data);
+}
+
+// Handle an error response from the API call
+function onError(error) {
+	$.ajax({
+		type : "GET",
+		url : "deleteSocialSharingData",
+		
+		contentType : "application/json",
+		success : function(data) {
+		pleaseDontWait();
+		location.href="";
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+		}
+	});
+    console.log(error);
+}
+
+// Use the API call wrapper to request the member's basic profile data
+function getProfileData() {
+	pleaseWait();
+	$.ajax({
+		type : "GET",
+		url : "addSocialSharingData",
+		data : {
+			'api_key' : IN.ENV.auth.api_key,
+			'oauth_expires_in' : IN.ENV.auth.oauth_expires_in,
+			'oauth_token':IN.ENV.auth.oauth_token
+		},
+		contentType : "application/json",
+		success : function(data) {
+		pleaseDontWait();
+		location.href="";
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+		}
+	});
+}
+
+</script>
+</head>
 <%
 	List<PostProfile> profileList = (List<PostProfile>) request.getAttribute("profileList");
 	List<PostConsultant> postConsList = (List)request.getAttribute("postConsList");
-	System.out.println(postConsList);
+	
 	Set<Integer> cons = new HashSet(); 
 	Set<Long> shortListed = new HashSet();
-	Post post=(Post)request.getAttribute("selectedPost");
 	long totalCount = (Long) request.getAttribute("totalCount");
 	int pn = (Integer) request.getAttribute("pn");
 	int rpp = (Integer) request.getAttribute("rpp");
@@ -205,9 +308,12 @@
 								%>
 			              
 			                 </div>
-			                  <div  class="pre_check" style="float: left;margin-left: -9px;margin-top: 5px;">
-								<label><script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-								<script type="IN/Share" data-url="<%=GeneralConfig.UniHyrUrl %>postDetails?ppid=<%=IntegerPerm.encipher((int)post.getPostId()) %>" ></script></label>
+			                  <div  class="pre_check" style="float: left;margin-left: -9px;">
+								<%if(socialSharing==null){ %>				
+									<script type="in/Login"></script> 
+								<%}else{ %>
+								<button onclick="shareContent()" class="profile_status_buttonGen" >Share</button>
+								<%} %>
 						</div>
 			                 
 			                  <%
@@ -240,6 +346,7 @@
 								%>
 								
 								<p style="font-size: 10px;"><i>
+								Profile Upload Quota Per Week : <%=post.getProfileParDay() %>, 
 								No of profile remaining to be uploaded this week : <%=remaining %>	
 									</i><span class="questionMark"><a target="_blank" href="faq">?</a></span>
 									</p> 

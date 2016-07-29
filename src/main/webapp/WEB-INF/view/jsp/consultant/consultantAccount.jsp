@@ -59,8 +59,8 @@
 	 		  {
 	 			  if(response != "failed")
  				  {
- 				  	$('#client_logo').attr("src","data/"+response);
- 				  	$('.brnad_logo img').attr("src","data/"+response);
+ 				  	$('#client_logo').attr("src","/data/"+response);
+ 				  	$('.brnad_logo img').attr("src","/data/"+response);
  				  }
 	 			  else
  				  {
@@ -136,7 +136,7 @@
 											if(reg.getLogo() != null && reg.getLogo().length() > 0)
 											{
 												%>
-													<img id="client_logo"  src="data/<%= reg.getLogo() %>" style="max-width: 200px; max-height: 100px;">
+													<img id="client_logo"  src="/data/<%= reg.getLogo() %>" style="max-width: 200px; max-height: 100px;">
 												<%
 											}
 											else
@@ -185,6 +185,64 @@
 							</dd>
 						</dl>
 						<%
+						String panno="XXXXXXXXXXXX";
+						String stno="XXXXXXXXXXXX";
+						String ifscCode="XXXXXXXXXXXX";
+						String accountNo="XXXXXXXXXXXX";
+						if(reg.getPanno()!=null)
+							panno=reg.getPanno();
+						if(reg.getStno()!=null)
+							stno=reg.getStno();
+						if(reg.getIfscCode()!=null)
+							ifscCode=reg.getIfscCode();
+						if(reg.getAccountNo()!=null)
+							accountNo=reg.getAccountNo();
+						
+						
+						
+						%>
+						<dl>
+							<dt>
+								<label>Pan No.</label>
+							</dt>
+							<dd>
+								<label>
+								<%=panno %>
+								
+								</label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Service Tax No.</label>
+							</dt>
+							<dd>
+								<label><%= stno %></label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>IFSC/RTGS Code</label>
+							</dt>
+							<dd>
+								<label><%= ifscCode %></label>
+								
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<label>Account No.</label>
+							</dt>
+							<dd>
+								<label><%= accountNo %></label>
+								
+							</dd>
+						</dl>
+						
+						
+						<%
 							if(reg.getIndustries() != null)
 							{
 								%>
@@ -212,15 +270,7 @@
 								<%
 							}
 						%>
-						<dl>
-							<dt>
-								<label>Revenue</label>
-							</dt>
-							<dd>
-								<label><%= reg.getRevenue() %></label>
-								
-							</dd>
-						</dl>
+						
 						<dl>
 							<dt>
 								<label>Contact No.</label>

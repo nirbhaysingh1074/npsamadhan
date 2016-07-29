@@ -14,6 +14,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body>
+<%
+
+Double totalTax=GeneralConfig.TAX+GeneralConfig.CESS+GeneralConfig.KrishiKalyan;
+%>
 <div class="mid_wrapper">
   <div class="container">
 	  	<div id="positions_info">
@@ -24,19 +28,21 @@
 			   </div>
 		  </div>
 	    <div  class="positions_info cons_new_posts">
-	  <!--     <div class="filter">
+	       <div class="filter">
 	        
-	        <div class="col-md-7 pagi_summary"><span>Showing 0 - 0 of 0</span></div>
+	        <div class="col-md-7 pagi_summary">
+<!-- 	        <span>Showing 0 - 0 of 0</span> -->
+	        </div>
 	        <div class="col-md-5">
-	              <ul class="page_nav unselectable">
-			            <li class="disabled"><a>First</a></li>
-			            <li class="disabled"><a><i class="fa fa-fw fa-angle-double-left"></i></a></li>
-		            	<li class="active current_page"><a>1</a></li>
-	      				<li class="disabled"><a><i class="fa fa-fw fa-angle-double-right"></i></a></li>
-			            <li class="disabled"><a>Last</a></li>
-	              </ul>
+<!-- 	              <ul class="page_nav unselectable"> -->
+<!-- 			            <li class="disabled"><a>First</a></li> -->
+<!-- 			            <li class="disabled"><a><i class="fa fa-fw fa-angle-double-left"></i></a></li> -->
+<!-- 		            	<li class="active current_page"><a>1</a></li> -->
+<!-- 	      				<li class="disabled"><a><i class="fa fa-fw fa-angle-double-right"></i></a></li> -->
+<!-- 			            <li class="disabled"><a>Last</a></li> -->
+<!-- 	              </ul> -->
 	            </div>
-	      </div> -->
+	      </div> 
 	      <div class="positions_tab">
 	        	<table class="table no-margin" style="font-size: 10px;border: 1px solid gray;">
 		        	<thead>
@@ -73,6 +79,9 @@
 						<th align="left">
 	       				CESS(%)
 	       				</th>
+						<th align="left">
+	       				Krishi Kalyan CESS(%)
+	       				</th>
 	       				<th align="left">Total Amount</th>
 	       				</sec:authorize>
 	       				<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
@@ -85,6 +94,10 @@
 	       				<th align="left">Verification Status</th>
 	       				<th align="left"></th>
 	       				</sec:authorize>
+	       					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
+	       					<th align="left">Action</th>
+	       					<th align="left">View</th>
+	       					</sec:authorize>
 		       			</tr>
 	       			</thead>
 	       			<tbody >
@@ -142,10 +155,13 @@
 	       				<%=GeneralConfig.CESS %>
 	       			</td>
 					<td>
+	       				<%=GeneralConfig.KrishiKalyan %>
+	       			</td>
+					<td>
 					<%
 					Double totalAmount=bill.getTotalAmount();
 					try{
-						totalAmount=bill.getFee()+(GeneralConfig.TAX*bill.getFee())/100+(GeneralConfig.CESS*bill.getFee())/100;
+						totalAmount=bill.getFee()+(totalTax*bill.getFee())/100;
 					}catch(Exception e){
 						totalAmount=bill.getTotalAmount();
 						e.printStackTrace();
@@ -163,7 +179,7 @@
 	       					totalCom=(recFee-(recFee*bill.getFeePercentToAdmin())/100);
 	       				}
 	       				if(totalCom>0){
-	       					totalCom=totalCom+(totalCom*(GeneralConfig.TAX+GeneralConfig.CESS))/100;
+	       					totalCom=totalCom+(totalCom*(totalTax))/100;
 	       				}
 	       				}catch(Exception e ){
 	       					e.printStackTrace();
@@ -193,20 +209,31 @@
 					</td>
 					<td >
 					<%if(bill.getJoiningDate()!=null){ %>
-					<a target="_blank" href="clientBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>
+					<a target="_blank" href="<%= "/data/"+bill.getInvoicePath()%>" >Invoice</a>
 					<%} %>
 					</td>
 					</sec:authorize>
 					
-					<%-- 
+					
 					<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
 					<td>
-					<%if(bill.getJoiningDate()!=null){ %>
-					<a target="_blank" href="consBillInvoice?billId=<%=bill.getBillId() %>" >Invoice</a>
+					<%if(bill.getVerificationStatus()!=null&&bill.getVerificationStatus()&&bill.getConsInvoicePath()==null){ %>
+					<form action="consGenerateBillInvoice" method="post">
+						<input required type="text" id="invoiceno" name="invoiceno" placeholder="Invoice No" style="width: 80px;" />
+						<input type="hidden" name="billId" value="<%=bill.getBillId() %>" />
+						<input type="submit" value="Generate" />
+					</form>
+					<%}else{%>
+ 					<span>--</span>
+					<%} %>
+					</td>
+					<td>
+					<%if(bill.getConsInvoicePath()!=null) {%>
+					<a target="_blank" href="/data/<%=bill.getConsInvoicePath() %>" >Invoice</a>
 					<%} %>
 					</td>
 					</sec:authorize>
-					 --%>
+					
 					</tr>
 					<%} %>
 	       			</tbody>

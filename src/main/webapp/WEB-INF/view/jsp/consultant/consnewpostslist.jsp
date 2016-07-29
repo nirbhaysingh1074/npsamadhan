@@ -57,7 +57,7 @@
        <div class="filter">
         <div class="col-md-4 pagi_summary">
 	      	 	<sec:authorize access="hasRole('ROLE_CON_MANAGER')">
-	      	 	<button id="show_interest" class="profile_status_buttonGen">Add to Active Postions</button>
+	      	 	<button id="show_interest" class="profile_status_buttonGen">Add to Active Positions</button>
 	      	 	</sec:authorize>
 	      	 	<sec:authorize access="hasRole('ROLE_CON_USER')">
 	      	 		<span >New Posts</span>
@@ -73,7 +73,7 @@
 	       					<th align="left"><input id="sel_allnewPost" type="checkbox"></th>
 	       				</sec:authorize>
 	       				<th align="left">Position</th>
-<!-- 	       				<th align="left">Org</th> -->
+						<!-- <th align="left">Org</th> -->
 	       				<th align="left">Industry</th>
 	       				<th align="left">Fee Percent Range</th>
 	       				<th align="left">Posted Date</th>
@@ -124,19 +124,7 @@
 		             					
 										<%-- <td><a href="consviewuser?uid=<%= post.getClient().getUserid()%>"><%= post.getClient().getOrganizationName() %></a></td> --%>
 		             					<td ><%= inds.getIndustry() %></td> 
-		             					<td style="font-size: 10px;">
-		             					<input type="hidden" value="<%=post.getFeePercent()%>" id="postfee<%=post.getPostId() %>" />
-		             					<%
-		             					if(post.getFeePercent()>0){ 
-		             					%>
-		             					<%=post.getFeePercent()/2 %> - <%= post.getFeePercent() %>
-		             					<%}else{
-		             					%>
-		             					<%=post.getFeePercent() %> - <%= post.getFeePercent() %>
-		             					<%
-		             					}
-		             					%>
-		             					</td>
+		             					
 		             					<td><%= DateFormats.ddMMMMyyyy.format(post.getPublished()) %></td>
 		             					<td><%= post.getLocation()%></td>
 		             					<td><%= post.getExp_min()%> to <%= post.getExp_max()  %>  </td>
@@ -148,9 +136,21 @@
 					                			</a>
 						                	</div>
 		             					</td>  --%>
-		             					
 		             					<td >
-		             					<input type="text" style="width: 61px;"  placeholder="0.00" class="number_only" id="<%=post.getPostId()%>">
+		             					<%
+		             					if(post.getFeePercent()>0){ 
+		             					%>
+		             					<%=post.getFeePercent()/2 %> - <%= post.getFeePercent() %>
+		             					<%}else{
+		             					%>
+		             					<%=post.getFeePercent() %> - <%= post.getFeePercent() %>
+		             					<%
+		             					}
+		             					%>
+		             					</td>
+		             					<td >
+		             					<input type="hidden" value="<%=post.getFeePercent()%>" id="postfee<%=post.getPostId() %>" name="postfee"/>
+		             					<input required type="text" style="width: 61px;"  placeholder="0.00" class="number_only" id="<%=post.getPostId()%>" value="<%=post.getFeePercent()%>">
 		             					</td>
 		             				</tr>
 		             				<%
@@ -225,7 +225,9 @@
       </div> --%>
    
 <script type="text/javascript">
-
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
 
 $(".number_only").keydown(function (e) {
 	
@@ -251,6 +253,11 @@ $(".number_only").on("blur",function(e){
 	var pid=this.id;
 	var prange=$('#'+pid).val();
 	var fee=$('#postfee'+pid).val();
+	
+	if(isFloat(prange)){
+		
+	
+	
 	if(Number(fee)>0){
 		if(Number(prange)<(Number(fee)/2)){
 			alertify.error("wrong fee percent range entered. Changed to default value");
@@ -263,6 +270,9 @@ $(".number_only").on("blur",function(e){
 			
 		}
 	}else{
+		alertify.error("wrong fee percent range entered. Changed to default value");
+		$('#'+pid).val(Number(fee));
+	}}else{
 		alertify.error("wrong fee percent range entered. Changed to default value");
 		$('#'+pid).val(Number(fee));
 	}

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -77,7 +78,18 @@ public class PostProfile
 	@Column
 	private Boolean viewStatus;
 	
+	@OneToOne(mappedBy="postProfile", cascade=CascadeType.ALL)  
+	private BillingDetails bill;
 	
+	public BillingDetails getBill()
+	{
+		return bill;
+	}
+
+	public void setBill(BillingDetails bill)
+	{
+		this.bill = bill;
+	}
 	
 	public String getProcessStatus()
 	{

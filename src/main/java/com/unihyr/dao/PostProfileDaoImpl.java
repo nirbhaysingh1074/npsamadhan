@@ -410,6 +410,22 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.setProjection(Projections.rowCount()).uniqueResult();
 		return count;
 	}
+	@Override
+	public long countViewedProfileListByConsultantIdAndPostId(String consultantId, long postId)
+	{
+		long count = (Long) this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("profile", "profileAlias")
+				.createAlias("profileAlias.registration", "regAlias")
+				.add(Restrictions.eq("regAlias.userid", consultantId))
+				.add(Restrictions.isNull("profileAlias.deleteDate"))
+				.add(Restrictions.isNotNull("profileAlias.published"))
+				.add(Restrictions.eq("viewStatus", true))
+				.createAlias("post", "postAlias")   
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.add(Restrictions.isNull("postAlias.deleteDate"))	
+				.setProjection(Projections.rowCount()).uniqueResult();
+		return count;
+	}
 
 //	public List<PostProfile> getProfileListByConsultantIdAndClientAndPostIdInRange(String consultantId, String clientId, String postId, int i, int j);
 	
@@ -846,7 +862,7 @@ public class PostProfileDaoImpl implements PostProfileDao
 				.add(Restrictions.isNull("postAlias.deleteDate"))
 				.add(Restrictions.eq("postAlias.postId", postId))
 				.add(Restrictions.isNotNull("offerDate"))
-				.add(Restrictions.isNull("joinDropDate"))
+//				.add(Restrictions.isNull("joinDropDate"))
 				.addOrder(Order.desc("submitted"))
 				.list();
 		return list;
@@ -875,6 +891,32 @@ public class PostProfileDaoImpl implements PostProfileDao
 				return true;
 			}
 		return false;
+	}
+
+	@Override
+	public long countViewedPostProfileByPost(long postId, String filterBy, String excludeType)
+	{
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PostProfile.class)
+				.createAlias("post", "postAlias")
+				.add(Restrictions.isNull("postAlias.deleteDate"))
+				.add(Restrictions.eq("postAlias.postId", postId))
+				.add(Restrictions.isNull("postAlias.deleteDate"))
+				.add(Restrictions.eq("viewStatus", true));
+
+		if(filterBy.equals("all")){
+			//criteria.add(Restrictions.eq("processStatus","submitted"));
+		}
+		else{
+		criteria.add(Restrictions.eq("processStatus",filterBy));
+		}
+		if(!excludeType.equals("rejected")){
+		Criterion cn5 = Restrictions.isNull("rejected");
+		Criterion cn6 = Restrictions.isNull("declinedDate");
+		Criterion cn7 = Restrictions.isNull("offerDropDate");
+		criteria.add(Restrictions.and(cn5,cn6,cn7));
+		}
+		long count=	(Long)criteria.setProjection(Projections.rowCount()).uniqueResult();
+		return count;
 	}
 	
 }

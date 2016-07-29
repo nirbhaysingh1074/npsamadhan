@@ -112,6 +112,27 @@
 					                        </label>
 					                      </div>
 					                    </div>
+					                    
+				                    <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">IFSC/RTGS Code</label>
+					                      <div class="col-sm-8">
+					                        <label  class="form-control">
+					                        <%if(userDetail.getIfscCode()!=null){ %>
+					                        <%= userDetail.getIfscCode()%> 
+					                        <%} %>
+					                        </label>
+					                      </div>
+					                    </div>
+					                    <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Account No</label>
+					                      <div class="col-sm-8">
+					                        <label  class="form-control">
+					                        <%if(userDetail.getAccountNo()!=null){ %>
+					                        <%= userDetail.getAccountNo()%> 
+					                        <%} %>
+					                        </label>
+					                      </div>
+					                    </div>
 <!-- 					                    <div class="form-group col-md-6 col-sm-12"> -->
 <!-- 					                      <label class="col-sm-4 control-label" for="inputEmail3">Org Size</label> -->
 <!-- 					                      <div class="col-sm-8"> -->
@@ -133,7 +154,8 @@
 					                    <div class="form-group col-md-6 col-sm-12">
 					                      <label class="col-sm-4 control-label" for="inputEmail3">About Company</label>
 					                      <div class="col-sm-8">
-					                        <label   class="form-control" style="height: auto;"><%= userDetail.getAbout()%></label>
+					                        <label   class="form-control"><%= userDetail.getAbout()%>
+					                        </label>
 					                      </div>
 					                    </div>
 					                    <div class="form-group col-md-6 col-sm-12">
@@ -252,6 +274,26 @@
 					                        <label  class="form-control">
 					                        <%if(userDetail.getStno()!=null){ %>
 					                        <%= userDetail.getStno()%> 
+					                        <%} %>
+					                        </label>
+					                      </div>
+					                    </div>
+				                    <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">IFSC/RTGS Code</label>
+					                      <div class="col-sm-8">
+					                        <label  class="form-control">
+					                        <%if(userDetail.getIfscCode()!=null){ %>
+					                        <%= userDetail.getIfscCode()%> 
+					                        <%} %>
+					                        </label>
+					                      </div>
+					                    </div>
+					                    <div class="form-group col-md-6 col-sm-12">
+					                      <label class="col-sm-4 control-label" for="inputEmail3">Account No</label>
+					                      <div class="col-sm-8">
+					                        <label  class="form-control">
+					                        <%if(userDetail.getAccountNo()!=null){ %>
+					                        <%= userDetail.getAccountNo()%> 
 					                        <%} %>
 					                        </label>
 					                      </div>

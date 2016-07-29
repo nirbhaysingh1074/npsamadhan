@@ -19,5 +19,5 @@ public interface PostConsultnatDao
 	public void updatePostConsultant(PostConsultant postConsultant);
 
 
-	public List<PostConsultant> getInterestedPostByConsIdandPostId(String consName, long postId, String ratingParam);
+	public List<PostConsultant> getInterestedPostConsultantsByConsIdandPostId(String consName, long postId, String ratingParam);
 }

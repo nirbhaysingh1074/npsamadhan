@@ -30,6 +30,7 @@
    	    <mapping class="com.unihyr.domain.Qualification"/>
    	    <mapping class="com.unihyr.domain.ContactUs"/>
    	    <mapping class="com.unihyr.domain.HelpDesk"/>
+   	    <mapping class="com.unihyr.domain.SocialSharing"/>
     </session-factory>
     
 </hibernate-configuration>

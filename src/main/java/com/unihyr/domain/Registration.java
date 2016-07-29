@@ -122,12 +122,44 @@ public class Registration implements Serializable
 	private Integer paymentDays;
 
 	private String emptyField;
-	
+
 	private String panno;
 	private String stno;
+	private String ifscCode;
+	private String accountNo;
 	private String contractPath;
 	private String contractorIP;
 	private Date contractDate;
+	
+	
+	
+
+	@Column
+	public String getIfscCode()
+	{
+		return ifscCode;
+	}
+
+
+	public void setIfscCode(String ifscCode)
+	{
+		this.ifscCode = ifscCode;
+	}
+
+
+	@Column
+	public String getAccountNo()
+	{
+		return accountNo;
+	}
+
+
+	public void setAccountNo(String accountNo)
+	{
+		this.accountNo = accountNo;
+	}
+
+
 	@Column
 	public String getContractorIP()
 	{

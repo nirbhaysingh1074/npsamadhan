@@ -15,6 +15,7 @@ import scala.languageFeature.reflectiveCalls;
 public class GeneralConfig 
 {
 	public static final double CESS = 0.5;
+	public static final double KrishiKalyan = 0.5;
 	public static final String UploadPath = "/var/unihyr/data/";
 	public static final String Label_Activate = "Activate";
 	public static final String Label_DeActivate = "Deactivate";
@@ -23,6 +24,7 @@ public class GeneralConfig
 	public static final String Shortlist = "In Process";
 	public static final String ShortlistRejected = "CV Rejected";
 	public static final String SendOffer = "Offer Sent";
+	public static final String SendOfferDb = "recruited";
 	public static final String SendOfferReject = "Interview Reject";
 	public static final String OfferAccept = "Offered";
 	public static final String OfferAcceptReject = "Offer Declined";
@@ -38,6 +40,7 @@ public class GeneralConfig
 	public static final String Add_Post_Submit_Button_Value = "Submit";
 	public static final String Delimeter = ",,,,,,";
 	public static final long BillDaysOut = 7;
+	public static final String UnihyrAddress = "Gurgaon";
 	//public static final String UploadPath = "D:/var/unihyr/data/";
 	public static double TAX = 14;
 	public static int NoOfRatingStaticParams = 2;

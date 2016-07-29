@@ -42,9 +42,9 @@ public class PostConsultnatServiceImpl implements PostConsultnatService
 	}
 
 	@Override
-	public List<PostConsultant> getInterestedPostByConsIdandPostId(String consName, long postId, String ratingParam)
+	public List<PostConsultant> getInterestedPostConsultantsByConsIdandPostId(String consName, long postId, String ratingParam)
 	{
 		// TODO Auto-generated method stub
-		return this.postConsultnatDao.getInterestedPostByConsIdandPostId(consName, postId, ratingParam);
+		return this.postConsultnatDao.getInterestedPostConsultantsByConsIdandPostId(consName, postId, ratingParam);
 	}
 }

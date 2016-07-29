@@ -818,6 +818,9 @@ public class ClientController
 		}
 		else if(pid > 0 )
 		{
+			if(sortOrder==null){
+				sortOrder="desc";
+			}
 			Post post = postService.getPost((pid));
 			map.addAttribute("rpp", GeneralConfig.rpp);
 			map.addAttribute("pn", 1);
@@ -961,13 +964,12 @@ public class ClientController
 				{
 					pp.setAccepted(dt);
 					pp.setActionPerformerId(principal.getName());
-					PostProfile postProfile=pp;
-					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
-						postProfile.setViewStatus(true);}
-
-					postProfile.setProcessStatus("accepted");
-						content = candidate + " has been shortlited for the <a href='cons_your_position?pid="
-							+ pp.getPost().getPostId() + "' >" + position + "</a> (" + (reg.getOrganizationName())
+					pp.setViewStatus(true);
+					pp.setProcessStatus("accepted");
+//					content = candidate + " has been shortlited for the <a href='cons_your_position?pid="
+//							+ pp.getPost().getPostId() + "' >" + position + "</a> (" + (reg.getOrganizationName())
+//							+ ")";
+					content = candidate + " has been shortlited for the " + position + " (" + (reg.getOrganizationName())
 							+ ")";
 					obj.put("status", "accepted");
 				}
@@ -975,29 +977,35 @@ public class ClientController
 				{
 					pp.setRejected(dt);
 					pp.setRejectReason(rej_reason);
-					PostProfile postProfile=pp;
-					if(postProfile.getViewStatus()==null||(!postProfile.getViewStatus())){
-						postProfile.setViewStatus(true);}
-						postProfile.setProcessStatus("rejected");
-					content= candidate +" has been rejected for the <a href='cons_your_position?pid="
-							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
+					pp.setViewStatus(true);
+					pp.setProcessStatus("rejected");
+//					content= candidate +" has been rejected for the <a href='cons_your_position?pid="
+//							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
+					content= candidate +" has been rejected for the " + position + " ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "rejected");
 				}
 				else if(ppstatus.equals("recruit") && pp.getAccepted() != null)
 				{
+					long cnt=postProfileService.countShortlistedProfileListPostId(post.getPostId(), GeneralConfig.SendOfferDb);
+					if(cnt<post.getNoOfPosts()){
 					pp.setRecruited(dt);
 					pp.setProcessStatus("recruited");
-					content= candidate +" has been offered for the <a href='cons_your_position?pid="
-							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
+//					content= candidate +" has been offered for the <a href='cons_your_position?pid="
+//							+ pp.getPost().getPostId() + "' >" + position + "</a> ("+(reg.getOrganizationName())+")" ;
+					content= candidate +" has been offered for the " + position + " ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "recruited");
+					}else{
+						obj.put("status", "failed");
+					}
 				}
 				else if(ppstatus.equals("reject_recruit") && pp.getAccepted() != null)
 				{
 					pp.setDeclinedDate(dt);
 					pp.setRejectReason(rej_reason);
 					pp.setProcessStatus("declineDate");
-					content= candidate +" has been rejected for the  <a href='cons_your_position?pid="
-							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
+//					content= candidate +" has been rejected for the  <a href='cons_your_position?pid="
+//							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
+					content= candidate +" has been rejected for the " + position + "  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "reject_recruit");
 				}
 				else if(ppstatus.equals("offer_accept") && pp.getAccepted() != null)
@@ -1010,6 +1018,7 @@ public class ClientController
 					double billableCTC=Double.parseDouble(request.getParameter("billableCTC"));
 					List<BillingDetails> bill=fillBillingDetails(pp,loggedinUser,request.getParameter("joiningDate"), totalCTC,billableCTC);
 					billingService.addBillingDetails(bill.get(0));
+					
 					try{
 						if(post.getNoOfPosts()==(post.getNoOfPostsFilled()+1))
 						{
@@ -1017,19 +1026,21 @@ public class ClientController
 							post.setCloseDate(dt);
 							postService.updatePost(post);	
 							if(post.getOpenAgainDate()==null){
-							insertValues(post.getPostId());
-							closePost(reg);
+								insertValues(post.getPostId());
+								closePost(reg);
 							}
 						}else if(post.getNoOfPosts()>(post.getNoOfPostsFilled()+1)){
 							post.setNoOfPostsFilled(post.getNoOfPostsFilled()+1);
 							postService.updatePost(post);	
 						}
-						content= candidate +" offer has been accepted for the  <a href='cons_your_position?pid="
-							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
 					}catch(Exception e){
 						e.printStackTrace();
 						obj.put("status", "failed");
 					}
+
+//					content= candidate +" offer has been accepted for the  <a href='cons_your_position?pid="
+//						+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
+					content= candidate +" offer has been accepted for the " + position + "  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "offer_accept");
 				}
 				}
@@ -1038,8 +1049,9 @@ public class ClientController
 					pp.setOfferDropDate(dt);
 					pp.setRejectReason(rej_reason);
 					pp.setProcessStatus("offerDropDate");
-					content= candidate +" offer has been rejected for the  <a href='cons_your_position?pid="
-							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
+//					content= candidate +" offer has been rejected for the  <a href='cons_your_position?pid="
+//							+ pp.getPost().getPostId() + "' >" + position + "</a>  ("+(reg.getOrganizationName())+")" ;
+					content= candidate +" offer has been rejected for the  " + position + "  ("+(reg.getOrganizationName())+")" ;
 					obj.put("status", "offer_reject");
 				}
 				else
@@ -1103,7 +1115,9 @@ public class ClientController
 		billingDetailscl.setClientAddress(client.getHoAddress());
 		billingDetailscl.setConsultantId(consultant.getUserid());
 		billingDetailscl.setCandidatePerson(profile.getName());
+		
 		billingDetailscl.setFeePercentForClient(post.getFeePercent());	
+		
 		billingDetailscl.setFeePercentToAdmin(consultant.getFeeCommission());
 		try{
 			billingDetailscl.setFee((billableCTC*post.getFeePercent())/100);
@@ -1128,6 +1142,7 @@ public class ClientController
 		billingDetailscl.setClientPaidStatus(false);
 		billingDetailscl.setTax(GeneralConfig.TAX);
 		billingDetailscl.setPostProfileId(pp.getPpid());
+		billingDetailscl.setPostProfile(pp);
 		bills.add(billingDetailscl);
 		return bills;
 	}
@@ -1797,13 +1812,16 @@ public class ClientController
 			{
 				in = (Industry) inIterator.next();
 			}
-
-			
 			long publishtime = post.getCreateDate().getTime();
 			long turnaround = 0;
 			long totalSubmitted = postProfileService.countProfileListByConsultantIdAndPostId(consultant.getUserid(),
 					post.getPostId());
 			long totalSubmittedbyall = postProfileService.countPostProfileByPost(postId, "all","rejected");
+			long totalViewed = postProfileService.countViewedProfileListByConsultantIdAndPostId(consultant.getUserid(),
+					post.getPostId());
+			//long totalViewedbyall = postProfileService.countViewedPostProfileByPost(postId, "all","rejected");
+			
+		
 			GlobalRating newGlobalRating = new GlobalRating();
 			Date date = new Date();
 			java.sql.Date dt = new java.sql.Date(date.getTime());
@@ -1849,20 +1867,28 @@ public class ClientController
 				}
 				case "shortlistRatio":
 				{
-					long totalShortlisted = postProfileService.countShortlistedProfileListByConsultantIdAndPostId(
-							consultant.getUserid(), post.getPostId());
-					
 					long shrTime=0;
-					try{
-					if (totalSubmitted == 0)
-					{
-						shrTime = 0;
-					} else
-					{
-						shrTime=(totalShortlisted * 100 / totalSubmitted) ;
-					}
-					}catch(Exception e){
-						e.printStackTrace();
+					
+					//checked if profiles are submitted and not viewed by client and set last short list ratio of that consultant for that industry
+					if(totalSubmitted>0&&totalViewed<=0){
+					List<GlobalRating> gp=	globalRatingService.getGlobalRatingListByIndustryAndConsultantRange(in.getId(), consultant.getUserid(), 0, 1);
+						if(gp!=null&&!gp.isEmpty()){
+							shrTime= (long) gp.get(0).getShortlistRatio();
+						}
+					}else{
+						long totalShortlisted = postProfileService.countShortlistedProfileListByConsultantIdAndPostId(
+								consultant.getUserid(), post.getPostId());
+						try{
+							if (totalSubmitted == 0)
+							{
+								shrTime = 0;
+							} else
+							{
+								shrTime=(totalShortlisted * 100 / totalViewed) ;
+							}
+						}catch(Exception e){
+							e.printStackTrace();
+						}
 					}
 					newGlobalRating.setShortlistRatio(shrTime);
 					break;
@@ -1911,7 +1937,8 @@ public class ClientController
 				gp.setOfferJoin(1);
 				globalRatingPercentileService.addGlobalRating(gp);
 			}
-		}
+			}
+		//}
 		post.setActive(false);
 		Date date = new Date();
 		java.sql.Date dt = new java.sql.Date(date.getTime());
