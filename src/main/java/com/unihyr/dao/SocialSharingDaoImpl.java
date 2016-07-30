@@ -1,7 +1,9 @@
 package com.unihyr.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +50,13 @@ public class SocialSharingDaoImpl implements SocialSharingDao
 	@Override
 	public void delete(String  userid)
 	{
-		List<SocialSharing> list = this.sessionFactory.getCurrentSession().createCriteria(SocialSharing.class)
-				.add(Restrictions.eq("userid", userid)).list();
-		this.sessionFactory.getCurrentSession().delete(list);
+		  String deleteQuery = "delete from SocialSharing where userid= :userid";
+	      Query query = this.sessionFactory.getCurrentSession().createQuery(deleteQuery);
+	      query.setString("userid", userid); //convert date from string
+	      query.executeUpdate();
+	      
+	      
+		
 		
 	}
 

@@ -13,112 +13,13 @@
 <%@page import="com.unihyr.domain.CandidateProfile"%>
 <%@page import="java.util.List"%>
 <head>
-<script type="text/javascript" src="//platform.linkedin.com/in.js">
-	api_key:78qdnibk4iyxe8
-// 	authorize: true
-//   onLoad: onLinkedInLoad
-</script>
 
-
-<script type="text/javascript">
-
-  function shareContent() {
-	  <%
-	  SocialSharing socialSharing=(SocialSharing)request.getAttribute("socialSharing");
-
-		Post post=(Post)request.getAttribute("selectedPost");
-	  
-	  %>
-    var payload ={
-    		  "comment": "Check out http://54.191.37.178/unihyr/!",
-    		  "content": {
-    		    "title": "Unihyr unique hiring solution",
-    		    "description": "<%=post.getTitle()%>",
-    		    "submitted-url": "http://54.191.37.178/unihyr/",  
-    		    "submitted-image-url": "http://54.191.37.178/unihyr/images/logo.png"
-    		  },
-    		  "visibility": {
-    		    "code": "anyone"
-    		  }  
-    		};
-    <%
-   
-    if(socialSharing!=null){
-    %>
-    IN.ENV.auth={
-    		api_key:"<%=socialSharing.getApi_key()%>",
-    		oauth_expires_in:<%=socialSharing.getOauth_expires()%>,
-    		oauth_token:"<%=socialSharing.getOauth_token()%>"
-    };
-    <%}%>
-    IN.API.Raw("people/~/shares?oauth2_access_token="+IN.ENV.auth.oauth_token+"&&format=json")
-    .method("POST")
-    .body(JSON.stringify(payload))
-    .result(onSuccess)
-    .error(onError);
-  }
-</script>
-
-
-
-<script type="text/javascript">
-
-// Setup an event listener to make an API call once auth is complete
-function onLinkedInLoad() {
-    IN.Event.on(IN, "auth", getProfileData);
-  //  alert(IN.ENV.auth.oauth_token);
-}
-
-// Handle the successful return from the API call
-function onSuccess(data) {
-	alertify.success("shared successfully");
-    console.log(data);
-}
-
-// Handle an error response from the API call
-function onError(error) {
-	$.ajax({
-		type : "GET",
-		url : "deleteSocialSharingData",
-		
-		contentType : "application/json",
-		success : function(data) {
-		pleaseDontWait();
-		location.href="";
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-		}
-	});
-    console.log(error);
-}
-
-// Use the API call wrapper to request the member's basic profile data
-function getProfileData() {
-	pleaseWait();
-	$.ajax({
-		type : "GET",
-		url : "addSocialSharingData",
-		data : {
-			'api_key' : IN.ENV.auth.api_key,
-			'oauth_expires_in' : IN.ENV.auth.oauth_expires_in,
-			'oauth_token':IN.ENV.auth.oauth_token
-		},
-		contentType : "application/json",
-		success : function(data) {
-		pleaseDontWait();
-		location.href="";
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-		}
-	});
-}
-
-</script>
 </head>
 <%
 	List<PostProfile> profileList = (List<PostProfile>) request.getAttribute("profileList");
 	List<PostConsultant> postConsList = (List)request.getAttribute("postConsList");
-	
+
+Post post=(Post)request.getAttribute("selectedPost");
 	Set<Integer> cons = new HashSet(); 
 	Set<Long> shortListed = new HashSet();
 	long totalCount = (Long) request.getAttribute("totalCount");
@@ -291,30 +192,33 @@ function getProfileData() {
 								}
 								%>
 							</div>
-							<div id="view_jd" class="view_id pre_check" style="float: left;margin-left: -9px;">
-			                 	<%
-								if(postConsList != null && !postConsList.isEmpty())
-								{
+								<div id="view_jd" class="view_id pre_check" style="float: left;margin-left: -9px;">
+				                 	<%
+									if(postConsList != null && !postConsList.isEmpty())
+									{
+										%>
+											<a target="_blank" href="consviewjd?pid=<%=post.getPostId() %>" id="" class="btn file_btn view_post"><strong>View JD</strong></a>
+										<%
+									}
+									else
+									{
+										%>
+											<a href="javascript:void(0)" id="" class="btn file_btn view_post btn_disabled"><strong>View JD</strong></a>
+										<%
+									}
 									%>
-										<a target="_blank" href="consviewjd?pid=<%=post.getPostId() %>" id="" class="btn file_btn view_post"><strong>View JD</strong></a>
-									<%
-								}
-								else
-								{
-									%>
-										<a href="javascript:void(0)" id="" class="btn file_btn view_post btn_disabled"><strong>View JD</strong></a>
-									<%
-								}
-								%>
-			              
-			                 </div>
-			                  <div  class="pre_check" style="float: left;margin-left: -9px;">
-								<%if(socialSharing==null){ %>				
-									<script type="in/Login"></script> 
-								<%}else{ %>
-								<button onclick="shareContent()" class="profile_status_buttonGen" >Share</button>
-								<%} %>
-						</div>
+				              
+				                 </div>
+			                  <%-- 	<div  class="pre_check" style="float: left;margin-left: -9px;">
+									<a href="https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=78qdnibk4iyxe8&redirect_uri=http://localhost:8082/unihyr/cons_your_positions&state=987654321&scope=r_basicprofile"		>
+										Login
+									</a>		
+									<%if(socialSharing==null){ %>
+										<script type="in/Login"></script> 
+									<%}else{ %>
+										<button onclick="shareContent()" class="profile_status_buttonGen" >Share</button>
+									<%} %>
+								</div> --%>
 			                 
 			                  <%
 

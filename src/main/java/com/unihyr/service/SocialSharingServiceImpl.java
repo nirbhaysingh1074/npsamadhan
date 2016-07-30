@@ -46,7 +46,6 @@ public class SocialSharingServiceImpl implements SocialSharingService
 	public void delete(String userid)
 	{
 		this.socialSharingDao.delete(userid);
-		
 	}
 
 	
